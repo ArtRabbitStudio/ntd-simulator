@@ -1,0 +1,47 @@
+{
+	"name": "ntd-simulator",
+	"version": "0.1.0",
+	"private": true,
+	"dependencies": {
+		"@material-ui/core": "^4.9.5",
+		"@material-ui/icons": "^4.9.1",
+		"@material-ui/lab": "^4.0.0-alpha.45",
+		"@testing-library/jest-dom": "^4.2.4",
+		"@testing-library/react": "^9.3.2",
+		"@testing-library/user-event": "^7.1.2",
+		"react": "^16.13.1",
+		"react-dom": "^16.13.1",
+		"react-scripts": "3.4.1",
+		"react-router-dom": "^5.1.2",
+		"d3": "^5.15.0",
+		"lodash": "^4.17.15",
+		"mathjs": "^6.6.1",
+		"mobx": "^5.15.4",
+		"mobx-react": "^6.1.8",
+		"mobx-utils": "^5.5.5",
+		"node-sass": "^4.13.1",
+		"typeface-libre-franklin": "0.0.75",
+		"typeface-roboto": "0.0.75"
+	},
+	"scripts": {
+		"start": "react-scripts start",
+		"build": "react-scripts build",
+		"test": "react-scripts test",
+		"eject": "react-scripts eject"
+	},
+	"eslintConfig": {
+		"extends": "react-app"
+	},
+	"browserslist": {
+		"production": [
+			">0.2%",
+			"not dead",
+			"not op_mini all"
+		],
+		"development": [
+			"last 1 chrome version",
+			"last 1 firefox version",
+			"last 1 safari version"
+		]
+	}
+}
