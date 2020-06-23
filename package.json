@@ -21,7 +21,8 @@
 		"mobx-utils": "^5.5.5",
 		"node-sass": "^4.13.1",
 		"typeface-libre-franklin": "0.0.75",
-		"typeface-roboto": "0.0.75"
+		"typeface-roboto": "0.0.75",
+		"react-virtualized-auto-sizer": "^1.0.2"
 	},
 	"scripts": {
 		"start": "react-scripts start",

@@ -5,6 +5,7 @@ import useSyncRouteState from './hooks/useSyncRouteState'
 import ScrollToTop from './pages/components/ScrollToTop'
 import Home from './pages/Home'
 import Page from './pages/Page'
+import Simulator from './pages/Simulator'
 
 import 'typeface-roboto'
 import 'typeface-libre-franklin'
@@ -157,6 +158,7 @@ function App() {
                 <ScrollToTop /*location={location}*/>
                     <Switch>
                         <Route exact path="/" component={Home} />
+                        <Route exact path="/simulator" component={Simulator} />
                         <Route exact path="**" component={Page} />
                     </Switch>
                 </ScrollToTop>
