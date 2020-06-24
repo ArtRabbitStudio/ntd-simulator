@@ -25,6 +25,10 @@ const useStyles = makeStyles(theme => ({
         width: 'calc(100% - 16px)',
         textAlign: 'left',
         '& > label': {},
+        '&.countries input': {
+            fontSize: 44
+
+        },
         [theme.breakpoints.up('sm')]: {
             margin: theme.spacing(0, 0, 2, 0),
         },
@@ -37,36 +41,39 @@ const useStyles = makeStyles(theme => ({
     },
 }))
 
-const SelectCountry = props => {
+const SelectCountry = ({ selectIU }) => {
     const classes = useStyles()
 
     const history = useHistory()
     const matchSection = useRouteMatch('/:section')
 
-    const { countrySuggestions } = useDataAPI()
+    const { countrySuggestions, iuFeatures } = useDataAPI()
     const { country } = useUIState()
+
+    console.log(iuFeatures);
 
 
     const handleCountryChange = (event, value) => {
-        let section = 'trends'
+        let section = 'country'
         if (matchSection) {
             section = matchSection.params.section
         }
-        // country has been selected // are we already on a page that can show country data
-        if (section !== 'trends' && section !== 'hotspots') {
-            section = 'trends'
-        }
+
+
         if (value) {
             history.push({ pathname: `/${section}/${value.id}` })
-            // country has been deselected
-        } else {
-            history.push({ pathname: `/${section}` })
         }
 
 
     }
 
+    const handleIUChange = (event, value) => {
+
+
+    }
+
     const selected = countrySuggestions.find(x => x.id === country)
+    const selectedIU = '';
 
     return (
         <Box className={classes.root}>
@@ -76,13 +83,28 @@ const SelectCountry = props => {
                     id="combo-box-demo"
                     options={countrySuggestions}
                     getOptionLabel={option => option.name}
-                    value={selected ?? { name: 'All countries' }}
+                    value={selected ?? { name: 'Select a country' }}
                     renderInput={params => (
-                        <TextField {...params} label="View" />
+                        <TextField {...params} />
                     )}
                     onChange={handleCountryChange}
                 />
             </FormControl>
+
+            {selectIU &&
+                <FormControl className={`${classes.formControl}`}>
+                    <Autocomplete
+                        id="combo-box-demo"
+                        options={[]}
+                        getOptionLabel={option => option.name}
+                        value={selectedIU ?? { name: 'Select IU' }}
+                        renderInput={params => (
+                            <TextField {...params} />
+                        )}
+                        onChange={handleIUChange}
+                    />
+                </FormControl>
+            }
 
         </Box>
     )

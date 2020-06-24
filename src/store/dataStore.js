@@ -43,9 +43,9 @@ class DataStore {
     stateLevelLoader = DataStore.loadCSV('/data/state-level.csv')
     iuLevelLoader = DataStore.loadCSV('/data/iu-level-nopred.csv')
 
-    level0Loader = DataStore.loadGeojson('/geo/africa_country_ms_0.1.json')
-    level1Loader = DataStore.loadGeojson('/geo/africa_state_ms_0.1.json')
-    level2Loader = DataStore.loadGeojson('/geo/africa_iu_ms_0.01.json')
+    //level0Loader = DataStore.loadGeojson('/geo/africa_country_ms_0.1.json')
+    //level1Loader = DataStore.loadGeojson('/geo/africa_state_ms_0.1.json')
+    //level2Loader = DataStore.loadGeojson('/geo/africa_iu_ms_0.01.json')
 
     get relations() {
         return this.relationsLoader.current()
