@@ -4,11 +4,20 @@ import { useUIState } from './stateHooks'
 
 export default function () {
     const matchSub = useRouteMatch('/:section/:country')
+    const matchIU = useRouteMatch('/:section/:country/:iu')
     const matchTop = useRouteMatch('/:section')
-    const { country: currentCountry, setCountry } = useUIState()
+    const { country: currentCountry, implementationUnit: currentImplementationUnit, setImplementationUnit, setCountry } = useUIState()
 
     useEffect(() => {
-        if (matchSub) {
+        if (matchIU) {
+            const { country, iu } = matchIU.params
+            if (country !== currentCountry) {
+                setCountry(country)
+            }
+            if (iu !== currentImplementationUnit) {
+                setImplementationUnit(iu)
+            }
+        } else if (matchSub) {
             const { country } = matchSub.params
             if (country !== currentCountry) {
                 setCountry(country)
@@ -16,6 +25,9 @@ export default function () {
         } else if (matchTop) {
             if (currentCountry) {
                 setCountry(null)
+            }
+            if (currentImplementationUnit) {
+                setImplementationUnit(null)
             }
         }
     }, [matchSub, matchTop, setCountry, currentCountry])

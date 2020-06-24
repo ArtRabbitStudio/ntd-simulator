@@ -71,7 +71,7 @@ const SelectCountry = ({ selectIU }) => {
     const matchSection = useRouteMatch('/:section')
 
     const { countrySuggestions, iuFeatures, iusByCountrySuggestions } = useDataAPI()
-    const { country } = useUIState()
+    const { country, implementationUnit } = useUIState()
 
 
     const handleCountryChange = (event, value) => {
@@ -85,7 +85,6 @@ const SelectCountry = ({ selectIU }) => {
             history.push({ pathname: `/${section}/${value.id}` })
         }
 
-
     }
 
     const handleIUChange = (event, value) => {
@@ -98,7 +97,8 @@ const SelectCountry = ({ selectIU }) => {
     }
 
     const selected = countrySuggestions.find(x => x.id === country)
-    const selectedIU = {};
+    const selectedIU = iusByCountrySuggestions.find(x => x.id === implementationUnit)
+
 
     return (
         <React.Fragment>
@@ -123,7 +123,7 @@ const SelectCountry = ({ selectIU }) => {
                             id="iu"
                             options={iusByCountrySuggestions}
                             getOptionLabel={option => option.name}
-                            value={selected ?? { name: 'Select IU' }}
+                            value={selectedIU ?? { name: 'Select IU' }}
                             renderInput={params => (
                                 <TextField {...params} InputProps={{ ...params.InputProps, disableUnderline: true }} />
                             )}
