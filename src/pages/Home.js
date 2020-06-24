@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { useHistory } from 'react-router-dom';
+//import { useDataAPI, useUIState } from '../hooks/stateHooks'
 
 import { Layout } from '../layout';
 import { makeStyles } from '@material-ui/core/styles';
@@ -18,6 +19,7 @@ const Home = (props) => {
 
     const classes = useStyles();
     const history = useHistory();
+
 
     //const { countryFeatures, countryCentroids } = useDataAPI()
 
