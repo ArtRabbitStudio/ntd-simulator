@@ -25,7 +25,7 @@ const Home = (props) => {
 
 
     return (
-        <Layout classAdd="full-height" >
+        <Layout /* classAdd="full-height"*/ >
             <HeadWithInputs
                 title="prevalence simulator"
             />

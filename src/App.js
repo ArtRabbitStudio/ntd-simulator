@@ -6,6 +6,7 @@ import ScrollToTop from './pages/components/ScrollToTop'
 import Home from './pages/Home'
 import Page from './pages/Page'
 import Country from './pages/Country'
+import Setup from './pages/Setup'
 import Simulator from './pages/Simulator'
 
 import 'typeface-roboto'
@@ -160,6 +161,7 @@ function App() {
                     <Switch>
                         <Route exact path="/" component={Home} />
                         <Route exact path="/country/:country" component={Country} />
+                        <Route exact path="/setup/:country/:iu" component={Setup} />
                         <Route exact path="/simulator" component={Simulator} />
                         <Route exact path="**" component={Page} />
                     </Switch>

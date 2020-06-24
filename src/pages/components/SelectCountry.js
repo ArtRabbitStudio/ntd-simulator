@@ -20,9 +20,21 @@ const useStyles = makeStyles(theme => ({
         zIndex: 9,
         position: 'relative',
     },
+    box: {
+        zIndex: 9,
+        position: 'relative',
+        width: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        margin: theme.spacing(0, 0, 1, 0),
+        [theme.breakpoints.up('md')]: {
+        },
+        [theme.breakpoints.up('lg')]: {
+        },
+    },
     formControl: {
         margin: theme.spacing(0, 0, 2, 0),
-        width: 'calc(100% - 16px)',
+        width: '100%',
         textAlign: 'left',
         '& > label': {},
         '&.countries input': {
@@ -33,8 +45,7 @@ const useStyles = makeStyles(theme => ({
             margin: theme.spacing(0, 0, 2, 0),
         },
         [theme.breakpoints.up('md')]: {
-            margin: theme.spacing(0, 0, 0, 0),
-            width: 'calc(50% - 16px)',
+            width: '50%',
         },
         [theme.breakpoints.up('lg')]: {
         },
@@ -69,44 +80,49 @@ const SelectCountry = ({ selectIU }) => {
 
     const handleIUChange = (event, value) => {
 
+        let section = 'setup'
+        if (value) {
+            history.push({ pathname: `/${section}/${country}/${value.id}` })
+        }
 
     }
 
     const selected = countrySuggestions.find(x => x.id === country)
-    const selectedIU = '';
+    const selectedIU = {};
 
     return (
-        <Box className={classes.root}>
+        <React.Fragment>
+            <Box className={classes.box}>
 
-            <FormControl className={`${classes.formControl} countries`}>
-                <Autocomplete
-                    id="combo-box-demo"
-                    options={countrySuggestions}
-                    getOptionLabel={option => option.name}
-                    value={selected ?? { name: 'Select a country' }}
-                    renderInput={params => (
-                        <TextField {...params} />
-                    )}
-                    onChange={handleCountryChange}
-                />
-            </FormControl>
-
-            {selectIU &&
-                <FormControl className={`${classes.formControl}`}>
+                <FormControl className={`${classes.formControl} countries`}>
                     <Autocomplete
                         id="combo-box-demo"
-                        options={[]}
+                        options={countrySuggestions}
                         getOptionLabel={option => option.name}
-                        value={selectedIU ?? { name: 'Select IU' }}
+                        value={selected ?? { name: 'Select a country' }}
                         renderInput={params => (
                             <TextField {...params} />
                         )}
-                        onChange={handleIUChange}
+                        onChange={handleCountryChange}
                     />
                 </FormControl>
-            }
 
-        </Box>
+                {selectIU &&
+                    <FormControl className={`${classes.formControl}`}>
+                        <Autocomplete
+                            id="iu"
+                            options={countrySuggestions}
+                            getOptionLabel={option => option.name}
+                            value={selected ?? { name: 'Select IU' }}
+                            renderInput={params => (
+                                <TextField {...params} />
+                            )}
+                            onChange={handleIUChange}
+                        />
+                    </FormControl>
+                }
+            </Box>
+        </React.Fragment>
     )
 }
 

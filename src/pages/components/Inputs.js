@@ -56,7 +56,9 @@ const Inputs = props => {
                     labelId="disease-label"
                     id="disease"
                     value={disease}
+                    variant="outlined"
                     onChange={handleDiseaseChange}
+
                 >
                     {diseases.map(r => (
                         <MenuItem key={r} value={r}>
