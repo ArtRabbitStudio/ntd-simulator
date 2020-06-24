@@ -4,6 +4,7 @@ import { useHistory, useRouteMatch, Link as RouterLink } from 'react-router-dom'
 import { Typography, Slider, Box, Link, Paper } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { format } from 'd3'
+import Tooltip from './Tooltip'
 import useMapReducer from '../hooks/useMapReducer'
 import { NO_DATA } from '../constants'
 import 'mapbox-gl/dist/mapbox-gl.css'
@@ -36,7 +37,10 @@ function Map({
         },
     }))
 
-    if (iuFeatures) console.log('iuFeatures',iuFeatures)
+    /*if (iuFeatures) console.log('iuFeatures',iuFeatures)
+    if (countryFeatures) console.log('countryFeatures',countryFeatures)
+    if (stateFeatures) console.log('stateFeatures',stateFeatures)
+    */
 
     const classes = useStyles()
 
@@ -48,7 +52,7 @@ function Map({
     ]
 
     const colorProp = trendMode ? 'color-perf' : `color-${year}`
-    /*
+    
     useEffect(() => {
         if (country && ready) {
             const focus = countryFeatures.features.find(
@@ -59,7 +63,7 @@ function Map({
             }
         }
     }, [countryFeatures, country, dispatch, ready])
-    */
+    
 
 
     const handleViewportChange = payload => {
@@ -68,34 +72,37 @@ function Map({
 
     const handleClick = event => {
         const feature = event.features[0]
-        if (feature) {
-            dispatch({ type: 'SELECT', payload: { feature, event } })
-        }
+        console.log('click',feature.properties.IU_ID);
+        //if (feature) {
+        //    dispatch({ type: 'SELECT', payload: { feature, event } })
+        //}
+
+        //TODO: select IU and go there
     }
 
-    //   const selectCountryClickHotspots = countryId => {
-    //     if (match) {
-    //       if (match.params.section != 'trends') {
-    //         match.params.section = 'hotspots'
-    //       }
+  //   const selectCountryClickHotspots = countryId => {
+  //     if (match) {
+  //       if (match.params.section != 'trends') {
+  //         match.params.section = 'hotspots'
+  //       }
 
-    //       history.push(`/${match.params.section}/${countryId}`)
-    //     } else {
-    //       history.push(`/hotspots/${countryId}`)
-    //     }
-    //   }
+  //       history.push(`/${match.params.section}/${countryId}`)
+  //     } else {
+  //       history.push(`/hotspots/${countryId}`)
+  //     }
+  //   }
 
-    //   const selectCountryClickTrends = countryId => {
-    //     if (match) {
-    //       if (match.params.section != 'trends') {
-    //         match.params.section = 'trends'
-    //       }
+  //   const selectCountryClickTrends = countryId => {
+  //     if (match) {
+  //       if (match.params.section != 'trends') {
+  //         match.params.section = 'trends'
+  //       }
 
-    //       history.push(`/${match.params.section}/${countryId}`)
-    //     } else {
-    //       history.push(`/trends/${countryId}`)
-    //     }
-    //   }
+  //       history.push(`/${match.params.section}/${countryId}`)
+  //     } else {
+  //       history.push(`/trends/${countryId}`)
+  //     }
+  //   }
 
     const handleHover = event => {
         if (event.features) {
@@ -124,6 +131,10 @@ function Map({
                 attributionControl={false}
                 scrollZoom={disableZoom ? false : true}
                 doubleClickZoom={disableZoom ? false : true}
+                dragPan={false}
+                boxZoom={false}
+                dragRotate={false}
+                touchZoomRotate={false}
                 mapStyle="mapbox://styles/kpcarter100/ck80d7xh004tt1irt06j8jkme"
                 interactiveLayerIds={interactiveLayers}
                 onViewportChange={handleViewportChange}
@@ -131,13 +142,39 @@ function Map({
                 onHover={handleHover}
             >
 
+                {/* Country features */}
+                {countryFeatures && (
+                <Source id="africa-countries" type="geojson" data={countryFeatures}>
+                    <Layer
+                    id="fill-countries"
+                    beforeId="admin-0-boundary"
+                    filter={['has', colorProp]}
+                    type="fill"
+                    paint={{
+                        'fill-color': 'rgba(0,0,0,.2)',
+                     
+                        
+                    }}
+                    />
+                    <Layer
+                    id="hover-countries"
+                    type="line"
+                    filter={['has', colorProp]}
+                    layout={{ 'line-join': 'bevel' }}
+                    paint={{
+                        'line-color': 'rgba(145, 145, 145, 1)',
+                        'line-width': 1,
+                    }}
+                    />
+                </Source>
+                )}
+
                 {/* IU features */}
                 {iuFeatures && (
                     <Source id="africa-iu" type="geojson" data={iuFeatures}>
                         <Layer
                             id="fill-iu"
                             beforeId="admin-0-boundary"
-                            filter={['has', colorProp]}
                             type="fill"
                             paint={{
                                 'fill-color': [
@@ -145,7 +182,7 @@ function Map({
                                     ['get', colorProp],
                                     // grey shapes if no data available
                                     '#F2F1F1',
-                                ],
+                                  ],
                                 'fill-outline-color': [
                                     'case',
                                     ['==', ['get', 'id'], feature?.properties.id || null],
@@ -158,47 +195,23 @@ function Map({
                             id="hover-iu"
                             source="africa-iu"
                             type="line"
-                            filter={['has', colorProp]}
                             layout={{ 'line-join': 'bevel' }}
                             paint={{
                                 'line-color': [
-                                    'case',
-                                    ['==', ['get', 'id'], featureHover?.properties.id || null],
-                                    '#616161',
-                                    'rgba(0,0,0,0)',
+                                  'case',
+                                  ['==', ['get', 'id'], featureHover?.properties.id || null],
+                                  '#616161',
+                                  'rgba(0,0,0,0)',
                                 ],
                                 'line-width': 1,
-                            }}
+                              }}
                         />
                     </Source>
                 )}
 
-                {/* Population circles */}
-                {populationFeatures && (
-                    <Source
-                        id="africa-countries-population"
-                        type="geojson"
-                        data={populationFeatures}
-                    >
-                        <Layer
-                            id="population-countries"
-                            type="circle"
-                            paint={{
-                                'circle-radius': [
-                                    'interpolate',
-                                    ['linear'],
-                                    ['zoom'],
-                                    3,
-                                    ['/', ['sqrt', ['get', 'population']], 200],
-                                    10,
-                                    ['/', ['sqrt', ['get', 'population']], 40],
-                                ],
-                                'circle-color': 'rgba(255,0,0,0)',
-                                'circle-stroke-color': 'rgba(0,0,0,1)',
-                                'circle-stroke-width': 1,
-                            }}
-                        />
-                    </Source>
+                {/* Tooltip */}
+                {featureHover && !feature && (
+                <Tooltip feature={featureHover} year={year} position={tooltip} />
                 )}
 
 
