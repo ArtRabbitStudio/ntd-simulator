@@ -811,8 +811,7 @@ export var statFunctions = {
     params.runs = Number(ps.runs);
     params.nMDA = dict && dict.nMDA ? dict.nMDA : Number(ps.mda);
     params.mdaFreq = ps.mdaSixMonths === "True" ? 6.0 : 12.0;
-    var end =
-      dict && dict.endemicity ? dict.endemicity / 100 : ps.endemicity / 100;
+    var end = ps.endemicity / 100;
     //    console.log(end)
     var sps = ps.species;
     //    console.log(sps)
@@ -1075,6 +1074,7 @@ export var simControler = {
     time: [], //60, 96, 120, 144, 180
     coverage: [], // 0.9, 0.9, 0.9, 0.9, 0.9
     adherence: [], // 1, 1, 1, 1, 1
+    active: [], // true, false, true, false, true
   },
   newScenario: true,
 };
