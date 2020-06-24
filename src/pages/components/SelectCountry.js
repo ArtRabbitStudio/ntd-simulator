@@ -6,6 +6,8 @@ import { makeStyles } from '@material-ui/core/styles'
 import { useDataAPI, useUIState } from '../../hooks/stateHooks'
 import { useHistory } from 'react-router-dom'
 
+import ConfirmationDialog from "./ConfirmationDialog";
+
 import Box from '@material-ui/core/Box'
 import TextField from '@material-ui/core/TextField'
 import Autocomplete from '@material-ui/lab/Autocomplete'
@@ -64,37 +66,66 @@ const useStyles = makeStyles(theme => ({
     },
 }))
 
-const SelectCountry = ({ selectIU }) => {
+const SelectCountry = ({ selectIU, showConfirmation }) => {
     const classes = useStyles()
-
     const history = useHistory()
     const matchSection = useRouteMatch('/:section')
 
     const { countrySuggestions, iuFeatures, iusByCountrySuggestions } = useDataAPI()
     const { country, implementationUnit } = useUIState()
 
+    const [goTo, setGoTo] = useState(false);
+
+    const navigateToCountry = (id) => {
+
+    }
+
+    const navigate = (url) => {
+        let u = url ? url : goTo;
+        history.push({ pathname: u })
+    }
 
     const handleCountryChange = (event, value) => {
         let section = 'country'
         if (matchSection) {
-            section = matchSection.params.section
+            if (matchSection.params.section !== 'simulator') { // keep the page, not for simulator
+                //section = matchSection.params.section
+            }
         }
 
-
         if (value) {
-            history.push({ pathname: `/${section}/${value.id}` })
+            let url = `/${section}/${value.id}`;
+            if (showConfirmation) {
+                setGoTo(url)
+                setConfirmatonOpen(true);
+            } else {
+                navigate(url)
+            }
         }
 
     }
 
     const handleIUChange = (event, value) => {
-
         let section = 'setup'
         if (value) {
-            history.push({ pathname: `/${section}/${country}/${value.id}` })
+            let url = `/${section}/${country}/${value.id}`
+            if (showConfirmation) {
+                setGoTo(url)
+                setConfirmatonOpen(true);
+            } else {
+                navigate(url)
+            }
         }
 
     }
+
+    // confirmation for change the country
+    const [confirmatonOpen, setConfirmatonOpen] = useState(false);
+    const confirmedRemoveCurrentScenario = () => {
+        // confirmed
+        setConfirmatonOpen(false);
+        navigate()
+    };
 
     const selected = countrySuggestions.find(x => x.id === country)
     const selectedIU = iusByCountrySuggestions.find(x => x.id === implementationUnit)
@@ -132,6 +163,17 @@ const SelectCountry = ({ selectIU }) => {
                     </FormControl>
                 }
             </Box>
+
+            {showConfirmation &&
+                <ConfirmationDialog
+                    title="Do you want to leave this scenario?"
+                    onClose={() => {
+                        setConfirmatonOpen(false);
+                    }}
+                    onConfirm={confirmedRemoveCurrentScenario}
+                    open={confirmatonOpen}
+                />
+            }
         </React.Fragment>
     )
 }

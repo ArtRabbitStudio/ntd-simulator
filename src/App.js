@@ -167,7 +167,7 @@ function App() {
                         <Route exact path="/" component={Home} />
                         <Route exact path="/country/:country" component={Country} />
                         <Route exact path="/setup/:country/:iu" component={Setup} />
-                        <Route exact path="/simulator" component={Simulator} />
+                        <Route exact path="/simulator/:country?/:iu?" component={Simulator} />
                         <Route exact path="**" component={Page} />
                     </Switch>
                 </ScrollToTop>

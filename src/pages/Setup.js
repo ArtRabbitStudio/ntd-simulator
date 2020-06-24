@@ -80,7 +80,7 @@ const Setup = props => {
         //stateDataCurrentCountry: stateData,
         stateScales,
     } = useDataAPI()
-    const { country } = useUIState()
+    const { country, implementationUnit } = useUIState()
 
 
     const [simParams, setSimParams] = useState({
@@ -111,7 +111,7 @@ const Setup = props => {
 
     const submitSetup = (event) => {
         // pass params to simulator ..
-        history.push({ pathname: `/simulator` })
+        history.push({ pathname: `/simulator/${country}/${implementationUnit}` })
     };
 
     //console.log(country);
