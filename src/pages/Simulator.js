@@ -669,23 +669,12 @@ const Simulator = (props) => {
     return (
         <Layout>
             <HeadWithInputs
-                transparent={true}
-                disableInputs={true}
-                title="Lymphatic filariasis Simulator"
-                text={`This simulator provides a way of assessing the impact of various interventions for a variety of backgrounds for Lymphatic filariasis transmission.`}
-            />
+                title="prevalence simulator" />
             {/*       {props.location.search}
       {window.location.search} */}
 
-
             <SelectCountry selectIU={true} showConfirmation={true} />
 
-            <SectionTitle
-                top={true}
-                headline="Available scenarios"
-                text={`Create your own scenarios and compare them to our baseline`}
-                fullwidth={true}
-            />
             <section className={classes.simulator}>
                 <Grid container spacing={0}>
                     <Grid item xs={12} className={classes.tabs}>

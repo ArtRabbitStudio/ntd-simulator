@@ -43,6 +43,7 @@ function Map({
     */
 
     const classes = useStyles()
+    const history = useHistory()
 
     const interactiveLayers = [
         ...(!!countryFeatures ? ['fill-countries'] : []),
@@ -52,7 +53,7 @@ function Map({
     ]
 
     const colorProp = trendMode ? 'color-perf' : `color-${year}`
-    
+
     useEffect(() => {
         if (country && ready) {
             const focus = countryFeatures.features.find(
@@ -63,7 +64,7 @@ function Map({
             }
         }
     }, [countryFeatures, country, dispatch, ready])
-    
+
 
 
     const handleViewportChange = payload => {
@@ -72,7 +73,8 @@ function Map({
 
     const handleClick = event => {
         const feature = event.features[0]
-        console.log('click',feature.properties.IU_ID);
+        history.push(`/setup/${country}/${feature.properties.IU_ID}`)
+
         //if (feature) {
         //    dispatch({ type: 'SELECT', payload: { feature, event } })
         //}
@@ -80,29 +82,29 @@ function Map({
         //TODO: select IU and go there
     }
 
-  //   const selectCountryClickHotspots = countryId => {
-  //     if (match) {
-  //       if (match.params.section != 'trends') {
-  //         match.params.section = 'hotspots'
-  //       }
+    //   const selectCountryClickHotspots = countryId => {
+    //     if (match) {
+    //       if (match.params.section != 'trends') {
+    //         match.params.section = 'hotspots'
+    //       }
 
-  //       history.push(`/${match.params.section}/${countryId}`)
-  //     } else {
-  //       history.push(`/hotspots/${countryId}`)
-  //     }
-  //   }
+    //       history.push(`/${match.params.section}/${countryId}`)
+    //     } else {
+    //       history.push(`/hotspots/${countryId}`)
+    //     }
+    //   }
 
-  //   const selectCountryClickTrends = countryId => {
-  //     if (match) {
-  //       if (match.params.section != 'trends') {
-  //         match.params.section = 'trends'
-  //       }
+    //   const selectCountryClickTrends = countryId => {
+    //     if (match) {
+    //       if (match.params.section != 'trends') {
+    //         match.params.section = 'trends'
+    //       }
 
-  //       history.push(`/${match.params.section}/${countryId}`)
-  //     } else {
-  //       history.push(`/trends/${countryId}`)
-  //     }
-  //   }
+    //       history.push(`/${match.params.section}/${countryId}`)
+    //     } else {
+    //       history.push(`/trends/${countryId}`)
+    //     }
+    //   }
 
     const handleHover = event => {
         if (event.features) {
@@ -144,29 +146,29 @@ function Map({
 
                 {/* Country features */}
                 {countryFeatures && (
-                <Source id="africa-countries" type="geojson" data={countryFeatures}>
-                    <Layer
-                    id="fill-countries"
-                    beforeId="admin-0-boundary"
-                    filter={['has', colorProp]}
-                    type="fill"
-                    paint={{
-                        'fill-color': 'rgba(0,0,0,.2)',
-                     
-                        
-                    }}
-                    />
-                    <Layer
-                    id="hover-countries"
-                    type="line"
-                    filter={['has', colorProp]}
-                    layout={{ 'line-join': 'bevel' }}
-                    paint={{
-                        'line-color': 'rgba(145, 145, 145, 1)',
-                        'line-width': 1,
-                    }}
-                    />
-                </Source>
+                    <Source id="africa-countries" type="geojson" data={countryFeatures}>
+                        <Layer
+                            id="fill-countries"
+                            beforeId="admin-0-boundary"
+                            filter={['has', colorProp]}
+                            type="fill"
+                            paint={{
+                                'fill-color': 'rgba(0,0,0,.2)',
+
+
+                            }}
+                        />
+                        <Layer
+                            id="hover-countries"
+                            type="line"
+                            filter={['has', colorProp]}
+                            layout={{ 'line-join': 'bevel' }}
+                            paint={{
+                                'line-color': 'rgba(145, 145, 145, 1)',
+                                'line-width': 1,
+                            }}
+                        />
+                    </Source>
                 )}
 
                 {/* IU features */}
@@ -182,7 +184,7 @@ function Map({
                                     ['get', colorProp],
                                     // grey shapes if no data available
                                     '#F2F1F1',
-                                  ],
+                                ],
                                 'fill-outline-color': [
                                     'case',
                                     ['==', ['get', 'id'], feature?.properties.id || null],
@@ -198,20 +200,20 @@ function Map({
                             layout={{ 'line-join': 'bevel' }}
                             paint={{
                                 'line-color': [
-                                  'case',
-                                  ['==', ['get', 'id'], featureHover?.properties.id || null],
-                                  '#616161',
-                                  'rgba(0,0,0,0)',
+                                    'case',
+                                    ['==', ['get', 'id'], featureHover?.properties.id || null],
+                                    '#616161',
+                                    'rgba(0,0,0,0)',
                                 ],
                                 'line-width': 1,
-                              }}
+                            }}
                         />
                     </Source>
                 )}
 
                 {/* Tooltip */}
                 {featureHover && !feature && (
-                <Tooltip feature={featureHover} year={year} position={tooltip} />
+                    <Tooltip feature={featureHover} year={year} position={tooltip} />
                 )}
 
 
