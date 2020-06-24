@@ -248,53 +248,68 @@ const Simulator = (props) => {
   const [editingMDAs, setEditingMDAs] = useState(false);
   /* MDA object */
   const populateMDA = () => {
-    var MDAtime = [];
-    for (var i = 0; i < (12 / simParams.mdaSixMonths) * 20; i++) {
-      MDAtime.push(
-        (simParams.mdaSixMonths / 12) * 12 +
-          (simParams.mdaSixMonths / 12) * 12 * i
-      );
+    let MDAtime = [];
+    for (let i = 0; i < 40; i++) {
+      MDAtime.push(6 + 6 * i);
     }
     SimulatorEngine.simControler.mdaObj.time = [...MDAtime];
     SimulatorEngine.simControler.mdaObjOrig.time = [...MDAtime];
 
-    var MDAcoverage = [];
-    for (var i = 0; i < (12 / simParams.mdaSixMonths) * 20; i++) {
+    let MDAcoverage = [];
+    for (let i = 0; i < 40; i++) {
       MDAcoverage.push(simParams.coverage);
     }
     SimulatorEngine.simControler.mdaObj.coverage = [...MDAcoverage];
     SimulatorEngine.simControler.mdaObjOrig.coverage = [...MDAcoverage];
 
-    var MDAadherence = [];
-    for (var i = 0; i < (12 / simParams.mdaSixMonths) * 20; i++) {
+    let MDAadherence = [];
+    for (let i = 0; i < 40; i++) {
       MDAadherence.push(simParams.rho);
     }
     SimulatorEngine.simControler.mdaObj.adherence = [...MDAadherence];
     SimulatorEngine.simControler.mdaObjOrig.adherence = [...MDAadherence];
+
+    let MDAactive = [];
+    for (let i = 0; i < 40; i++) {
+      if (simParams.mdaSixMonths === 12 && i % 2 === 1) {
+        MDAactive.push(false);
+      } else {
+        MDAactive.push(true); // alternate here
+      }
+    }
+    SimulatorEngine.simControler.mdaObj.active = [...MDAactive];
+    SimulatorEngine.simControler.mdaObjOrig.active = [...MDAactive];
+
     console.log(
       "SimulatorEngine.simControler.mdaObj",
       SimulatorEngine.simControler.mdaObj
     );
   };
-  const populateMDAOnTheFly = () => {
-    var MDAtime = [];
-    for (var i = 0; i < (12 / simParams.mdaSixMonths) * 20; i++) {
-      MDAtime.push(
-        (simParams.mdaSixMonths / 12) * 12 +
-          (simParams.mdaSixMonths / 12) * 12 * i
-      );
+  const populateMDA4UIonly = () => {
+    let MDAtime = [];
+    for (let i = 0; i < 40; i++) {
+      MDAtime.push(6 + 6 * i);
     }
     setSimMDAtime([...MDAtime]);
-    var MDAcoverage = [];
-    for (var i = 0; i < (12 / simParams.mdaSixMonths) * 20; i++) {
+    let MDAcoverage = [];
+    for (let i = 0; i < 40; i++) {
       MDAcoverage.push(simParams.coverage);
     }
     setSimMDAcoverage([...MDAcoverage]);
-    var MDAadherence = [];
-    for (var i = 0; i < (12 / simParams.mdaSixMonths) * 20; i++) {
+    let MDAadherence = [];
+    for (let i = 0; i < 40; i++) {
       MDAadherence.push(simParams.rho);
     }
     setSimMDAadherence([...MDAadherence]);
+    let MDAactive = [];
+    for (let i = 0; i < 40; i++) {
+      if (simParams.mdaSixMonths === 12 && i % 2 === 1) {
+        MDAactive.push(false);
+      } else {
+        MDAactive.push(true); // alternate here
+      }
+    }
+    setSimMDAactive([...MDAactive]);
     // console.log(SimulatorEngine.simControler.mdaObj)
   };
   const [graphMetric, setGraphMetric] = useState("Ms");
@@ -302,14 +317,16 @@ const Simulator = (props) => {
   const [simMDAtime, setSimMDAtime] = useState([]);
   const [simMDAcoverage, setSimMDAcoverage] = useState([]);
   const [simMDAadherence, setSimMDAadherence] = useState([]);
+  const [simMDAactive, setSimMDAactive] = useState([]);
   useEffect(() => {
-    const zeroExistsAtThisPos = simMDAcoverage.indexOf(0);
+    // const zeroExistsAtThisPos = simMDAcoverage.indexOf(0);
     // console.log('zeroExistsAtThisPos', zeroExistsAtThisPos)
 
-    if (zeroExistsAtThisPos > -1) {
+    /*     if (zeroExistsAtThisPos > -1) {
       let newSimMDAcoverage = [...simMDAcoverage];
       let newSimMDAtime = [...simMDAtime];
       let newSimMDAadherence = [...simMDAadherence];
+      let newSimMDActive = [...simMDAactive];
       for (let i = 0; newSimMDAcoverage.indexOf(0) > -1; i++) {
         newSimMDAtime.splice(newSimMDAcoverage.indexOf(0), 1);
         newSimMDAcoverage.splice(newSimMDAcoverage.indexOf(0), 1);
@@ -318,18 +335,21 @@ const Simulator = (props) => {
       SimulatorEngine.simControler.mdaObj.time = [...newSimMDAtime];
       SimulatorEngine.simControler.mdaObj.coverage = [...newSimMDAcoverage];
       SimulatorEngine.simControler.mdaObj.adherence = [...newSimMDAadherence];
-    } else {
-      SimulatorEngine.simControler.mdaObj.time = [...simMDAtime];
-      SimulatorEngine.simControler.mdaObj.coverage = [...simMDAcoverage];
-      SimulatorEngine.simControler.mdaObj.adherence = [...simMDAadherence];
-    }
+      SimulatorEngine.simControler.mdaObj.active = [...newSimMDActive];
+    } else { */
+    SimulatorEngine.simControler.mdaObj.time = [...simMDAtime];
+    SimulatorEngine.simControler.mdaObj.coverage = [...simMDAcoverage];
+    SimulatorEngine.simControler.mdaObj.adherence = [...simMDAadherence];
+    SimulatorEngine.simControler.mdaObj.active = [...simMDAactive];
+    // }
     SimulatorEngine.simControler.mdaObjOrig.time = [...simMDAtime];
     SimulatorEngine.simControler.mdaObjOrig.coverage = [...simMDAcoverage];
     SimulatorEngine.simControler.mdaObjOrig.adherence = [...simMDAadherence];
+    SimulatorEngine.simControler.mdaObjOrig.active = [...simMDAactive];
 
     // console.log('MDA change', simMDAtime, simMDAcoverage, simMDAadherence)
     // console.log('mdaObjOrig', SimulatorEngine.simControler.mdaObjOrig)
-  }, [simMDAtime, simMDAcoverage, simMDAadherence]);
+  }, [simMDAtime, simMDAcoverage, simMDAadherence, simMDAactive]);
 
   // check for stale scenarios object in LS
   const LSSessionData = JSON.parse(window.localStorage.getItem("sessionData"));
@@ -373,6 +393,7 @@ const Simulator = (props) => {
       setSimMDAtime(scenarioMDAs[tabIndex].time);
       setSimMDAcoverage(scenarioMDAs[tabIndex].coverage);
       setSimMDAadherence(scenarioMDAs[tabIndex].adherence);
+      setSimMDAactive(scenarioMDAs[tabIndex].active);
     }
   }, [tabIndex]);
 
@@ -423,6 +444,7 @@ const Simulator = (props) => {
         setSimMDAtime([...JSON.parse(resultObject).mdaOrig.time]);
         setSimMDAcoverage([...JSON.parse(resultObject).mdaOrig.coverage]);
         setSimMDAadherence([...JSON.parse(resultObject).mdaOrig.adherence]);
+        setSimMDAactive([...JSON.parse(resultObject).mdaOrig.active]);
       } else {
         let correctTabIndex = newScenario === true ? tabIndex + 1 : tabIndex;
         //console.log('scenarioResults',resultObject)
@@ -453,6 +475,7 @@ const Simulator = (props) => {
         setSimMDAtime([...JSON.parse(resultObject).mdaOrig.time]);
         setSimMDAcoverage([...JSON.parse(resultObject).mdaOrig.coverage]);
         setSimMDAadherence([...JSON.parse(resultObject).mdaOrig.adherence]);
+        setSimMDAactive([...JSON.parse(resultObject).mdaOrig.active]);
       }
       setSimInProgress(false);
       // console.log('newScenario', newScenario)
@@ -609,6 +632,7 @@ const Simulator = (props) => {
         setSimMDAtime(MDAs[tabIndex].time);
         setSimMDAcoverage(MDAs[tabIndex].coverage);
         setSimMDAadherence(MDAs[tabIndex].adherence);
+        setSimMDAactive(MDAs[tabIndex].active);
       }
     }
   }, []);
@@ -626,9 +650,9 @@ const Simulator = (props) => {
       if (calculNeeded === true) {
         setEditingMDAs(true);
       }
-      if (editingMDAs && calculNeeded) {
-        populateMDAOnTheFly();
-      }
+      //   if (editingMDAs && calculNeeded) {
+      populateMDA4UIonly();
+      //   }
     }
   }, [simParams.mdaSixMonths, simParams.coverage]);
 
@@ -742,10 +766,10 @@ const Simulator = (props) => {
                         cursor: "hand",
                       }}
                     >
-                      {/* {(12 / simParams.mdaSixMonths) * 20} */}
+                      {/* {40} */}
                       {simMDAtime.map((e, i) => (
                         <div
-                          key={i}
+                          key={`bar${i}`}
                           style={{
                             background: "#B09AFF",
                             height: 100,
@@ -753,7 +777,7 @@ const Simulator = (props) => {
                             borderWidth: 1,
                             borderColor: "white",
                             borderStyle: "solid",
-                            opacity: simMDAcoverage[i] === 0 ? 0.3 : 1,
+                            opacity: simMDAactive[i] === false ? 0.3 : 1,
                           }}
                           onMouseOver={(a) => {
                             //a.target.style.borderColor = '#d01c8b'
@@ -771,7 +795,11 @@ const Simulator = (props) => {
                             ", " +
                             simMDAcoverage[i] +
                             ", " +
-                            simMDAadherence[i]
+                            simMDAadherence[i] +
+                            ", " +
+                            // (simMDAactive[i] == 1 ? "active" : "inactive") +
+                            simMDAactive[i] +
+                            " "
                           }
                         >
                           <span
@@ -880,9 +908,9 @@ const Simulator = (props) => {
                               variant="contained"
                               disabled={simInProgress}
                               onClick={() => {
-                                let newArray = [...simMDAcoverage];
-                                newArray[curMDARound] = 0;
-                                setSimMDAcoverage([...newArray]);
+                                let newArray = [...simMDAactive];
+                                newArray[curMDARound] = false;
+                                setSimMDAactive([...newArray]);
                                 setCurMDARound(-1);
                                 setDoseSettingsOpen(false);
                               }}
