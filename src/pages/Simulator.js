@@ -354,11 +354,17 @@ const Simulator = (props) => {
   // check for stale scenarios object in LS
   const LSSessionData = JSON.parse(window.localStorage.getItem("sessionData"));
   if (
-    LSSessionData !== null &&
-    LSSessionData.scenarios &&
-    LSSessionData.scenarios[0] &&
-    LSSessionData.scenarios[0].mda &&
-    typeof LSSessionData.scenarios[0].mdaOrig === "undefined"
+    (LSSessionData !== null &&
+      LSSessionData.scenarios &&
+      LSSessionData.scenarios[0] &&
+      LSSessionData.scenarios[0].mda &&
+      typeof LSSessionData.scenarios[0].mdaOrig === "undefined") ||
+    (LSSessionData !== null &&
+      LSSessionData.scenarios &&
+      LSSessionData.scenarios[0] &&
+      LSSessionData.scenarios[0].mda &&
+      typeof LSSessionData.scenarios[0].mdaOrig &&
+      typeof LSSessionData.scenarios[0].mdaOrig.active === "undefined")
   ) {
     // clear LS and relaod if stale project is found
     window.localStorage.removeItem("sessionData");
@@ -819,116 +825,145 @@ const Simulator = (props) => {
                       <ClickAwayListener onClickAway={closeRoundModal}>
                         <Paper elevation={3} className={classes.roundModal}>
                           <CloseButton action={closeRoundModal} />
-
-                          <Typography
-                            className={classes.title}
-                            variant="h5"
-                            component="h4"
-                          >
-                            {/* MDA round #  */}
-                            {simParams.mdaSixMonths === 6
-                              ? curMDARound % 2
-                                ? new Date().getFullYear() +
-                                  Math.floor(curMDARound / 2)
-                                : new Date().getFullYear() + curMDARound / 2
-                              : new Date().getFullYear() + curMDARound}
-                            {curMDARound % 2 ? " (2nd round)" : ""}
-                          </Typography>
-                          <FormControl
-                            fullWidth
-                            className={classes.formControl}
-                          >
-                            <FormLabel
-                              component="legend"
-                              htmlFor="rho"
-                              className={classes.withSlider}
-                            >
-                              Coverage
-                            </FormLabel>
-                            <Slider
-                              value={simMDAcoverage[curMDARound]}
-                              min={1}
-                              step={1}
-                              max={100}
-                              onChange={(event, newValue) => {
-                                let newArray = [...simMDAcoverage];
-                                newArray[curMDARound] = newValue;
-                                setSimMDAcoverage([...newArray]);
-                              }}
-                              aria-labelledby="slider"
-                              marks={[
-                                { value: 0, label: "0" },
-                                { value: 100, label: "100" },
-                              ]}
-                              valueLabelDisplay="on"
-                            />
-                            {/*             <p style={{ marginBottom: 0 }}>
-              Controls how randomly coverage is applied. For 0, coverage is
-              completely random. For 1, the same individuals are always treated.
-            </p> */}
-                          </FormControl>
-                          <FormControl
-                            fullWidth
-                            className={classes.formControl}
-                          >
-                            <Tooltip
-                              title="Controls how randomly coverage is applied. For 0, coverage is completely random. For 1, the same individuals are always treated."
-                              aria-label="info"
-                            >
-                              <FormLabel
-                                component="legend"
-                                htmlFor="rho"
-                                className={`${classes.withSlider} ${classes.withHelp}`}
-                              >
-                                Systematic adherence
-                              </FormLabel>
-                            </Tooltip>
-                            <Slider
-                              value={simMDAadherence[curMDARound]}
-                              min={0}
-                              step={0.1}
-                              max={1}
-                              onChange={(event, newValue) => {
-                                let newArray = [...simMDAadherence];
-                                newArray[curMDARound] = newValue;
-                                setSimMDAadherence([...newArray]);
-                              }}
-                              aria-labelledby="slider"
-                              valueLabelDisplay="on"
-                            />
-                            <div className={classes.adherence}></div>
-                            {/*             <p style={{ marginBottom: 0 }}>
-              Controls how randomly coverage is applied. For 0, coverage is
-              completely random. For 1, the same individuals are always treated.
-            </p> */}
-                          </FormControl>
-                          <div className={classes.modalButtons}>
-                            <Button
-                              className={classes.modalButton}
-                              variant="contained"
-                              disabled={simInProgress}
-                              onClick={() => {
-                                let newArray = [...simMDAactive];
-                                newArray[curMDARound] = false;
-                                setSimMDAactive([...newArray]);
-                                setCurMDARound(-1);
-                                setDoseSettingsOpen(false);
-                              }}
-                            >
-                              REMOVE
-                            </Button>
+                          {simMDAactive[curMDARound] === false && (
                             <Button
                               className={classes.modalButton}
                               variant="contained"
                               color="primary"
                               disabled={simInProgress}
+                              style={{
+                                position: "absolute",
+                                zIndex: 9999,
+                                marginLeft: "3rem",
+                                marginTop: "13rem",
+                              }}
                               onClick={() => {
-                                setCurMDARound(-1);
-                                setDoseSettingsOpen(false);
+                                let newArray = [...simMDAactive];
+                                newArray[curMDARound] = true;
+                                setSimMDAactive([...newArray]);
+                                // setCurMDARound(-1);
+                                // setDoseSettingsOpen(false);
                               }}
                             >
-                              UPDATE
+                              Activate
                             </Button>
+                          )}
+                          <div
+                            style={{
+                              opacity:
+                                simMDAactive[curMDARound] === false ? 0.2 : 1,
+                            }}
+                          >
+                            <Typography
+                              className={classes.title}
+                              variant="h5"
+                              component="h4"
+                            >
+                              {/* MDA round #  */}
+                              {simParams.mdaSixMonths === 6
+                                ? curMDARound % 2
+                                  ? new Date().getFullYear() +
+                                    Math.floor(curMDARound / 2)
+                                  : new Date().getFullYear() + curMDARound / 2
+                                : new Date().getFullYear() + curMDARound}
+                              {curMDARound % 2 ? " (2nd round)" : ""}
+                            </Typography>
+                            <FormControl
+                              fullWidth
+                              className={classes.formControl}
+                            >
+                              <FormLabel
+                                component="legend"
+                                htmlFor="rho"
+                                className={classes.withSlider}
+                              >
+                                Coverage
+                              </FormLabel>
+                              <Slider
+                                value={simMDAcoverage[curMDARound]}
+                                min={1}
+                                step={1}
+                                max={100}
+                                onChange={(event, newValue) => {
+                                  let newArray = [...simMDAcoverage];
+                                  newArray[curMDARound] = newValue;
+                                  setSimMDAcoverage([...newArray]);
+                                }}
+                                aria-labelledby="slider"
+                                marks={[
+                                  { value: 0, label: "0" },
+                                  { value: 100, label: "100" },
+                                ]}
+                                valueLabelDisplay="on"
+                              />
+                              {/*             <p style={{ marginBottom: 0 }}>
+              Controls how randomly coverage is applied. For 0, coverage is
+              completely random. For 1, the same individuals are always treated.
+            </p> */}
+                            </FormControl>
+                            <FormControl
+                              fullWidth
+                              className={classes.formControl}
+                            >
+                              <Tooltip
+                                title="Controls how randomly coverage is applied. For 0, coverage is completely random. For 1, the same individuals are always treated."
+                                aria-label="info"
+                              >
+                                <FormLabel
+                                  component="legend"
+                                  htmlFor="rho"
+                                  className={`${classes.withSlider} ${classes.withHelp}`}
+                                >
+                                  Systematic adherence
+                                </FormLabel>
+                              </Tooltip>
+                              <Slider
+                                value={simMDAadherence[curMDARound]}
+                                min={0}
+                                step={0.1}
+                                max={1}
+                                onChange={(event, newValue) => {
+                                  let newArray = [...simMDAadherence];
+                                  newArray[curMDARound] = newValue;
+                                  setSimMDAadherence([...newArray]);
+                                }}
+                                aria-labelledby="slider"
+                                valueLabelDisplay="on"
+                              />
+                              <div className={classes.adherence}></div>
+                              {/*             <p style={{ marginBottom: 0 }}>
+              Controls how randomly coverage is applied. For 0, coverage is
+              completely random. For 1, the same individuals are always treated.
+            </p> */}
+                            </FormControl>
+                            <div className={classes.modalButtons}>
+                              <Button
+                                className={classes.modalButton}
+                                variant="contained"
+                                disabled={simInProgress}
+                                onClick={() => {
+                                  let newArray = [...simMDAactive];
+                                  newArray[curMDARound] = false;
+                                  setSimMDAactive([...newArray]);
+                                  setCurMDARound(-1);
+                                  setDoseSettingsOpen(false);
+                                }}
+                              >
+                                REMOVE
+                              </Button>
+                              <Button
+                                className={classes.modalButton}
+                                variant="contained"
+                                color="primary"
+                                disabled={simInProgress}
+                                onClick={() => {
+                                  setCurMDARound(-1);
+                                  setDoseSettingsOpen(false);
+                                }}
+                              >
+                                UPDATE
+                              </Button>
+                            </div>
                           </div>
                         </Paper>
                       </ClickAwayListener>
