@@ -37,14 +37,27 @@ const useStyles = makeStyles(theme => ({
         width: '100%',
         textAlign: 'left',
         '& > label': {},
+        '& input': {
+            fontSize: 18
+
+        },
         '&.countries input': {
-            fontSize: 44
+            fontSize: 26,
+            color: 'black'
 
         },
         [theme.breakpoints.up('sm')]: {
         },
         [theme.breakpoints.up('md')]: {
             width: '50%',
+            '& input': {
+                fontSize: 24
+
+            },
+            '&.countries input': {
+                fontSize: 44
+
+            },
         },
         [theme.breakpoints.up('lg')]: {
         },

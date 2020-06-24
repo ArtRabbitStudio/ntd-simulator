@@ -65,7 +65,7 @@ const theme = createMuiTheme({
         },
     },
     typography: {
-        fontSize: 16,
+        fontSize: 18,
         fontWeight: 400,
         fontFamily: "DINNextLTPro, sans-serif",
         headline: {
@@ -74,27 +74,27 @@ const theme = createMuiTheme({
 
         h1: {
             fontFamily: "DINNextLTPro, sans-serif",
-            fontWeight: 800,
+            fontWeight: "normal",
             fontSize: '2.75rem',
         },
         h2: {
             fontFamily: "DINNextLTPro, sans-serif",
-            fontWeight: 800,
+            fontWeight: "normal",
             fontSize: '1.75rem',
         },
         h3: {
             fontFamily: "DINNextLTPro, sans-serif",
-            fontWeight: 800,
-            fontSize: '1.375rem',
+            fontWeight: "normal",
+            fontSize: '1.475rem',
         },
         h4: {
             fontFamily: "DINNextLTPro, sans-serif",
-            fontWeight: 800,
+            fontWeight: "normal",
             fontSize: '1.25rem',
         },
         h5: {
             fontFamily: "DINNextLTPro, sans-serif",
-            fontWeight: 800,
+            fontWeight: "normal",
             fontSize: '1.125rem',
         },
         h6: {
@@ -108,6 +108,9 @@ const theme = createMuiTheme({
         },
         subtitle1: {
             fontWeight: 700,
+        },
+        body1: {
+            fontSize: 18,
         },
         button: {
             fontWeight: 400,

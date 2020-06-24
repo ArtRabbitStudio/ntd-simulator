@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { useHistory } from 'react-router-dom';
+import Typography from '@material-ui/core/Typography';
 //import { useDataAPI, useUIState } from '../hooks/stateHooks'
 
 import { Layout } from '../layout';
@@ -21,9 +22,6 @@ const Home = (props) => {
     const history = useHistory();
 
 
-    //const { countryFeatures, countryCentroids } = useDataAPI()
-
-
     return (
         <Layout /* classAdd="full-height"*/ >
             <HeadWithInputs
@@ -31,8 +29,8 @@ const Home = (props) => {
             />
 
             <TextContents>
-                <p>Intro compy, how does it work who’s behind it, link to paper etc</p>
-                <p>Select a country to get started</p>
+                <Typography paragraph variant="body1" component="p">Intro compy, how does it work who’s behind it, link to paper etc</Typography>
+                <Typography paragraph variant="body1" component="p">Select a country to get started</Typography>
             </TextContents>
 
             <SelectCountry />

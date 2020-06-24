@@ -127,19 +127,19 @@ const Setup = props => {
             <section className={classes.section}>
                 <Typography variant="h3" component="h6" className={classes.headline} >Setup</Typography>
                 <TextContents>
-                    <p>We hold the following information for IU Name.<br />This data will be used to initialise the simulation.</p>
+                    <Typography paragraph variant="body1" component="p">We hold the following information for IU Name.<br />This data will be used to initialise the simulation.</Typography>
                 </TextContents>
 
                 <div className={classes.charts}>
-                    <p>Espen survey data</p>
-                    <p>Espen intervetion data</p>
+                    <Typography paragraph variant="body1" component="p">Espen survey data</Typography>
+                    <Typography paragraph variant="body1" component="p">Espen intervetion data</Typography>
                 </div>
 
                 <TextContents>
-                    <p>
+                    <Typography paragraph variant="body1" component="p">
                         Based on the data we hold we are assuming that in the future…<br />
                         You will be able to change this later.
-                    </p>
+                    </Typography>
                 </TextContents>
 
                 <div className={classes.settings}>
@@ -255,10 +255,10 @@ const Setup = props => {
                 </div>
 
                 <TextContents>
-                    <p>
+                    <Typography paragraph variant="body1" component="p">
                         Are you interested in a specific scenario?<br />
                         You will be able to change this later.
-                    </p>
+                    </Typography>
                 </TextContents>
                 <div className={classes.formControlWrap}>
                     <div className={`${classes.formControl} large`}>
