@@ -73,7 +73,17 @@ function Map({
 
     const handleClick = event => {
         const feature = event.features[0]
-        history.push(`/setup/${country}/${feature.properties.IU_ID}`)
+
+        if (feature && feature.properties) {
+            if (feature.properties.ADMIN0ISO3) {
+                //console.log('country click',feature.properties.ADMIN0ISO3)
+                history.push(`/country/${feature.properties.ADMIN0ISO3}`)
+            }
+            if (feature.properties.IU_ID) {
+                history.push(`/setup/${country}/${feature.properties.IU_ID}`)
+                //console.log('iu click',feature.properties.IU_ID)
+            }
+        }
 
         //if (feature) {
         //    dispatch({ type: 'SELECT', payload: { feature, event } })
