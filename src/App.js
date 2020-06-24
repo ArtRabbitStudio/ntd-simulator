@@ -29,19 +29,19 @@ const theme = createMuiTheme({
             rippleBackgroundColor: 'blue'
         },
         text: {
-            primary: '#000000',
+            primary: '#2c3f4d',
             secondary: '#616161',
         },
         primary: {
             // light: will be calculated from palette.primary.main,
-            main: '#6236ff',
+            main: '#008dc9',
             line: '#bdbdbd',
             // dark: will be calculated from palette.primary.main,
             // contrastText: will be calculated to contrast with palette.primary.main
         },
         secondary: {
-            light: '#eeeeee',
-            main: '#FF4C73', // 
+            light: '#e9f1f7',
+            main: '#ffc914', // 
         },
         reds: {
             high: '#FF4C73',
