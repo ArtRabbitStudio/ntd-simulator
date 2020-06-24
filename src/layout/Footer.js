@@ -14,7 +14,7 @@ const useStyles = makeStyles(theme => ({
     },
     footer: {
         marginTop: 'auto',
-        backgroundColor: theme.palette.secondary.light,
+        //backgroundColor: theme.palette.secondary.light,
         color: theme.palette.text.secondary,
     },
     container: {

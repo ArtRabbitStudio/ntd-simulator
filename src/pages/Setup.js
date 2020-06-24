@@ -8,10 +8,8 @@ import {
     FormLabel,
     MenuItem,
     Select,
-    Paper,
+    Button,
     Slider,
-    ClickAwayListener,
-    Tooltip,
 } from "@material-ui/core";
 
 import { makeStyles } from '@material-ui/core/styles'
@@ -32,11 +30,37 @@ const useStyles = makeStyles(theme => ({
     },
     settings: {
         position: "relative",
-        //padding: theme.spacing(4, 4, 8, 2), 
+        padding: theme.spacing(4, 0, 0, 0),
+        display: 'flex',
+        flexDirection: 'column',
+
     },
     section: {
         position: "relative",
         backgroundColor: theme.palette.secondary.light,
+        width: `calc(100% + ${theme.spacing(12)}px)`,
+        marginLeft: -theme.spacing(6),
+        padding: theme.spacing(4, 6),
+    },
+    charts: {
+        position: "relative",
+        backgroundColor: theme.palette.secondary.dark,
+    },
+    formControlWrap: {
+        padding: theme.spacing(4),
+        margin: theme.spacing(0, 0, 3, 0),
+        backgroundColor: 'white',
+
+    },
+    formControl: {
+        margin: theme.spacing(0),
+        '& > label': {},
+        '& > button': {
+            margin: theme.spacing(0, 1, 1, 0),
+        },
+        [theme.breakpoints.up('md')]: {
+            width: '50%'
+        },
     },
 }))
 
@@ -88,121 +112,153 @@ const Setup = props => {
             <SelectCountry selectIU={true} />
 
             <section className={classes.section}>
-                <Typography variant="h6" component="h" className={classes.headline} >Setup</Typography>
+                <Typography variant="h3" component="h6" className={classes.headline} >Setup</Typography>
                 <TextContents>
                     <p>We hold the following information for IU Name.<br />This data will be used to initialise the simulation.</p>
                 </TextContents>
 
+                <div className={classes.charts}>
+                    <p>Espen survey data</p>
+                    <p>Espen intervetion data</p>
+                </div>
+
+                <TextContents>
+                    <p>
+                        Based on the data we hold we are assuming that in the future…<br />
+                        You will be able to change this later.
+                    </p>
+                </TextContents>
+
                 <div className={classes.settings}>
 
-                    <FormControl fullWidth>
-                        <FormLabel
-                            component="legend"
-                            htmlFor="covN"
-                            className={classes.withSlider}
-                        >
-                            Vector: Bed Net Coverage (%)
-                </FormLabel>
-                        <Slider
-                            value={simParams.covN}
-                            id="covN"
-                            min={1}
-                            step={1}
-                            max={100}
-                            onChange={(event, newValue) => {
-                                handleSliderChanges(newValue, "covN");
-                            }}
-                            aria-labelledby="slider"
-                            marks={[
-                                { value: 0, label: "0" },
-                                { value: 100, label: "100" },
-                            ]}
-                            valueLabelDisplay="on"
-                        />
-                        {/*             <p style={{ marginBottom: 0 }}>
-              Bed nets are assumed to have been distributed at the start of
-              intervention and are assumed to be effective for the entire
-              lifetime of the intervention campaign.
-            </p> */}
-                    </FormControl>
+                    <div className={classes.formControlWrap}>
+                        <FormControl fullWidth className={classes.formControl}>
+                            <FormLabel
+                                component="legend"
+                                htmlFor="covN"
+                                className={classes.withSlider}
+                            >
+                                Bed Net Coverage (%)
+                            </FormLabel>
+                            <Slider
+                                value={simParams.covN}
+                                id="covN"
+                                min={1}
+                                step={1}
+                                max={100}
+                                onChange={(event, newValue) => {
+                                    handleSliderChanges(newValue, "covN");
+                                }}
+                                aria-labelledby="slider"
+                                marks={[
+                                    { value: 0, label: "0" },
+                                    { value: 100, label: "100" },
+                                ]}
+                                valueLabelDisplay="on"
+                            />
+                        </FormControl>
+                    </div>
 
-                    <FormControl fullWidth className={classes.formControl}>
-                        <FormLabel
-                            component="legend"
-                            htmlFor="coverage"
-                            className={classes.withSlider}
-                        >
-                            Intervention target coverage
-                    </FormLabel>
-                        <Slider
-                            value={simParams.coverage}
-                            min={0}
-                            step={1}
-                            max={100}
-                            onChange={handleCoverageChange}
-                            aria-labelledby="slider"
-                            marks={[
-                                { value: 0, label: "0" },
-                                { value: 100, label: "100" },
-                            ]}
-                            valueLabelDisplay="on"
-                        />
-                    </FormControl>
+                    <div className={classes.formControlWrap}>
+                        <FormControl fullWidth className={classes.formControl}>
+                            <FormLabel
+                                component="legend"
+                                htmlFor="coverage"
+                                className={classes.withSlider}
+                            >
+                                Intervention target coverage
+                        </FormLabel>
+                            <Slider
+                                value={simParams.coverage}
+                                min={0}
+                                step={1}
+                                max={100}
+                                onChange={handleCoverageChange}
+                                aria-labelledby="slider"
+                                marks={[
+                                    { value: 0, label: "0" },
+                                    { value: 100, label: "100" },
+                                ]}
+                                valueLabelDisplay="on"
+                            />
+                        </FormControl>
+                    </div>
 
-
-                    <FormControl
-                        fullWidth
-                        variant="outlined"
-                        className={classes.formControl}
-                    >
-                        <FormLabel component="legend">Intervention frequency</FormLabel>
-                        <Select
-                            labelId="demo-simple-select-helper-label"
-                            id="demo-simple-select-helper"
-                            value={simParams.mdaSixMonths}
-                            onChange={handleFrequencyChange}
+                    <div className={classes.formControlWrap}>
+                        <FormControl
+                            fullWidth
+                            variant="outlined"
+                            className={classes.formControl}
                         >
-                            <MenuItem value={12}>Annual</MenuItem>
-                            <MenuItem value={6}>Every 6 months</MenuItem>
-                        </Select>
-                    </FormControl>
+                            <FormLabel component="legend">Intervention frequency</FormLabel>
+                            <Select
+                                labelId="demo-simple-select-helper-label"
+                                id="demo-simple-select-helper"
+                                value={simParams.mdaSixMonths}
+                                onChange={handleFrequencyChange}
+                            >
+                                <MenuItem value={12}>Annual</MenuItem>
+                                <MenuItem value={6}>Every 6 months</MenuItem>
+                            </Select>
+                        </FormControl>
+                    </div>
 
-                    <FormControl
-                        fullWidth
-                        variant="outlined"
-                        className={classes.formControl}
-                    >
-                        <FormLabel
-                            component="legend"
-                            htmlFor="demo-simple-select-helper-label"
+                    <div className={classes.formControlWrap}>
+                        <FormControl
+                            fullWidth
+                            variant="outlined"
+                            className={classes.formControl}
                         >
-                            Intervention drug regimen
-                </FormLabel>
-                        <Select
-                            labelId="demo-simple-select-helper-label"
-                            id="demo-simple-select-helper"
-                            value={simParams.mdaRegimen}
-                            onChange={(event) => {
-                                setSimParams({
-                                    ...simParams,
-                                    mdaRegimen: event.target.value,
-                                });
-                            }}
-                        >
-                            <MenuItem value={1}>albendazole + ivermectin</MenuItem>
-                            <MenuItem value={2}>
-                                albendazole + diethylcarbamazine
-                  </MenuItem>
-                            <MenuItem value={3}>ivermectin</MenuItem>
-                            <MenuItem value={4}>
-                                ivermectin + albendazole + diethylcarbamazine
-                  </MenuItem>
-                            <MenuItem value={5}>custom</MenuItem>
-                        </Select>
-                    </FormControl>
-
+                            <FormLabel
+                                component="legend"
+                                htmlFor="demo-simple-select-helper-label"
+                            >
+                                Intervention drug regimen
+                        </FormLabel>
+                            <Select
+                                labelId="demo-simple-select-helper-label"
+                                id="demo-simple-select-helper"
+                                value={simParams.mdaRegimen}
+                                onChange={(event) => {
+                                    setSimParams({
+                                        ...simParams,
+                                        mdaRegimen: event.target.value,
+                                    });
+                                }}
+                            >
+                                <MenuItem value={1}>albendazole + ivermectin</MenuItem>
+                                <MenuItem value={2}>
+                                    albendazole + diethylcarbamazine
+                            </MenuItem>
+                                <MenuItem value={3}>ivermectin</MenuItem>
+                                <MenuItem value={4}>
+                                    ivermectin + albendazole + diethylcarbamazine
+                            </MenuItem>
+                                <MenuItem value={5}>custom</MenuItem>
+                            </Select>
+                        </FormControl>
+                    </div>
 
                 </div>
+
+                <TextContents>
+                    <p>
+                        Are you interested in a specific scenario?<br />
+                        You will be able to change this later.
+                    </p>
+                </TextContents>
+                <div className={classes.formControlWrap}>
+                    <div className={classes.formControl}>
+                        <Button variant="contained" color="primary">2 year COVID Interruption</Button>
+                        <Button variant="contained">Scenario three</Button>
+                        <Button variant="contained">Treatment stop</Button>
+                    </div>
+                </div>
+
+
+                <Button variant="contained" color="primary">Predictions</Button>
+
+
             </section>
 
         </Layout>

@@ -4,24 +4,24 @@ import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 
 const useStyles = makeStyles(theme => ({
-  root: {
-    clear: 'both',
-    padding: theme.spacing(4, 0, 4, 0),
-  }
+    root: {
+        clear: 'both',
+        padding: theme.spacing(0),
+    }
 }));
 
 const TextContents = (props) => {
 
-  const classes = useStyles();
+    const classes = useStyles();
 
-  return (
-    <section className={`${classes.root}`}>
+    return (
+        <div className={`${classes.root}`}>
 
-      <Box display="block" variant="body2" component="article">
-        {props.children}
-      </Box>
-    </section>
-  );
+            <Box display="block" variant="body2" component="article">
+                {props.children}
+            </Box>
+        </div>
+    );
 }
 
 export default TextContents;
