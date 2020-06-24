@@ -14,6 +14,7 @@ import {
 
 import { makeStyles } from '@material-ui/core/styles'
 import { abbrNum } from '../utils'
+import { useHistory } from 'react-router-dom'
 
 import { useDataAPI, useUIState } from '../hooks/stateHooks'
 import { Layout } from '../layout'
@@ -65,6 +66,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const Setup = props => {
+    const history = useHistory()
     const classes = useStyles()
     const {
         iuFeatures,
@@ -99,6 +101,11 @@ const Setup = props => {
     const handleFrequencyChange = (event) => {
         //setDoseSettingsOpen(false);
         setSimParams({ ...simParams, mdaSixMonths: event.target.value });
+    };
+
+    const submitSetup = (event) => {
+        // pass params to simulator ..
+        history.push({ pathname: `/simulator` })
     };
 
     //console.log(country);
@@ -255,8 +262,7 @@ const Setup = props => {
                     </div>
                 </div>
 
-
-                <Button variant="contained" color="primary">Predictions</Button>
+                <Button onClick={submitSetup} variant="contained" color="primary">Predictions</Button>
 
 
             </section>
