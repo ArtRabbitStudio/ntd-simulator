@@ -9,8 +9,8 @@ import Country from './pages/Country'
 import Setup from './pages/Setup'
 import Simulator from './pages/Simulator'
 
-import 'typeface-roboto'
-import 'typeface-libre-franklin'
+//import 'typeface-roboto'
+//import 'typeface-libre-franklin'
 
 import CssBaseline from '@material-ui/core/CssBaseline'
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles'
@@ -67,38 +67,39 @@ const theme = createMuiTheme({
     typography: {
         fontSize: 16,
         fontWeight: 400,
+        fontFamily: "DINNextLTPro, sans-serif",
         headline: {
-            fontFamily: "'Libre Franklin', sans-serif",
+            fontFamily: "DINNextLTPro, sans-serif",
         },
 
         h1: {
-            fontFamily: "'Libre Franklin', sans-serif",
+            fontFamily: "DINNextLTPro, sans-serif",
             fontWeight: 800,
             fontSize: '2.75rem',
         },
         h2: {
-            fontFamily: "'Libre Franklin', sans-serif",
+            fontFamily: "DINNextLTPro, sans-serif",
             fontWeight: 800,
             fontSize: '1.75rem',
         },
         h3: {
-            fontFamily: "'Libre Franklin', sans-serif",
+            fontFamily: "DINNextLTPro, sans-serif",
             fontWeight: 800,
             fontSize: '1.375rem',
         },
         h4: {
-            fontFamily: "'Libre Franklin', sans-serif",
+            fontFamily: "DINNextLTPro, sans-serif",
             fontWeight: 800,
             fontSize: '1.25rem',
         },
         h5: {
-            fontFamily: "'Libre Franklin', sans-serif",
+            fontFamily: "DINNextLTPro, sans-serif",
             fontWeight: 800,
             fontSize: '1.125rem',
         },
         h6: {
             textTransform: 'uppercase',
-            //fontFamily: "'Libre Franklin', sans-serif",
+            //fontFamily: "DINNextLTPro, sans-serif",
             //fontWeight: 800
             fontSize: '0.75rem',
         },

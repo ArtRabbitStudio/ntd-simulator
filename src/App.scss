@@ -1,13 +1,17 @@
 /** global styles **/
 
-$primary: #000000;
-$secondary: #616161;
-$main: #6236ff;
-$mainHover: #4425b2;
-$line: #bdbdbd;
-$cw: #fff;
+@font-face {
+	font-family: 'DINNextLTPro';
+	src: url('./font/DINNextLTPro-Regular.woff2') format('woff2'),
+		url('./font/DINNextLTPro-Regular.woff') format('woff');
+	font-weight: normal;
+	font-style: normal;
+}
 
 /** global styles **/
+* {
+	font-family: 'DINNextLTPro';
+}
 
 /** charts **/
 tspan {
