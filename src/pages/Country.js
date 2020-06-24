@@ -28,6 +28,7 @@ const Country = props => {
     const classes = useStyles()
     const {
         iuFeatures,
+        countryFeatures,
         //stateFeaturesCurrentCountry: stateFeatures,
         //stateDataCurrentCountry: stateData,
         stateScales,
@@ -54,8 +55,8 @@ const Country = props => {
                 }}
             >
                 <Map
-                    //countryFeatures={countryFeatures}
-                    // stateFeatures={stateFeatures}
+                    countryFeatures={countryFeatures}
+                    //stateFeatures={stateFeatures}
                     iuFeatures={iuFeatures}
                     colorScale={false}
                     height={720}

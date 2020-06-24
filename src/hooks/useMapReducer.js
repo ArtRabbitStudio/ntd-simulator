@@ -6,7 +6,7 @@ import { easeCubic } from 'd3'
 
 const initialState = {
   // TODO: should be controlled by app state
-  year: 2020,
+  year: 2019,
   playing: false,
   ready: false,
   viewport: {
