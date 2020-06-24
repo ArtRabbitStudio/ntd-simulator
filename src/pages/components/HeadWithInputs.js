@@ -28,10 +28,10 @@ const useStyles = makeStyles(theme => ({
     },
     inputs: {
         textAlign: 'left',
-        padding: theme.spacing(0, 0, 18, 0),
+        padding: theme.spacing(0, 0, 2, 0),
         minWidth: 300,
         [theme.breakpoints.up('sm')]: {
-            padding: theme.spacing(0, 0, 6, 0),
+            padding: theme.spacing(0, 0, 2, 0),
         },
         [theme.breakpoints.up('sm')]: {
         },
@@ -48,10 +48,10 @@ const HeadWithInputs = ({ title, disableInputs, disableClear, classAdd }) => {
 
     return (
         <Fragment >
-            <Grid item md={7} xs={12} className={classes.inputs}>
+            <Grid item md={8} xs={12} className={classes.inputs}>
                 {disableInputs !== true && <Inputs />}
             </Grid>
-            <Grid item md={5} xs={12} className={classes.head}>
+            <Grid item md={4} xs={12} className={classes.head}>
                 <Head
                     title={title}
                     classAdd={classAdd}

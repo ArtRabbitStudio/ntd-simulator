@@ -60,7 +60,13 @@ const useStyles = makeStyles(theme => ({
             margin: theme.spacing(0, 1, 1, 0),
         },
         [theme.breakpoints.up('md')]: {
-            width: '50%'
+            width: '40%',
+            '&.large': {
+                width: '60%'
+            }
+        },
+        [theme.breakpoints.up('lg')]: {
+
         },
     },
 }))
@@ -255,7 +261,7 @@ const Setup = props => {
                     </p>
                 </TextContents>
                 <div className={classes.formControlWrap}>
-                    <div className={classes.formControl}>
+                    <div className={`${classes.formControl} large`}>
                         <Button variant="contained" color="primary">2 year COVID Interruption</Button>
                         <Button variant="contained">Scenario three</Button>
                         <Button variant="contained">Treatment stop</Button>

@@ -26,14 +26,14 @@ const useStyles = makeStyles(theme => ({
         width: '100%',
         display: 'flex',
         flexDirection: 'column',
-        margin: theme.spacing(0, 0, 1, 0),
+        margin: theme.spacing(0, 0, 4, 0),
         [theme.breakpoints.up('md')]: {
         },
         [theme.breakpoints.up('lg')]: {
         },
     },
     formControl: {
-        margin: theme.spacing(0, 0, 2, 0),
+        margin: theme.spacing(0, 0, 0, 0),
         width: '100%',
         textAlign: 'left',
         '& > label': {},
@@ -42,7 +42,6 @@ const useStyles = makeStyles(theme => ({
 
         },
         [theme.breakpoints.up('sm')]: {
-            margin: theme.spacing(0, 0, 2, 0),
         },
         [theme.breakpoints.up('md')]: {
             width: '50%',
@@ -101,7 +100,7 @@ const SelectCountry = ({ selectIU }) => {
                         getOptionLabel={option => option.name}
                         value={selected ?? { name: 'Select a country' }}
                         renderInput={params => (
-                            <TextField {...params} />
+                            <TextField {...params} InputProps={{ ...params.InputProps, disableUnderline: true }} />
                         )}
                         onChange={handleCountryChange}
                     />
@@ -115,7 +114,7 @@ const SelectCountry = ({ selectIU }) => {
                             getOptionLabel={option => option.name}
                             value={selected ?? { name: 'Select IU' }}
                             renderInput={params => (
-                                <TextField {...params} />
+                                <TextField {...params} InputProps={{ ...params.InputProps, disableUnderline: true }} />
                             )}
                             onChange={handleIUChange}
                         />
