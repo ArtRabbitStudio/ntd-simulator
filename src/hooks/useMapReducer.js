@@ -48,6 +48,7 @@ const reduce = (state, { type, payload }) => {
     case 'STOP_PLAY':
       return { ...state, playing: false }
     case 'VIEWPORT':
+      console.log('viewport called');
       return { ...state, viewport: payload, ready: true }
     case 'HOVER':
       return {
@@ -63,6 +64,19 @@ const reduce = (state, { type, payload }) => {
       }
     case 'FOCUS':
       return merge({}, state, fit(payload, state.viewport))
+    case 'FOCUSANIMATED':
+      const { focus, latLong } = payload
+
+      return merge({}, state, fit(focus, state.viewport), {
+        focus,
+        viewport: {
+          transitionInterpolator: new LinearInterpolator({
+            around: [latLong[0], latLong[1]],
+          }),
+          transitionEasing: easeCubic,
+          transitionDuration: 800,
+        },
+      })
     case 'SELECT':
       const { feature, event } = payload
 

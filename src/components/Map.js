@@ -1,6 +1,7 @@
 import React, { useEffect, forwardRef, useImperativeHandle } from 'react'
 import ReactMapGL, { Source, Layer, Popup, HTMLOverlay } from 'react-map-gl'
 import { useHistory, useRouteMatch, Link as RouterLink } from 'react-router-dom'
+import centroid from '@turf/centroid'
 import { Typography, Slider, Box, Link, Paper } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { format } from 'd3'
@@ -37,6 +38,7 @@ function Map({
         },
     }))
 
+    //if (countryFeatures) console.log('countryFeatures',countryFeatures)
     /*if (iuFeatures) console.log('iuFeatures',iuFeatures)
     if (countryFeatures) console.log('countryFeatures',countryFeatures)
     if (stateFeatures) console.log('stateFeatures',stateFeatures)
@@ -59,8 +61,14 @@ function Map({
             const focus = countryFeatures.features.find(
                 f => f.properties.id === country
             )
+    
             if (focus) {
-                dispatch({ type: 'FOCUS', payload: focus })
+                // new zooming
+                const center = centroid({ type: 'FeatureCollection', features: [focus] });
+                const latLong = center.geometry.coordinates
+                dispatch({ type: 'FOCUSANIMATED', payload: { focus, latLong } })
+               
+                //dispatch({ type: 'FOCUS', payload: focus })
             }
         }
     }, [countryFeatures, country, dispatch, ready])
