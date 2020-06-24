@@ -127,7 +127,7 @@ const theme = createMuiTheme({
             root: {
                 color: '#000000',
                 fontWeight: 500,
-                fontSize: '1rem',
+                fontSize: 18,
                 marginBottom: 8,
             }
         },
