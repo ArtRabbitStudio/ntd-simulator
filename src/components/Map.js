@@ -36,7 +36,7 @@ function Map({
         },
     }))
 
-    if (iuFeatures) console.log(iuFeatures)
+    if (iuFeatures) console.log('iuFeatures',iuFeatures)
 
     const classes = useStyles()
 

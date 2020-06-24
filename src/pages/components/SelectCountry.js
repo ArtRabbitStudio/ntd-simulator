@@ -70,10 +70,8 @@ const SelectCountry = ({ selectIU }) => {
     const history = useHistory()
     const matchSection = useRouteMatch('/:section')
 
-    const { countrySuggestions, iuFeatures } = useDataAPI()
+    const { countrySuggestions, iuFeatures, iusByCountrySuggestions } = useDataAPI()
     const { country } = useUIState()
-
-    console.log(iuFeatures);
 
 
     const handleCountryChange = (event, value) => {
@@ -123,7 +121,7 @@ const SelectCountry = ({ selectIU }) => {
                     <FormControl className={`${classes.formControl}`}>
                         <Autocomplete
                             id="iu"
-                            options={countrySuggestions}
+                            options={iusByCountrySuggestions}
                             getOptionLabel={option => option.name}
                             value={selected ?? { name: 'Select IU' }}
                             renderInput={params => (
