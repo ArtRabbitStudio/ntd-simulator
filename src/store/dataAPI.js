@@ -68,7 +68,7 @@ const buildScales = (stats, data) => {
 
   const prev = scaleSymlog()
     .domain([0, stats.prevalence.max])
-    .range(['#fff', '#d01c8b'])
+    .range(['#fff', '#D86422'])
     .nice()
 
   const mp = max(stats.performance.map(x => Math.abs(x)))
