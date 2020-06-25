@@ -22,7 +22,22 @@ const useStyles = makeStyles(theme => ({
         position: 'relative',
         width: '100%',
     },
+    settings: {
+        position: "relative",
+        padding: theme.spacing(4, 0, 0, 0),
+        display: 'flex',
+        flexDirection: 'column',
+
+    },
+    section: {
+        position: "relative",
+        backgroundColor: theme.palette.secondary.light,
+        width: `calc(100% + ${theme.spacing(12)}px)`,
+        marginLeft: -theme.spacing(6),
+        padding: theme.spacing(4, 6),
+    },
 }))
+
 
 const Country = props => {
     const classes = useStyles()
@@ -48,22 +63,19 @@ const Country = props => {
 
             <SelectCountry selectIU={true} />
 
-            <div
-                style={{
-                    borderTop: '1px solid #e0e0e0',
-                    borderBottom: '1px solid #e0e0e0',
-                }}
-            >
-                <Map
-                    countryFeatures={countryFeatures}
-                    //stateFeatures={stateFeatures}
-                    iuFeatures={iuFeatures}
-                    colorScale={false}
-                    height={720}
-                    disableZoom={true}
-                    country={country}
-                />
-            </div>
+            <section className={classes.section}>
+                <div className={classes.settings}>
+                    <Map
+                        countryFeatures={countryFeatures}
+                        //stateFeatures={stateFeatures}
+                        iuFeatures={iuFeatures}
+                        colorScale={false}
+                        height={720}
+                        disableZoom={true}
+                        country={country}
+                    />
+                </div>
+            </section>
 
         </Layout>
     )

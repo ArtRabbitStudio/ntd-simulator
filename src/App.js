@@ -26,7 +26,7 @@ const theme = createMuiTheme({
         */
         tooltip: {
             color: '#f1f1f1',
-            rippleBackgroundColor: 'blue'
+            rippleBackgroundColor: '#D86422'
         },
         text: {
             primary: '#2c3f4d',
@@ -120,7 +120,7 @@ const theme = createMuiTheme({
         MuiTooltip: {
             tooltip: {
                 color: "#fff",
-                backgroundColor: '#6236ff'
+                backgroundColor: '#D86422'
             }
         },
         MuiFormLabel: {
