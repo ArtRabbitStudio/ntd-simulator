@@ -26,19 +26,32 @@ tspan {
 	margin: 30px 20px 20px 55px;
 
 	.bar {
-		background: #b09aff;
+		//background: #b09aff;
 		height: 100px;
 		min-width: 1px;
 		border: 1px solid white;
 		cursor: pointer;
+		background-image: linear-gradient(to bottom, #008dc9 1%, transparent);
 
 		span {
 			display: block;
-			background: #6236ff;
+			//background: #6236ff;
 			min-width: 10px;
 
+			background-image: linear-gradient(
+				to bottom,
+				#008dc9 1%,
+				transparent
+			);
+
 			&.current {
-				background: #d01c8b;
+				//background: #d01c8b;
+
+				background-image: linear-gradient(
+					to bottom,
+					#d01c8b 1%,
+					transparent
+				);
 			}
 		}
 	}
