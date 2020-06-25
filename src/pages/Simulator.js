@@ -629,7 +629,7 @@ const Simulator = (props) => {
     if (scenarioResults[tabIndex]) {
       let calculNeeded =
         simParams.mdaSixMonths !==
-          scenarioResults[tabIndex].params.inputs.mdaSixMonths ||
+        scenarioResults[tabIndex].params.inputs.mdaSixMonths ||
         simParams.coverage !== scenarioResults[tabIndex].params.inputs.coverage;
       console.log(
         "Shall I re-calculate MDA rounds?",
@@ -852,7 +852,7 @@ const Simulator = (props) => {
                               {simParams.mdaSixMonths === 6
                                 ? curMDARound % 2
                                   ? new Date().getFullYear() +
-                                    Math.floor(curMDARound / 2)
+                                  Math.floor(curMDARound / 2)
                                   : new Date().getFullYear() + curMDARound / 2
                                 : new Date().getFullYear() + curMDARound}
                               {curMDARound % 2 ? " (2nd round)" : ""}
