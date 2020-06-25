@@ -32,7 +32,11 @@ tspan {
 		min-width: 1px;
 		border: 1px solid white;
 		cursor: pointer;
-		background-image: linear-gradient(to bottom, #008dc9 1%, transparent);
+		background-image: linear-gradient(
+			to bottom,
+			rgba(0, 141, 201, 0.4) 1%,
+			transparent
+		);
 
 		&:before {
 			content: '';
@@ -45,14 +49,22 @@ tspan {
 			background: url(./images/mask.png) no-repeat 0px 0px;
 		}
 
-		span {
+		&.removed {
+			> span {
+				opacity: 0.1;
+			}
+		}
+
+		> span {
 			display: block;
 			//background: #6236ff;
 			min-width: 10px;
+			opacity: 1;
+			//transition: opacity 0.2s ease-in;
 
 			background-image: linear-gradient(
 				to bottom,
-				#008dc9 1%,
+				rgba(0, 141, 201, 1) 1%,
 				transparent
 			);
 
@@ -65,6 +77,65 @@ tspan {
 					transparent
 				);
 			}
+		}
+	}
+}
+
+.bar-tooltip {
+	position: absolute;
+	width: auto;
+	height: 40px;
+	bottom: 100%;
+	left: 50%;
+	transform: translate(-50%, 0%);
+	border-radius: 5px;
+	background: #008dc9;
+	color: #fff;
+	white-space: nowrap;
+	padding: 5px 10px;
+
+	&::after {
+		content: '';
+		display: block;
+		width: 0;
+		height: 0;
+		border-style: solid;
+		border-width: 14px 14px 0 14px;
+		border-color: #008dc9 transparent transparent transparent;
+		position: absolute;
+		bottom: -14px;
+		left: 50%;
+		margin-left: -14px;
+	}
+
+	.t {
+		display: inline-block;
+		vertical-align: top;
+		height: 30px;
+		line-height: 32px;
+		font-size: 16px;
+	}
+
+	.i {
+		display: inline-block;
+		vertical-align: top;
+		height: 30px;
+		width: 30px;
+		margin-left: 1px;
+
+		&.plus {
+			background: url(./images/plus-icon.svg) no-repeat center center;
+			background-size: contain;
+		}
+
+		&.edit {
+			background: url(./images/edit-icon.svg) no-repeat center center;
+			background-size: contain;
+		}
+
+		&.remove {
+			background: url(./images/delete-icon.svg) no-repeat center center;
+			background-size: contain;
 		}
 	}
 }
