@@ -27,11 +27,23 @@ tspan {
 
 	.bar {
 		//background: #b09aff;
+		position: relative;
 		height: 100px;
 		min-width: 1px;
 		border: 1px solid white;
 		cursor: pointer;
 		background-image: linear-gradient(to bottom, #008dc9 1%, transparent);
+
+		&:before {
+			content: '';
+			display: block;
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background: url(./images/mask.png) no-repeat 0px 0px;
+		}
 
 		span {
 			display: block;
