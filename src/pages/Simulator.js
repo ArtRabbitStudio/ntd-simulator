@@ -758,27 +758,12 @@ const Simulator = (props) => {
                       />
                     </div>
                     <div
-                      style={{
-                        display: "flex",
-                        height: 100,
-                        justifyContent: "space-around",
-                        marginTop: 30,
-                        marginBottom: 20,
-                        marginRight: 20,
-                        marginLeft: 55,
-                      }}
+                      className="bars"
                     >
                       {simMDAtime.map((e, i) => (
                         <div
                           key={`bar${i}`}
                           style={{
-                            background: "#B09AFF",
-                            height: 100,
-                            minWidth: 1,
-                            borderWidth: 1,
-                            borderColor: "white",
-                            cursor: "pointer",
-                            borderStyle: "solid",
                             opacity: simMDAactive[i] === false ? 0.3 : 1,
                           }}
                           onClick={(a) => {
@@ -798,12 +783,9 @@ const Simulator = (props) => {
                           }
                         >
                           <span
+                            className={(i === curMDARound ? 'current' : '')}
                             style={{
-                              display: "block",
-                              background:
-                                i === curMDARound ? "#d01c8b" : "#6236FF",
                               height: simMDAcoverage[i],
-                              minWidth: 10,
                             }}
                           ></span>
                         </div>

@@ -17,3 +17,29 @@
 tspan {
 	user-select: none;
 }
+
+// ScenarioGraph bars
+.bars {
+	display: flex;
+	height: 100px;
+	justify-content: space-around;
+	margin: 30px 20px 20px 55px;
+
+	.bar {
+		background: #b09aff;
+		height: 100px;
+		min-width: 1px;
+		border: 1px solid white;
+		cursor: pointer;
+
+		span {
+			display: block;
+			background: #6236ff;
+			min-width: 10px;
+
+			&.current {
+				background: #d01c8b;
+			}
+		}
+	}
+}
