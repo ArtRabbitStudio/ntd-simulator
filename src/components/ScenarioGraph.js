@@ -36,12 +36,12 @@ function ScenarioGraph({
              
               <circle
                       fill={
-                        coord[2] <= 1 ? '#4dac26'
+                        coord[2] <= 1 ? '#008DC9'
                       : coord[2] >= 6 && coord[2] <= 10
-                      ? '#d01c8b'
+                      ? '#D86422'
                       : coord[2] > 10
-                      ? '#d01c8b'
-                      : '#d01c8b'
+                      ? '#D86422'
+                      : '#D86422'
                       }
                       fillOpacity={1}
                       r={20}
@@ -77,7 +77,7 @@ function ScenarioGraph({
 
                     <circle
                           key={`${i}`}
-                          fill={'#6236FF'}
+                          fill={'#D86422'}
                           fillOpacity={.8}
                           r={3}
                           cx={0}
@@ -96,7 +96,7 @@ function ScenarioGraph({
 
                     <circle
                           key={`${i}-h`}
-                          fill={'#ff0000'}
+                          fill={'#D86422'}
                           fillOpacity={0}
                           r={6}
                           cx={0}
@@ -154,7 +154,7 @@ function ScenarioGraph({
 
     //console.log(series);
     //console.log(seriesObj);
-    const color = main ? "#6236FF" : "#eeee"
+    const color = main ? "#D86422" : "#eeee"
     return (
       <>
         
