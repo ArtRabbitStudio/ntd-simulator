@@ -29,13 +29,33 @@ export const loadParams = async () => {
   const IUParamsResult = await reader.read();
   const IUParamsCSV = decoder.decode(IUParamsResult.value);
   const IUParamsJSON = Papa.parse(IUParamsCSV, { header: true });
-  console.log(IUParamsJSON.data);
+  //   console.log(IUParamsJSON.data);
   let newParams = {
     Population: IUParamsJSON.data.map((item) => Number(item.Population)),
     shapeRisk: IUParamsJSON.data.map((item) => Number(item.shapeRisk)),
     v_to_h: IUParamsJSON.data.map((item) => Number(item.v_to_h)),
     aImp: IUParamsJSON.data.map((item) => Number(item.aImp)),
     aImp_2000: IUParamsJSON.data.map((item) => Number(item.aImp_2000)),
+    aImp_2001: IUParamsJSON.data.map((item) => Number(item.aImp_2001)),
+    aImp_2002: IUParamsJSON.data.map((item) => Number(item.aImp_2002)),
+    aImp_2003: IUParamsJSON.data.map((item) => Number(item.aImp_2003)),
+    aImp_2004: IUParamsJSON.data.map((item) => Number(item.aImp_2004)),
+    aImp_2005: IUParamsJSON.data.map((item) => Number(item.aImp_2005)),
+    aImp_2006: IUParamsJSON.data.map((item) => Number(item.aImp_2006)),
+    aImp_2007: IUParamsJSON.data.map((item) => Number(item.aImp_2007)),
+    aImp_2008: IUParamsJSON.data.map((item) => Number(item.aImp_2008)),
+    aImp_2009: IUParamsJSON.data.map((item) => Number(item.aImp_2009)),
+    aImp_2010: IUParamsJSON.data.map((item) => Number(item.aImp_2010)),
+    aImp_2011: IUParamsJSON.data.map((item) => Number(item.aImp_2011)),
+    aImp_2012: IUParamsJSON.data.map((item) => Number(item.aImp_2012)),
+    aImp_2013: IUParamsJSON.data.map((item) => Number(item.aImp_2013)),
+    aImp_2014: IUParamsJSON.data.map((item) => Number(item.aImp_2014)),
+    aImp_2015: IUParamsJSON.data.map((item) => Number(item.aImp_2015)),
+    aImp_2016: IUParamsJSON.data.map((item) => Number(item.aImp_2016)),
+    aImp_2017: IUParamsJSON.data.map((item) => Number(item.aImp_2017)),
+    aImp_2018: IUParamsJSON.data.map((item) => Number(item.aImp_2018)),
+    aImp_2019: IUParamsJSON.data.map((item) => Number(item.aImp_2019)),
+    aImp_2020: IUParamsJSON.data.map((item) => Number(item.aImp_2020)),
   };
   console.log(newParams);
   return newParams;
