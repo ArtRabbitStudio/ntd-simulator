@@ -44,15 +44,75 @@ const reducer = (simParams, action) => {
         ...simParams,
         mdaSixMonths: action.payload,
       };
+    case "endemicity":
+      return {
+        ...simParams,
+        endemicity: action.payload,
+      };
     case "covN":
       return {
         ...simParams,
         covN: action.payload,
       };
+    case "v_to_hR":
+      return {
+        ...simParams,
+        v_to_hR: action.payload,
+      };
+    case "vecCap":
+      return {
+        ...simParams,
+        vecCap: action.payload,
+      };
+    case "vecComp":
+      return {
+        ...simParams,
+        vecComp: action.payload,
+      };
+    case "vecD":
+      return {
+        ...simParams,
+        vecD: action.payload,
+      };
     case "mdaRegimen":
       return {
         ...simParams,
         mdaRegimen: action.payload,
+      };
+    case "rho":
+      return {
+        ...simParams,
+        rho: action.payload,
+      };
+    case "rhoBComp":
+      return {
+        ...simParams,
+        rhoBComp: action.payload,
+      };
+    case "rhoCN":
+      return {
+        ...simParams,
+        rhoCN: action.payload,
+      };
+    case "species":
+      return {
+        ...simParams,
+        species: action.payload,
+      };
+    case "macrofilaricide":
+      return {
+        ...simParams,
+        macrofilaricide: action.payload,
+      };
+    case "microfilaricide":
+      return {
+        ...simParams,
+        microfilaricide: action.payload,
+      };
+    case "runs":
+      return {
+        ...simParams,
+        runs: action.payload,
       };
     default:
       throw new Error(`Unhandled action type: ${action.type}`);
