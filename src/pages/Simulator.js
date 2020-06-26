@@ -112,7 +112,8 @@ const useStyles = makeStyles((theme) => ({
     fontSize: 0,
     "& > span": {
       margin: 0,
-      fontSize: 12,
+      fontSize: 14,
+      letterSpacing: 1,
       position: "absolute",
       left: "50%",
       top: "50%",
@@ -1146,7 +1147,6 @@ const Simulator = (props) => {
                 <FormLabel
                   component="legend"
                   htmlFor="coverage"
-                  className={classes.withSlider}
                 >
                   Target coverage
                 </FormLabel>
@@ -1161,7 +1161,7 @@ const Simulator = (props) => {
                     { value: 0, label: "0" },
                     { value: 100, label: "100" },
                   ]}
-                  valueLabelDisplay="on"
+                  valueLabelDisplay="auto"
                 />
               </FormControl>
               <FormControl
