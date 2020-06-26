@@ -14,7 +14,7 @@ import CloseButton from './CloseButton';
 const useStyles = makeStyles(theme => ({
   root: {
     position: 'absolute',
-    right: 0,
+    right: 60,
     top: 0,
     zIndex: 99,
     height: '100%'

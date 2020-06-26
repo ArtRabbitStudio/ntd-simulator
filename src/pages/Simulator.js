@@ -15,6 +15,7 @@ import {
   Button,
   Radio,
   RadioGroup,
+  Fab,
   FormControlLabel,
   FormControl,
   FormLabel,
@@ -42,6 +43,8 @@ import imgSame from "../images/systemic-same.svg";
 import imgAnopheles from "../images/Anopheles.jpg";
 import imgCulex from "../images/Culex.jpg";
 import imgInfoIcon from "../images/info-24-px.svg";
+import Icon from '../images/delete-icon-blue.svg';
+
 
 SimulatorEngine.simControler.documentReady();
 
@@ -65,13 +68,26 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(-2, 0, 0, 3),
   },
   contentLeftColumn: {},
-  settings: {
-    position: "relative",
-    padding: theme.spacing(4, 4, 8, 2),
-    backgroundColor: theme.palette.secondary.light,
-  },
-  settingsBody: {
-    padding: theme.spacing(4, 0),
+  icon: {
+    backgroundColor: "transparent",
+    boxShadow: 'none',
+    position: 'absolute',
+    right: 0,
+    top: 0,
+    zIndex: 99,
+
+    '& .MuiTouchRipple-root': {
+      backgroundImage: `url(${Icon})`,
+      backgroundPosition: 'center',
+      backgroundSize: 'auto',
+      backgroundRepeat: 'no-repeat',
+    },
+    '&:hover': {
+      '& .MuiTouchRipple-root': {
+        //backgroundImage: `url(${IconHover})`,
+
+      }
+    }
   },
   simulatorBody: {
     position: "relative",
@@ -108,8 +124,9 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     position: "absolute",
     textAlign: "center",
-    bottom: theme.spacing(3),
-    left: 0,
+    top: '50%',
+    left: '50%',
+    transform: "translate(-50%, -50%)",
     fontSize: 0,
     "& > span": {
       margin: 0,
@@ -658,7 +675,7 @@ const Simulator = (props) => {
     if (scenarioResults[tabIndex]) {
       let calculNeeded =
         simParams.mdaSixMonths !==
-          scenarioResults[tabIndex].params.inputs.mdaSixMonths ||
+        scenarioResults[tabIndex].params.inputs.mdaSixMonths ||
         simParams.coverage !== scenarioResults[tabIndex].params.inputs.coverage;
       console.log(
         "Shall I re-calculate MDA rounds?",
@@ -739,7 +756,7 @@ const Simulator = (props) => {
             </Tabs>
           </Grid>
 
-          <Grid item md={9} xs={12} className={classes.chartContainer}>
+          <Grid item md={12} xs={12} className={classes.chartContainer}>
             {scenarioResults.map((result, i) => (
               <TabPanel key={`scenario-result-${i}`} value={tabIndex} index={i}>
                 <div className={classes.simulatorBody}>
@@ -795,7 +812,7 @@ const Simulator = (props) => {
                           }}
                           className={`bar ${
                             simMDAactive[i] === false ? "removed" : ""
-                          }`}
+                            }`}
                           title={
                             simMDAtime[i] +
                             ", " +
@@ -895,7 +912,7 @@ const Simulator = (props) => {
                               {simParams.mdaSixMonths === 6
                                 ? curMDARound % 2
                                   ? new Date().getFullYear() +
-                                    Math.floor(curMDARound / 2)
+                                  Math.floor(curMDARound / 2)
                                   : new Date().getFullYear() + curMDARound / 2
                                 : new Date().getFullYear() + curMDARound}
                               {curMDARound % 2 ? " (2nd round)" : ""}
@@ -1001,12 +1018,115 @@ const Simulator = (props) => {
               </TabPanel>
             ))}
 
+
+
+            <Fab
+              color="inherit"
+              aria-label="REMOVE SCENARIO"
+              disabled={
+                simInProgress || scenarioResults.length === 0
+              }
+              className={classes.icon} onClick={confirmRemoveCurrentScenario}
+            ></Fab>
+
+            <ConfirmationDialog
+              title="Do you want to delete this scenario?"
+              onClose={() => {
+                setConfirmatonOpen(false);
+              }}
+              onConfirm={confirmedRemoveCurrentScenario}
+              open={confirmatonOpen}
+            />
+
+            {simulationProgress !== 0 && simulationProgress !== 100 && (
+              <div className={classes.progress}>
+                <CircularProgress
+                  variant="determinate"
+                  value={simulationProgress}
+                  color="secondary"
+                />
+                <span>{simulationProgress}%</span>
+              </div>
+            )}
+
+
+
+
             <ChartSettings
               title="Settings"
               buttonText="Update Scenario"
               action={runCurrentScenario}
               onOpen={closeRoundModal}
             >
+
+              <FormControl
+                fullWidth
+                variant="outlined"
+                className={classes.formControl}
+              >
+                <FormLabel component="legend">Frequency</FormLabel>
+                <Select
+                  labelId="demo-simple-select-helper-label"
+                  id="demo-simple-select-helper"
+                  value={simParams.mdaSixMonths}
+                  onChange={handleFrequencyChange}
+                >
+                  <MenuItem value={12}>Annual</MenuItem>
+                  <MenuItem value={6}>Every 6 months</MenuItem>
+                </Select>
+              </FormControl>
+              <FormControl fullWidth className={classes.formControl}>
+                <FormLabel component="legend" htmlFor="coverage">
+                  Target coverage
+                </FormLabel>
+                <Slider
+                  value={simParams.coverage}
+                  min={0}
+                  step={1}
+                  max={100}
+                  onChange={handleCoverageChange}
+                  aria-labelledby="slider"
+                  marks={[
+                    { value: 0, label: "0" },
+                    { value: 100, label: "100" },
+                  ]}
+                  valueLabelDisplay="auto"
+                />
+              </FormControl>
+              <FormControl
+                fullWidth
+                variant="outlined"
+                className={classes.formControl}
+              >
+                <FormLabel
+                  component="legend"
+                  htmlFor="demo-simple-select-helper-label"
+                >
+                  Drug regimen
+                </FormLabel>
+                <Select
+                  labelId="demo-simple-select-helper-label"
+                  id="demo-simple-select-helper"
+                  value={simParams.mdaRegimen}
+                  onChange={(event) => {
+                    setSimParams({
+                      ...simParams,
+                      mdaRegimen: event.target.value,
+                    });
+                  }}
+                >
+                  <MenuItem value={1}>albendazole + ivermectin</MenuItem>
+                  <MenuItem value={2}>
+                    albendazole + diethylcarbamazine
+                  </MenuItem>
+                  <MenuItem value={3}>ivermectin</MenuItem>
+                  <MenuItem value={4}>
+                    ivermectin + albendazole + diethylcarbamazine
+                  </MenuItem>
+                  <MenuItem value={5}>custom</MenuItem>
+                </Select>
+              </FormControl>
+
               <FormControl fullWidth>
                 <FormLabel
                   component="legend"
@@ -1150,121 +1270,6 @@ const Simulator = (props) => {
             </p> */}
               </FormControl>
             </ChartSettings>
-          </Grid>
-          <Grid item md={3} xs={12} className={classes.settings}>
-            <Typography className={classes.title} variant="h3" component="h2">
-              Intervention
-            </Typography>
-            <div className={classes.settingsBody}>
-              <FormControl
-                fullWidth
-                variant="outlined"
-                className={classes.formControl}
-              >
-                <FormLabel component="legend">Frequency</FormLabel>
-                <Select
-                  labelId="demo-simple-select-helper-label"
-                  id="demo-simple-select-helper"
-                  value={simParams.mdaSixMonths}
-                  onChange={handleFrequencyChange}
-                >
-                  <MenuItem value={12}>Annual</MenuItem>
-                  <MenuItem value={6}>Every 6 months</MenuItem>
-                </Select>
-              </FormControl>
-              <FormControl fullWidth className={classes.formControl}>
-                <FormLabel component="legend" htmlFor="coverage">
-                  Target coverage
-                </FormLabel>
-                <Slider
-                  value={simParams.coverage}
-                  min={0}
-                  step={1}
-                  max={100}
-                  onChange={handleCoverageChange}
-                  aria-labelledby="slider"
-                  marks={[
-                    { value: 0, label: "0" },
-                    { value: 100, label: "100" },
-                  ]}
-                  valueLabelDisplay="auto"
-                />
-              </FormControl>
-              <FormControl
-                fullWidth
-                variant="outlined"
-                className={classes.formControl}
-              >
-                <FormLabel
-                  component="legend"
-                  htmlFor="demo-simple-select-helper-label"
-                >
-                  Drug regimen
-                </FormLabel>
-                <Select
-                  labelId="demo-simple-select-helper-label"
-                  id="demo-simple-select-helper"
-                  value={simParams.mdaRegimen}
-                  onChange={(event) => {
-                    setSimParams({
-                      ...simParams,
-                      mdaRegimen: event.target.value,
-                    });
-                  }}
-                >
-                  <MenuItem value={1}>albendazole + ivermectin</MenuItem>
-                  <MenuItem value={2}>
-                    albendazole + diethylcarbamazine
-                  </MenuItem>
-                  <MenuItem value={3}>ivermectin</MenuItem>
-                  <MenuItem value={4}>
-                    ivermectin + albendazole + diethylcarbamazine
-                  </MenuItem>
-                  <MenuItem value={5}>custom</MenuItem>
-                </Select>
-              </FormControl>
-            </div>
-            <div className={classes.buttons}>
-              <Button
-                variant="contained"
-                color="primary"
-                disabled={
-                  simInProgress || scenarioResults.length === 0
-                } /*  || scenarioInputs.length === 0 */
-                onClick={runCurrentScenario}
-              >
-                UPDATE SCENARIO
-              </Button>
-
-              <Button
-                variant="contained"
-                disabled={
-                  simInProgress || scenarioResults.length === 0
-                } /*  || scenarioInputs.length === 0 */
-                onClick={confirmRemoveCurrentScenario}
-              >
-                REMOVE SCENARIO
-              </Button>
-
-              <ConfirmationDialog
-                title="Do you want to delete this scenario?"
-                onClose={() => {
-                  setConfirmatonOpen(false);
-                }}
-                onConfirm={confirmedRemoveCurrentScenario}
-                open={confirmatonOpen}
-              />
-            </div>
-            {simulationProgress !== 0 && simulationProgress !== 100 && (
-              <div className={classes.progress}>
-                <CircularProgress
-                  variant="determinate"
-                  value={simulationProgress}
-                  color="secondary"
-                />
-                <span>{simulationProgress}%</span>
-              </div>
-            )}
           </Grid>
         </Grid>
       </section>
