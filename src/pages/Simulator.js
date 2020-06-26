@@ -138,6 +138,12 @@ const useStyles = makeStyles((theme) => ({
       transform: "translate(-50%, -50%)",
     },
   },
+  updateScenario: {
+    position: "absolute",
+    top: 0,
+    left: '50%',
+    transform: "translate(-50%, 0%)",
+  },
   withSlider: {
     margin: theme.spacing(0, 0, 6, 0),
     whiteSpace: "nowrap",
@@ -225,6 +231,9 @@ const useStyles = makeStyles((theme) => ({
       fontSize: "1rem",
     },
   },
+  scenarioGraph: {
+    position: 'relative'
+  }
 }));
 
 function a11yProps(index) {
@@ -794,7 +803,22 @@ const Simulator = (props) => {
                       </Select>
                     </FormControl>
 
-                    <div>
+
+
+                    <div className={classes.scenarioGraph}>
+
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        className={classes.updateScenario}
+                        disabled={
+                          simInProgress || scenarioResults.length === 0
+                        } /*  || scenarioInputs.length === 0 */
+                        onClick={runCurrentScenario}
+                      >
+                        UPDATE SCENARIO
+                      </Button>
+
                       <ScenarioGraph
                         data={result}
                         inputs={simMDAcoverage}
@@ -869,6 +893,7 @@ const Simulator = (props) => {
                         </div>
                       ))}
                     </div>
+
 
                     {doseSettingsOpen && (
                       <ClickAwayListener onClickAway={closeRoundModal}>
@@ -1017,6 +1042,7 @@ const Simulator = (props) => {
                 </div>
               </TabPanel>
             ))}
+
 
 
 
