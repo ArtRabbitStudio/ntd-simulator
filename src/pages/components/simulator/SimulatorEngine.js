@@ -1145,7 +1145,9 @@ export var simControler = {
   },
   runScenario: function (paramsFromUI, tabIndex, simulatorCallback) {
     //        console.log(paramsFromUI);
+    console.log(this.params);
     this.params = { ...paramsFromUI };
+    console.log(this.params);
     ScenarioIndex.setIndex(tabIndex);
     SessionData.createNewSession();
     // console.log(this);

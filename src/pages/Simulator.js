@@ -1,246 +1,38 @@
-import React, { useState, useEffect } from "react";
-import PropTypes from "prop-types";
-import { loadMda, loadParams } from "./components/simulator/ParamMdaLoader";
-
-import { Layout } from "../layout";
-import { makeStyles } from "@material-ui/core/styles";
-import { useTheme } from "@material-ui/styles";
 import {
   Box,
-  Grid,
-  Typography,
-  CircularProgress,
-  Tabs,
-  Tab,
   Button,
+  CircularProgress,
+  Fab,
+  FormControl,
+  FormControlLabel,
+  FormLabel,
+  Grid,
+  MenuItem,
   Radio,
   RadioGroup,
-  Fab,
-  FormControlLabel,
-  FormControl,
-  FormLabel,
-  MenuItem,
   Select,
-  Paper,
   Slider,
-  ClickAwayListener,
-  Tooltip,
-  TextField
+  Tab,
+  Tabs,
+  TextField,
+  Typography,
 } from "@material-ui/core";
-
-import HeadWithInputs from "./components/HeadWithInputs";
-import SectionTitle from "./components/SectionTitle";
-import ChartSettings from "./components/ChartSettings";
-import CloseButton from "./components/CloseButton";
-import ConfirmationDialog from "./components/ConfirmationDialog";
-import SelectCountry from "./components/SelectCountry";
-import TextContents from './components/TextContents'
-
-import * as SimulatorEngine from "./components/simulator/SimulatorEngine";
-
+import { useTheme } from "@material-ui/styles";
+import PropTypes from "prop-types";
+import React, { useEffect, useState } from "react";
 import ScenarioGraph from "../components/ScenarioGraph";
-
-import imgRandom from "../images/systemic-random.svg";
-import imgSame from "../images/systemic-same.svg";
-import imgAnopheles from "../images/Anopheles.jpg";
-import imgCulex from "../images/Culex.jpg";
-import imgInfoIcon from "../images/info-24-px.svg";
-import Icon from '../images/delete-icon-blue.svg';
-
+import { Layout } from "../layout";
+import ChartSettings from "./components/ChartSettings";
+import ConfirmationDialog from "./components/ConfirmationDialog";
+import HeadWithInputs from "./components/HeadWithInputs";
+import SelectCountry from "./components/SelectCountry";
+import MdaBars from "./components/simulator/MdaBars";
+import { loadMda, loadParams } from "./components/simulator/ParamMdaLoader";
+import * as SimulatorEngine from "./components/simulator/SimulatorEngine";
+import useStyles from "./components/simulator/styles";
+import TextContents from "./components/TextContents";
 
 SimulatorEngine.simControler.documentReady();
-
-const useStyles = makeStyles((theme) => ({
-  tabs: {
-    flexGrow: 1,
-    backgroundColor: theme.palette.background.paper,
-  },
-  title: {
-    marginBottom: 24,
-  },
-  formControl: {
-    margin: theme.spacing(0, 0, 1, 0),
-    minWidth: "100%",
-    "& > label": {},
-  },
-  formControlSelect: {
-    margin: theme.spacing(0, 0, 1, 0),
-  },
-  formControlText: {
-    margin: theme.spacing(0, 0, -1, 0),
-  },
-  formControlChart: {
-
-    margin: theme.spacing(-2, 0, 0, 3),
-  },
-  contentLeftColumn: {},
-  icon: {
-    backgroundColor: "transparent",
-    boxShadow: 'none',
-    position: 'absolute',
-    right: 0,
-    top: 0,
-    zIndex: 99,
-
-    '& .MuiTouchRipple-root': {
-      backgroundImage: `url(${Icon})`,
-      backgroundPosition: 'center',
-      backgroundSize: 'auto',
-      backgroundRepeat: 'no-repeat',
-    },
-    '&:hover': {
-      '& .MuiTouchRipple-root': {
-        //backgroundImage: `url(${IconHover})`,
-
-      }
-    }
-  },
-  simulatorBody: {
-    position: "relative",
-    padding: theme.spacing(4, 2, 2, 6),
-  },
-  simulatorInnerBody: {
-    position: "relative",
-  },
-  buttons: {
-    display: "flex",
-    flexDirection: "column",
-    "& > *": {
-      margin: theme.spacing(1, 0),
-    },
-  },
-  simulator: {
-    width: `calc(100% + ${theme.spacing(12)}px)`,
-    marginLeft: -theme.spacing(6),
-    position: "relative",
-  },
-  tabs: {
-    padding: theme.spacing(0, 6),
-    borderBottom: "1px solid #e0e0e0",
-  },
-  chartContainer: {
-    position: "relative",
-    width: "100%",
-    padding: 0,
-  },
-  chartTitle: {
-    display: "inline-block",
-  },
-  progress: {
-    width: "100%",
-    position: "absolute",
-    textAlign: "center",
-    top: '50%',
-    left: '50%',
-    transform: "translate(-50%, -50%)",
-    fontSize: 0,
-    "& > span": {
-      margin: 0,
-      fontSize: 14,
-      letterSpacing: 1,
-      position: "absolute",
-      left: "50%",
-      top: "50%",
-      transform: "translate(-50%, -50%)",
-    },
-  },
-  updateScenario: {
-    position: "absolute",
-    top: 0,
-    left: '50%',
-    transform: "translate(-50%, 0%)",
-  },
-  withSlider: {
-    margin: theme.spacing(0, 0, 0, 0),
-    whiteSpace: "nowrap",
-  },
-  withHelp: {
-    cursor: "help",
-    backgroundImage: `url(${imgInfoIcon})`,
-    backgroundPosition: "right center",
-    backgroundSize: "auto",
-    backgroundRepeat: "no-repeat",
-    width: "fit-content",
-    paddingRight: 30,
-    margin: theme.spacing(-1, 0, 5, 0),
-    padding: theme.spacing(1, 0),
-  },
-  modalButton: {
-    width: "50%",
-    //borderTopLeftRadius: 0,
-    //borderTopRightRadius: 0,
-    borderRadius: 0,
-  },
-  roundModal: {
-    padding: theme.spacing(3, 3, 0, 3),
-    borderRadius: 0,
-    width: 310,
-    position: "absolute",
-    left: "50%",
-    bottom: 116,
-    transform: "translate(-50%, 0%)",
-  },
-  modalButtons: {
-    display: "flex",
-    flexDirection: "row",
-    margin: theme.spacing(0, 0, 0, -3),
-    width: `calc(100% + ${theme.spacing(6)}px)`,
-  },
-  adherence: {
-    height: 110,
-    width: "100%",
-    position: "relative",
-    "&:after, &:before": {
-      content: `''`,
-      position: "absolute",
-      top: 0,
-      width: 100,
-      height: 100,
-    },
-    "&:before": {
-      left: 0,
-      backgroundImage: `url(${imgRandom})`,
-      backgroundPosition: "left center",
-      backgroundSize: "auto",
-      backgroundRepeat: "no-repeat",
-    },
-    "&:after": {
-      right: 0,
-      backgroundImage: `url(${imgSame})`,
-      backgroundPosition: "right center",
-      backgroundSize: "100px",
-      backgroundRepeat: "no-repeat",
-    },
-  },
-
-  imageOptions: {
-    paddingTop: theme.spacing(2),
-  },
-  imageOption: {
-    paddingTop: 74,
-    minWidth: 120,
-    marginRight: theme.spacing(1),
-    "&.anopheles": {
-      backgroundImage: `url(${imgAnopheles})`,
-      backgroundPosition: "14px top",
-      backgroundSize: "112px 74px",
-      backgroundRepeat: "no-repeat",
-    },
-    "&.culex": {
-      backgroundImage: `url(${imgCulex})`,
-      backgroundPosition: "14px top",
-      backgroundSize: "112px 74px",
-      backgroundRepeat: "no-repeat",
-      marginRight: 0,
-    },
-    "& .MuiFormControlLabel-label": {
-      fontSize: "1rem",
-    },
-  },
-  scenarioGraph: {
-    position: 'relative'
-  }
-}));
 
 function a11yProps(index) {
   return {
@@ -451,14 +243,6 @@ const Simulator = (props) => {
   );
   const [scenarioMDAs, setScenarioMDAs] = useState([]);
 
-  const removeMDARound = () => {
-    let newArray = [...simMDAactive];
-    newArray[curMDARound] = false;
-    setSimMDAactive([...newArray]);
-    setCurMDARound(-1);
-    setDoseSettingsOpen(false);
-  };
-
   const simulatorCallback = (resultObject, newScenario) => {
     if (typeof resultObject == "number") {
       setSimulationProgress(resultObject);
@@ -472,10 +256,11 @@ const Simulator = (props) => {
           ...scenarioInputs,
           JSON.parse(resultObject).params.inputs,
         ]);
-        setScenarioMDAs([
-          ...scenarioMDAs,
-          JSON.parse(resultObject).mdaOrig.time,
-        ]);
+        console.log(
+          "JSON.parse(resultObject).mdaOrig.time,",
+          JSON.parse(resultObject).mdaOrig.time
+        );
+        setScenarioMDAs([...scenarioMDAs, JSON.parse(resultObject).mdaOrig]);
         setSimMDAtime([...JSON.parse(resultObject).mdaOrig.time]);
         setSimMDAcoverage([...JSON.parse(resultObject).mdaOrig.coverage]);
         setSimMDAadherence([...JSON.parse(resultObject).mdaOrig.adherence]);
@@ -694,7 +479,7 @@ const Simulator = (props) => {
     if (scenarioResults[tabIndex]) {
       let calculNeeded =
         simParams.mdaSixMonths !==
-        scenarioResults[tabIndex].params.inputs.mdaSixMonths ||
+          scenarioResults[tabIndex].params.inputs.mdaSixMonths ||
         simParams.coverage !== scenarioResults[tabIndex].params.inputs.coverage;
       console.log(
         "Shall I re-calculate MDA rounds?",
@@ -828,10 +613,7 @@ const Simulator = (props) => {
                       </Select>
                     </FormControl>
 
-
-
                     <div className={classes.scenarioGraph}>
-
                       <Button
                         variant="contained"
                         color="primary"
@@ -852,232 +634,18 @@ const Simulator = (props) => {
                         simInProgress={simInProgress}
                       />
                     </div>
-                    <div className="bars">
-                      {simMDAtime.map((e, i) => (
-                        <div
-                          key={`bar${i}`}
-                          onClick={(a) => {
-                            setCurMDARound(i);
-                          }}
-                          className={`bar ${
-                            simMDAactive[i] === false ? "removed" : ""
-                            }`}
-                          title={
-                            simMDAtime[i] +
-                            ", " +
-                            simMDAcoverage[i] +
-                            ", " +
-                            simMDAadherence[i] +
-                            ", " +
-                            simMDAactive[i] +
-                            " "
-                          }
-                        >
-                          <span
-                            className={i === curMDARound ? "current" : ""}
-                            style={{
-                              height: simMDAcoverage[i],
-                            }}
-                          ></span>
-
-                          {i === curMDARound && (
-                            <div className="bar-tooltip">
-                              {simMDAactive[curMDARound] !== false && (
-                                <span className="t">{simMDAcoverage[i]}%</span>
-                              )}
-                              {simMDAactive[curMDARound] === false && (
-                                <span className="t">No MDA</span>
-                              )}
-                              {simMDAactive[curMDARound] === false && (
-                                <span
-                                  className="i plus"
-                                  onClick={(a) => {
-                                    setDoseSettingsOpen(true);
-                                  }}
-                                ></span>
-                              )}
-                              {simMDAactive[curMDARound] !== false && (
-                                <span
-                                  className="i edit"
-                                  onClick={(a) => {
-                                    setDoseSettingsOpen(true);
-                                  }}
-                                ></span>
-                              )}
-                              {simMDAactive[curMDARound] !== false && (
-                                <span
-                                  className="i remove"
-                                  onClick={(a) => {
-                                    removeMDARound();
-                                    a.stopPropagation();
-                                  }}
-                                ></span>
-                              )}
-                            </div>
-                          )}
-                        </div>
-                      ))}
-                    </div>
-
-
-                    {doseSettingsOpen && (
-                      <ClickAwayListener onClickAway={closeRoundModal}>
-                        <Paper elevation={3} className={classes.roundModal}>
-                          <CloseButton action={closeRoundModal} />
-                          {simMDAactive[curMDARound] === false && (
-                            <Button
-                              className={classes.modalButton}
-                              variant="contained"
-                              color="primary"
-                              disabled={simInProgress}
-                              style={{
-                                position: "absolute",
-                                zIndex: 9999,
-                                marginLeft: "3rem",
-                                marginTop: "13rem",
-                              }}
-                              onClick={() => {
-                                let newArray = [...simMDAactive];
-                                newArray[curMDARound] = true;
-                                setSimMDAactive([...newArray]);
-                                // setCurMDARound(-1);
-                                // setDoseSettingsOpen(false);
-                              }}
-                            >
-                              Activate
-                            </Button>
-                          )}
-                          <div
-                            style={{
-                              opacity:
-                                simMDAactive[curMDARound] === false ? 0.2 : 1,
-                            }}
-                          >
-                            <Typography
-                              className={classes.title}
-                              variant="h5"
-                              component="h4"
-                            >
-                              {/* MDA round #  */}
-                              {simParams.mdaSixMonths === 6
-                                ? curMDARound % 2
-                                  ? new Date().getFullYear() +
-                                  Math.floor(curMDARound / 2)
-                                  : new Date().getFullYear() + curMDARound / 2
-                                : new Date().getFullYear() + curMDARound}
-                              {curMDARound % 2 ? " (2nd round)" : ""}
-                            </Typography>
-                            <FormControl
-                              fullWidth
-                              className={classes.formControl}
-                            >
-                              <FormLabel
-                                component="legend"
-                                htmlFor="rho"
-                                className={classes.withSlider}
-                              >
-                                Coverage
-                              </FormLabel>
-                              <Slider
-                                value={simMDAcoverage[curMDARound]}
-                                min={1}
-                                step={1}
-                                max={100}
-                                onChange={(event, newValue) => {
-                                  let newArray = [...simMDAcoverage];
-                                  newArray[curMDARound] = newValue;
-                                  setSimMDAcoverage([...newArray]);
-                                }}
-                                aria-labelledby="slider"
-                                marks={[
-                                  { value: 0, label: "0" },
-                                  { value: 100, label: "100" },
-                                ]}
-                                valueLabelDisplay="auto"
-                              />
-                              {/*             <p style={{ marginBottom: 0 }}>
-              Controls how randomly coverage is applied. For 0, coverage is
-              completely random. For 1, the same individuals are always treated.
-            </p> */}
-                            </FormControl>
-                            <FormControl
-                              fullWidth
-                              className={classes.formControl}
-                            >
-                              <Tooltip
-                                title="Controls how randomly coverage is applied. For 0, coverage is completely random. For 1, the same individuals are always treated."
-                                aria-label="info"
-                              >
-                                <FormLabel
-                                  component="legend"
-                                  htmlFor="rho"
-                                  className={`${classes.withSlider} ${classes.withHelp}`}
-                                >
-                                  Systematic adherence
-                                </FormLabel>
-                              </Tooltip>
-                              <Slider
-                                value={simMDAadherence[curMDARound]}
-                                min={0}
-                                step={0.1}
-                                max={1}
-                                onChange={(event, newValue) => {
-                                  let newArray = [...simMDAadherence];
-                                  newArray[curMDARound] = newValue;
-                                  setSimMDAadherence([...newArray]);
-                                }}
-                                aria-labelledby="slider"
-                                valueLabelDisplay="auto"
-                              />
-                              <div className={classes.adherence}></div>
-                              {/*             <p style={{ marginBottom: 0 }}>
-              Controls how randomly coverage is applied. For 0, coverage is
-              completely random. For 1, the same individuals are always treated.
-            </p> */}
-                            </FormControl>
-                            <div className={classes.modalButtons}>
-                              <Button
-                                className={classes.modalButton}
-                                variant="contained"
-                                disabled={simInProgress}
-                                onClick={() => {
-                                  removeMDARound();
-                                }}
-                              >
-                                REMOVE
-                              </Button>
-                              <Button
-                                className={classes.modalButton}
-                                variant="contained"
-                                color="primary"
-                                disabled={simInProgress}
-                                onClick={() => {
-                                  setCurMDARound(-1);
-                                  setDoseSettingsOpen(false);
-                                }}
-                              >
-                                UPDATE
-                              </Button>
-                            </div>
-                          </div>
-                        </Paper>
-                      </ClickAwayListener>
-                    )}
+                    {scenarioMDAs[0] && <MdaBars data={scenarioMDAs[0]} />}
                   </div>
                 </div>
               </TabPanel>
             ))}
 
-
-
-
             <Fab
               color="inherit"
               aria-label="REMOVE SCENARIO"
-              disabled={
-                simInProgress || scenarioResults.length === 0
-              }
-              className={classes.icon} onClick={confirmRemoveCurrentScenario}
+              disabled={simInProgress || scenarioResults.length === 0}
+              className={classes.icon}
+              onClick={confirmRemoveCurrentScenario}
             ></Fab>
 
             <ConfirmationDialog
@@ -1099,9 +667,6 @@ const Simulator = (props) => {
                 <span>{simulationProgress}%</span>
               </div>
             )}
-
-
-
 
             <ChartSettings
               title="Edit scenario"
