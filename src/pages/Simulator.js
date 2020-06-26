@@ -487,10 +487,20 @@ const Simulator = (props) => {
   /*   useEffect(() => {
       console.log('scenarioInputs', scenarioInputs)
     }, [scenarioInputs]) */
-  const runCurrentScenario = () => {
+  const runCurrentScenario = async () => {
     if (!simInProgress) {
       setSimInProgress(true);
       //console.log(tabIndex, simParams)
+
+      // populate mdaObj // populateMDA();
+      const newMdaObj = await loadMda();
+      SimulatorEngine.simControler.mdaObj = newMdaObj;
+      SimulatorEngine.simControler.mdaObjOrig = newMdaObj;
+
+      const newParams = await loadParams();
+      SimulatorEngine.simControler.parametersJSON = newParams;
+      console.log("runningScenario");
+
       SimulatorEngine.simControler.newScenario = false;
       SimulatorEngine.simControler.runScenario(
         simParams,
@@ -548,13 +558,23 @@ const Simulator = (props) => {
     }
   };
 
-  const runNewScenario = () => {
+  const runNewScenario = async () => {
     if (!simInProgress) {
       if (tabLength < 5) {
         // populateMDA();
         setSimInProgress(true);
         // console.log('settingTabLength', tabLength + 1)
         //console.log(tabIndex, simParams)
+
+        // populate mdaObj // populateMDA();
+        const newMdaObj = await loadMda();
+        SimulatorEngine.simControler.mdaObj = newMdaObj;
+        SimulatorEngine.simControler.mdaObjOrig = newMdaObj;
+
+        const newParams = await loadParams();
+        SimulatorEngine.simControler.parametersJSON = newParams;
+        console.log("runningScenario");
+
         SimulatorEngine.simControler.newScenario = true;
         SimulatorEngine.simControler.runScenario(
           simParams,
@@ -607,47 +627,31 @@ const Simulator = (props) => {
   };
 
   useEffect(() => {
-    const loadIUandRunScenario = async () => {
-      if (typeof scenarioResults[tabIndex] === "undefined") {
-        console.log("No scenarios? Running a new one...");
-
-        // populate mdaObj
-        //        populateMDA();
-        const newMdaObj = await loadMda();
-        SimulatorEngine.simControler.mdaObj = newMdaObj;
-        SimulatorEngine.simControler.mdaObjOrig = newMdaObj;
-
-        const newParams = await loadParams();
-        SimulatorEngine.simControler.parametersJSON = newParams;
-        console.log("runningScenario");
-        runNewScenario();
-      }
-
-      /* let sessionDataJson =
+    if (typeof scenarioResults[tabIndex] === "undefined") {
+      console.log("No scenarios? Running a new one...");
+      runNewScenario();
+    }
+    /* let sessionDataJson =
           JSON.parse(window.localStorage.getItem('scenarios')) || [] */
-      let scenariosArray = JSON.parse(
-        window.localStorage.getItem("sessionData")
-      )
-        ? JSON.parse(window.localStorage.getItem("sessionData")).scenarios
-        : null;
-      // console.log('scenariosArray', scenariosArray)
-      if (scenariosArray) {
-        let paramsInputs = scenariosArray.map((item) => item.params.inputs);
-        let MDAs = scenariosArray.map((item) => item.mdaOrig);
-        setScenarioInputs(paramsInputs);
-        if (typeof paramsInputs[tabIndex] != "undefined") {
-          // set input params if you have them
-          setSimParams(paramsInputs[tabIndex]);
-          setEditingMDAs(true);
-          setScenarioMDAs(MDAs);
-          setSimMDAtime(MDAs[tabIndex].time);
-          setSimMDAcoverage(MDAs[tabIndex].coverage);
-          setSimMDAadherence(MDAs[tabIndex].adherence);
-          setSimMDAactive(MDAs[tabIndex].active);
-        }
+    let scenariosArray = JSON.parse(window.localStorage.getItem("sessionData"))
+      ? JSON.parse(window.localStorage.getItem("sessionData")).scenarios
+      : null;
+    // console.log('scenariosArray', scenariosArray)
+    if (scenariosArray) {
+      let paramsInputs = scenariosArray.map((item) => item.params.inputs);
+      let MDAs = scenariosArray.map((item) => item.mdaOrig);
+      setScenarioInputs(paramsInputs);
+      if (typeof paramsInputs[tabIndex] != "undefined") {
+        // set input params if you have them
+        setSimParams(paramsInputs[tabIndex]);
+        setEditingMDAs(true);
+        setScenarioMDAs(MDAs);
+        setSimMDAtime(MDAs[tabIndex].time);
+        setSimMDAcoverage(MDAs[tabIndex].coverage);
+        setSimMDAadherence(MDAs[tabIndex].adherence);
+        setSimMDAactive(MDAs[tabIndex].active);
       }
-    };
-    loadIUandRunScenario();
+    }
   }, []);
   useEffect(() => {
     // console.log('editingMDAs', editingMDAs)
