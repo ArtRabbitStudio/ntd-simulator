@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-// import Papa from "papaparse";
+import Papa from "papaparse";
 
 import { Layout } from "../layout";
 import { makeStyles } from "@material-ui/core/styles";
@@ -616,10 +616,12 @@ const Simulator = (props) => {
         const mdaResponse = await fetch("/data/simulator/MLI30034-mda.csv");
         let reader = mdaResponse.body.getReader();
         const mdaResult = await reader.read();
-        const mdaValues = await decoder.decode(mdaResult.value);
-        console.log(mdaValues);
-        SimulatorEngine.simControler.mdaObj = mdaValues;
-        SimulatorEngine.simControler.mdaObjOrig = mdaValues;
+        const mdaCSV = decoder.decode(mdaResult.value);
+        console.log(mdaCSV);
+        const mdaJSON = Papa.parse(mdaCSV, { header: true });
+        console.log(mdaJSON);
+        SimulatorEngine.simControler.mdaObj = mdaJSON;
+        SimulatorEngine.simControler.mdaObjOrig = mdaJSON;
 
         // populate parametersJSON
         const IUParamsResponse = await fetch(
@@ -627,9 +629,11 @@ const Simulator = (props) => {
         );
         let reader2 = IUParamsResponse.body.getReader();
         const IUParamsResult = await reader2.read();
-        const IUParams = await decoder.decode(IUParamsResult.value);
-        console.log(IUParams);
-        SimulatorEngine.simControler.parametersJSON = IUParams;
+        const IUParamsCSV = decoder.decode(IUParamsResult.value);
+        const IUParamsJSON = Papa.parse(IUParamsCSV, { header: true });
+
+        console.log(IUParamsJSON);
+        SimulatorEngine.simControler.parametersJSON = IUParamsJSON;
         //runNewScenario();
       }
 
@@ -664,7 +668,7 @@ const Simulator = (props) => {
     if (scenarioResults[tabIndex]) {
       let calculNeeded =
         simParams.mdaSixMonths !==
-        scenarioResults[tabIndex].params.inputs.mdaSixMonths ||
+          scenarioResults[tabIndex].params.inputs.mdaSixMonths ||
         simParams.coverage !== scenarioResults[tabIndex].params.inputs.coverage;
       console.log(
         "Shall I re-calculate MDA rounds?",
@@ -792,16 +796,16 @@ const Simulator = (props) => {
                         simInProgress={simInProgress}
                       />
                     </div>
-                    <div
-                      className="bars"
-                    >
+                    <div className="bars">
                       {simMDAtime.map((e, i) => (
                         <div
                           key={`bar${i}`}
                           onClick={(a) => {
                             setCurMDARound(i);
                           }}
-                          className={`bar ${simMDAactive[i] === false ? 'removed' : ''}`}
+                          className={`bar ${
+                            simMDAactive[i] === false ? "removed" : ""
+                          }`}
                           title={
                             simMDAtime[i] +
                             ", " +
@@ -814,37 +818,47 @@ const Simulator = (props) => {
                           }
                         >
                           <span
-                            className={(i === curMDARound ? 'current' : '')}
+                            className={i === curMDARound ? "current" : ""}
                             style={{
                               height: simMDAcoverage[i],
                             }}
                           ></span>
 
-
-
-                          {i === curMDARound &&
+                          {i === curMDARound && (
                             <div className="bar-tooltip">
-                              {simMDAactive[curMDARound] !== false && <span className="t">{simMDAcoverage[i]}%</span>}
-                              {simMDAactive[curMDARound] === false && <span className="t">No MDA</span>}
-                              {simMDAactive[curMDARound] === false &&
+                              {simMDAactive[curMDARound] !== false && (
+                                <span className="t">{simMDAcoverage[i]}%</span>
+                              )}
+                              {simMDAactive[curMDARound] === false && (
+                                <span className="t">No MDA</span>
+                              )}
+                              {simMDAactive[curMDARound] === false && (
                                 <span
                                   className="i plus"
-                                  onClick={(a) => { setDoseSettingsOpen(true); }}
+                                  onClick={(a) => {
+                                    setDoseSettingsOpen(true);
+                                  }}
                                 ></span>
-                              }
-                              {simMDAactive[curMDARound] !== false && <span
-                                className="i edit"
-                                onClick={(a) => { setDoseSettingsOpen(true); }}
-                              ></span>
-                              }
-                              {simMDAactive[curMDARound] !== false && <span
-                                className="i remove"
-                                onClick={(a) => { removeMDARound(); a.stopPropagation(); }}
-                              ></span>
-                              }
+                              )}
+                              {simMDAactive[curMDARound] !== false && (
+                                <span
+                                  className="i edit"
+                                  onClick={(a) => {
+                                    setDoseSettingsOpen(true);
+                                  }}
+                                ></span>
+                              )}
+                              {simMDAactive[curMDARound] !== false && (
+                                <span
+                                  className="i remove"
+                                  onClick={(a) => {
+                                    removeMDARound();
+                                    a.stopPropagation();
+                                  }}
+                                ></span>
+                              )}
                             </div>
-                          }
-
+                          )}
                         </div>
                       ))}
                     </div>
@@ -891,7 +905,7 @@ const Simulator = (props) => {
                               {simParams.mdaSixMonths === 6
                                 ? curMDARound % 2
                                   ? new Date().getFullYear() +
-                                  Math.floor(curMDARound / 2)
+                                    Math.floor(curMDARound / 2)
                                   : new Date().getFullYear() + curMDARound / 2
                                 : new Date().getFullYear() + curMDARound}
                               {curMDARound % 2 ? " (2nd round)" : ""}
@@ -970,7 +984,7 @@ const Simulator = (props) => {
                                 variant="contained"
                                 disabled={simInProgress}
                                 onClick={() => {
-                                  removeMDARound()
+                                  removeMDARound();
                                 }}
                               >
                                 REMOVE
