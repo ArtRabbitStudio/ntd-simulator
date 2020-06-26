@@ -7,7 +7,7 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 
 import Icon from '../../images/settings.svg';
-import IconHover from '../../images/settings-hover.svg';
+//import IconHover from '../../images/settings-hover.svg';
 
 import CloseButton from './CloseButton';
 
@@ -36,7 +36,7 @@ const useStyles = makeStyles(theme => ({
     padding: theme.spacing(4, 4, 2, 4),
   },
   form: {
-    padding: theme.spacing(0, 0, 0, 0),
+    padding: theme.spacing(1, 0, 0, 0),
     width: '100%',
     display: 'flex',
     flexDirection: 'column',
@@ -56,7 +56,7 @@ const useStyles = makeStyles(theme => ({
     },
     '&:hover': {
       '& .MuiTouchRipple-root': {
-        backgroundImage: `url(${IconHover})`,
+        //backgroundImage: `url(${IconHover})`,
 
       }
     }
