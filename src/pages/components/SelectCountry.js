@@ -14,168 +14,171 @@ import Autocomplete from '@material-ui/lab/Autocomplete'
 import FormControl from '@material-ui/core/FormControl'
 
 import {
-    DISEASE_LABELS, DISEASE_LIMF
+  DISEASE_LABELS, DISEASE_LIMF
 } from '../../constants'
 
 const useStyles = makeStyles(theme => ({
-    root: {
-        zIndex: 9,
-        position: 'relative',
+  root: {
+    zIndex: 9,
+    position: 'relative',
+  },
+  box: {
+    zIndex: 9,
+    position: 'relative',
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    margin: theme.spacing(0, 0, 4, 0),
+    [theme.breakpoints.up('md')]: {
     },
-    box: {
-        zIndex: 9,
-        position: 'relative',
-        width: '100%',
-        display: 'flex',
-        flexDirection: 'column',
-        margin: theme.spacing(0, 0, 4, 0),
-        [theme.breakpoints.up('md')]: {
-        },
-        [theme.breakpoints.up('lg')]: {
-        },
+    [theme.breakpoints.up('lg')]: {
     },
-    formControl: {
-        margin: theme.spacing(0, 0, 0, 0),
-        width: '100%',
-        textAlign: 'left',
-        '& > label': {},
-        '& input': {
-            fontSize: 18
+  },
+  formControl: {
+    margin: theme.spacing(0, 0, 0, 0),
+    width: '100%',
+    textAlign: 'left',
+    '& > label': {},
+    '& input': {
+      fontSize: 18
 
-        },
-        '&.countries input': {
-            fontSize: 26,
-            color: 'black'
-
-        },
-        [theme.breakpoints.up('sm')]: {
-        },
-        [theme.breakpoints.up('md')]: {
-            width: '50%',
-            '& input': {
-                fontSize: 24
-
-            },
-            '&.countries input': {
-                fontSize: 44
-
-            },
-        },
-        [theme.breakpoints.up('lg')]: {
-        },
     },
+    '&.countries': {
+      margin: theme.spacing(0, 0, 2, 0),
+    },
+    '&.countries input': {
+      fontSize: 26,
+      color: 'black'
+
+    },
+    [theme.breakpoints.up('sm')]: {
+    },
+    [theme.breakpoints.up('md')]: {
+      width: '50%',
+      '& input': {
+        fontSize: 24
+
+      },
+      '&.countries input': {
+        fontSize: 44
+
+      },
+    },
+    [theme.breakpoints.up('lg')]: {
+    },
+  },
 }))
 
 const SelectCountry = ({ selectIU, showConfirmation }) => {
-    const classes = useStyles()
-    const history = useHistory()
-    const matchSection = useRouteMatch('/:section')
+  const classes = useStyles()
+  const history = useHistory()
+  const matchSection = useRouteMatch('/:section')
 
-    const { countrySuggestions, iuFeatures, iusByCountrySuggestions } = useDataAPI()
-    const { country, implementationUnit } = useUIState()
+  const { countrySuggestions, iuFeatures, iusByCountrySuggestions } = useDataAPI()
+  const { country, implementationUnit } = useUIState()
 
-    const [goTo, setGoTo] = useState(false);
+  const [goTo, setGoTo] = useState(false);
 
-    const navigateToCountry = (id) => {
+  const navigateToCountry = (id) => {
 
+  }
+
+  const navigate = (url) => {
+    let u = url ? url : goTo;
+    history.push({ pathname: u })
+  }
+
+  const handleCountryChange = (event, value) => {
+    let section = 'country'
+    if (matchSection) {
+      if (matchSection.params.section !== 'simulator') { // keep the page, not for simulator
+        //section = matchSection.params.section
+      }
     }
 
-    const navigate = (url) => {
-        let u = url ? url : goTo;
-        history.push({ pathname: u })
+    if (value) {
+      let url = `/${section}/${value.id}`;
+      if (showConfirmation) {
+        setGoTo(url)
+        setConfirmatonOpen(true);
+      } else {
+        navigate(url)
+      }
     }
 
-    const handleCountryChange = (event, value) => {
-        let section = 'country'
-        if (matchSection) {
-            if (matchSection.params.section !== 'simulator') { // keep the page, not for simulator
-                //section = matchSection.params.section
-            }
+  }
+
+  const handleIUChange = (event, value) => {
+    let section = 'setup'
+    if (value) {
+      let url = `/${section}/${country}/${value.id}`
+      if (showConfirmation) {
+        setGoTo(url)
+        setConfirmatonOpen(true);
+      } else {
+        navigate(url)
+      }
+    }
+
+  }
+
+  // confirmation for change the country
+  const [confirmatonOpen, setConfirmatonOpen] = useState(false);
+  const confirmedRemoveCurrentScenario = () => {
+    // confirmed
+    setConfirmatonOpen(false);
+    navigate()
+  };
+
+  const selected = countrySuggestions.find(x => x.id === country)
+  const selectedIU = iusByCountrySuggestions.find(x => x.id === implementationUnit)
+
+
+  return (
+    <React.Fragment>
+      <Box className={classes.box}>
+
+        <FormControl className={`${classes.formControl} countries`}>
+          <Autocomplete
+            id="combo-box-demo"
+            options={countrySuggestions}
+            getOptionLabel={option => option.name}
+            value={selected ?? { name: 'Select a country' }}
+            renderInput={params => (
+              <TextField {...params} /*InputProps={{ ...params.InputProps, disableUnderline: true }}*/ />
+            )}
+            onChange={handleCountryChange}
+          />
+        </FormControl>
+
+        {selectIU &&
+          <FormControl className={`${classes.formControl}`}>
+            <Autocomplete
+              id="iu"
+              options={iusByCountrySuggestions}
+              getOptionLabel={option => option.name}
+              value={selectedIU ?? { name: 'Select IU' }}
+              renderInput={params => (
+                <TextField {...params}/* InputProps={{ ...params.InputProps, disableUnderline: true }}*/ />
+              )}
+              onChange={handleIUChange}
+            />
+          </FormControl>
         }
+      </Box>
 
-        if (value) {
-            let url = `/${section}/${value.id}`;
-            if (showConfirmation) {
-                setGoTo(url)
-                setConfirmatonOpen(true);
-            } else {
-                navigate(url)
-            }
-        }
-
-    }
-
-    const handleIUChange = (event, value) => {
-        let section = 'setup'
-        if (value) {
-            let url = `/${section}/${country}/${value.id}`
-            if (showConfirmation) {
-                setGoTo(url)
-                setConfirmatonOpen(true);
-            } else {
-                navigate(url)
-            }
-        }
-
-    }
-
-    // confirmation for change the country
-    const [confirmatonOpen, setConfirmatonOpen] = useState(false);
-    const confirmedRemoveCurrentScenario = () => {
-        // confirmed
-        setConfirmatonOpen(false);
-        navigate()
-    };
-
-    const selected = countrySuggestions.find(x => x.id === country)
-    const selectedIU = iusByCountrySuggestions.find(x => x.id === implementationUnit)
-
-
-    return (
-        <React.Fragment>
-            <Box className={classes.box}>
-
-                <FormControl className={`${classes.formControl} countries`}>
-                    <Autocomplete
-                        id="combo-box-demo"
-                        options={countrySuggestions}
-                        getOptionLabel={option => option.name}
-                        value={selected ?? { name: 'Select a country' }}
-                        renderInput={params => (
-                            <TextField {...params} InputProps={{ ...params.InputProps, disableUnderline: true }} />
-                        )}
-                        onChange={handleCountryChange}
-                    />
-                </FormControl>
-
-                {selectIU &&
-                    <FormControl className={`${classes.formControl}`}>
-                        <Autocomplete
-                            id="iu"
-                            options={iusByCountrySuggestions}
-                            getOptionLabel={option => option.name}
-                            value={selectedIU ?? { name: 'Select IU' }}
-                            renderInput={params => (
-                                <TextField {...params} InputProps={{ ...params.InputProps, disableUnderline: true }} />
-                            )}
-                            onChange={handleIUChange}
-                        />
-                    </FormControl>
-                }
-            </Box>
-
-            {showConfirmation &&
-                <ConfirmationDialog
-                    title="Do you want to leave this scenario?"
-                    onClose={() => {
-                        setConfirmatonOpen(false);
-                    }}
-                    onConfirm={confirmedRemoveCurrentScenario}
-                    open={confirmatonOpen}
-                />
-            }
-        </React.Fragment>
-    )
+      {showConfirmation &&
+        <ConfirmationDialog
+          title="Do you want to leave this scenario?"
+          onClose={() => {
+            setConfirmatonOpen(false);
+          }}
+          onConfirm={confirmedRemoveCurrentScenario}
+          open={confirmatonOpen}
+        />
+      }
+    </React.Fragment>
+  )
 }
 
 

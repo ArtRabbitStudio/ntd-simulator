@@ -61,13 +61,13 @@ function Map({
             const focus = countryFeatures.features.find(
                 f => f.properties.id === country
             )
-    
+
             if (focus) {
                 // new zooming
                 const center = centroid({ type: 'FeatureCollection', features: [focus] });
                 const latLong = center.geometry.coordinates
                 dispatch({ type: 'FOCUSANIMATED', payload: { focus, latLong } })
-               
+
                 //dispatch({ type: 'FOCUS', payload: focus })
             }
         }
@@ -171,7 +171,7 @@ function Map({
                             filter={['has', colorProp]}
                             type="fill"
                             paint={{
-                                'fill-color': 'rgba(0,0,0,.2)',
+                                'fill-color': '#CCE8F4',
 
 
                             }}
@@ -182,7 +182,8 @@ function Map({
                             filter={['has', colorProp]}
                             layout={{ 'line-join': 'bevel' }}
                             paint={{
-                                'line-color': 'rgba(145, 145, 145, 1)',
+                                'fill-color': '#CCE8F4',
+                                'line-color': 'rgba(0,0,0,0)',
                                 'line-width': 1,
                             }}
                         />
@@ -201,13 +202,13 @@ function Map({
                                     'coalesce',
                                     ['get', colorProp],
                                     // grey shapes if no data available
-                                    '#F2F1F1',
+                                    '#FAEAE1',
                                 ],
                                 'fill-outline-color': [
                                     'case',
                                     ['==', ['get', 'id'], feature?.properties.id || null],
-                                    'rgba(145, 145, 145, 1)',
-                                    'rgba(145, 145, 145, 0.3)',
+                                    '#bcbcbc',
+                                    '#bcbcbc',
                                 ],
                             }}
                         />
@@ -220,7 +221,7 @@ function Map({
                                 'line-color': [
                                     'case',
                                     ['==', ['get', 'id'], featureHover?.properties.id || null],
-                                    '#616161',
+                                    '#D86422',
                                     'rgba(0,0,0,0)',
                                 ],
                                 'line-width': 1,

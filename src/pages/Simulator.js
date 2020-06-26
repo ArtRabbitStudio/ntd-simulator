@@ -413,6 +413,15 @@ const Simulator = (props) => {
       : []
   );
   const [scenarioMDAs, setScenarioMDAs] = useState([]);
+
+  const removeMDARound = () => {
+    let newArray = [...simMDAactive];
+    newArray[curMDARound] = false;
+    setSimMDAactive([...newArray]);
+    setCurMDARound(-1);
+    setDoseSettingsOpen(false);
+  };
+
   const simulatorCallback = (resultObject, newScenario) => {
     if (typeof resultObject == "number") {
       setSimulationProgress(resultObject);
@@ -655,7 +664,7 @@ const Simulator = (props) => {
     if (scenarioResults[tabIndex]) {
       let calculNeeded =
         simParams.mdaSixMonths !==
-          scenarioResults[tabIndex].params.inputs.mdaSixMonths ||
+        scenarioResults[tabIndex].params.inputs.mdaSixMonths ||
         simParams.coverage !== scenarioResults[tabIndex].params.inputs.coverage;
       console.log(
         "Shall I re-calculate MDA rounds?",
@@ -784,34 +793,15 @@ const Simulator = (props) => {
                       />
                     </div>
                     <div
-                      style={{
-                        display: "flex",
-                        height: 100,
-                        justifyContent: "space-around",
-                        marginTop: 30,
-                        marginBottom: 20,
-                        marginRight: 20,
-                        marginLeft: 55,
-                      }}
+                      className="bars"
                     >
                       {simMDAtime.map((e, i) => (
                         <div
                           key={`bar${i}`}
-                          style={{
-                            background: "#B09AFF",
-                            height: 100,
-                            minWidth: 1,
-                            borderWidth: 1,
-                            borderColor: "white",
-                            cursor: "pointer",
-                            borderStyle: "solid",
-                            opacity: simMDAactive[i] === false ? 0.3 : 1,
-                          }}
                           onClick={(a) => {
                             setCurMDARound(i);
-                            setDoseSettingsOpen(true);
                           }}
-                          className="bar"
+                          className={`bar ${simMDAactive[i] === false ? 'removed' : ''}`}
                           title={
                             simMDAtime[i] +
                             ", " +
@@ -824,14 +814,37 @@ const Simulator = (props) => {
                           }
                         >
                           <span
+                            className={(i === curMDARound ? 'current' : '')}
                             style={{
-                              display: "block",
-                              background:
-                                i === curMDARound ? "#d01c8b" : "#6236FF",
                               height: simMDAcoverage[i],
-                              minWidth: 10,
                             }}
                           ></span>
+
+
+
+                          {i === curMDARound &&
+                            <div className="bar-tooltip">
+                              {simMDAactive[curMDARound] !== false && <span className="t">{simMDAcoverage[i]}%</span>}
+                              {simMDAactive[curMDARound] === false && <span className="t">No MDA</span>}
+                              {simMDAactive[curMDARound] === false &&
+                                <span
+                                  className="i plus"
+                                  onClick={(a) => { setDoseSettingsOpen(true); }}
+                                ></span>
+                              }
+                              {simMDAactive[curMDARound] !== false && <span
+                                className="i edit"
+                                onClick={(a) => { setDoseSettingsOpen(true); }}
+                              ></span>
+                              }
+                              {simMDAactive[curMDARound] !== false && <span
+                                className="i remove"
+                                onClick={(a) => { removeMDARound(); a.stopPropagation(); }}
+                              ></span>
+                              }
+                            </div>
+                          }
+
                         </div>
                       ))}
                     </div>
@@ -878,7 +891,7 @@ const Simulator = (props) => {
                               {simParams.mdaSixMonths === 6
                                 ? curMDARound % 2
                                   ? new Date().getFullYear() +
-                                    Math.floor(curMDARound / 2)
+                                  Math.floor(curMDARound / 2)
                                   : new Date().getFullYear() + curMDARound / 2
                                 : new Date().getFullYear() + curMDARound}
                               {curMDARound % 2 ? " (2nd round)" : ""}
@@ -957,11 +970,7 @@ const Simulator = (props) => {
                                 variant="contained"
                                 disabled={simInProgress}
                                 onClick={() => {
-                                  let newArray = [...simMDAactive];
-                                  newArray[curMDARound] = false;
-                                  setSimMDAactive([...newArray]);
-                                  setCurMDARound(-1);
-                                  setDoseSettingsOpen(false);
+                                  removeMDARound()
                                 }}
                               >
                                 REMOVE
