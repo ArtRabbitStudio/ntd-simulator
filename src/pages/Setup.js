@@ -35,6 +35,11 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flexDirection: 'column',
 
+    [theme.breakpoints.up('lg')]: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      justifyContent: 'space-between'
+    }
   },
   section: {
     position: "relative",
@@ -47,8 +52,7 @@ const useStyles = makeStyles(theme => ({
     position: "relative",
     backgroundColor: theme.palette.secondary.dark,
   },
-
-  scenatiosWrap: {
+  scenariosWrap: {
     padding: theme.spacing(4),
     margin: theme.spacing(0, 0, 3, 0),
     backgroundColor: 'white',
@@ -274,41 +278,6 @@ const Setup = props => {
             </FormControl>
           </div>
 
-          <div className={classes.scenatiosWrap}>
-            <FormControl
-              fullWidth
-              variant="outlined"
-              className={classes.formControl}
-            >
-              <FormLabel
-                component="legend"
-                htmlFor="demo-simple-select-helper-label"
-              >
-                Intervention drug regimen
-                        </FormLabel>
-              <Select
-                labelId="demo-simple-select-helper-label"
-                id="demo-simple-select-helper"
-                value={simParams.mdaRegimen}
-                onChange={(event) => {
-                  setSimParams({
-                    ...simParams,
-                    mdaRegimen: event.target.value,
-                  });
-                }}
-              >
-                <MenuItem value={1}>albendazole + ivermectin</MenuItem>
-                <MenuItem value={2}>
-                  albendazole + diethylcarbamazine
-                            </MenuItem>
-                <MenuItem value={3}>ivermectin</MenuItem>
-                <MenuItem value={4}>
-                  ivermectin + albendazole + diethylcarbamazine
-                            </MenuItem>
-                <MenuItem value={5}>custom</MenuItem>
-              </Select>
-            </FormControl>
-          </div>
 
         </div>
 
@@ -318,7 +287,7 @@ const Setup = props => {
                         You will be able to change this later.
                     </Typography>
         </TextContents>
-        <div className={classes.formControlWrap}>
+        <div className={classes.scenariosWrap}>
           <div className={`${classes.buttonsControl}`}>
             <Button variant="contained" color="primary">2 year COVID Interruption</Button>
             <Button variant="contained">Scenario three</Button>
