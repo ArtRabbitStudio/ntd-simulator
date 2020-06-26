@@ -528,11 +528,7 @@ export var Model = function (n) {
       //if (t >= paramsUpdate){
       if (t >= paramsUpdate && aImpYear < 2020) {
         // update yearly parameters for MDA and aImp here.
-        statFunctions.updateSimParams(
-          simControler.parametersJSON,
-          aImpYear,
-          paramsNumber
-        );
+        statFunctions.updateSimParams(aImpYear, paramsNumber);
         paramsUpdate += 12.0;
         aImpYear += 1;
       }
@@ -876,7 +872,8 @@ export var statFunctions = {
   updateSimParams: function (aImpYear, paramsNumber) {
     // the aImpHistoric has a year entry, starting at 2000, and also a number to signify which simulation has been run
     // params.aImp = simControler.parametersJSON.aImpHistoric[aImpYear][paramsNumber];
-    params.aImp = simControler.parametersJSON.aImp[paramsNumber];
+    // params.aImp = simControler.parametersJSON.aImp[paramsNumber];
+    params.aImp = simControler.parametersJSON["aImp_" + aImpYear][paramsNumber];
   },
 
   updateInterventionParams: function (mdaRound) {
@@ -1049,9 +1046,7 @@ export var simControler = {
 
     // numberParamSets should tell us how many sets of parameters we have input
     // however that is done for a JSON file should go here. This will then be used for randomly choosing parameters
-    console.log(simControler.parametersJSON);
     var numberParamSets = simControler.parametersJSON.Population.length; //number_rows(simControler.parametersJSON);
-    console.log(numberParamSets);
 
     //####//####//####//####//####//####
 
