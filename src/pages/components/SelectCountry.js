@@ -48,7 +48,7 @@ const useStyles = makeStyles(theme => ({
     },
     '&.countries input': {
       fontSize: 26,
-      color: 'black'
+      color: '#2c3f4d'
 
     },
     [theme.breakpoints.up('sm')]: {

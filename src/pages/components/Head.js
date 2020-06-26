@@ -22,15 +22,16 @@ const useStyles = makeStyles(theme => ({
         backgroundRepeat: 'no-repeat',
         width: 228,
         height: 50,
-        margin: theme.spacing(0, 0, 3, 0),
+        margin: theme.spacing(0, 0, 4, 0),
         '& > span': {
             display: 'none'
         }
     },
     title: {
-        margin: theme.spacing(0, 0, 3, 0),
+        margin: theme.spacing(0, 0, 1, 0),
         textTransform: 'uppercase',
-        fontSize: 12
+        fontSize: 14,
+        letterSpacing: 1
     }
 }));
 
