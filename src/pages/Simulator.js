@@ -551,7 +551,7 @@ const Simulator = (props) => {
   const runNewScenario = () => {
     if (!simInProgress) {
       if (tabLength < 5) {
-        populateMDA();
+        // populateMDA();
         setSimInProgress(true);
         // console.log('settingTabLength', tabLength + 1)
         //console.log(tabIndex, simParams)
@@ -619,7 +619,8 @@ const Simulator = (props) => {
 
         const newParams = await loadParams();
         SimulatorEngine.simControler.parametersJSON = newParams;
-        // runNewScenario();
+        console.log("runningScenario");
+        runNewScenario();
       }
 
       /* let sessionDataJson =

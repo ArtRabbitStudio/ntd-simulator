@@ -15,6 +15,7 @@ export const loadMda = async () => {
     regimen: mdaJSON.data.map((item) => item.regimen),
     bednets: mdaJSON.data.map((item) => Number(item.bednets)),
     adherence: mdaJSON.data.map((item) => Number(item.adherence)),
+    active: mdaJSON.data.map((item) => true),
   };
   // returns one more line than it's ought to?
   console.log(newMdaObj);

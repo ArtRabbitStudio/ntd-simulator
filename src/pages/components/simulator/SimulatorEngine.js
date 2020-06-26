@@ -528,7 +528,11 @@ export var Model = function (n) {
       //if (t >= paramsUpdate){
       if (t >= paramsUpdate && aImpYear < 2020) {
         // update yearly parameters for MDA and aImp here.
-        statFunctions.updateSimParams(parametersJSON, aImpYear, paramsNumber);
+        statFunctions.updateSimParams(
+          simControler.parametersJSON,
+          aImpYear,
+          paramsNumber
+        );
         paramsUpdate += 12.0;
         aImpYear += 1;
       }
@@ -869,9 +873,10 @@ export var statFunctions = {
     return vhs[i];
   },
 
-  updateSimParams: function (parametersJSON, aImpYear, paramsNumber) {
+  updateSimParams: function (aImpYear, paramsNumber) {
     // the aImpHistoric has a year entry, starting at 2000, and also a number to signify which simulation has been run
-    params.aImp = parametersJSON.aImpHistoric[aImpYear][paramsNumber];
+    // params.aImp = simControler.parametersJSON.aImpHistoric[aImpYear][paramsNumber];
+    params.aImp = simControler.parametersJSON.aImp[paramsNumber];
   },
 
   updateInterventionParams: function (mdaRound) {
@@ -879,21 +884,21 @@ export var statFunctions = {
     params.covMDA = simControler.mdaObj.coverage[mdaRound] / 100;
     params.rho = simControler.mdaObj.adherence[mdaRound];
 
-    let regimen = simControler.mdaObj.regime[mdaRound];
+    let regimen = simControler.mdaObj.regimen[mdaRound];
 
-    if (regimen == "xIA") {
+    if (regimen === "xIA") {
       params.wPropMDA = 0.65;
       params.mfPropMDA = 0.01;
       params.fecRed = 9.0;
-    } else if (regimen == "xxA") {
+    } else if (regimen === "xxA") {
       params.wPropMDA = 0.65;
       params.mfPropMDA = 1;
       params.fecRed = 0;
-    } else if (regimen == "xDA") {
+    } else if (regimen === "xDA") {
       params.wPropMDA = 0.45;
       params.mfPropMDA = 0.05;
       params.fecRed = 6.0;
-    } else if (regimen == "IDA") {
+    } else if (regimen === "IDA") {
       params.wPropMDA = 0;
       params.mfPropMDA = 0;
       params.fecRed = 0;
@@ -904,7 +909,7 @@ export var statFunctions = {
     params.covN = simControler.mdaObj.bednets[mdaRound];
   },
 
-  setInputParams: function (dict, i, parametersJSON) {
+  setInputParams: function (dict, i) {
     // var ps = simControler.modelParams();
     var ps = simControler.params;
     params.inputs = ps;
@@ -938,9 +943,9 @@ export var statFunctions = {
       params.shapeRisk = 0.08;
     }
     // the part where we get parameters from the JSON for the initial longtime simulation to equilibrium
-    params.v_to_h = parametersJSON.v_to_h[i];
-    params.shapeRisk = parametersJSON.shapeRisk[i];
-    params.aImp = parametersJSON.aImp[i];
+    params.v_to_h = simControler.parametersJSON.v_to_h[i];
+    params.shapeRisk = simControler.parametersJSON.shapeRisk[i];
+    params.aImp = simControler.parametersJSON.aImp[i];
 
     params.lbda_original = params.lbda;
     params.v_to_h_original = params.v_to_h;
@@ -1040,11 +1045,13 @@ export var simControler = {
     //####//####//####//####//####//####//####
     // I don't know how this will be implemented, but we need the input parameters
     // file containing the parameters set to be accessible in some way here
-    // var parametersJSON = ParametersJSONFileFromTom;
+    // var simControler.parametersJSON = simControler.ParametersJSONFileFromTom;
 
     // numberParamSets should tell us how many sets of parameters we have input
     // however that is done for a JSON file should go here. This will then be used for randomly choosing parameters
-    var numberParamSets = 20; //number_rows(parametersJSON);
+    console.log(simControler.parametersJSON);
+    var numberParamSets = simControler.parametersJSON.Population.length; //number_rows(simControler.parametersJSON);
+    console.log(numberParamSets);
 
     //####//####//####//####//####//####
 
@@ -1055,7 +1062,7 @@ export var simControler = {
     //
     // // paramsNumber will tell us which row from the parameters file we want to take parameters from
     // // this will be increased by paramStep for each simulation.
-    // // Initialise at 0 so we begin on the first line of the parametersJSON file
+    // // Initialise at 0 so we begin on the first line of the simControler.parametersJSON file
     // var paramsNumber = 0
 
     var runs = [];
@@ -1067,10 +1074,10 @@ export var simControler = {
       var paramsNumber = Math.floor(Math.random() * numberParamSets);
 
       // change the parameters for every simulation here
-      statFunctions.setInputParams({ nMDA: 60 }, paramsNumber, parametersJSON);
+      statFunctions.setInputParams({ nMDA: 60 }, paramsNumber);
 
-      // get the population size from the parametersJSON file
-      var population = parametersJSON.Population[paramsNumber];
+      // get the population size from the simControler.parametersJSON file
+      var population = simControler.parametersJSON.Population[paramsNumber];
       var m = new Model(population);
 
       //change time to 131 below, as we potentially have 31 years simulation after running to equilibrium
@@ -1210,6 +1217,7 @@ export var simControler = {
     time: [], //60, 96, 120, 144, 180
     coverage: [], // 0.9, 0.9, 0.9, 0.9, 0.9
     adherence: [], // 1, 1, 1, 1, 1
+    active: [], // true, false, true, ...
   },
   mdaObjOrig: {
     // this object gets populated from populateMDA()
@@ -1219,7 +1227,8 @@ export var simControler = {
     time: [], //60, 96, 120, 144, 180
     coverage: [], // 0.9, 0.9, 0.9, 0.9, 0.9
     adherence: [], // 1, 1, 1, 1, 1
+    active: [], // true, false, true, ...
   },
   newScenario: true,
+  parametersJSON: {}, // ParametersJSONFileFromTom
 };
-export var parametersJSON = {}; // ParametersJSONFileFromTom
