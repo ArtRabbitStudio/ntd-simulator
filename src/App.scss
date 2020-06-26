@@ -8,9 +8,24 @@
 	font-style: normal;
 }
 
+body {
+	color: #2c3f4d !important;
+}
+
 /** global styles **/
 * {
 	font-family: 'DINNextLTPro';
+}
+
+/* icons */
+.MuiSvgIcon-root {
+}
+
+.MuiSelect-icon,
+.MuiAutocomplete-popupIndicator .MuiSvgIcon-root {
+	fill: transparent !important;
+	background: url(./images/expand-more-24-px.svg) no-repeat center center;
+	background-size: contain;
 }
 
 /** charts **/
