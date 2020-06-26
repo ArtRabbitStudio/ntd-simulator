@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import Papa from "papaparse";
+import { loadMda, loadParams } from "./components/simulator/ParamMdaLoader";
 
 import { Layout } from "../layout";
 import { makeStyles } from "@material-ui/core/styles";
@@ -610,32 +610,16 @@ const Simulator = (props) => {
     const loadIUandRunScenario = async () => {
       if (typeof scenarioResults[tabIndex] === "undefined") {
         console.log("No scenarios? Running a new one...");
-        let decoder = new TextDecoder("utf-8");
 
         // populate mdaObj
         //        populateMDA();
-        const mdaResponse = await fetch("/data/simulator/MLI30034-mda.csv");
-        let reader = mdaResponse.body.getReader();
-        const mdaResult = await reader.read();
-        const mdaCSV = decoder.decode(mdaResult.value);
-        console.log(mdaCSV);
-        const mdaJSON = Papa.parse(mdaCSV, { header: true });
-        console.log(mdaJSON);
-        SimulatorEngine.simControler.mdaObj = mdaJSON;
-        SimulatorEngine.simControler.mdaObjOrig = mdaJSON;
+        const newMdaObj = await loadMda();
+        SimulatorEngine.simControler.mdaObj = newMdaObj;
+        SimulatorEngine.simControler.mdaObjOrig = newMdaObj;
 
-        // populate parametersJSON
-        const IUParamsResponse = await fetch(
-          "/data/simulator/MLI30034-params.csv"
-        );
-        let reader2 = IUParamsResponse.body.getReader();
-        const IUParamsResult = await reader2.read();
-        const IUParamsCSV = decoder.decode(IUParamsResult.value);
-        const IUParamsJSON = Papa.parse(IUParamsCSV, { header: true });
-
-        console.log(IUParamsJSON);
-        SimulatorEngine.simControler.parametersJSON = IUParamsJSON;
-        //runNewScenario();
+        const newParams = await loadParams();
+        SimulatorEngine.simControler.parametersJSON = newParams;
+        // runNewScenario();
       }
 
       /* let sessionDataJson =
@@ -1184,10 +1168,7 @@ const Simulator = (props) => {
                 </Select>
               </FormControl>
               <FormControl fullWidth className={classes.formControl}>
-                <FormLabel
-                  component="legend"
-                  htmlFor="coverage"
-                >
+                <FormLabel component="legend" htmlFor="coverage">
                   Target coverage
                 </FormLabel>
                 <Slider
