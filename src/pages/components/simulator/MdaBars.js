@@ -9,12 +9,13 @@ import {
   Typography,
 } from "@material-ui/core";
 import React, { useState } from "react";
+import { useStore } from "../../../store/simulatorStore";
 import CloseButton from "./../CloseButton";
-import * as SimulatorEngine from "./SimulatorEngine";
 import useStyles from "./styles";
 
 const MdaBars = (props) => {
   console.log(props.data);
+  const { simParams2, dispatchSimParams } = useStore();
   const classes = useStyles();
   const removeMDARound = () => {
     let newArray = [...simMDAactive];
@@ -28,9 +29,7 @@ const MdaBars = (props) => {
     setCurMDARound(-1);
   };
 
-  const [simParams, setSimParams] = useState({
-    ...SimulatorEngine.simControler.params, // params editable via UI
-  });
+  const [simParams, setSimParams] = useState(simParams2);
   const [simInProgress, setSimInProgress] = useState(false);
 
   const [editingMDAs, setEditingMDAs] = useState(false);

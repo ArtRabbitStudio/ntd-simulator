@@ -31,6 +31,7 @@ import { loadMda, loadParams } from "./components/simulator/ParamMdaLoader";
 import * as SimulatorEngine from "./components/simulator/SimulatorEngine";
 import useStyles from "./components/simulator/styles";
 import TextContents from "./components/TextContents";
+import { useStore } from "./../store/simulatorStore";
 
 SimulatorEngine.simControler.documentReady();
 
@@ -68,10 +69,8 @@ let countryLinks = [];
 const Simulator = (props) => {
   const classes = useStyles();
   const theme = useTheme();
+  const { simParams2, dispatchSimParams } = useStore();
 
-  const [simParams, setSimParams] = useState({
-    ...SimulatorEngine.simControler.params, // params editable via UI
-  });
   const [editingMDAs, setEditingMDAs] = useState(false);
   /* MDA object */
   const populateMDA = () => {
@@ -84,21 +83,21 @@ const Simulator = (props) => {
 
     let MDAcoverage = [];
     for (let i = 0; i < 40; i++) {
-      MDAcoverage.push(simParams.coverage);
+      MDAcoverage.push(simParams2.coverage);
     }
     SimulatorEngine.simControler.mdaObj.coverage = [...MDAcoverage];
     SimulatorEngine.simControler.mdaObjOrig.coverage = [...MDAcoverage];
 
     let MDAadherence = [];
     for (let i = 0; i < 40; i++) {
-      MDAadherence.push(simParams.rho);
+      MDAadherence.push(simParams2.rho);
     }
     SimulatorEngine.simControler.mdaObj.adherence = [...MDAadherence];
     SimulatorEngine.simControler.mdaObjOrig.adherence = [...MDAadherence];
 
     let MDAactive = [];
     for (let i = 0; i < 40; i++) {
-      if (simParams.mdaSixMonths === 12 && i % 2 === 1) {
+      if (simParams2.mdaSixMonths === 12 && i % 2 === 1) {
         MDAactive.push(false);
       } else {
         MDAactive.push(true); // alternate here
@@ -120,17 +119,17 @@ const Simulator = (props) => {
     setSimMDAtime([...MDAtime]);
     let MDAcoverage = [];
     for (let i = 0; i < 40; i++) {
-      MDAcoverage.push(simParams.coverage);
+      MDAcoverage.push(simParams2.coverage);
     }
     setSimMDAcoverage([...MDAcoverage]);
     let MDAadherence = [];
     for (let i = 0; i < 40; i++) {
-      MDAadherence.push(simParams.rho);
+      MDAadherence.push(simParams2.rho);
     }
     setSimMDAadherence([...MDAadherence]);
     let MDAactive = [];
     for (let i = 0; i < 40; i++) {
-      if (simParams.mdaSixMonths === 12 && i % 2 === 1) {
+      if (simParams2.mdaSixMonths === 12 && i % 2 === 1) {
         MDAactive.push(false);
       } else {
         MDAactive.push(true); // alternate here
@@ -202,7 +201,10 @@ const Simulator = (props) => {
     //    console.log(scenarioInputs[tabIndex])
     if (typeof scenarioInputs[tabIndex] != "undefined") {
       // set input arams if you have them
-      setSimParams(scenarioInputs[tabIndex]);
+      dispatchSimParams({
+        type: "everything",
+        payload: scenarioInputs[tabIndex],
+      });
       SimulatorEngine.ScenarioIndex.setIndex(tabIndex);
       setSimMDAtime(scenarioMDAs[tabIndex].time);
       setSimMDAcoverage(scenarioMDAs[tabIndex].coverage);
@@ -217,22 +219,14 @@ const Simulator = (props) => {
 
   const handleCoverageChange = (event, newValue) => {
     // this used to be a special occastion. If nothing changes we can use the handleSlerChanges handler instead.
-    setSimParams({
-      ...simParams,
-      coverage: newValue, // / 100
-    });
+    dispatchSimParams({ type: "coverage", payload: newValue });
   };
   const handleFrequencyChange = (event) => {
     setDoseSettingsOpen(false);
-    setSimParams({ ...simParams, mdaSixMonths: event.target.value });
+    dispatchSimParams({ type: "mdaSixMonths", payload: event.target.value });
   };
   const handleSliderChanges = (newValue, paramPropertyName) => {
-    let newObject = {};
-    newObject[paramPropertyName] = newValue;
-    setSimParams({
-      ...simParams,
-      ...newObject,
-    });
+    dispatchSimParams({ type: paramPropertyName, payload: newValue });
   };
   const [simulationProgress, setSimulationProgress] = useState(0);
   const [scenarioInputs, setScenarioInputs] = useState([]);
@@ -324,7 +318,7 @@ const Simulator = (props) => {
 
       SimulatorEngine.simControler.newScenario = false;
       SimulatorEngine.simControler.runScenario(
-        simParams,
+        simParams2,
         tabIndex,
         simulatorCallback
       );
@@ -385,7 +379,7 @@ const Simulator = (props) => {
         // populateMDA();
         setSimInProgress(true);
         // console.log('settingTabLength', tabLength + 1)
-        //console.log(tabIndex, simParams)
+        //console.log(tabIndex, simParams2)
 
         // populate mdaObj // populateMDA();
         const newMdaObj = await loadMda();
@@ -398,7 +392,7 @@ const Simulator = (props) => {
 
         SimulatorEngine.simControler.newScenario = true;
         SimulatorEngine.simControler.runScenario(
-          simParams,
+          simParams2,
           tabLength,
           simulatorCallback
         );
@@ -415,11 +409,11 @@ const Simulator = (props) => {
 
   useEffect(() => {
     if (basePrevalance)
-      setSimParams({
-        ...simParams,
-        endemicity: parseInt(basePrevalance),
+      dispatchSimParams({
+        type: "endemicity",
+        payload: parseInt(basePrevalance),
       });
-    // console.log(simParams)
+    // console.log(simParams2)
   }, [basePrevalance]);
 
   useEffect(() => {
@@ -464,7 +458,10 @@ const Simulator = (props) => {
       setScenarioInputs(paramsInputs);
       if (typeof paramsInputs[tabIndex] != "undefined") {
         // set input params if you have them
-        setSimParams(paramsInputs[tabIndex]);
+        dispatchSimParams({
+          type: "everything",
+          payload: paramsInputs[tabIndex],
+        });
         setEditingMDAs(true);
         setScenarioMDAs(MDAs);
         setSimMDAtime(MDAs[tabIndex].time);
@@ -478,9 +475,10 @@ const Simulator = (props) => {
     // console.log('editingMDAs', editingMDAs)
     if (scenarioResults[tabIndex]) {
       let calculNeeded =
-        simParams.mdaSixMonths !==
+        simParams2.mdaSixMonths !==
           scenarioResults[tabIndex].params.inputs.mdaSixMonths ||
-        simParams.coverage !== scenarioResults[tabIndex].params.inputs.coverage;
+        simParams2.coverage !==
+          scenarioResults[tabIndex].params.inputs.coverage;
       console.log(
         "Shall I re-calculate MDA rounds?",
         editingMDAs && calculNeeded,
@@ -505,7 +503,10 @@ const Simulator = (props) => {
           setScenarioInputs(paramsInputs);
           if (typeof paramsInputs[tabIndex] != "undefined") {
             // set input params if you have them
-            setSimParams(paramsInputs[tabIndex]);
+            dispatchSimParams({
+              type: "everything",
+              payload: paramsInputs[tabIndex],
+            });
             setEditingMDAs(true);
             setScenarioMDAs(MDAs);
             setSimMDAtime(MDAs[tabIndex].time);
@@ -516,7 +517,7 @@ const Simulator = (props) => {
         }
       }
     }
-  }, [simParams.mdaSixMonths, simParams.coverage]);
+  }, [simParams2.mdaSixMonths, simParams2.coverage]);
 
   /*   useEffect(() => {
       console.log('change of editingMDAs', editingMDAs)
@@ -526,6 +527,7 @@ const Simulator = (props) => {
       <HeadWithInputs title="prevalence simulator" />
       {/*       {props.location.search}
       {window.location.search} */}
+      {simParams2.coverage}
 
       <SelectCountry selectIU={true} showConfirmation={true} />
 
@@ -697,7 +699,7 @@ const Simulator = (props) => {
                 <Select
                   labelId="demo-simple-select-helper-label"
                   id="demo-simple-select-helper"
-                  value={simParams.mdaSixMonths}
+                  value={simParams2.mdaSixMonths}
                   onChange={handleFrequencyChange}
                 >
                   <MenuItem value={12}>Annual</MenuItem>
@@ -709,7 +711,7 @@ const Simulator = (props) => {
                   Target coverage
                 </FormLabel>
                 <Slider
-                  value={simParams.coverage}
+                  value={simParams2.coverage}
                   min={0}
                   step={1}
                   max={100}
@@ -736,11 +738,11 @@ const Simulator = (props) => {
                 <Select
                   labelId="demo-simple-select-helper-label"
                   id="demo-simple-select-helper"
-                  value={simParams.mdaRegimen}
+                  value={simParams2.mdaRegimen}
                   onChange={(event) => {
-                    setSimParams({
-                      ...simParams,
-                      mdaRegimen: event.target.value,
+                    dispatchSimParams({
+                      type: "mdaRegimen",
+                      payload: event.target.value,
                     });
                   }}
                 >
@@ -765,7 +767,7 @@ const Simulator = (props) => {
                   Base prevalence
                 </FormLabel>
                 <Slider
-                  value={simParams.endemicity}
+                  value={simParams2.endemicity}
                   id="endemicity"
                   min={5}
                   step={0.5}
@@ -796,7 +798,7 @@ const Simulator = (props) => {
                   Number of runs
                 </FormLabel>
                 <Slider
-                  value={simParams.runs}
+                  value={simParams2.runs}
                   min={1}
                   step={1}
                   max={100}
@@ -818,11 +820,11 @@ const Simulator = (props) => {
                   row
                   aria-label="Species"
                   name="species"
-                  value={simParams.species}
+                  value={simParams2.species}
                   onChange={(event) => {
-                    setSimParams({
-                      ...simParams,
-                      species: Number(event.target.value),
+                    dispatchSimParams({
+                      type: "species",
+                      payload: Number(event.target.value),
                     });
                   }}
                 >
@@ -849,7 +851,7 @@ const Simulator = (props) => {
                   Vector: Bed Net Coverage (%)
                 </FormLabel>
                 <Slider
-                  value={simParams.covN}
+                  value={simParams2.covN}
                   id="covN"
                   min={1}
                   step={1}
@@ -879,7 +881,7 @@ const Simulator = (props) => {
                   Vector: Insecticide Coverage (%)
                 </FormLabel>
                 <Slider
-                  value={simParams.v_to_hR}
+                  value={simParams2.v_to_hR}
                   id="v_to_hR"
                   min={1}
                   step={1}

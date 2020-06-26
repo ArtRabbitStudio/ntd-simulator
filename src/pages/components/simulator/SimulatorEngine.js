@@ -1192,7 +1192,8 @@ export var simControler = {
     // ScenarioIndex.setIndex(-1)
   },
   params: {
-    coverage: 90, // $("#MDACoverage").val(),
+    // this is set in simulatorStore.js now
+    /* coverage: 90, // $("#MDACoverage").val(),
     mda: 2, // $("#inputMDARounds").val(),
     mdaSixMonths: 6, // $("input:radio[name=mdaSixMonths]:checked").val(),
     endemicity: 10, // $("#endemicity").val(),
@@ -1208,7 +1209,7 @@ export var simControler = {
     species: 0, // $("input[name=speciesRadios]:checked").val(),
     macrofilaricide: 65, // $("#Macrofilaricide").val(),
     microfilaricide: 65, // $("#Microfilaricide").val(),
-    runs: 5, // $("#runs").val()
+    runs: 5, // $("#runs").val() */
   },
   mdaObj: {
     time: [], //60, 96, 120, 144, 180
