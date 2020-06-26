@@ -22,36 +22,36 @@ const initialState = {
   runs: 5, // $("#runs").val()
 };
 
-const reducer = (simParams2, action) => {
+const reducer = (simParams, action) => {
   switch (action.type) {
     case "everything":
       return {
-        ...simParams2,
+        ...simParams,
         ...action.payload,
       };
     case "coverage":
       return {
-        ...simParams2,
+        ...simParams,
         coverage: action.payload,
       };
     case "mda":
       return {
-        ...simParams2,
+        ...simParams,
         mda: action.payload,
       };
     case "mdaSixMonths":
       return {
-        ...simParams2,
+        ...simParams,
         mdaSixMonths: action.payload,
       };
     case "covN":
       return {
-        ...simParams2,
+        ...simParams,
         covN: action.payload,
       };
     case "mdaRegimen":
       return {
-        ...simParams2,
+        ...simParams,
         mdaRegimen: action.payload,
       };
     default:
@@ -60,9 +60,9 @@ const reducer = (simParams2, action) => {
 };
 
 export const StoreProvider = ({ children }) => {
-  const [simParams2, dispatchSimParams] = useReducer(reducer, initialState);
+  const [simParams, dispatchSimParams] = useReducer(reducer, initialState);
   return (
-    <StoreContext.Provider value={{ simParams2, dispatchSimParams }}>
+    <StoreContext.Provider value={{ simParams, dispatchSimParams }}>
       {children}
     </StoreContext.Provider>
   );

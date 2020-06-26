@@ -15,7 +15,7 @@ import useStyles from "./styles";
 
 const MdaBars = (props) => {
   console.log(props.data);
-  const { simParams2, dispatchSimParams } = useStore();
+  const { simParams, dispatchSimParams } = useStore();
   const classes = useStyles();
   const removeMDARound = () => {
     let newArray = [...simMDAactive];
@@ -29,7 +29,6 @@ const MdaBars = (props) => {
     setCurMDARound(-1);
   };
 
-  const [simParams, setSimParams] = useState(simParams2);
   const [simInProgress, setSimInProgress] = useState(false);
 
   const [editingMDAs, setEditingMDAs] = useState(false);

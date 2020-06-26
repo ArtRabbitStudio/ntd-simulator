@@ -92,7 +92,7 @@ const useStyles = makeStyles((theme) => ({
 const Setup = (props) => {
   const history = useHistory();
   const classes = useStyles();
-  const { simParams2, dispatchSimParams } = useStore();
+  const { simParams, dispatchSimParams } = useStore();
   const {
     iuFeatures,
     //stateFeaturesCurrentCountry: stateFeatures,
@@ -123,7 +123,7 @@ const Setup = (props) => {
   return (
     <Layout>
       <HeadWithInputs title="prevalence simulator" />
-      {simParams2.coverage}
+      {simParams.coverage}
       <SelectCountry selectIU={true} />
 
       <section className={classes.section}>
@@ -166,7 +166,7 @@ const Setup = (props) => {
                 Bed Net Coverage (%)
               </FormLabel>
               <Slider
-                value={simParams2.covN}
+                value={simParams.covN}
                 id="covN"
                 min={1}
                 step={1}
@@ -194,7 +194,7 @@ const Setup = (props) => {
                 Intervention target coverage
               </FormLabel>
               <Slider
-                value={simParams2.coverage}
+                value={simParams.coverage}
                 min={0}
                 step={1}
                 max={100}
@@ -219,7 +219,7 @@ const Setup = (props) => {
               <Select
                 labelId="demo-simple-select-helper-label"
                 id="demo-simple-select-helper"
-                value={simParams2.mdaSixMonths}
+                value={simParams.mdaSixMonths}
                 onChange={handleFrequencyChange}
               >
                 <MenuItem value={12}>Annual</MenuItem>
@@ -243,7 +243,7 @@ const Setup = (props) => {
               <Select
                 labelId="demo-simple-select-helper-label"
                 id="demo-simple-select-helper"
-                value={simParams2.mdaRegimen}
+                value={simParams.mdaRegimen}
                 onChange={(event) => {
                   dispatchSimParams({
                     type: "mdaRegimen",
