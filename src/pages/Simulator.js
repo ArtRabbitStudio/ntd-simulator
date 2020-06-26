@@ -25,6 +25,7 @@ import {
   Slider,
   ClickAwayListener,
   Tooltip,
+  TextField
 } from "@material-ui/core";
 
 import HeadWithInputs from "./components/HeadWithInputs";
@@ -33,6 +34,7 @@ import ChartSettings from "./components/ChartSettings";
 import CloseButton from "./components/CloseButton";
 import ConfirmationDialog from "./components/ConfirmationDialog";
 import SelectCountry from "./components/SelectCountry";
+import TextContents from './components/TextContents'
 
 import * as SimulatorEngine from "./components/simulator/SimulatorEngine";
 
@@ -57,14 +59,18 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: 24,
   },
   formControl: {
-    margin: theme.spacing(0, 0, 3, 0),
+    margin: theme.spacing(0, 0, 1, 0),
     minWidth: "100%",
     "& > label": {},
   },
   formControlSelect: {
-    margin: theme.spacing(0, 0, 3, 0),
+    margin: theme.spacing(0, 0, 1, 0),
+  },
+  formControlText: {
+    margin: theme.spacing(0, 0, -1, 0),
   },
   formControlChart: {
+
     margin: theme.spacing(-2, 0, 0, 3),
   },
   contentLeftColumn: {},
@@ -145,7 +151,7 @@ const useStyles = makeStyles((theme) => ({
     transform: "translate(-50%, 0%)",
   },
   withSlider: {
-    margin: theme.spacing(0, 0, 6, 0),
+    margin: theme.spacing(0, 0, 0, 0),
     whiteSpace: "nowrap",
   },
   withHelp: {
@@ -412,6 +418,10 @@ const Simulator = (props) => {
       setSimMDAactive(scenarioMDAs[tabIndex].active);
     }
   }, [tabIndex]);
+
+  const handlePrecisionChange = (event, newValue) => {
+    // TODO
+  };
 
   const handleCoverageChange = (event, newValue) => {
     // this used to be a special occastion. If nothing changes we can use the handleSlerChanges handler instead.
@@ -778,6 +788,21 @@ const Simulator = (props) => {
                       {`Scenario ${i + 1}`}
                     </Typography>
 
+                    <FormControl className={classes.formControlChart}>
+                      <FormLabel component="legend" htmlFor="precision">
+                        Precision
+                      </FormLabel>
+                      <Slider
+                        value={5}
+                        min={1}
+                        step={1}
+                        max={10}
+                        onChange={handlePrecisionChange}
+                        aria-labelledby="slider"
+                        valueLabelDisplay="auto"
+                      />
+                    </FormControl>
+
                     <FormControl
                       variant="outlined"
                       className={classes.formControlChart}
@@ -968,7 +993,7 @@ const Simulator = (props) => {
                                   { value: 0, label: "0" },
                                   { value: 100, label: "100" },
                                 ]}
-                                valueLabelDisplay="on"
+                                valueLabelDisplay="auto"
                               />
                               {/*             <p style={{ marginBottom: 0 }}>
               Controls how randomly coverage is applied. For 0, coverage is
@@ -1002,7 +1027,7 @@ const Simulator = (props) => {
                                   setSimMDAadherence([...newArray]);
                                 }}
                                 aria-labelledby="slider"
-                                valueLabelDisplay="on"
+                                valueLabelDisplay="auto"
                               />
                               <div className={classes.adherence}></div>
                               {/*             <p style={{ marginBottom: 0 }}>
@@ -1079,11 +1104,24 @@ const Simulator = (props) => {
 
 
             <ChartSettings
-              title="Settings"
+              title="Edit scenario"
               buttonText="Update Scenario"
               action={runCurrentScenario}
               onOpen={closeRoundModal}
             >
+              <TextContents>
+                <Typography paragraph variant="body1" component="p">
+                  What scenario do you want to simulate?
+                </Typography>
+              </TextContents>
+
+              <FormControl
+                fullWidth
+                variant="outlined"
+                className={classes.formControlText}
+              >
+                <TextField id="scenario-name" label="Scenario name" />
+              </FormControl>
 
               <FormControl
                 fullWidth
@@ -1153,7 +1191,7 @@ const Simulator = (props) => {
                 </Select>
               </FormControl>
 
-              <FormControl fullWidth>
+              <FormControl fullWidth className={classes.formControl}>
                 <FormLabel
                   component="legend"
                   htmlFor="endemicity"
@@ -1175,7 +1213,7 @@ const Simulator = (props) => {
                     { value: 5, label: "5%" },
                     { value: 18, label: "18%" },
                   ]}
-                  valueLabelDisplay="on"
+                  valueLabelDisplay="auto"
                 />
                 {/*             <p style={{ marginBottom: 0 }}>
               The mf prevalence in the population before intervention occurs.
@@ -1184,7 +1222,7 @@ const Simulator = (props) => {
               approximation only.{' '}
             </p> */}
               </FormControl>
-              <FormControl fullWidth>
+              <FormControl fullWidth className={classes.formControl}>
                 <FormLabel
                   component="legend"
                   htmlFor="runs"
@@ -1205,7 +1243,7 @@ const Simulator = (props) => {
                     { value: 0, label: "0" },
                     { value: 100, label: "100" },
                   ]}
-                  valueLabelDisplay="on"
+                  valueLabelDisplay="auto"
                 />
               </FormControl>
               <FormControl fullWidth className={classes.formControlSelect}>
@@ -1237,7 +1275,7 @@ const Simulator = (props) => {
                   />
                 </RadioGroup>
               </FormControl>
-              <FormControl fullWidth>
+              <FormControl fullWidth className={classes.formControl}>
                 <FormLabel
                   component="legend"
                   htmlFor="covN"
@@ -1259,7 +1297,7 @@ const Simulator = (props) => {
                     { value: 0, label: "0" },
                     { value: 100, label: "100" },
                   ]}
-                  valueLabelDisplay="on"
+                  valueLabelDisplay="auto"
                 />
                 {/*             <p style={{ marginBottom: 0 }}>
               Bed nets are assumed to have been distributed at the start of
@@ -1289,7 +1327,7 @@ const Simulator = (props) => {
                     { value: 0, label: "0" },
                     { value: 100, label: "100" },
                   ]}
-                  valueLabelDisplay="on"
+                  valueLabelDisplay="auto"
                 />
                 {/*             <p style={{ marginBottom: 0 }}>
               Insecticide is assumed to reduce the vector to host ratio only.
