@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
+// import Papa from "papaparse";
 
 import { Layout } from "../layout";
 import { makeStyles } from "@material-ui/core/styles";
@@ -596,33 +597,58 @@ const Simulator = (props) => {
   };
 
   useEffect(() => {
-    if (typeof scenarioResults[tabIndex] === "undefined") {
-      console.log("No scenarios? Running a new one...");
-      populateMDA();
-      runNewScenario();
-    }
+    const loadIUandRunScenario = async () => {
+      if (typeof scenarioResults[tabIndex] === "undefined") {
+        console.log("No scenarios? Running a new one...");
+        let decoder = new TextDecoder("utf-8");
 
-    /* let sessionDataJson =
-          JSON.parse(window.localStorage.getItem('scenarios')) || [] */
-    let scenariosArray = JSON.parse(window.localStorage.getItem("sessionData"))
-      ? JSON.parse(window.localStorage.getItem("sessionData")).scenarios
-      : null;
-    // console.log('scenariosArray', scenariosArray)
-    if (scenariosArray) {
-      let paramsInputs = scenariosArray.map((item) => item.params.inputs);
-      let MDAs = scenariosArray.map((item) => item.mdaOrig);
-      setScenarioInputs(paramsInputs);
-      if (typeof paramsInputs[tabIndex] != "undefined") {
-        // set input params if you have them
-        setSimParams(paramsInputs[tabIndex]);
-        setEditingMDAs(true);
-        setScenarioMDAs(MDAs);
-        setSimMDAtime(MDAs[tabIndex].time);
-        setSimMDAcoverage(MDAs[tabIndex].coverage);
-        setSimMDAadherence(MDAs[tabIndex].adherence);
-        setSimMDAactive(MDAs[tabIndex].active);
+        // populate mdaObj
+        //        populateMDA();
+        const mdaResponse = await fetch("/data/simulator/MLI30034-mda.csv");
+        let reader = mdaResponse.body.getReader();
+        const mdaResult = await reader.read();
+        const mdaValues = await decoder.decode(mdaResult.value);
+        console.log(mdaValues);
+        SimulatorEngine.simControler.mdaObj = mdaValues;
+        SimulatorEngine.simControler.mdaObjOrig = mdaValues;
+
+        // populate parametersJSON
+        const IUParamsResponse = await fetch(
+          "/data/simulator/MLI30034-params.csv"
+        );
+        let reader2 = IUParamsResponse.body.getReader();
+        const IUParamsResult = await reader2.read();
+        const IUParams = await decoder.decode(IUParamsResult.value);
+        console.log(IUParams);
+        SimulatorEngine.simControler.parametersJSON = IUParams;
+        //runNewScenario();
       }
-    }
+
+      /* let sessionDataJson =
+          JSON.parse(window.localStorage.getItem('scenarios')) || [] */
+      let scenariosArray = JSON.parse(
+        window.localStorage.getItem("sessionData")
+      )
+        ? JSON.parse(window.localStorage.getItem("sessionData")).scenarios
+        : null;
+      // console.log('scenariosArray', scenariosArray)
+      if (scenariosArray) {
+        let paramsInputs = scenariosArray.map((item) => item.params.inputs);
+        let MDAs = scenariosArray.map((item) => item.mdaOrig);
+        setScenarioInputs(paramsInputs);
+        if (typeof paramsInputs[tabIndex] != "undefined") {
+          // set input params if you have them
+          setSimParams(paramsInputs[tabIndex]);
+          setEditingMDAs(true);
+          setScenarioMDAs(MDAs);
+          setSimMDAtime(MDAs[tabIndex].time);
+          setSimMDAcoverage(MDAs[tabIndex].coverage);
+          setSimMDAadherence(MDAs[tabIndex].adherence);
+          setSimMDAactive(MDAs[tabIndex].active);
+        }
+      }
+    };
+    loadIUandRunScenario();
   }, []);
   useEffect(() => {
     // console.log('editingMDAs', editingMDAs)

@@ -230,16 +230,22 @@ export var Person = function (a, b) {
         Math.exp(-1 * params.theta * this.I) *
         this.b *
         params.dt
-    ); //* exp(-1 * beta * I)
-    //births = param->poisson_dist(0.5  * param->xi  * biteRate() * param->L3 * exp(-1 * param->theta * I) * b *  param->dt); //exp(-1 * beta * I)
+    );
     deaths = statFunctions.poisson(params.mu * this.WF * params.dt);
     this.WF += births - deaths;
 
-    //Mf update
-    //births = poisson(param->alpha * WF * WM);
-    //deaths = poisson(param->gamma * M);
-    //M += births - deaths;
-    this.M += params.dt * (this.repRate() - params.gamma * this.M);
+    // Panayiota: adding in fecRed parameter looks like it changes the calculation of M in this way.
+    // Is this right?
+
+    //this.M += params.dt * (this.repRate() - params.gamma * this.M)
+    var x = 1;
+    if (this.treated > 0) {
+      x = 0;
+    }
+    // this.M += params.dt * (this.repRate() *(1.0 - this.treated) - params.gamma * this.M)
+    this.M += params.dt * (this.repRate() * x - params.gamma * this.M);
+
+    this.treated = this.treated - 1;
     //M += param->dt * (repRate() - param->gamma * M);
     //total worm count
     this.W = this.WM + this.WF;
@@ -262,6 +268,17 @@ export var Person = function (a, b) {
     if (this.M < 0) {
       this.M = 0.0;
     }
+    // add in the function where we use the aImp variable.
+    if (Math.random() < 1 - Math.exp(-1.0 * params.aImp * params.dt)) {
+      // randomImportation();
+
+      // Panayiota: I'm not sure that I understand what the randomImportation function is doing. It seems to me to be randomly
+      // setting the number of worms in a person to some value (shown below), if the importation criteria is met
+      // based on the value of aImp. Is this what you want?
+      this.WM = (0.5 * params.xi * this.biteRate() * 10.0) / params.mu;
+      this.WF = (0.5 * params.xi * this.biteRate() * 10.0) / params.mu;
+    }
+
     //simulate event where host dies and is replaced by a new host.
     if (
       Math.random() < 1 - Math.exp(-1 * params.tau * params.dt) ||
@@ -281,6 +298,7 @@ export var Person = function (a, b) {
     this.M = 0.0; //0
     this.bedNet = 0;
     this.u = s.normal(params.u0, Math.sqrt(params.sigma));
+    this.treated = 0;
   };
 };
 export var Model = function (n) {
@@ -346,10 +364,10 @@ export var Model = function (n) {
   this.MDAEvent = function () {
     for (var i = 0; i < this.n; i++) {
       if (s.normal(this.people[i].u, 1) < 0) {
-        //param->uniform_dist()<param->covMDA
         this.people[i].M = params.mfPropMDA * this.people[i].M;
         this.people[i].WM = Math.floor(params.wPropMDA * this.people[i].WM);
         this.people[i].WF = Math.floor(params.wPropMDA * this.people[i].WF);
+        this.people[i].treated = params.fecRed;
       }
     }
   };
@@ -387,13 +405,13 @@ export var Model = function (n) {
 
   this.reductionYears = function () {
     var ryrs = [];
-    for (var yr = 0; yr < 20; yr++) {
+    for (var yr = 0; yr < 31; yr++) {
       ryrs.push(this.reduction(yr));
     }
     return ryrs;
   };
 
-  this.evolveAndSaves = function (tot_t, mdaJSON) {
+  this.evolveAndSaves = function (tot_t, mdaJSON, paramsNumber) {
     var t = 0;
     var icount = 0;
     var maxMDAt = 1200.0;
@@ -408,9 +426,15 @@ export var Model = function (n) {
     // how many mda's will we do and when will the next one be
     // console.log(simControler.mdaObj)
     var numMDA = simControler.mdaObj.time.length;
+
+    // next mda will occur at 12000 + the initial time given in the mdaObj
     var nextMDA = 1200 + simControler.mdaObj.time[mdaRound];
-    params.covMDA = simControler.mdaObj.coverage[mdaRound] / 100;
-    params.rho = simControler.mdaObj.adherence[mdaRound] / 100;
+
+    //update the Intervention parameters, covMDA, rho, mfPropMDA, wPropMDA and covN
+    statFunctions.updateInterventionParams(mdaRound);
+
+    // params.covMDA = simControler.mdaObj.coverage[mdaRound] / 100
+    // params.rho = simControler.mdaObj.adherence[mdaRound] / 100
     params.sigma = params.rho / (1 - params.rho);
     params.u0 =
       -statFunctions.NormSInv(params.covMDA) * Math.sqrt(1 + params.sigma);
@@ -424,6 +448,14 @@ export var Model = function (n) {
     }
     this.bedNetInt = 0;
 
+    // add a parameter to flag when we update parameters
+    // this is assuming that the "historic" portion of the simulation begins after 100 years,
+    // before that we are running to an equilibrium starting point.
+    var paramsUpdate = 1200;
+
+    // add a parameter to access the aImp historic entry
+    var aImpYear = 2000;
+
     for (var i = 0; i < this.n; i++) {
       //infect everyone initially.
       //this.people[i].WM = 1;
@@ -431,7 +463,6 @@ export var Model = function (n) {
       this.people[i].M = 1.0;
     }
 
-    // maxMDAt = 1200.0 + params.nMDA * params.mdaFreq;
     if (params.IDAControl === 1) {
       //if switching to IDA after five treatment rounds.
       maxoldMDAt = 1200.0 + 5.0 * params.mdaFreq;
@@ -454,6 +485,7 @@ export var Model = function (n) {
       for (var i = 0; i < this.n; i++) {
         this.people[i].react();
       }
+
       //update
       t = this.people[0].t;
       if (t < 12.0 * 80.0) {
@@ -474,20 +506,39 @@ export var Model = function (n) {
         Math.floor(t) % Math.floor((tot_t * 12.0) / 10.0) == 0 &&
         t < Math.floor(t) + params.dt
       ) {
-        //every 10% of time run.
-        // console.log("-");
-        //        $("#test1").append(" p : " + this.prevalence() + " t : " + t / 12.0);
       }
       if (t >= 1200.0 && t < 1200.0 + params.dt) {
-        //events that occur at start of treatment after 100 years.
-        // console.log("bednet event at ", t);
         this.bedNetEvent();
         this.bedNetInt = 1;
       }
 
+      //  adding in the use of the fecRed parameter.
+      //if ((Math.round(t) % 12 > params.fecRed)){
+      //After effects of MDA wear off reset to 0.
+
+      // // reduce value of treated by 1 each month
+      // for (int i = 0; i < this.n; i++){
+      //    this.people[i].treated = this.people[i].treated - 1;
+      // }
+      //}
+
+      // if we are at the point in time to update the parameters, then do it,
+      // and update the time for the next parameters update, and the "column" to look in
+      //for the next set of parameters
+      //if (t >= paramsUpdate){
+      if (t >= paramsUpdate && aImpYear < 2020) {
+        // update yearly parameters for MDA and aImp here.
+        statFunctions.updateSimParams(parametersJSON, aImpYear, paramsNumber);
+        paramsUpdate += 12.0;
+        aImpYear += 1;
+      }
+      if (t >= 1200 + 20 * 12) {
+        params.aImp = 0;
+      }
+
       if (t >= nextMDA) {
         this.MDAEvent();
-
+        this.bedNetEvent();
         statFunctions.setBR(true); //intervention true.
         statFunctions.setVH(true);
         statFunctions.setMu(true);
@@ -496,8 +547,11 @@ export var Model = function (n) {
           // update the mda round and the time for the next one
           mdaRound += 1;
           nextMDA = 1200 + simControler.mdaObj.time[mdaRound];
-          params.covMDA = simControler.mdaObj.coverage[mdaRound] / 100;
-          params.rho = simControler.mdaObj.adherence[mdaRound] / 100;
+
+          //update the Intervention parameters, covMDA, rho, mfPropMDA, wPropMDA and covN
+          statFunctions.updateInterventionParams(mdaRound);
+          // params.covMDA = simControler.mdaObj.coverage[mdaRound] / 100
+          // params.rho = simControler.mdaObj.adherence[mdaRound] / 100
           params.sigma = params.rho / (1 - params.rho);
           params.u0 =
             -statFunctions.NormSInv(params.covMDA) *
@@ -514,6 +568,17 @@ export var Model = function (n) {
           nextMDA = Infinity;
         }
       }
+
+      //
+      // if (t >= nextMDA) {
+      //   this.MDAEvent()
+      //   // change the way the time for the next mda is calculated using the annual or biannual marker from the mda file.
+      //   // if biannual, this will add 6 to the next mda time, so will be done in 6 months again.
+      //   nextMDA += params.mdaPeriod
+      //   statFunctions.setBR(true) //intervention true.
+      //   statFunctions.setVH(true)
+      //   statFunctions.setMu(true)
+      // }
 
       icount++;
     }
@@ -804,18 +869,55 @@ export var statFunctions = {
     return vhs[i];
   },
 
-  setInputParams: function (dict) {
+  updateSimParams: function (parametersJSON, aImpYear, paramsNumber) {
+    // the aImpHistoric has a year entry, starting at 2000, and also a number to signify which simulation has been run
+    params.aImp = parametersJSON.aImpHistoric[aImpYear][paramsNumber];
+  },
+
+  updateInterventionParams: function (mdaRound) {
+    // get parameters from the correct mdaRound
+    params.covMDA = simControler.mdaObj.coverage[mdaRound] / 100;
+    params.rho = simControler.mdaObj.adherence[mdaRound];
+
+    let regimen = simControler.mdaObj.regime[mdaRound];
+
+    if (regimen == "xIA") {
+      params.wPropMDA = 0.65;
+      params.mfPropMDA = 0.01;
+      params.fecRed = 9.0;
+    } else if (regimen == "xxA") {
+      params.wPropMDA = 0.65;
+      params.mfPropMDA = 1;
+      params.fecRed = 0;
+    } else if (regimen == "xDA") {
+      params.wPropMDA = 0.45;
+      params.mfPropMDA = 0.05;
+      params.fecRed = 6.0;
+    } else if (regimen == "IDA") {
+      params.wPropMDA = 0;
+      params.mfPropMDA = 0;
+      params.fecRed = 0;
+    }
+
+    // // similarly for the bednet data. This would just treat it as a vector that we can get the bed net coverage from.
+    // // covN is the parameter for how much bed net coverage there is
+    params.covN = simControler.mdaObj.bednets[mdaRound];
+  },
+
+  setInputParams: function (dict, i, parametersJSON) {
     // var ps = simControler.modelParams();
     var ps = simControler.params;
     params.inputs = ps;
     params.runs = Number(ps.runs);
     params.nMDA = dict && dict.nMDA ? dict.nMDA : Number(ps.mda);
     params.mdaFreq = ps.mdaSixMonths === "True" ? 6.0 : 12.0;
-    var end = ps.endemicity / 100;
+    var end =
+      dict && dict.endemicity ? dict.endemicity / 100 : ps.endemicity / 100;
     //    console.log(end)
     var sps = ps.species;
     //    console.log(sps)
-    params.v_to_h = Number(statFunctions.setVHFromPrev(end, Number(sps))); //Number(ps.endemicity);//
+    // params.v_to_h = Number(statFunctions.setVHFromPrev(end, Number(sps))) //Number(ps.endemicity);//
+
     //    console.log(params.v_to_h)
     params.covMDA = Number(ps.coverage / 100.0);
     params.covN = Number(ps.covN / 100);
@@ -835,6 +937,11 @@ export var statFunctions = {
     } else {
       params.shapeRisk = 0.08;
     }
+    // the part where we get parameters from the JSON for the initial longtime simulation to equilibrium
+    params.v_to_h = parametersJSON.v_to_h[i];
+    params.shapeRisk = parametersJSON.shapeRisk[i];
+    params.aImp = parametersJSON.aImp[i];
+
     params.lbda_original = params.lbda;
     params.v_to_h_original = params.v_to_h;
     params.sig_original = params.sig;
@@ -922,21 +1029,59 @@ export var simControler = {
     if (values.length % 2) return values[half];
     else return (values[half - 1] + values[half]) / 2.0;
   },
+
   runMapSimulation: function (tabIndex, simulatorCallback) {
-    statFunctions.setInputParams({ nMDA: 40 });
+    //statFunctions.setInputParams({ nMDA: 60 })
     //max number of mda rounds even if doing it six monthly.
 
     var mdaJSON = simControler.mdaObj; //generateMDAFromForm()
     var maxN = simControler.params.runs; // Number($("#runs").val());
+
+    //####//####//####//####//####//####//####
+    // I don't know how this will be implemented, but we need the input parameters
+    // file containing the parameters set to be accessible in some way here
+    // var parametersJSON = ParametersJSONFileFromTom;
+
+    // numberParamSets should tell us how many sets of parameters we have input
+    // however that is done for a JSON file should go here. This will then be used for randomly choosing parameters
+    var numberParamSets = 20; //number_rows(parametersJSON);
+
+    //####//####//####//####//####//####
+
+    // // paramsStep will make a variable which tells us how far to step in the parameters file for the next simulation.
+    // // will multiplying by 1.0 make the result a double, or whatever variable type is equivalent to a decimal (not an integer basically)?
+    // // after maxN steps forward, this will be equal to the number of parameter sets, so will end on the final line of the parameter file
+    // var paramsStep = numberParamSets*1.0/maxN
+    //
+    // // paramsNumber will tell us which row from the parameters file we want to take parameters from
+    // // this will be increased by paramStep for each simulation.
+    // // Initialise at 0 so we begin on the first line of the parametersJSON file
+    // var paramsNumber = 0
+
     var runs = [];
     var progression = 0;
     //    this.fixInput()
 
     var progress = setInterval(() => {
-      var m = new Model(800);
-      m.evolveAndSaves(120.0, mdaJSON);
+      // randomly choose a set of parameters
+      var paramsNumber = Math.floor(Math.random() * numberParamSets);
+
+      // change the parameters for every simulation here
+      statFunctions.setInputParams({ nMDA: 60 }, paramsNumber, parametersJSON);
+
+      // get the population size from the parametersJSON file
+      var population = parametersJSON.Population[paramsNumber];
+      var m = new Model(population);
+
+      //change time to 131 below, as we potentially have 31 years simulation after running to equilibrium
+      // the historic 2000-2019 and then to 2030
+      m.evolveAndSaves(131.0, mdaJSON, paramsNumber);
       runs.push(SessionData.convertRun(m));
       simulatorCallback(parseInt((progression * 100) / maxN));
+
+      // // step forward the position at which we will get the next set of parameters in the next simulation
+      // paramsNumber += paramsStep
+
       if (progression === maxN) {
         clearInterval(progress);
         SessionData.storeResults(runs, "Scenario #" + (tabIndex + 1));
@@ -1074,7 +1219,7 @@ export var simControler = {
     time: [], //60, 96, 120, 144, 180
     coverage: [], // 0.9, 0.9, 0.9, 0.9, 0.9
     adherence: [], // 1, 1, 1, 1, 1
-    active: [], // true, false, true, false, true
   },
   newScenario: true,
 };
+export var parametersJSON = {}; // ParametersJSONFileFromTom
