@@ -19,7 +19,7 @@ const SettingBasePrevalence = ({ inModal, label }) => {
       <FormLabel
         component="legend"
         htmlFor="endemicity"
-        className={classes.withSlider}
+        className={inModal ? '' : classes.withSlider}
       >
         {label}
       </FormLabel>
@@ -37,7 +37,7 @@ const SettingBasePrevalence = ({ inModal, label }) => {
           { value: 5, label: "5%" },
           { value: 18, label: "18%" },
         ]}
-        valueLabelDisplay="auto"
+        valueLabelDisplay={inModal ? "auto" : "on"}
       />
       {/*             <p style={{ marginBottom: 0 }}>
               The mf prevalence in the population before intervention occurs.

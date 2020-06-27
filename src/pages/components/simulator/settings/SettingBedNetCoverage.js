@@ -19,7 +19,7 @@ const SettingBedNetCoverage = ({ inModal, label }) => {
       <FormLabel
         component="legend"
         htmlFor="covN"
-        className={classes.withSlider}
+        className={inModal ? '' : classes.withSlider}
       >
         {label}
       </FormLabel>
@@ -37,7 +37,7 @@ const SettingBedNetCoverage = ({ inModal, label }) => {
           { value: 0, label: "0" },
           { value: 100, label: "100" },
         ]}
-        valueLabelDisplay="auto"
+        valueLabelDisplay={inModal ? "auto" : "on"}
       />
       {/*             <p style={{ marginBottom: 0 }}>
               Bed nets are assumed to have been distributed at the start of

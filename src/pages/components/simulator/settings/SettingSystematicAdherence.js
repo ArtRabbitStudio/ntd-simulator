@@ -24,7 +24,7 @@ const SettingSystematicAdherence = ({ inModal, label, value, onChange }) => {
         <FormLabel
           component="legend"
           htmlFor="rho"
-          className={`${classes.withSlider} ${classes.withHelp}`}
+          className={inModal ? classes.withHelp : `${classes.withSlider} ${classes.withHelp}`}
         >
           {label}
         </FormLabel>
@@ -36,7 +36,7 @@ const SettingSystematicAdherence = ({ inModal, label, value, onChange }) => {
         max={1}
         onChange={onChange}
         aria-labelledby="slider"
-        valueLabelDisplay="auto"
+        valueLabelDisplay={inModal ? "auto" : "on"}
       />
       {inModal === false && <div className={classes.adherence}></div>}
       {/*             <p style={{ marginBottom: 0 }}>

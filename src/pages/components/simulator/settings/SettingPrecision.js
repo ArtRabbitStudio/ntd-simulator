@@ -26,7 +26,7 @@ const SettingPrecision = ({ inModal, label, classAdd }) => {
           dispatchSimParams({ type: "runs", payload: newValue });
         }}
         aria-labelledby="slider"
-        valueLabelDisplay="auto"
+        valueLabelDisplay={inModal ? "auto" : "on"}
       />
       <FormLabel component="legend" htmlFor="precision" className={classes.precisionLabel}>
         {label}

@@ -19,7 +19,7 @@ const SettingInsecticideCoverage = ({ inModal, label }) => {
       <FormLabel
         component="legend"
         htmlFor="v_to_hR"
-        className={classes.withSlider}
+        className={inModal ? '' : classes.withSlider}
       >
         {label}
       </FormLabel>
@@ -37,7 +37,7 @@ const SettingInsecticideCoverage = ({ inModal, label }) => {
           { value: 0, label: "0" },
           { value: 100, label: "100" },
         ]}
-        valueLabelDisplay="auto"
+        valueLabelDisplay={inModal ? "auto" : "on"}
       />
       {/*             <p style={{ marginBottom: 0 }}>
               Insecticide is assumed to reduce the vector to host ratio only.

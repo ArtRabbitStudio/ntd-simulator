@@ -21,7 +21,11 @@ const SettingTargetCoverage = ({ inModal, label }) => {
 
   return (
     <FormControl fullWidth className={classes.formControl}>
-      <FormLabel component="legend" htmlFor="coverage">{label}</FormLabel>
+      <FormLabel
+        component="legend"
+        htmlFor="coverage"
+        className={inModal ? '' : classes.withSlider}
+      >{label}</FormLabel>
       <Slider
         value={simParams.coverage}
         min={0}
@@ -33,7 +37,7 @@ const SettingTargetCoverage = ({ inModal, label }) => {
           { value: 0, label: "0" },
           { value: 100, label: "100" },
         ]}
-        valueLabelDisplay="auto"
+        valueLabelDisplay={inModal ? "auto" : "on"}
       />
     </FormControl>
   )

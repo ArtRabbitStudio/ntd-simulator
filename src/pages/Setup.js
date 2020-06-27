@@ -79,7 +79,14 @@ const useStyles = makeStyles((theme) => ({
       padding: theme.spacing(0, 10, 0, 10),
     },
     [theme.breakpoints.up("lg")]: {
+      maxWidth: 460,
+      margin: 'auto'
       //display: "inline-block",
+    },
+  },
+  halfFormControl: {
+    [theme.breakpoints.up("lg")]: {
+      width: "calc(50% - 16px)",
     },
   },
 }));
@@ -216,8 +223,10 @@ const Setup = (props) => {
           </div>
 
           <div className={`${classes.formControlWrap} fullwidth`}>
-            <div className={classes.setupFormControl}>
-              <SettingSystematicAdherence inModal={false} label="Systematic adherence" value={0} onChange={handleAdherenceChange} />
+            <div className={classes.halfFormControl}>
+              <div className={classes.setupFormControl}>
+                <SettingSystematicAdherence inModal={false} label="Systematic adherence" value={0} onChange={handleAdherenceChange} />
+              </div>
             </div>
           </div>
 

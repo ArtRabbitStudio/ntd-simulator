@@ -158,7 +158,7 @@ const useStyles = makeStyles((theme) => ({
     transform: "translate(-50%, 0%)",
   },
   withSlider: {
-    margin: theme.spacing(0, 0, 0, 0),
+    margin: theme.spacing(0, 0, 6, 0),
     whiteSpace: "nowrap",
   },
   withHelp: {
@@ -169,7 +169,6 @@ const useStyles = makeStyles((theme) => ({
     backgroundRepeat: "no-repeat",
     width: "fit-content",
     paddingRight: 30,
-    margin: theme.spacing(0, 0, 0, 0),
     padding: theme.spacing(1, 0),
   },
   modalButton: {
@@ -222,11 +221,11 @@ const useStyles = makeStyles((theme) => ({
 
   imageOptions: {
     paddingTop: theme.spacing(2),
+    justifyContent: 'space-between'
   },
   imageOption: {
     paddingTop: 74,
     minWidth: 120,
-    marginRight: theme.spacing(1),
     "&.anopheles": {
       backgroundImage: `url(${Anopheles})`,
       backgroundPosition: "14px top",
@@ -238,7 +237,6 @@ const useStyles = makeStyles((theme) => ({
       backgroundPosition: "14px top",
       backgroundSize: "112px 74px",
       backgroundRepeat: "no-repeat",
-      marginRight: 0,
     },
     "& .MuiFormControlLabel-label": {
       fontSize: "1rem",

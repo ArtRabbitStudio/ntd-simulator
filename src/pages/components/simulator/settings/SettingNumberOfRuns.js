@@ -19,7 +19,7 @@ const SettingNumberOfRuns = ({ inModal, label }) => {
       <FormLabel
         component="legend"
         htmlFor="runs"
-        className={classes.withSlider}
+        className={inModal ? '' : classes.withSlider}
       >
         {label}
       </FormLabel>
@@ -36,7 +36,7 @@ const SettingNumberOfRuns = ({ inModal, label }) => {
           { value: 0, label: "0" },
           { value: 100, label: "100" },
         ]}
-        valueLabelDisplay="auto"
+        valueLabelDisplay={inModal ? "auto" : "on"}
       />
     </FormControl>
   )
