@@ -1,7 +1,7 @@
 import { Button, FormControl, FormLabel, MenuItem, Select, Slider, Typography, } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { observer } from "mobx-react";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Fragment } from "react";
 import { useHistory } from "react-router-dom";
 import { orderBy } from 'lodash'
 import PrevalenceMiniGraph from "../components/PrevalenceMiniGraph";
@@ -12,6 +12,7 @@ import HeadWithInputs from "./components/HeadWithInputs";
 import SelectCountry from "./components/SelectCountry";
 import TextContents from "./components/TextContents";
 import { loadAllIUhistoricData } from "./components/simulator/ParamMdaLoader";
+
 
 // settings
 import {
@@ -49,7 +50,7 @@ const useStyles = makeStyles((theme) => ({
   },
   chart: {
     paddingBottom: theme.spacing(4),
-    paddingTop: theme.spacing(2),
+    paddingTop: theme.spacing(4),
     paddingLeft: theme.spacing(6),
     paddingRight: theme.spacing(6),
     backgroundColor: theme.palette.secondary.dark,
@@ -62,6 +63,16 @@ const useStyles = makeStyles((theme) => ({
         textAlign: "left",
       },
     },
+  },
+  legend: {
+    textTransform: "uppercase",
+    textTransform: 'uppercase',
+    fontSize: 14,
+    letterSpacing: 1,
+    fontSize:12,
+    width:30,
+    marginBottom:0,
+    marginLeft:-3
   },
   scenariosWrap: {
     padding: theme.spacing(4),
@@ -158,10 +169,6 @@ const Setup = (props) => {
     )
   }
 
-  console.log(simParams.IUData);
-  if ( selectedIUData[0] ) {
-    console.log(selectedIUData[0]['prevalence']);
-  }
 
   const handleAdherenceChange = (event) => {
     // TODO
@@ -187,7 +194,7 @@ const Setup = (props) => {
         </Typography>
         <TextContents>
           <Typography paragraph variant="body1" component="p">
-            We hold the following information for IU Name.
+            {`We hold the following information for ${implementationUnit}.`}
             <br />
             This data will be used to initialise the simulation.
           </Typography>
@@ -200,6 +207,42 @@ const Setup = (props) => {
           </div>
           <div className={classes.chart}>
             <Typography variant="h6" component="h6" className={classes.headline} >Espen intervention data</Typography>
+            <div className="bars setup">
+                {simParams.IUData.mdaObj && simParams.IUData.mdaObj.time.map((e, i) => (
+                <div
+                  key={`bar-setup-${i}`}
+                  className={`bar setup c${simParams.IUData.mdaObj.coverage[i]}`}
+                  title={
+                    simParams.IUData.mdaObj.time[i] +
+                    ", " +
+                    simParams.IUData.mdaObj.coverage[i] +
+                    ", " +
+                    simParams.IUData.mdaObj.adherence[i] +
+                    ", " +
+                    simParams.IUData.mdaObj.bednets[i] +
+                    ", " +
+                    simParams.IUData.mdaObj.regimen[i] +
+                    " "
+                  }
+                >
+                  <span
+                    style={{
+                      height: simParams.IUData.mdaObj.coverage[i],
+                    }}
+                  ></span>
+                </div>
+                
+              ))}
+            </div>
+                <div className="bars setup">
+                {simParams.IUData.mdaObj && simParams.IUData.mdaObj.time.map((e, i) => (
+                  <Typography key={`bar-legend=${i}`} className={classes.legend} component="p">{ '‘' +(2000+(simParams.IUData.mdaObj.time[i]/12)).toString().substr(-2) }</Typography>
+                ))}
+                  
+                  
+                    
+                </div>
+
           </div>
         </div>
 

@@ -7,9 +7,7 @@ import AutoSizer from 'react-virtualized-auto-sizer'
 let fadeOutTimeout = null;
 
 function Path({ data, x, y, color, start }) {
-  console.log(data);
   const coords = data.map((d,index) => [x(start+index), y(d)])
-  console.log(coords);
   const l = line()(coords)
   return <path d={l} stroke={color} fill="none" strokeWidth="2" />
 }
@@ -31,7 +29,7 @@ function PrevalenceMiniGraph({
   const svgWidth = width
   const start = 2010
   const end = 2019
-  const domain = max(map(data.prevalence))
+  const domain = max(map(data.prevalence))*1.2
   const xScale = scaleLinear()
   .domain([start, end])
   .range([0, width - (rPad + lPad)])

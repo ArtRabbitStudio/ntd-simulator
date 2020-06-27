@@ -3,9 +3,7 @@ import Papa from "papaparse";
 
 export const loadAllIUhistoricData = async (simParams,dispatchSimParams,implementationUnit) => {
     const doWeHaveData = simParams.IUData.IUloaded === implementationUnit;
-    console.log('loadall called',doWeHaveData);
     if ( !doWeHaveData ) {
-      console.log('triggerin loading...')
       const mdaData = await loadMda();
       const params = await loadParams();
       dispatchSimParams({
@@ -15,7 +13,6 @@ export const loadAllIUhistoricData = async (simParams,dispatchSimParams,implemen
           params: params
         }
       });
-      console.log('loading done save to state?');
     }
     
     
@@ -47,7 +44,6 @@ export const loadMda = async () => {
   newMdaObj.adherence.length = 20;
   newMdaObj.active.length = 20;
 
-  console.log(newMdaObj);
   return newMdaObj;
 };
 
@@ -87,6 +83,5 @@ export const loadParams = async () => {
     aImp_2019: IUParamsJSON.data.map((item) => Number(item.aImp_2019)),
     aImp_2020: IUParamsJSON.data.map((item) => Number(item.aImp_2020)),
   };
-  console.log(newParams);
   return newParams;
 };

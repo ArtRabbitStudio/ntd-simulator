@@ -126,7 +126,7 @@ const theme = createMuiTheme({
     },
     button: {
       fontWeight: 400,
-    },
+    }
   },
   overrides: {
     MuiTooltip: {
@@ -198,7 +198,6 @@ const theme = createMuiTheme({
   },
 });
 
-console.log(theme);
 
 function App() {
   const location = useLocation();
