@@ -435,40 +435,78 @@ const Simulator = (props) => {
               <TabPanel key={`scenario-result-${i}`} value={tabIndex} index={i}>
                 <div className={classes.simulatorBody}>
                   <div className={classes.simulatorInnerBody}>
-                    <Typography
-                      className={classes.chartTitle}
-                      variant="h3"
-                      component="h2"
-                    >
-                      {`Scenario ${i + 1}`}
-                    </Typography>
 
-                    <SettingPrecision label="Precision" />
+                    <Grid container spacing={0}>
+                      <Grid item md={6} xs={12} >
+                        <Typography
+                          className={classes.chartTitle}
+                          variant="h3"
+                          component="h2"
+                        >
+                          {`Scenario ${i + 1}`}
+                        </Typography>
+                        <SettingPrecision classAdd={classes.precision} label="Precision" />
+                      </Grid>
+                      <Grid item md={6} xs={12} >
 
-                    <FormControl
-                      variant="outlined"
-                      className={classes.formControlChart}
-                    >
-                      <Select
-                        labelId="larvae-prevalence"
-                        id="larvae-prevalence"
-                        value={graphMetric}
-                        onChange={(ev) => {
-                          // console.log(ev.target.value)
-                          setGraphMetric(ev.target.value);
-                        }}
-                      >
-                        <MenuItem value={"Ms"}>
-                          Prevalence mirofilerima
+                        <Fab
+                          color="inherit"
+                          aria-label="REMOVE SCENARIO"
+                          disabled={simInProgress || scenarioResults.length === 0}
+                          className={classes.removeIcon}
+                          onClick={confirmRemoveCurrentScenario}
+                        ></Fab>
+
+                        <ChartSettings
+                          title="Edit scenario"
+                          buttonText="Update Scenario"
+                          action={runCurrentScenario}
+                        >
+                          <TextContents>
+                            <Typography paragraph variant="body1" component="p">
+                              What scenario do you want to simulate?
+                            </Typography>
+                          </TextContents>
+
+                          <SettingName inModal={true} label="Scenario name" />
+                          <SettingFrequency inModal={true} label="Frequency" />
+                          <SettingTargetCoverage inModal={true} label="Target coverage" />
+                          <SettingDrugRegimen inModal={true} label="Drug regimen" />
+                          <SettingBasePrevalence inModal={true} label="Base prevalence" />
+                          <SettingNumberOfRuns inModal={true} label="Number of runs" />
+                          <SettingMosquitoType inModal={true} label="Mosquito type" />
+                          <SettingBedNetCoverage inModal={true} label="Vector: Bed Net Coverage (%)" />
+                          <SettingInsecticideCoverage inModal={true} label="Vector: Insecticide Coverage (%)" />
+                        </ChartSettings>
+
+
+                        <FormControl
+                          variant="outlined"
+                          className={classes.formControlChart}
+                        >
+                          <Select
+                            labelId="larvae-prevalence"
+                            id="larvae-prevalence"
+                            value={graphMetric}
+                            onChange={(ev) => {
+                              // console.log(ev.target.value)
+                              setGraphMetric(ev.target.value);
+                            }}
+                          >
+                            <MenuItem value={"Ms"}>
+                              Prevalence mirofilerima
                         </MenuItem>
-                        <MenuItem value={"Ls"}>
-                          Prevalence in the mosquito population
+                            <MenuItem value={"Ls"}>
+                              Prevalence in the mosquito population
                         </MenuItem>
-                        <MenuItem value={"Ws"}>
-                          Prevalence of worms in the lymph nodes
+                            <MenuItem value={"Ws"}>
+                              Prevalence of worms in the lymph nodes
                         </MenuItem>
-                      </Select>
-                    </FormControl>
+                          </Select>
+                        </FormControl>
+
+                      </Grid>
+                    </Grid>
 
                     <div className={classes.scenarioGraph}>
                       <Button
@@ -498,13 +536,7 @@ const Simulator = (props) => {
               </TabPanel>
             ))}
 
-            <Fab
-              color="inherit"
-              aria-label="REMOVE SCENARIO"
-              disabled={simInProgress || scenarioResults.length === 0}
-              className={classes.icon}
-              onClick={confirmRemoveCurrentScenario}
-            ></Fab>
+
 
             <ConfirmationDialog
               title="Do you want to delete this scenario?"
@@ -526,28 +558,6 @@ const Simulator = (props) => {
               </div>
             )}
 
-            <ChartSettings
-              title="Edit scenario"
-              buttonText="Update Scenario"
-              action={runCurrentScenario}
-            >
-              <TextContents>
-                <Typography paragraph variant="body1" component="p">
-                  What scenario do you want to simulate?
-                </Typography>
-              </TextContents>
-
-              <SettingName inModal={true} label="Scenario name" />
-              <SettingFrequency inModal={true} label="Frequency" />
-              <SettingTargetCoverage inModal={true} label="Target coverage" />
-              <SettingDrugRegimen inModal={true} label="Drug regimen" />
-              <SettingBasePrevalence inModal={true} label="Base prevalence" />
-              <SettingNumberOfRuns inModal={true} label="Number of runs" />
-              <SettingMosquitoType inModal={true} label="Mosquito type" />
-              <SettingBedNetCoverage inModal={true} label="Vector: Bed Net Coverage (%)" />
-              <SettingInsecticideCoverage inModal={true} label="Vector: Insecticide Coverage (%)" />
-
-            </ChartSettings>
           </Grid>
         </Grid>
       </section>

@@ -13,11 +13,7 @@ import CloseButton from './CloseButton';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    position: 'absolute',
-    right: 60,
-    top: 0,
     zIndex: 99,
-    height: '100%'
   },
   button: {
     width: '100%',
@@ -25,9 +21,10 @@ const useStyles = makeStyles(theme => ({
   },
   modal: {
     position: 'absolute',
-    right: 0,
+    left: '50%',
     top: '50%',
-    transform: 'translate(0%, -50%)',
+    zIndex: 999,
+    transform: 'translate(-50%, -50%)',
     padding: theme.spacing(0),
     minWidth: 300,
     borderRadius: 0
@@ -48,6 +45,7 @@ const useStyles = makeStyles(theme => ({
   icon: {
     backgroundColor: "transparent",
     boxShadow: 'none',
+    float: "right",
     '& .MuiTouchRipple-root': {
       backgroundImage: `url(${Icon})`,
       backgroundPosition: 'center',

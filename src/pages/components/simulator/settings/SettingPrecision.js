@@ -9,13 +9,13 @@ import {
   FormLabel,
 } from "@material-ui/core";
 
-const SettingPrecision = ({ inModal, label }) => {
+const SettingPrecision = ({ inModal, label, classAdd }) => {
 
   const classes = useStyles();
   const { simParams, dispatchSimParams } = useStore();
 
   return (
-    <FormControl className={classes.formControlChart}>
+    <FormControl className={`${classes.formControlChart} ${classAdd}`}>
       <FormLabel component="legend" htmlFor="precision">
         {label}
       </FormLabel>

@@ -4,7 +4,8 @@ import Same from "../../../images/systemic-same.svg";
 import Anopheles from "../../../images/Anopheles.jpg";
 import Culex from "../../../images/Culex.jpg";
 import InfoIcon from "../../../images/info-24-px.svg";
-import Icon from "../../../images/delete-icon-blue.svg";
+import RemoveIcon from "../../../images/delete-icon-blue.svg";
+import SettingsIcon from '../../../images/settings.svg';
 
 const useStyles = makeStyles((theme) => ({
   tabs: {
@@ -26,19 +27,34 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(0, 0, -1, 0),
   },
   formControlChart: {
-    margin: theme.spacing(-2, 0, 0, 3),
+    float: 'right',
+    margin: theme.spacing(0, 2, 0, 0),
   },
   contentLeftColumn: {},
-  icon: {
+  settingsIcon: {
+    backgroundColor: "transparent",
+    boxShadow: 'none',
+    '& .MuiTouchRipple-root': {
+      backgroundImage: `url(${SettingsIcon})`,
+      backgroundPosition: 'center',
+      backgroundSize: 'auto',
+      backgroundRepeat: 'no-repeat',
+    },
+    '&:hover': {
+      '& .MuiTouchRipple-root': {
+        //backgroundImage: `url(${IconHover})`,
+
+      }
+    }
+  },
+  removeIcon: {
     backgroundColor: "transparent",
     boxShadow: "none",
-    position: "absolute",
-    right: 0,
-    top: 0,
-    zIndex: 99,
+    float: 'right',
+    zIndex: 9,
 
     "& .MuiTouchRipple-root": {
-      backgroundImage: `url(${Icon})`,
+      backgroundImage: `url(${RemoveIcon})`,
       backgroundPosition: "center",
       backgroundSize: "auto",
       backgroundRepeat: "no-repeat",
@@ -78,7 +94,13 @@ const useStyles = makeStyles((theme) => ({
     padding: 0,
   },
   chartTitle: {
-    display: "inline-block",
+    display: "block",
+    float: "left"
+  },
+  precision: {
+    display: "block",
+    float: "left",
+    margin: theme.spacing(0, 0, 0, 2),
   },
   progress: {
     width: "100%",
