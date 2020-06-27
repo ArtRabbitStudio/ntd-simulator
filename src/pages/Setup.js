@@ -168,7 +168,7 @@ const Setup = (props) => {
       </Layout>
     )
   }
-
+  
 
   const handleAdherenceChange = (event) => {
     // TODO
@@ -180,8 +180,6 @@ const Setup = (props) => {
     history.push({ pathname: `/simulator/${country}/${implementationUnit}` });
   };
 
-  let statsFromYear = 2010;
-  //console.log(country);
 
   return (
     <Layout>
@@ -202,7 +200,7 @@ const Setup = (props) => {
 
         <div className={classes.charts}>
           <div className={classes.chart}>
-            <Typography variant="h6" component="h6" className={classes.headline} >Prevalence data</Typography>
+            <Typography variant="h6" component="h6" className={classes.headline} >Prevalence data ({selectedIUData[0] && selectedIUData[0].endemicity})</Typography>
             <PrevalenceMiniGraph data={selectedIUData[0]} />
           </div>
           <div className={classes.chart}>
@@ -257,7 +255,7 @@ const Setup = (props) => {
         <div className={classes.settings}>
           <div className={classes.formControlWrap}>
             <div className={classes.setupFormControl}>
-              <SettingBedNetCoverage inModal={false} label="Bed Net Coverage" />
+              <SettingBedNetCoverage inModal={false} label="Bed Net Coverage" value={50} />
             </div>
           </div>
 
@@ -291,12 +289,16 @@ const Setup = (props) => {
             </div>
           </div>
 
-          <div className={`${classes.formControlWrap} fullwidth`}>
-            <div className={classes.halfFormControl}>
+          <div className={classes.formControlWrap}>
+            <div className={classes.setupFormControl}>
+              <SettingTargetCoverage inModal={false} label="Treatment target coverage" />
+            </div>
+          </div>
+
+          <div className={`${classes.formControlWrap}`}>
               <div className={classes.setupFormControl}>
                 <SettingSystematicAdherence inModal={false} label="Systematic adherence" value={0} onChange={handleAdherenceChange} />
               </div>
-            </div>
           </div>
 
         </div>

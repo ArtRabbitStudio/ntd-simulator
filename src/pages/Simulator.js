@@ -64,7 +64,7 @@ const Simulator = (props) => {
   const { simParams, dispatchSimParams } = useStore();
   const { country, implementationUnit } = useUIState();
 
-  const doWeHaveData = simParams.IUData.IUloaded === implementationUnit;
+  const doWeHaveData = simParams.IUData.IUloaded != null; // simParams.IUData.IUloaded === implementationUnit; // TODO: THIS IS CORRECT ONCE WE HAVE ALL THE DATA
   /* MDA object */
   const [graphMetric, setGraphMetric] = useState("Ms");
 
@@ -112,7 +112,7 @@ const Simulator = (props) => {
     if (typeof scenarioInputs[tabIndex] != "undefined") {
       // set input arams if you have them
       dispatchSimParams({
-        type: "everything",
+        type: "everythingbuthistoric",
         payload: scenarioInputs[tabIndex],
       });
       SimulatorEngine.ScenarioIndex.setIndex(tabIndex);
@@ -192,9 +192,11 @@ const Simulator = (props) => {
       console.log('scenarioInputs', scenarioInputs)
     }, [scenarioInputs]) */
   const runCurrentScenario = async () => {
+    //console.log('runnCurrentScenario',!simInProgress,doWeHaveData)
+    //console.log('simParams',simParams)
     if (!simInProgress && doWeHaveData) {
       setSimInProgress(true);
-      //console.log(tabIndex, simParams)
+      console.log(tabIndex, simParams)
       // populate mdaObj // populateMDA();
       const newMdaObj = simParams.IUData.mdaObj;
       SimulatorEngine.simControler.mdaObj = newMdaObj;
@@ -353,7 +355,7 @@ const Simulator = (props) => {
       if (typeof paramsInputs[tabIndex] != "undefined") {
         // set input params if you have them
         dispatchSimParams({
-          type: "everything",
+          type: "everythingbuthistoric",
           payload: paramsInputs[tabIndex],
         });
         setScenarioMDAs(MDAs);

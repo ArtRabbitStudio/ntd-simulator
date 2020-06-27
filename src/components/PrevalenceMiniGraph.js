@@ -29,7 +29,11 @@ function PrevalenceMiniGraph({
   const svgWidth = width
   const start = 2010
   const end = 2019
-  const domain = max(map(data.prevalence))*1.2
+  const cleanedPrevalence = map(data.prevalence,(x)=>{
+    x = x === null ? 0 : x
+    return x
+  })
+  const domain = max(map(cleanedPrevalence))*1.2
   const xScale = scaleLinear()
   .domain([start, end])
   .range([0, width - (rPad + lPad)])
@@ -45,7 +49,7 @@ function PrevalenceMiniGraph({
   const halfYearWidth = Math.round(yearWidth / 2)
   const startX = xScale(start)
   const endX = xScale(end)
-  const seriesObj = filter(data.prevalence,(value,index)=>{
+  const seriesObj = filter(cleanedPrevalence,(value,index)=>{
       return ( index >= start && index <= end )
   })
 

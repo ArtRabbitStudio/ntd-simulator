@@ -1,4 +1,5 @@
 import Papa from "papaparse";
+import { last, filter } from 'lodash'
 
 
 export const loadAllIUhistoricData = async (simParams,dispatchSimParams,implementationUnit) => {
@@ -6,16 +7,46 @@ export const loadAllIUhistoricData = async (simParams,dispatchSimParams,implemen
     if ( !doWeHaveData ) {
       const mdaData = await loadMda();
       const params = await loadParams();
-      dispatchSimParams({
-        type: "IUData", payload: {
+      // set default values
+      const defaults = {
+        coverage: 90, // $("#MDACoverage").val(),
+        mda: 1, // $("#inputMDARounds").val(), TODO: what do we do here?
+        mdaSixMonths: 6, // TODO; what do we do here
+        endemicity: 10, // $("#endemicity").val(),
+        covN: 0, // $("#bedNetCoverage").val(),
+        v_to_hR: 0, // $("#insecticideCoverage").val(),
+        vecCap: 0, // $("#vectorialCapacity").val(),
+        vecComp: 0, //$("#vectorialCompetence").val(),
+        vecD: 0, //$("#vectorialDeathRate").val(),
+        mdaRegimen: 'xIA', // $("input[name=mdaRegimenRadios]:checked").val(),
+        rho: 0.2, // $("#sysAdherence").val(),
+        rhoBComp: 0, // $("#brMda").val(),
+        rhoCN: 0, // $("#bedNetMda").val(),
+        species: 0, // $("input[name=speciesRadios]:checked").val(),
+        macrofilaricide: 65, // $("#Macrofilaricide").val(),
+        microfilaricide: 65,
+        runs: 50,
+        IUData:
+        {
           IUloaded: implementationUnit,
           mdaObj: mdaData,
           params: params
         }
+      }
+      const bednets = last(mdaData.bednets)
+      if ( bednets ) defaults.covN =  bednets
+      const mdaRegimen = last(filter(mdaData.regimen,x => x != 'xxx'))
+      if ( mdaRegimen ) defaults.mdaRegimen =  mdaRegimen
+      const adherence = last(mdaData.adherence)
+      if ( adherence ) defaults.rho = adherence
+      const coverage = last(filter(mdaData.coverage,x => x != 0))
+      if ( coverage ) defaults.coverage =  coverage
+      console.log(defaults)
+      dispatchSimParams({
+        type: "everything",
+        payload: defaults,
       });
     }
-    
-    
 }
 
 

@@ -12,7 +12,7 @@ const initialState = {
   vecCap: 0, // $("#vectorialCapacity").val(),
   vecComp: 0, //$("#vectorialCompetence").val(),
   vecD: 0, //$("#vectorialDeathRate").val(),
-  mdaRegimen: 1, // $("input[name=mdaRegimenRadios]:checked").val(),
+  mdaRegimen: 'xIA', // $("input[name=mdaRegimenRadios]:checked").val(),
   rho: 0.2, // $("#sysAdherence").val(),
   rhoBComp: 0, // $("#brMda").val(),
   rhoCN: 0, // $("#bedNetMda").val(),
@@ -34,6 +34,13 @@ const reducer = (simParams, action) => {
         ...simParams,
         ...action.payload,
       };
+      case "everythingbuthistoric":
+        let newIUDataall = simParams.IUData;
+        return {
+          ...simParams,
+          ...action.payload,
+          IUData: newIUDataall
+        };
     case "IUData":
       return {
         ...simParams,

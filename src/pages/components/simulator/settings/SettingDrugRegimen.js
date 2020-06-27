@@ -15,12 +15,21 @@ const SettingDrugRegimen = ({ inModal, label }) => {
   const classes = useStyles();
   const { simParams, dispatchSimParams } = useStore();
 
+  console.log('in drop down simParams.mdaRegimen',simParams.mdaRegimen)
+
   const handleChange = (event) => {
     dispatchSimParams({
       type: "mdaRegimen",
       payload: event.target.value,
     });
   };
+
+//TODO convert 
+  //xIA IVM+ALB
+  //xDA DEC+ALB
+  //xxA ALB alone 
+  //IDA tripple  drug
+
 
   return (
     <FormControl
@@ -40,15 +49,14 @@ const SettingDrugRegimen = ({ inModal, label }) => {
         value={simParams.mdaRegimen}
         onChange={handleChange}
       >
-        <MenuItem value={1}>albendazole + ivermectin</MenuItem>
-        <MenuItem value={2}>
+        <MenuItem value={'xIA'}>albendazole + ivermectin</MenuItem>
+        <MenuItem value={'xDA'}>
           albendazole + diethylcarbamazine
         </MenuItem>
-        <MenuItem value={3}>ivermectin</MenuItem>
-        <MenuItem value={4}>
+        <MenuItem value={'xxI'}>ivermectin</MenuItem>
+        <MenuItem value={'IDA'}>
           ivermectin + albendazole + diethylcarbamazine
         </MenuItem>
-        <MenuItem value={5}>custom</MenuItem>
       </Select>
     </FormControl>
   )
