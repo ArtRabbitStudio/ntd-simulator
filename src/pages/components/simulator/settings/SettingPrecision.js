@@ -21,7 +21,7 @@ const SettingPrecision = ({ inModal, label, classAdd }) => {
         value={simParams.runs}
         min={1}
         step={1}
-        max={100}
+        max={200}
         onChange={(event, newValue) => {
           dispatchSimParams({ type: "runs", payload: newValue });
         }}

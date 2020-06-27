@@ -9,7 +9,7 @@ import {
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { observer } from "mobx-react";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { useDataAPI, useUIState } from "../hooks/stateHooks";
 import { Layout } from "../layout";
@@ -17,6 +17,8 @@ import { useStore } from "./../store/simulatorStore";
 import HeadWithInputs from "./components/HeadWithInputs";
 import SelectCountry from "./components/SelectCountry";
 import TextContents from "./components/TextContents";
+import { loadMda, loadParams } from "./components/simulator/ParamMdaLoader";
+
 
 const useStyles = makeStyles((theme) => ({
   withSlider: {
@@ -89,7 +91,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+
+
 const Setup = (props) => {
+  const [isLoading, setIsLoading] = useState(false)
+
   const history = useHistory();
   const classes = useStyles();
   const { simParams, dispatchSimParams } = useStore();
@@ -100,6 +106,36 @@ const Setup = (props) => {
     stateScales,
   } = useDataAPI();
   const { country, implementationUnit } = useUIState();
+
+
+
+  const doWeHaveData = simParams.IUData.IUloaded === implementationUnit;
+  if ( !doWeHaveData ) {
+      console.log('we need to load new data');
+      const loadData = async () => {
+        const newMdaObj = await loadMda();
+        const newParams = await loadParams();
+        dispatchSimParams({ type: "IUData", payload: {
+          IUloaded: implementationUnit,
+          mdaObj: newMdaObj,
+          params: newParams
+        } });
+        //console.log(newMdaObj);
+        //console.log(newParams);
+      }
+      loadData();
+      return (
+        <Layout>
+          <HeadWithInputs title="prevalence simulator" />
+          <section className={classes.section}>
+            <Typography variant="h3" component="h6" className={classes.headline}>
+              Loading setup
+            </Typography>
+          </section>
+        </Layout>
+      )
+  }
+
 
   const handleSliderChanges = (newValue, paramPropertyName) => {
     console.log(paramPropertyName, newValue);
@@ -123,7 +159,6 @@ const Setup = (props) => {
   return (
     <Layout>
       <HeadWithInputs title="prevalence simulator" />
-      {simParams.coverage}
       <SelectCountry selectIU={true} />
 
       <section className={classes.section}>
