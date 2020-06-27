@@ -1,12 +1,4 @@
-import {
-  Button,
-  FormControl,
-  FormLabel,
-  MenuItem,
-  Select,
-  Slider,
-  Typography,
-} from "@material-ui/core";
+import { Button, FormControl, FormLabel, MenuItem, Select, Slider, Typography, } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { observer } from "mobx-react";
 import React, { useEffect, useState } from "react";
@@ -19,6 +11,11 @@ import SelectCountry from "./components/SelectCountry";
 import TextContents from "./components/TextContents";
 import { loadMda, loadParams } from "./components/simulator/ParamMdaLoader";
 
+// settings
+import {
+  SettingName, SettingFrequency, SettingTargetCoverage, SettingDrugRegimen, SettingBasePrevalence, SettingNumberOfRuns, SettingMosquitoType,
+  SettingBedNetCoverage, SettingInsecticideCoverage, SettingPrecision, SettingSystematicAdherence, SettingSpecificScenario
+} from "./components/simulator/settings";
 
 const useStyles = makeStyles((theme) => ({
   withSlider: {
@@ -62,6 +59,10 @@ const useStyles = makeStyles((theme) => ({
       textAlign: "center",
       float: "left",
       width: "calc(50% - 16px)",
+      "&.fullwidth": {
+        width: "100%",
+        textAlign: "left",
+      },
     },
   },
   buttonsControl: {
@@ -73,20 +74,12 @@ const useStyles = makeStyles((theme) => ({
       width: "60%",
     },
   },
-  formControl: {
-    margin: theme.spacing(0),
-    "& > label": {},
-    "& > button": {
-      margin: theme.spacing(0, 1, 1, 0),
-    },
+  setupFormControl: {
     [theme.breakpoints.up("md")]: {
-      width: "40%",
-      "&.large": {
-        width: "60%",
-      },
+      padding: theme.spacing(0, 10, 0, 10),
     },
     [theme.breakpoints.up("lg")]: {
-      display: "inline-block",
+      //display: "inline-block",
     },
   },
 }));
@@ -110,43 +103,38 @@ const Setup = (props) => {
 
 
   const doWeHaveData = simParams.IUData.IUloaded === implementationUnit;
-  if ( !doWeHaveData ) {
-      console.log('we need to load new data');
-      const loadData = async () => {
-        const newMdaObj = await loadMda();
-        const newParams = await loadParams();
-        dispatchSimParams({ type: "IUData", payload: {
+  if (!doWeHaveData) {
+    console.log('we need to load new data');
+    const loadData = async () => {
+      const newMdaObj = await loadMda();
+      const newParams = await loadParams();
+      dispatchSimParams({
+        type: "IUData", payload: {
           IUloaded: implementationUnit,
           mdaObj: newMdaObj,
           params: newParams
-        } });
-        //console.log(newMdaObj);
-        //console.log(newParams);
-      }
-      loadData();
-      return (
-        <Layout>
-          <HeadWithInputs title="prevalence simulator" />
-          <section className={classes.section}>
-            <Typography variant="h3" component="h6" className={classes.headline}>
-              Loading setup
+        }
+      });
+      //console.log(newMdaObj);
+      //console.log(newParams);
+    }
+    loadData();
+    return (
+      <Layout>
+        <HeadWithInputs title="prevalence simulator" />
+        <section className={classes.section}>
+          <Typography variant="h3" component="h6" className={classes.headline}>
+            Loading setup
             </Typography>
-          </section>
-        </Layout>
-      )
+        </section>
+      </Layout>
+    )
   }
 
 
-  const handleSliderChanges = (newValue, paramPropertyName) => {
-    console.log(paramPropertyName, newValue);
-    dispatchSimParams({ type: paramPropertyName, payload: newValue });
-  };
-
-  const handleCoverageChange = (event, newValue) => {
-    dispatchSimParams({ type: "coverage", payload: newValue });
-  };
-  const handleFrequencyChange = (event) => {
-    dispatchSimParams({ type: "mdaSixMonths", payload: event.target.value });
+  const handleAdherenceChange = (event) => {
+    // todo
+    //alert('todo')
   };
 
   const submitSetup = (event) => {
@@ -192,110 +180,47 @@ const Setup = (props) => {
 
         <div className={classes.settings}>
           <div className={classes.formControlWrap}>
-            <FormControl fullWidth className={classes.formControl}>
-              <FormLabel
-                component="legend"
-                htmlFor="covN"
-                className={classes.withSlider}
-              >
-                Bed Net Coverage (%)
-              </FormLabel>
-              <Slider
-                value={simParams.covN}
-                id="covN"
-                min={1}
-                step={1}
-                max={100}
-                onChange={(event, newValue) => {
-                  handleSliderChanges(newValue, "covN");
-                }}
-                aria-labelledby="slider"
-                marks={[
-                  { value: 0, label: "0" },
-                  { value: 100, label: "100" },
-                ]}
-                valueLabelDisplay="on"
-              />
-            </FormControl>
+            <div className={classes.setupFormControl}>
+              <SettingBedNetCoverage inModal={false} label="Bed Net Coverage" />
+            </div>
           </div>
 
           <div className={classes.formControlWrap}>
-            <FormControl fullWidth className={classes.formControl}>
-              <FormLabel
-                component="legend"
-                htmlFor="coverage"
-                className={classes.withSlider}
-              >
-                Intervention target coverage
-              </FormLabel>
-              <Slider
-                value={simParams.coverage}
-                min={0}
-                step={1}
-                max={100}
-                onChange={handleCoverageChange}
-                aria-labelledby="slider"
-                marks={[
-                  { value: 0, label: "0" },
-                  { value: 100, label: "100" },
-                ]}
-                valueLabelDisplay="on"
-              />
-            </FormControl>
+            <div className={classes.setupFormControl}>
+              <SettingTargetCoverage inModal={false} label="Intervention target coverage" />
+            </div>
           </div>
 
           <div className={classes.formControlWrap}>
-            <FormControl
-              fullWidth
-              variant="outlined"
-              className={classes.formControl}
-            >
-              <FormLabel component="legend">Intervention frequency</FormLabel>
-              <Select
-                labelId="demo-simple-select-helper-label"
-                id="demo-simple-select-helper"
-                value={simParams.mdaSixMonths}
-                onChange={handleFrequencyChange}
-              >
-                <MenuItem value={12}>Annual</MenuItem>
-                <MenuItem value={6}>Every 6 months</MenuItem>
-              </Select>
-            </FormControl>
+            <div className={classes.setupFormControl}>
+              <SettingFrequency inModal={false} label="Intervention Frequency" />
+            </div>
           </div>
 
           <div className={classes.formControlWrap}>
-            <FormControl
-              fullWidth
-              variant="outlined"
-              className={classes.formControl}
-            >
-              <FormLabel
-                component="legend"
-                htmlFor="demo-simple-select-helper-label"
-              >
-                Drug regimen
-              </FormLabel>
-              <Select
-                labelId="demo-simple-select-helper-label"
-                id="demo-simple-select-helper"
-                value={simParams.mdaRegimen}
-                onChange={(event) => {
-                  dispatchSimParams({
-                    type: "mdaRegimen",
-                    payload: event.target.value,
-                  });
-                }}
-              >
-                <MenuItem value={1}>albendazole + ivermectin</MenuItem>
-                <MenuItem value={2}>albendazole + diethylcarbamazine</MenuItem>
-                <MenuItem value={3}>ivermectin</MenuItem>
-                <MenuItem value={4}>
-                  ivermectin + albendazole + diethylcarbamazine
-                </MenuItem>
-                <MenuItem value={5}>custom</MenuItem>
-              </Select>
-            </FormControl>
+            <div className={classes.setupFormControl}>
+              <SettingDrugRegimen inModal={false} label="Intervention drug regimen" />
+            </div>
           </div>
+
+          <div className={classes.formControlWrap}>
+            <div className={classes.setupFormControl}>
+              <SettingMosquitoType inModal={false} label="Mosquito type" />
+            </div>
+          </div>
+
+          <div className={classes.formControlWrap}>
+            <div className={classes.setupFormControl}>
+              <SettingInsecticideCoverage inModal={false} label="Vector: Insecticide Coverage" />
+            </div>
+          </div>
+
+          <div className={`${classes.formControlWrap} fullwidth`}>
+            <div className={classes.setupFormControl}>
+              <SettingSystematicAdherence inModal={false} label="Systematic adherence" value={0} onChange={handleAdherenceChange} />
+            </div>
+          </div>
+
         </div>
 
         <TextContents>
@@ -307,11 +232,7 @@ const Setup = (props) => {
         </TextContents>
         <div className={classes.scenariosWrap}>
           <div className={`${classes.buttonsControl}`}>
-            <Button variant="contained" color="primary">
-              2 year COVID Interruption
-            </Button>
-            <Button variant="contained">Scenario three</Button>
-            <Button variant="contained">Treatment stop</Button>
+            <SettingSpecificScenario inModal={false} />
           </div>
         </div>
 

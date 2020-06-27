@@ -118,6 +118,7 @@ const Simulator = (props) => {
 
   const handleAdherenceChange = (event) => {
     // todo
+    //alert('todo')
   };
 
   const [simulationProgress, setSimulationProgress] = useState(0);
