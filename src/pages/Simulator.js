@@ -18,18 +18,10 @@ import useStyles from "./components/simulator/styles";
 import TextContents from "./components/TextContents";
 
 // settings
-import SettingName from "./components/simulator/settings/SettingName";
-import SettingFrequency from "./components/simulator/settings/SettingFrequency";
-import SettingTargetCoverage from "./components/simulator/settings/SettingTargetCoverage";
-import SettingDrugRegimen from "./components/simulator/settings/SettingDrugRegimen";
-import SettingBasePrevalence from "./components/simulator/settings/SettingBasePrevalence";
-import SettingNumberOfRuns from "./components/simulator/settings/SettingNumberOfRuns";
-import SettingMosquitoType from "./components/simulator/settings/SettingMosquitoType";
-import SettingBedNetCoverage from "./components/simulator/settings/SettingBedNetCoverage";
-import SettingInsecticideCoverage from "./components/simulator/settings/SettingInsecticideCoverage";
-import SettingPrecision from "./components/simulator/settings/SettingPrecision";
-import SettingSystematicAdherence from "./components/simulator/settings/SettingSystematicAdherence";
-import SettingSpecificScenario from "./components/simulator/settings/SettingSpecificScenario";
+import {
+  SettingName, SettingFrequency, SettingTargetCoverage, SettingDrugRegimen, SettingBasePrevalence, SettingNumberOfRuns, SettingMosquitoType,
+  SettingBedNetCoverage, SettingInsecticideCoverage, SettingPrecision, SettingSystematicAdherence, SettingSpecificScenario
+} from "./components/simulator/settings";
 
 
 SimulatorEngine.simControler.documentReady();
