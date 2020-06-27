@@ -1,21 +1,5 @@
 import {
-  Box,
-  Button,
-  CircularProgress,
-  Fab,
-  FormControl,
-  FormControlLabel,
-  FormLabel,
-  Grid,
-  MenuItem,
-  Radio,
-  RadioGroup,
-  Select,
-  Slider,
-  Tab,
-  Tabs,
-  TextField,
-  Typography,
+  Box, Button, CircularProgress, Fab, FormControl, Grid, MenuItem, Select, Tab, Tabs, Typography
 } from "@material-ui/core";
 import { useTheme } from "@material-ui/styles";
 import PropTypes from "prop-types";
@@ -32,6 +16,19 @@ import { loadMda, loadParams } from "./components/simulator/ParamMdaLoader";
 import * as SimulatorEngine from "./components/simulator/SimulatorEngine";
 import useStyles from "./components/simulator/styles";
 import TextContents from "./components/TextContents";
+
+// settings
+import SettingName from "./components/simulator/settings/SettingName";
+import SettingFrequency from "./components/simulator/settings/SettingFrequency";
+import SettingTargetCoverage from "./components/simulator/settings/SettingTargetCoverage";
+import SettingDrugRegimen from "./components/simulator/settings/SettingDrugRegimen";
+import SettingBasePrevalence from "./components/simulator/settings/SettingBasePrevalence";
+import SettingNumberOfRuns from "./components/simulator/settings/SettingNumberOfRuns";
+import SettingMosquitoType from "./components/simulator/settings/SettingMosquitoType";
+import SettingBedNetCoverage from "./components/simulator/settings/SettingBedNetCoverage";
+import SettingInsecticideCoverage from "./components/simulator/settings/SettingInsecticideCoverage";
+import SettingPrecision from "./components/simulator/settings/SettingPrecision";
+
 
 SimulatorEngine.simControler.documentReady();
 
@@ -129,16 +126,6 @@ const Simulator = (props) => {
     // TODO
   };
 
-  const handleCoverageChange = (event, newValue) => {
-    // this used to be a special occastion. If nothing changes we can use the handleSlerChanges handler instead.
-    dispatchSimParams({ type: "coverage", payload: newValue });
-  };
-  const handleFrequencyChange = (event) => {
-    dispatchSimParams({ type: "mdaSixMonths", payload: event.target.value });
-  };
-  const handleSliderChanges = (newValue, paramPropertyName) => {
-    dispatchSimParams({ type: paramPropertyName, payload: newValue });
-  };
   const [simulationProgress, setSimulationProgress] = useState(0);
   const [scenarioInputs, setScenarioInputs] = useState([]);
   const [scenarioResults, setScenarioResults] = useState(
@@ -456,20 +443,7 @@ const Simulator = (props) => {
                       {`Scenario ${i + 1}`}
                     </Typography>
 
-                    <FormControl className={classes.formControlChart}>
-                      <FormLabel component="legend" htmlFor="precision">
-                        Precision
-                      </FormLabel>
-                      <Slider
-                        value={5}
-                        min={1}
-                        step={1}
-                        max={10}
-                        onChange={handlePrecisionChange}
-                        aria-labelledby="slider"
-                        valueLabelDisplay="auto"
-                      />
-                    </FormControl>
+                    <SettingPrecision label="Precision" />
 
                     <FormControl
                       variant="outlined"
@@ -559,228 +533,20 @@ const Simulator = (props) => {
             >
               <TextContents>
                 <Typography paragraph variant="body1" component="p">
-                  What scenario do you want to simulate?sss
+                  What scenario do you want to simulate?
                 </Typography>
               </TextContents>
 
-              <FormControl
-                fullWidth
-                variant="outlined"
-                className={classes.formControlText}
-              >
-                <TextField id="scenario-name" label="Scenario name" />
-              </FormControl>
+              <SettingName inModal={true} label="Scenario name" />
+              <SettingFrequency inModal={true} label="Frequency" />
+              <SettingTargetCoverage inModal={true} label="Target coverage" />
+              <SettingDrugRegimen inModal={true} label="Drug regimen" />
+              <SettingBasePrevalence inModal={true} label="Base prevalence" />
+              <SettingNumberOfRuns inModal={true} label="Number of runs" />
+              <SettingMosquitoType inModal={true} label="Mosquito type" />
+              <SettingBedNetCoverage inModal={true} label="Vector: Bed Net Coverage (%)" />
+              <SettingInsecticideCoverage inModal={true} label="Vector: Insecticide Coverage (%)" />
 
-              <FormControl
-                fullWidth
-                variant="outlined"
-                className={classes.formControl}
-              >
-                <FormLabel component="legend">Frequency</FormLabel>
-                <Select
-                  labelId="demo-simple-select-helper-label"
-                  id="demo-simple-select-helper"
-                  value={simParams.mdaSixMonths}
-                  onChange={handleFrequencyChange}
-                >
-                  <MenuItem value={12}>Annual</MenuItem>
-                  <MenuItem value={6}>Every 6 months</MenuItem>
-                </Select>
-              </FormControl>
-              <FormControl fullWidth className={classes.formControl}>
-                <FormLabel component="legend" htmlFor="coverage">
-                  Target coverage
-                </FormLabel>
-                <Slider
-                  value={simParams.coverage}
-                  min={0}
-                  step={1}
-                  max={100}
-                  onChange={handleCoverageChange}
-                  aria-labelledby="slider"
-                  marks={[
-                    { value: 0, label: "0" },
-                    { value: 100, label: "100" },
-                  ]}
-                  valueLabelDisplay="auto"
-                />
-              </FormControl>
-              <FormControl
-                fullWidth
-                variant="outlined"
-                className={classes.formControl}
-              >
-                <FormLabel
-                  component="legend"
-                  htmlFor="demo-simple-select-helper-label"
-                >
-                  Drug regimen
-                </FormLabel>
-                <Select
-                  labelId="demo-simple-select-helper-label"
-                  id="demo-simple-select-helper"
-                  value={simParams.mdaRegimen}
-                  onChange={(event) => {
-                    dispatchSimParams({
-                      type: "mdaRegimen",
-                      payload: event.target.value,
-                    });
-                  }}
-                >
-                  <MenuItem value={1}>albendazole + ivermectin</MenuItem>
-                  <MenuItem value={2}>
-                    albendazole + diethylcarbamazine
-                  </MenuItem>
-                  <MenuItem value={3}>ivermectin</MenuItem>
-                  <MenuItem value={4}>
-                    ivermectin + albendazole + diethylcarbamazine
-                  </MenuItem>
-                  <MenuItem value={5}>custom</MenuItem>
-                </Select>
-              </FormControl>
-
-              <FormControl fullWidth className={classes.formControl}>
-                <FormLabel
-                  component="legend"
-                  htmlFor="endemicity"
-                  className={classes.withSlider}
-                >
-                  Base prevalence
-                </FormLabel>
-                <Slider
-                  value={simParams.endemicity}
-                  id="endemicity"
-                  min={5}
-                  step={0.5}
-                  max={18}
-                  onChange={(event, newValue) => {
-                    handleSliderChanges(newValue, "endemicity");
-                  }}
-                  aria-labelledby="slider"
-                  marks={[
-                    { value: 5, label: "5%" },
-                    { value: 18, label: "18%" },
-                  ]}
-                  valueLabelDisplay="auto"
-                />
-                {/*             <p style={{ marginBottom: 0 }}>
-              The mf prevalence in the population before intervention occurs.
-              Due to the stochastic nature of the model this is a prevalence
-              averaged over many independent runs and so should be treated as an
-              approximation only.{' '}
-            </p> */}
-              </FormControl>
-              <FormControl fullWidth className={classes.formControl}>
-                <FormLabel
-                  component="legend"
-                  htmlFor="runs"
-                  className={classes.withSlider}
-                >
-                  Number of runs
-                </FormLabel>
-                <Slider
-                  value={simParams.runs}
-                  min={1}
-                  step={1}
-                  max={100}
-                  onChange={(event, newValue) => {
-                    handleSliderChanges(newValue, "runs");
-                  }}
-                  aria-labelledby="slider"
-                  marks={[
-                    { value: 0, label: "0" },
-                    { value: 100, label: "100" },
-                  ]}
-                  valueLabelDisplay="auto"
-                />
-              </FormControl>
-              <FormControl fullWidth className={classes.formControlSelect}>
-                <FormLabel component="legend">Type of mosquito</FormLabel>
-                <RadioGroup
-                  className={classes.imageOptions}
-                  row
-                  aria-label="Species"
-                  name="species"
-                  value={simParams.species}
-                  onChange={(event) => {
-                    dispatchSimParams({
-                      type: "species",
-                      payload: Number(event.target.value),
-                    });
-                  }}
-                >
-                  <FormControlLabel
-                    className={`${classes.imageOption} anopheles`}
-                    value={0}
-                    control={<Radio color="primary" />}
-                    label="Anopheles"
-                  />
-                  <FormControlLabel
-                    className={`${classes.imageOption} culex`}
-                    value={1}
-                    control={<Radio color="primary" />}
-                    label="Culex"
-                  />
-                </RadioGroup>
-              </FormControl>
-              <FormControl fullWidth className={classes.formControl}>
-                <FormLabel
-                  component="legend"
-                  htmlFor="covN"
-                  className={classes.withSlider}
-                >
-                  Vector: Bed Net Coverage (%)
-                </FormLabel>
-                <Slider
-                  value={simParams.covN}
-                  id="covN"
-                  min={1}
-                  step={1}
-                  max={100}
-                  onChange={(event, newValue) => {
-                    handleSliderChanges(newValue, "covN");
-                  }}
-                  aria-labelledby="slider"
-                  marks={[
-                    { value: 0, label: "0" },
-                    { value: 100, label: "100" },
-                  ]}
-                  valueLabelDisplay="auto"
-                />
-                {/*             <p style={{ marginBottom: 0 }}>
-              Bed nets are assumed to have been distributed at the start of
-              intervention and are assumed to be effective for the entire
-              lifetime of the intervention campaign.
-            </p> */}
-              </FormControl>
-              <FormControl fullWidth>
-                <FormLabel
-                  component="legend"
-                  htmlFor="v_to_hR"
-                  className={classes.withSlider}
-                >
-                  Vector: Insecticide Coverage (%)
-                </FormLabel>
-                <Slider
-                  value={simParams.v_to_hR}
-                  id="v_to_hR"
-                  min={1}
-                  step={1}
-                  max={100}
-                  onChange={(event, newValue) => {
-                    handleSliderChanges(newValue, "v_to_hR");
-                  }}
-                  aria-labelledby="slider"
-                  marks={[
-                    { value: 0, label: "0" },
-                    { value: 100, label: "100" },
-                  ]}
-                  valueLabelDisplay="auto"
-                />
-                {/*             <p style={{ marginBottom: 0 }}>
-              Insecticide is assumed to reduce the vector to host ratio only.
-            </p> */}
-              </FormControl>
             </ChartSettings>
           </Grid>
         </Grid>
