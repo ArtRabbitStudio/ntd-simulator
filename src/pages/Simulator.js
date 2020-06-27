@@ -73,90 +73,7 @@ const Simulator = (props) => {
 
   const [editingMDAs, setEditingMDAs] = useState(false);
   /* MDA object */
-  const populateMDA = () => {
-    let MDAtime = [];
-    for (let i = 0; i < 40; i++) {
-      MDAtime.push(6 + 6 * i);
-    }
-    SimulatorEngine.simControler.mdaObj.time = [...MDAtime];
-    SimulatorEngine.simControler.mdaObjOrig.time = [...MDAtime];
-
-    let MDAcoverage = [];
-    for (let i = 0; i < 40; i++) {
-      MDAcoverage.push(simParams.coverage);
-    }
-    SimulatorEngine.simControler.mdaObj.coverage = [...MDAcoverage];
-    SimulatorEngine.simControler.mdaObjOrig.coverage = [...MDAcoverage];
-
-    let MDAadherence = [];
-    for (let i = 0; i < 40; i++) {
-      MDAadherence.push(simParams.rho);
-    }
-    SimulatorEngine.simControler.mdaObj.adherence = [...MDAadherence];
-    SimulatorEngine.simControler.mdaObjOrig.adherence = [...MDAadherence];
-
-    let MDAactive = [];
-    for (let i = 0; i < 40; i++) {
-      if (simParams.mdaSixMonths === 12 && i % 2 === 1) {
-        MDAactive.push(false);
-      } else {
-        MDAactive.push(true); // alternate here
-      }
-    }
-    SimulatorEngine.simControler.mdaObj.active = [...MDAactive];
-    SimulatorEngine.simControler.mdaObjOrig.active = [...MDAactive];
-
-    console.log(
-      "SimulatorEngine.simControler.mdaObj",
-      SimulatorEngine.simControler.mdaObj
-    );
-  };
-  const populateMDA4UIonly = () => {
-    let MDAtime = [];
-    for (let i = 0; i < 40; i++) {
-      MDAtime.push(6 + 6 * i);
-    }
-    setSimMDAtime([...MDAtime]);
-    let MDAcoverage = [];
-    for (let i = 0; i < 40; i++) {
-      MDAcoverage.push(simParams.coverage);
-    }
-    setSimMDAcoverage([...MDAcoverage]);
-    let MDAadherence = [];
-    for (let i = 0; i < 40; i++) {
-      MDAadherence.push(simParams.rho);
-    }
-    setSimMDAadherence([...MDAadherence]);
-    let MDAactive = [];
-    for (let i = 0; i < 40; i++) {
-      if (simParams.mdaSixMonths === 12 && i % 2 === 1) {
-        MDAactive.push(false);
-      } else {
-        MDAactive.push(true); // alternate here
-      }
-    }
-    setSimMDAactive([...MDAactive]);
-    // console.log(SimulatorEngine.simControler.mdaObj)
-  };
   const [graphMetric, setGraphMetric] = useState("Ms");
-  const [curMDARound, setCurMDARound] = useState(-1);
-  const [simMDAtime, setSimMDAtime] = useState([]);
-  const [simMDAcoverage, setSimMDAcoverage] = useState([]);
-  const [simMDAadherence, setSimMDAadherence] = useState([]);
-  const [simMDAactive, setSimMDAactive] = useState([]);
-  useEffect(() => {
-    SimulatorEngine.simControler.mdaObj.time = [...simMDAtime];
-    SimulatorEngine.simControler.mdaObj.coverage = [...simMDAcoverage];
-    SimulatorEngine.simControler.mdaObj.adherence = [...simMDAadherence];
-    SimulatorEngine.simControler.mdaObj.active = [...simMDAactive];
-
-    SimulatorEngine.simControler.mdaObjOrig.time = [...simMDAtime];
-    SimulatorEngine.simControler.mdaObjOrig.coverage = [...simMDAcoverage];
-    SimulatorEngine.simControler.mdaObjOrig.adherence = [...simMDAadherence];
-    SimulatorEngine.simControler.mdaObjOrig.active = [...simMDAactive];
-    // console.log('MDA change', simMDAtime, simMDAcoverage, simMDAadherence)
-    // console.log('mdaObjOrig', SimulatorEngine.simControler.mdaObjOrig)
-  }, [simMDAtime, simMDAcoverage, simMDAadherence, simMDAactive]);
 
   // check for stale scenarios object in LS
   const LSSessionData = JSON.parse(window.localStorage.getItem("sessionData"));
@@ -206,10 +123,6 @@ const Simulator = (props) => {
         payload: scenarioInputs[tabIndex],
       });
       SimulatorEngine.ScenarioIndex.setIndex(tabIndex);
-      setSimMDAtime(scenarioMDAs[tabIndex].time);
-      setSimMDAcoverage(scenarioMDAs[tabIndex].coverage);
-      setSimMDAadherence(scenarioMDAs[tabIndex].adherence);
-      setSimMDAactive(scenarioMDAs[tabIndex].active);
     }
   }, [tabIndex]);
 
@@ -222,7 +135,6 @@ const Simulator = (props) => {
     dispatchSimParams({ type: "coverage", payload: newValue });
   };
   const handleFrequencyChange = (event) => {
-    setDoseSettingsOpen(false);
     dispatchSimParams({ type: "mdaSixMonths", payload: event.target.value });
   };
   const handleSliderChanges = (newValue, paramPropertyName) => {
@@ -255,10 +167,6 @@ const Simulator = (props) => {
           JSON.parse(resultObject).mdaOrig.time
         );
         setScenarioMDAs([...scenarioMDAs, JSON.parse(resultObject).mdaOrig]);
-        setSimMDAtime([...JSON.parse(resultObject).mdaOrig.time]);
-        setSimMDAcoverage([...JSON.parse(resultObject).mdaOrig.coverage]);
-        setSimMDAadherence([...JSON.parse(resultObject).mdaOrig.adherence]);
-        setSimMDAactive([...JSON.parse(resultObject).mdaOrig.active]);
       } else {
         let correctTabIndex = newScenario === true ? tabIndex + 1 : tabIndex;
         //console.log('scenarioResults',resultObject)
@@ -281,15 +189,12 @@ const Simulator = (props) => {
           time: [...returnedMDAOrig.mdaOrig.time],
           coverage: [...returnedMDAOrig.mdaOrig.coverage],
           adherence: [...returnedMDAOrig.mdaOrig.adherence],
+          bednets: [...returnedMDAOrig.mdaOrig.bednets],
+          regimen: [...returnedMDAOrig.mdaOrig.regimen],
         };
         scenarioMDAsNew[correctTabIndex] = MDAsItem;
         // console.log('ccc', correctTabIndex, scenarioMDAsNew)
         setScenarioMDAs(scenarioMDAsNew);
-
-        setSimMDAtime([...JSON.parse(resultObject).mdaOrig.time]);
-        setSimMDAcoverage([...JSON.parse(resultObject).mdaOrig.coverage]);
-        setSimMDAadherence([...JSON.parse(resultObject).mdaOrig.adherence]);
-        setSimMDAactive([...JSON.parse(resultObject).mdaOrig.active]);
       }
       setSimInProgress(false);
       // console.log('newScenario', newScenario)
@@ -350,9 +255,6 @@ const Simulator = (props) => {
         (item) => item !== scenarioMDAs[tabIndex]
       );
       setScenarioMDAs(newScenarioMDAs);
-      /*       setSimMDAtime(scenarioMDAs[tabIndex].time) // !!!!!!!!!! doesnt work because previous line hasn't happenned yet
-            setSimMDAcoverage(scenarioMDAs[tabIndex].coverage)
-            setSimMDAadherence(scenarioMDAs[tabIndex].adherence) */
 
       setTabLength(tabLength >= 1 ? tabLength - 1 : 0);
       setTabIndex(tabIndex >= 1 ? tabIndex - 1 : 0);
@@ -434,12 +336,6 @@ const Simulator = (props) => {
       ];
     //console.log(countryLinks)
   }, [country]);
-  const [doseSettingsOpen, setDoseSettingsOpen] = useState(false);
-
-  const closeRoundModal = (event) => {
-    setDoseSettingsOpen(false);
-    setCurMDARound(-1);
-  };
 
   useEffect(() => {
     if (typeof scenarioResults[tabIndex] === "undefined") {
@@ -462,65 +358,10 @@ const Simulator = (props) => {
           type: "everything",
           payload: paramsInputs[tabIndex],
         });
-        setEditingMDAs(true);
         setScenarioMDAs(MDAs);
-        setSimMDAtime(MDAs[tabIndex].time);
-        setSimMDAcoverage(MDAs[tabIndex].coverage);
-        setSimMDAadherence(MDAs[tabIndex].adherence);
-        setSimMDAactive(MDAs[tabIndex].active);
       }
     }
   }, []);
-  useEffect(() => {
-    // console.log('editingMDAs', editingMDAs)
-    if (scenarioResults[tabIndex]) {
-      let calculNeeded =
-        simParams.mdaSixMonths !==
-          scenarioResults[tabIndex].params.inputs.mdaSixMonths ||
-        simParams.coverage !== scenarioResults[tabIndex].params.inputs.coverage;
-      console.log(
-        "Shall I re-calculate MDA rounds?",
-        editingMDAs && calculNeeded,
-        editingMDAs,
-        calculNeeded
-      );
-      if (calculNeeded === true) {
-        setEditingMDAs(true);
-      }
-      if (editingMDAs && calculNeeded) {
-        populateMDA4UIonly();
-      } else {
-        let scenariosArray = JSON.parse(
-          window.localStorage.getItem("sessionData")
-        )
-          ? JSON.parse(window.localStorage.getItem("sessionData")).scenarios
-          : null;
-        // console.log('scenariosArray', scenariosArray)
-        if (scenariosArray) {
-          let paramsInputs = scenariosArray.map((item) => item.params.inputs);
-          let MDAs = scenariosArray.map((item) => item.mdaOrig);
-          setScenarioInputs(paramsInputs);
-          if (typeof paramsInputs[tabIndex] != "undefined") {
-            // set input params if you have them
-            dispatchSimParams({
-              type: "everything",
-              payload: paramsInputs[tabIndex],
-            });
-            setEditingMDAs(true);
-            setScenarioMDAs(MDAs);
-            setSimMDAtime(MDAs[tabIndex].time);
-            setSimMDAcoverage(MDAs[tabIndex].coverage);
-            setSimMDAadherence(MDAs[tabIndex].adherence);
-            setSimMDAactive(MDAs[tabIndex].active);
-          }
-        }
-      }
-    }
-  }, [simParams.mdaSixMonths, simParams.coverage]);
-
-  /*   useEffect(() => {
-      console.log('change of editingMDAs', editingMDAs)
-    }, [editingMDAs]) */
   return (
     <Layout>
       <HeadWithInputs title="prevalence simulator" />
@@ -629,7 +470,6 @@ const Simulator = (props) => {
 
                       <ScenarioGraph
                         data={result}
-                        inputs={simMDAcoverage}
                         showAllResults={false}
                         metrics={[graphMetric]}
                         simInProgress={simInProgress}
@@ -673,11 +513,10 @@ const Simulator = (props) => {
               title="Edit scenario"
               buttonText="Update Scenario"
               action={runCurrentScenario}
-              onOpen={closeRoundModal}
             >
               <TextContents>
                 <Typography paragraph variant="body1" component="p">
-                  What scenario do you want to simulate?
+                  What scenario do you want to simulate?sss
                 </Typography>
               </TextContents>
 

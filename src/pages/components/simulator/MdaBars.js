@@ -28,6 +28,71 @@ const MdaBars = (props) => {
     setDoseSettingsOpen(false);
     setCurMDARound(-1);
   };
+  /* const populateMDA = () => {
+    let MDAtime = [];
+    for (let i = 0; i < 40; i++) {
+      MDAtime.push(6 + 6 * i);
+    }
+    SimulatorEngine.simControler.mdaObj.time = [...MDAtime];
+    SimulatorEngine.simControler.mdaObjOrig.time = [...MDAtime];
+
+    let MDAcoverage = [];
+    for (let i = 0; i < 40; i++) {
+      MDAcoverage.push(simParams.coverage);
+    }
+    SimulatorEngine.simControler.mdaObj.coverage = [...MDAcoverage];
+    SimulatorEngine.simControler.mdaObjOrig.coverage = [...MDAcoverage];
+
+    let MDAadherence = [];
+    for (let i = 0; i < 40; i++) {
+      MDAadherence.push(simParams.rho);
+    }
+    SimulatorEngine.simControler.mdaObj.adherence = [...MDAadherence];
+    SimulatorEngine.simControler.mdaObjOrig.adherence = [...MDAadherence];
+
+    let MDAactive = [];
+    for (let i = 0; i < 40; i++) {
+      if (simParams.mdaSixMonths === 12 && i % 2 === 1) {
+        MDAactive.push(false);
+      } else {
+        MDAactive.push(true); // alternate here
+      }
+    }
+    SimulatorEngine.simControler.mdaObj.active = [...MDAactive];
+    SimulatorEngine.simControler.mdaObjOrig.active = [...MDAactive];
+
+    console.log(
+      "SimulatorEngine.simControler.mdaObj",
+      SimulatorEngine.simControler.mdaObj
+    );
+  }; */
+  const populateMDA4UIonly = () => {
+    let MDAtime = [];
+    for (let i = 0; i < 40; i++) {
+      MDAtime.push(6 + 6 * i);
+    }
+    setSimMDAtime([...MDAtime]);
+    let MDAcoverage = [];
+    for (let i = 0; i < 40; i++) {
+      MDAcoverage.push(simParams.coverage);
+    }
+    setSimMDAcoverage([...MDAcoverage]);
+    let MDAadherence = [];
+    for (let i = 0; i < 40; i++) {
+      MDAadherence.push(simParams.rho);
+    }
+    setSimMDAadherence([...MDAadherence]);
+    let MDAactive = [];
+    for (let i = 0; i < 40; i++) {
+      if (simParams.mdaSixMonths === 12 && i % 2 === 1) {
+        MDAactive.push(false);
+      } else {
+        MDAactive.push(true); // alternate here
+      }
+    }
+    setSimMDAactive([...MDAactive]);
+    // console.log(SimulatorEngine.simControler.mdaObj)
+  };
 
   const [simInProgress, setSimInProgress] = useState(false);
 
