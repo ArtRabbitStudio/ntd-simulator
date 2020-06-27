@@ -26,6 +26,11 @@ const useStyles = makeStyles((theme) => ({
   formControlText: {
     margin: theme.spacing(0, 0, -1, 0),
   },
+  rightControls: {
+    [theme.breakpoints.up('md')]: {
+      margin: theme.spacing(-2, 0, -2, 0),
+    }
+  },
   formControlPrecision: {
     display: "block",
     float: "left",
@@ -35,6 +40,12 @@ const useStyles = makeStyles((theme) => ({
   precisionLabel: {
     display: "block",
     float: "left",
+    fontSize: 14,
+    height: 24,
+    lineHeight: '14px',
+    padding: '7px 0px 0px 0px',
+    margin: 0
+
   },
   precisionSlider: {
     margin: theme.spacing(0, 2, 0, 0),
@@ -81,6 +92,12 @@ const useStyles = makeStyles((theme) => ({
         //backgroundImage: `url(${IconHover})`,
       },
     },
+  },
+  selectPaper: {
+    // hack to fix Material UI popover position when disablePortal is true
+    left: `${theme.spacing(2)}px !important`,
+    maxHeight: 'none !important',
+    top: `${theme.spacing(2)}px !important`
   },
   simulatorBody: {
     position: "relative",

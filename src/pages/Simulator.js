@@ -450,72 +450,72 @@ const Simulator = (props) => {
                         <SettingPrecision classAdd={classes.precision} label="Precision" />
                       </Grid>
                       <Grid item md={6} xs={12} >
+                        <div className={classes.rightControls}>
+                          <Fab
+                            color="inherit"
+                            aria-label="REMOVE SCENARIO"
+                            disabled={simInProgress || scenarioResults.length === 0}
+                            className={classes.removeIcon}
+                            onClick={confirmRemoveCurrentScenario}
+                          ></Fab>
 
-                        <Fab
-                          color="inherit"
-                          aria-label="REMOVE SCENARIO"
-                          disabled={simInProgress || scenarioResults.length === 0}
-                          className={classes.removeIcon}
-                          onClick={confirmRemoveCurrentScenario}
-                        ></Fab>
-
-                        <ChartSettings
-                          title="Edit scenario"
-                          buttonText="Update Scenario"
-                          action={runCurrentScenario}
-                        >
-                          <TextContents>
-                            <Typography paragraph variant="body1" component="p">
-                              What scenario do you want to simulate?
-                            </Typography>
-                          </TextContents>
-
-                          <SettingName inModal={true} label="Scenario name" />
-                          <SettingBedNetCoverage inModal={true} label="Bed Net Coverage" />
-                          <SettingFrequency inModal={true} label="Treatment frequency" />
-                          <SettingDrugRegimen inModal={true} label="Drug regimen" />
-                          <SettingTargetCoverage inModal={true} label="Treatment target coverage" />
-                          <SettingSystematicAdherence inModal={true} label="Systematic adherence" value={0} onChange={handleAdherenceChange} />
-                          { /* no longer in use <SettingBasePrevalence inModal={true} label="Base prevalence" /> */}
-                          { /* no longer in use <SettingNumberOfRuns inModal={true} label="Number of runs" /> */}
-                          <SettingInsecticideCoverage inModal={true} label="Vector: Insecticide Coverage" />
-                          <SettingMosquitoType inModal={true} label="Mosquito type" />
-                          <TextContents>
-                            <Typography paragraph variant="body1" component="p">
-                              Are you interested in a specific scenario?
-                            </Typography>
-                          </TextContents>
-                          <SettingSpecificScenario inModal={true} />
-
-
-                        </ChartSettings>
-
-
-                        <FormControl
-                          variant="outlined"
-                          className={classes.formControlPrevalence}
-                        >
-                          <Select
-                            labelId="larvae-prevalence"
-                            id="larvae-prevalence"
-                            value={graphMetric}
-                            onChange={(ev) => {
-                              // console.log(ev.target.value)
-                              setGraphMetric(ev.target.value);
-                            }}
+                          <ChartSettings
+                            title="Edit scenario"
+                            buttonText="Update Scenario"
+                            action={runCurrentScenario}
                           >
-                            <MenuItem value={"Ms"}>
-                              Prevalence mirofilerima
-                        </MenuItem>
-                            <MenuItem value={"Ls"}>
-                              Prevalence in the mosquito population
-                        </MenuItem>
-                            <MenuItem value={"Ws"}>
-                              Prevalence of worms in the lymph nodes
-                        </MenuItem>
-                          </Select>
-                        </FormControl>
+                            <TextContents>
+                              <Typography paragraph variant="body1" component="p">
+                                What scenario do you want to simulate?
+                            </Typography>
+                            </TextContents>
 
+                            <SettingName inModal={true} label="Scenario name" />
+                            <SettingBedNetCoverage inModal={true} label="Bed Net Coverage" />
+                            <SettingFrequency inModal={true} label="Treatment frequency" />
+                            <SettingDrugRegimen inModal={true} label="Drug regimen" />
+                            <SettingTargetCoverage inModal={true} label="Treatment target coverage" />
+                            <SettingSystematicAdherence inModal={true} label="Systematic adherence" value={0} onChange={handleAdherenceChange} />
+                            { /* no longer in use <SettingBasePrevalence inModal={true} label="Base prevalence" /> */}
+                            { /* no longer in use <SettingNumberOfRuns inModal={true} label="Number of runs" /> */}
+                            <SettingInsecticideCoverage inModal={true} label="Vector: Insecticide Coverage" />
+                            <SettingMosquitoType inModal={true} label="Mosquito type" />
+                            <TextContents>
+                              <Typography paragraph variant="body1" component="p">
+                                Are you interested in a specific scenario?
+                            </Typography>
+                            </TextContents>
+                            <SettingSpecificScenario inModal={true} />
+
+
+                          </ChartSettings>
+
+
+                          <FormControl
+                            variant="outlined"
+                            className={classes.formControlPrevalence}
+                          >
+                            <Select
+                              labelId="larvae-prevalence"
+                              id="larvae-prevalence"
+                              value={graphMetric}
+                              onChange={(ev) => {
+                                // console.log(ev.target.value)
+                                setGraphMetric(ev.target.value);
+                              }}
+                            >
+                              <MenuItem value={"Ms"}>
+                                Prevalence mirofilerima
+                        </MenuItem>
+                              <MenuItem value={"Ls"}>
+                                Prevalence in the mosquito population
+                        </MenuItem>
+                              <MenuItem value={"Ws"}>
+                                Prevalence of worms in the lymph nodes
+                        </MenuItem>
+                            </Select>
+                          </FormControl>
+                        </div>
                       </Grid>
                     </Grid>
 
