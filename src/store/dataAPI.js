@@ -482,6 +482,22 @@ class DataAPI {
     return null;
   }
 
+  get selectedIUData() {
+    const ius = this.IUsCurrentRegime;
+    if ( this.uiState.implementationUnit ) {
+      return flow(filter((x) => x.id === this.uiState.implementationUnit))(ius);
+    }
+    return 'nada';
+    const stats = this.IUStats;
+
+    if (ius) {
+      const data = addRanking(ius);
+      return { data: keyBy("id")(data), stats };
+    }
+
+    return null;
+  }
+
   get countryFeatures() {
     const featureCollection = this.dataStore.featuresLevel0;
     const countries = this.countriesCurrentRegime;
@@ -677,6 +693,7 @@ decorate(DataAPI, {
   stateByCountryData: computed,
   iuByStateData: computed,
   iuData: computed,
+  selectedIUData: computed,
   countryFeatures: computed,
   stateFeatures: computed,
   stateFeaturesCurrentCountry: computed,

@@ -1,5 +1,27 @@
 import Papa from "papaparse";
 
+
+export const loadAllIUhistoricData = async (simParams,dispatchSimParams,implementationUnit) => {
+    const doWeHaveData = simParams.IUData.IUloaded === implementationUnit;
+    console.log('loadall called',doWeHaveData);
+    if ( !doWeHaveData ) {
+      console.log('triggerin loading...')
+      const mdaData = await loadMda();
+      const params = await loadParams();
+      dispatchSimParams({
+        type: "IUData", payload: {
+          IUloaded: implementationUnit,
+          mdaObj: mdaData,
+          params: params
+        }
+      });
+      console.log('loading done save to state?');
+    }
+    
+    
+}
+
+
 export const loadMda = async () => {
   const mdaResponse = await fetch("/data/simulator/MLI30034-mda.csv");
   let reader = mdaResponse.body.getReader();

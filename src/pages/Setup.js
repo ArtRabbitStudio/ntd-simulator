@@ -3,13 +3,15 @@ import { makeStyles } from "@material-ui/core/styles";
 import { observer } from "mobx-react";
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
+import { orderBy } from 'lodash'
+import PrevalenceMiniGraph from "../components/PrevalenceMiniGraph";
 import { useDataAPI, useUIState } from "../hooks/stateHooks";
 import { Layout } from "../layout";
 import { useStore } from "./../store/simulatorStore";
 import HeadWithInputs from "./components/HeadWithInputs";
 import SelectCountry from "./components/SelectCountry";
 import TextContents from "./components/TextContents";
-import { loadMda, loadParams } from "./components/simulator/ParamMdaLoader";
+import { loadAllIUhistoricData } from "./components/simulator/ParamMdaLoader";
 
 // settings
 import {
@@ -28,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
 
-    [theme.breakpoints.up("lg")]: {
+    [theme.breakpoints.up("md")]: {
       flexDirection: "row",
       flexWrap: "wrap",
       justifyContent: "space-between",
@@ -45,17 +47,38 @@ const useStyles = makeStyles((theme) => ({
     position: "relative",
     backgroundColor: theme.palette.secondary.dark,
   },
+  chart: {
+    paddingBottom: theme.spacing(4),
+    paddingTop: theme.spacing(2),
+    paddingLeft: theme.spacing(6),
+    paddingRight: theme.spacing(6),
+    backgroundColor: theme.palette.secondary.dark,
+    [theme.breakpoints.up("md")]: {
+      textAlign: "left",
+      float: "left",
+      width: "calc(50% - 16px)",
+      "&.fullwidth": {
+        width: "100%",
+        textAlign: "left",
+      },
+    },
+  },
   scenariosWrap: {
     padding: theme.spacing(4),
     margin: theme.spacing(0, 0, 3, 0),
     backgroundColor: "white",
+  },
+  headline: {
+    color: theme.palette.text.primary,
+    margin: theme.spacing(0, 0, 3, 0),
+
   },
   formControlWrap: {
     padding: theme.spacing(4),
     margin: theme.spacing(0, 0, 3, 0),
     backgroundColor: "white",
 
-    [theme.breakpoints.up("lg")]: {
+    [theme.breakpoints.up("md")]: {
       textAlign: "center",
       float: "left",
       width: "calc(50% - 16px)",
@@ -78,14 +101,14 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up("md")]: {
       padding: theme.spacing(0, 10, 0, 10),
     },
-    [theme.breakpoints.up("lg")]: {
+    [theme.breakpoints.up("md")]: {
       maxWidth: 460,
       margin: 'auto'
       //display: "inline-block",
     },
   },
   halfFormControl: {
-    [theme.breakpoints.up("lg")]: {
+    [theme.breakpoints.up("md")]: {
       width: "calc(50% - 16px)",
     },
   },
@@ -106,26 +129,23 @@ const Setup = (props) => {
     stateScales,
   } = useDataAPI();
   const { country, implementationUnit } = useUIState();
-
-
-
+  const {
+    selectedIUData
+  } = useDataAPI();
   const doWeHaveData = simParams.IUData.IUloaded === implementationUnit;
-  if (!doWeHaveData) {
-    console.log('we need to load new data');
-    const loadData = async () => {
-      const newMdaObj = await loadMda();
-      const newParams = await loadParams();
-      dispatchSimParams({
-        type: "IUData", payload: {
-          IUloaded: implementationUnit,
-          mdaObj: newMdaObj,
-          params: newParams
-        }
-      });
-      //console.log(newMdaObj);
-      //console.log(newParams);
-    }
-    loadData();
+  const loadData = async () =>{
+    await loadAllIUhistoricData(simParams,dispatchSimParams,implementationUnit);
+    setIsLoading(false);
+  }
+
+  if ( !doWeHaveData ) {
+    if ( !isLoading ) {
+      loadData();
+      setIsLoading(true);
+    } 
+  }
+
+  if ( isLoading ) {
     return (
       <Layout>
         <HeadWithInputs title="prevalence simulator" />
@@ -138,9 +158,13 @@ const Setup = (props) => {
     )
   }
 
+  console.log(simParams.IUData);
+  if ( selectedIUData[0] ) {
+    console.log(selectedIUData[0]['prevalence']);
+  }
 
   const handleAdherenceChange = (event) => {
-    // todo
+    // TODO
     //alert('todo')
   };
 
@@ -149,6 +173,7 @@ const Setup = (props) => {
     history.push({ pathname: `/simulator/${country}/${implementationUnit}` });
   };
 
+  let statsFromYear = 2010;
   //console.log(country);
 
   return (
@@ -169,12 +194,13 @@ const Setup = (props) => {
         </TextContents>
 
         <div className={classes.charts}>
-          <Typography paragraph variant="body1" component="p">
-            Espen survey data
-          </Typography>
-          <Typography paragraph variant="body1" component="p">
-            Espen intervetion data
-          </Typography>
+          <div className={classes.chart}>
+            <Typography variant="h6" component="h6" className={classes.headline} >Prevalence data</Typography>
+            <PrevalenceMiniGraph data={selectedIUData[0]} />
+          </div>
+          <div className={classes.chart}>
+            <Typography variant="h6" component="h6" className={classes.headline} >Espen intervention data</Typography>
+          </div>
         </div>
 
         <TextContents>

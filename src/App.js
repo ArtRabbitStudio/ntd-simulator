@@ -111,9 +111,9 @@ const theme = createMuiTheme({
     },
     h6: {
       textTransform: "uppercase",
-      //fontFamily: "DINNextLTPro, sans-serif",
-      //fontWeight: 800
-      fontSize: "0.75rem",
+      textTransform: 'uppercase',
+      fontSize: 14,
+      letterSpacing: 1
     },
     subtitle2: {
       fontSize: 22,

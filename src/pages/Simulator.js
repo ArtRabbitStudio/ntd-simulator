@@ -7,6 +7,7 @@ import React, { useEffect, useState } from "react";
 import ScenarioGraph from "../components/ScenarioGraph";
 import { Layout } from "../layout";
 import { useStore } from "./../store/simulatorStore";
+import { useUIState } from "../hooks/stateHooks";
 import ChartSettings from "./components/ChartSettings";
 import ConfirmationDialog from "./components/ConfirmationDialog";
 import HeadWithInputs from "./components/HeadWithInputs";
@@ -61,7 +62,9 @@ const Simulator = (props) => {
   const classes = useStyles();
   const theme = useTheme();
   const { simParams, dispatchSimParams } = useStore();
+  const { country, implementationUnit } = useUIState();
 
+  const doWeHaveData = simParams.IUData.IUloaded === implementationUnit;
   /* MDA object */
   const [graphMetric, setGraphMetric] = useState("Ms");
 
@@ -189,11 +192,11 @@ const Simulator = (props) => {
       console.log('scenarioInputs', scenarioInputs)
     }, [scenarioInputs]) */
   const runCurrentScenario = async () => {
-    if (!simInProgress) {
+    if (!simInProgress && doWeHaveData) {
       setSimInProgress(true);
       //console.log(tabIndex, simParams)
       // populate mdaObj // populateMDA();
-      const newMdaObj = await loadMda();
+      const newMdaObj = simParams.IUData.mdaObj;
       SimulatorEngine.simControler.mdaObj = newMdaObj;
       const yearsToLeaveOut = 14;
       let newMdaObj2015 = {
@@ -218,7 +221,7 @@ const Simulator = (props) => {
       };
       SimulatorEngine.simControler.mdaObj2015 = newMdaObj2015;
 
-      const newParams = await loadParams();
+      const newParams = simParams.IUData.params;
       SimulatorEngine.simControler.parametersJSON = newParams;
       console.log("runningScenario");
 
@@ -327,38 +330,10 @@ const Simulator = (props) => {
       }
     }
   };
-  const queryString = window.location.search;
-  const urlParams = new URLSearchParams(queryString);
-  const basePrevalance = urlParams.get("base_prev"); // endemicity from URL
-  const country = urlParams.get("country");
+ 
 
-  useEffect(() => {
-    if (basePrevalance)
-      dispatchSimParams({
-        type: "endemicity",
-        payload: parseInt(basePrevalance),
-      });
-    // console.log(simParams)
-  }, [basePrevalance]);
 
-  useEffect(() => {
-    if (country)
-      countryLinks = [
-        {
-          to: "/trends/" + country,
-          name:
-            "TRENDS " +
-            (urlParams.get("name") ? urlParams.get("name") : country),
-        },
-        {
-          to: "/hotspots/" + country,
-          name:
-            "HOTSPOTS " +
-            (urlParams.get("name") ? urlParams.get("name") : country),
-        },
-      ];
-    //console.log(countryLinks)
-  }, [country]);
+
 
   useEffect(() => {
     if (typeof scenarioResults[tabIndex] === "undefined") {
