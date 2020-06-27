@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
   formControlPrecision: {
     display: "block",
     float: "left",
-    margin: theme.spacing(0, 0, 0, 2),
+    margin: theme.spacing(0, 0, 0, 4),
     width: 300,
   },
   precisionLabel: {

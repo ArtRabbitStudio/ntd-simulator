@@ -440,7 +440,7 @@ const Simulator = (props) => {
                         >
                           {`Scenario ${i + 1}`}
                         </Typography>
-                        <SettingPrecision classAdd={classes.precision} label="Precision" />
+                        <SettingPrecision classAdd={classes.precision} inModal={true} label="Precision" />
                       </Grid>
                       <Grid item md={6} xs={12} >
                         <div className={classes.rightControls}>
