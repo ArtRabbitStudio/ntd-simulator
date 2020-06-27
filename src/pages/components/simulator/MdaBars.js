@@ -34,21 +34,21 @@ const MdaBars = (props) => {
       MDAtime.push(6 + 6 * i);
     }
     SimulatorEngine.simControler.mdaObj.time = [...MDAtime];
-    SimulatorEngine.simControler.mdaObjOrig.time = [...MDAtime];
+    SimulatorEngine.simControler.mdaObj2015.time = [...MDAtime];
 
     let MDAcoverage = [];
     for (let i = 0; i < 40; i++) {
       MDAcoverage.push(simParams.coverage);
     }
     SimulatorEngine.simControler.mdaObj.coverage = [...MDAcoverage];
-    SimulatorEngine.simControler.mdaObjOrig.coverage = [...MDAcoverage];
+    SimulatorEngine.simControler.mdaObj2015.coverage = [...MDAcoverage];
 
     let MDAadherence = [];
     for (let i = 0; i < 40; i++) {
       MDAadherence.push(simParams.rho);
     }
     SimulatorEngine.simControler.mdaObj.adherence = [...MDAadherence];
-    SimulatorEngine.simControler.mdaObjOrig.adherence = [...MDAadherence];
+    SimulatorEngine.simControler.mdaObj2015.adherence = [...MDAadherence];
 
     let MDAactive = [];
     for (let i = 0; i < 40; i++) {
@@ -59,7 +59,7 @@ const MdaBars = (props) => {
       }
     }
     SimulatorEngine.simControler.mdaObj.active = [...MDAactive];
-    SimulatorEngine.simControler.mdaObjOrig.active = [...MDAactive];
+    SimulatorEngine.simControler.mdaObj2015.active = [...MDAactive];
 
     console.log(
       "SimulatorEngine.simControler.mdaObj",
@@ -119,12 +119,12 @@ const MdaBars = (props) => {
     SimulatorEngine.simControler.mdaObj.adherence = [...simMDAadherence];
     SimulatorEngine.simControler.mdaObj.active = [...simMDAactive];
 
-    SimulatorEngine.simControler.mdaObjOrig.time = [...simMDAtime];
-    SimulatorEngine.simControler.mdaObjOrig.coverage = [...simMDAcoverage];
-    SimulatorEngine.simControler.mdaObjOrig.adherence = [...simMDAadherence];
-    SimulatorEngine.simControler.mdaObjOrig.active = [...simMDAactive];
+    SimulatorEngine.simControler.mdaObj2015.time = [...simMDAtime];
+    SimulatorEngine.simControler.mdaObj2015.coverage = [...simMDAcoverage];
+    SimulatorEngine.simControler.mdaObj2015.adherence = [...simMDAadherence];
+    SimulatorEngine.simControler.mdaObj2015.active = [...simMDAactive];
     // console.log('MDA change', simMDAtime, simMDAcoverage, simMDAadherence)
-    // console.log('mdaObjOrig', SimulatorEngine.simControler.mdaObjOrig)
+    // console.log('mdaObj2015', SimulatorEngine.simControler.mdaObj2015)
   }, [simMDAtime, simMDAcoverage, simMDAadherence, simMDAactive]); */
   return (
     <>

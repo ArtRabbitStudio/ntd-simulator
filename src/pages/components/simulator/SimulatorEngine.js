@@ -19,7 +19,7 @@ export var SessionData = {
       results: results,
       label: scenLabel,
       mda: simControler.mdaObj,
-      mdaOrig: simControler.mdaObjOrig,
+      mda2015: simControler.mdaObj2015,
     };
     var scenInd = ScenarioIndex.getIndex();
 
@@ -1212,19 +1212,23 @@ export var simControler = {
     runs: 5, // $("#runs").val() */
   },
   mdaObj: {
-    time: [], //60, 96, 120, 144, 180
+    time: [], // 60, 96, 120, 144, 180
     coverage: [], // 0.9, 0.9, 0.9, 0.9, 0.9
     adherence: [], // 1, 1, 1, 1, 1
+    bednets: [], // 60, 96, 120, 144, 180
+    regimen: [], // "xiA" / "xDA" ...
     active: [], // true, false, true, ...
   },
-  mdaObjOrig: {
+  mdaObj2015: {
     // this object gets populated from populateMDA()
     // and it holds reference to original MDA state (every single round)
     // so user can come back to it if he deletes certain rounds of MDA
     // and wishes to undo his actions
-    time: [], //60, 96, 120, 144, 180
+    time: [], // 60, 96, 120, 144, 180
     coverage: [], // 0.9, 0.9, 0.9, 0.9, 0.9
     adherence: [], // 1, 1, 1, 1, 1
+    bednets: [], // 60, 96, 120, 144, 180
+    regimen: [], // "xiA" / "xDA" ...
     active: [], // true, false, true, ...
   },
   newScenario: true,

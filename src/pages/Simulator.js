@@ -22,6 +22,7 @@ import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
 import ScenarioGraph from "../components/ScenarioGraph";
 import { Layout } from "../layout";
+import { useStore } from "./../store/simulatorStore";
 import ChartSettings from "./components/ChartSettings";
 import ConfirmationDialog from "./components/ConfirmationDialog";
 import HeadWithInputs from "./components/HeadWithInputs";
@@ -31,7 +32,6 @@ import { loadMda, loadParams } from "./components/simulator/ParamMdaLoader";
 import * as SimulatorEngine from "./components/simulator/SimulatorEngine";
 import useStyles from "./components/simulator/styles";
 import TextContents from "./components/TextContents";
-import { useStore } from "./../store/simulatorStore";
 
 SimulatorEngine.simControler.documentReady();
 
@@ -71,7 +71,6 @@ const Simulator = (props) => {
   const theme = useTheme();
   const { simParams, dispatchSimParams } = useStore();
 
-  const [editingMDAs, setEditingMDAs] = useState(false);
   /* MDA object */
   const [graphMetric, setGraphMetric] = useState("Ms");
 
@@ -82,13 +81,13 @@ const Simulator = (props) => {
       LSSessionData.scenarios &&
       LSSessionData.scenarios[0] &&
       LSSessionData.scenarios[0].mda &&
-      typeof LSSessionData.scenarios[0].mdaOrig === "undefined") ||
+      typeof LSSessionData.scenarios[0].mda2015 === "undefined") ||
     (LSSessionData !== null &&
       LSSessionData.scenarios &&
       LSSessionData.scenarios[0] &&
       LSSessionData.scenarios[0].mda &&
-      typeof LSSessionData.scenarios[0].mdaOrig &&
-      typeof LSSessionData.scenarios[0].mdaOrig.active === "undefined")
+      typeof LSSessionData.scenarios[0].mda2015 &&
+      typeof LSSessionData.scenarios[0].mda2015.active === "undefined")
   ) {
     // clear LS and relaod if stale project is found
     window.localStorage.removeItem("sessionData");
@@ -163,10 +162,10 @@ const Simulator = (props) => {
           JSON.parse(resultObject).params.inputs,
         ]);
         console.log(
-          "JSON.parse(resultObject).mdaOrig.time,",
-          JSON.parse(resultObject).mdaOrig.time
+          "JSON.parse(resultObject).mda2015.time,",
+          JSON.parse(resultObject).mda2015.time
         );
-        setScenarioMDAs([...scenarioMDAs, JSON.parse(resultObject).mdaOrig]);
+        setScenarioMDAs([...scenarioMDAs, JSON.parse(resultObject).mda2015]);
       } else {
         let correctTabIndex = newScenario === true ? tabIndex + 1 : tabIndex;
         //console.log('scenarioResults',resultObject)
@@ -184,13 +183,13 @@ const Simulator = (props) => {
 
         let scenarioMDAsNew = [...scenarioMDAs];
         let MDAsItem = scenarioMDAsNew[correctTabIndex];
-        const returnedMDAOrig = JSON.parse(resultObject);
+        const returnedmda2015 = JSON.parse(resultObject);
         MDAsItem = {
-          time: [...returnedMDAOrig.mdaOrig.time],
-          coverage: [...returnedMDAOrig.mdaOrig.coverage],
-          adherence: [...returnedMDAOrig.mdaOrig.adherence],
-          bednets: [...returnedMDAOrig.mdaOrig.bednets],
-          regimen: [...returnedMDAOrig.mdaOrig.regimen],
+          time: [...returnedmda2015.mda2015.time],
+          coverage: [...returnedmda2015.mda2015.coverage],
+          adherence: [...returnedmda2015.mda2015.adherence],
+          bednets: [...returnedmda2015.mda2015.bednets],
+          regimen: [...returnedmda2015.mda2015.regimen],
         };
         scenarioMDAsNew[correctTabIndex] = MDAsItem;
         // console.log('ccc', correctTabIndex, scenarioMDAsNew)
@@ -211,11 +210,10 @@ const Simulator = (props) => {
     if (!simInProgress) {
       setSimInProgress(true);
       //console.log(tabIndex, simParams)
-
       // populate mdaObj // populateMDA();
       const newMdaObj = await loadMda();
       SimulatorEngine.simControler.mdaObj = newMdaObj;
-      SimulatorEngine.simControler.mdaObjOrig = newMdaObj;
+      SimulatorEngine.simControler.mdaObj2015 = newMdaObj;
 
       const newParams = await loadParams();
       SimulatorEngine.simControler.parametersJSON = newParams;
@@ -286,7 +284,7 @@ const Simulator = (props) => {
         // populate mdaObj // populateMDA();
         const newMdaObj = await loadMda();
         SimulatorEngine.simControler.mdaObj = newMdaObj;
-        SimulatorEngine.simControler.mdaObjOrig = newMdaObj;
+        SimulatorEngine.simControler.mdaObj2015 = newMdaObj;
 
         const newParams = await loadParams();
         SimulatorEngine.simControler.parametersJSON = newParams;
@@ -350,7 +348,7 @@ const Simulator = (props) => {
     // console.log('scenariosArray', scenariosArray)
     if (scenariosArray) {
       let paramsInputs = scenariosArray.map((item) => item.params.inputs);
-      let MDAs = scenariosArray.map((item) => item.mdaOrig);
+      let MDAs = scenariosArray.map((item) => item.mda2015);
       setScenarioInputs(paramsInputs);
       if (typeof paramsInputs[tabIndex] != "undefined") {
         // set input params if you have them
