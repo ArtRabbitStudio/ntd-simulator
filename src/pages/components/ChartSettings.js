@@ -76,7 +76,7 @@ const ChartSettings = ({ title, buttonText, action, onOpen, children }) => {
     }
   };
 
-  const handleClickClose = (event) => {
+  const handleClickClose = () => {
     setOpen(false);
   };
 
