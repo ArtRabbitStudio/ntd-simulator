@@ -19,9 +19,9 @@ const SettingPrecision = ({ inModal, label, classAdd }) => {
       <Slider
         className={classes.precisionSlider}
         value={simParams.runs}
-        min={1}
+        min={}
         step={1}
-        max={100}
+        max={200}
         onChange={(event, newValue) => {
           dispatchSimParams({ type: "runs", payload: newValue });
         }}
