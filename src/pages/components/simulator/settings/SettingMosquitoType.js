@@ -17,11 +17,12 @@ const SettingMosquitoType = ({ inModal, label }) => {
   const { simParams, dispatchSimParams } = useStore();
 
 
+
   return (
     <FormControl fullWidth className={classes.formControlSelect}>
       <FormLabel component="legend">{label}</FormLabel>
       <RadioGroup
-        className={classes.imageOptions}
+        className={inModal ? '' : classes.imageOptions}
         row
         aria-label="Species"
         name="species"
@@ -34,13 +35,13 @@ const SettingMosquitoType = ({ inModal, label }) => {
         }}
       >
         <FormControlLabel
-          className={`${classes.imageOption} anopheles`}
+          className={`${inModal ? '' : classes.imageOption} anopheles`}
           value={0}
           control={<Radio color="primary" />}
           label="Anopheles"
         />
         <FormControlLabel
-          className={`${classes.imageOption} culex`}
+          className={`${inModal ? '' : classes.imageOption} culex`}
           value={1}
           control={<Radio color="primary" />}
           label="Culex"

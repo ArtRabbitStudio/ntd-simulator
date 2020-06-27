@@ -38,7 +38,7 @@ const SettingSystematicAdherence = ({ inModal, label, value, onChange }) => {
         aria-labelledby="slider"
         valueLabelDisplay="auto"
       />
-      <div className={classes.adherence}></div>
+      {inModal === false && <div className={classes.adherence}></div>}
       {/*             <p style={{ marginBottom: 0 }}>
         Controls how randomly coverage is applied. For 0, coverage is
         completely random. For 1, the same individuals are always treated.

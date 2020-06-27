@@ -12,6 +12,8 @@ import React, { useState } from "react";
 import { useStore } from "../../../store/simulatorStore";
 import CloseButton from "./../CloseButton";
 import useStyles from "./styles";
+//setting
+import SettingSystematicAdherence from "./settings/SettingSystematicAdherence";
 
 const MdaBars = (props) => {
   console.log(props.history);
@@ -260,38 +262,13 @@ const MdaBars = (props) => {
         completely random. For 1, the same individuals are always treated.
         </p> */}
               </FormControl>
-              <FormControl fullWidth className={classes.formControl}>
-                <Tooltip
-                  title="Controls how randomly coverage is applied. For 0, coverage is completely random. For 1, the same individuals are always treated."
-                  aria-label="info"
-                >
-                  <FormLabel
-                    component="legend"
-                    htmlFor="rho"
-                    className={`${classes.withSlider} ${classes.withHelp}`}
-                  >
-                    Systematic adherence
-                  </FormLabel>
-                </Tooltip>
-                <Slider
-                  value={simMDAadherence[curMDARound]}
-                  min={0}
-                  step={0.1}
-                  max={1}
-                  onChange={(event, newValue) => {
-                    let newArray = [...simMDAadherence];
-                    newArray[curMDARound] = newValue;
-                    setSimMDAadherence([...newArray]);
-                  }}
-                  aria-labelledby="slider"
-                  valueLabelDisplay="auto"
-                />
-                <div className={classes.adherence}></div>
-                {/*             <p style={{ marginBottom: 0 }}>
-        Controls how randomly coverage is applied. For 0, coverage is
-        completely random. For 1, the same individuals are always treated.
-        </p> */}
-              </FormControl>
+
+              <SettingSystematicAdherence inModal={true} label="Systematic adherence" value={simMDAadherence[curMDARound]} onChange={(event, newValue) => {
+                let newArray = [...simMDAadherence];
+                newArray[curMDARound] = newValue;
+                setSimMDAadherence([...newArray]);
+              }} />
+
               <div className={classes.modalButtons}>
                 <Button
                   className={classes.modalButton}
