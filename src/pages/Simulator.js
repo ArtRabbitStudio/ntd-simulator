@@ -517,7 +517,7 @@ const Simulator = (props) => {
                       />
                     </div>
                     {scenarioMDAs[tabIndex] && (
-                      <MdaBars data={scenarioMDAs[tabIndex]} />
+                      <MdaBars history={scenarioMDAs[tabIndex]} />
                     )}
                   </div>
                 </div>

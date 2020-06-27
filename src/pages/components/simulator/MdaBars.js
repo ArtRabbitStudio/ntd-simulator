@@ -14,7 +14,8 @@ import CloseButton from "./../CloseButton";
 import useStyles from "./styles";
 
 const MdaBars = (props) => {
-  console.log(props.data);
+  console.log(props.history);
+  const history = props.history;
   const { simParams, dispatchSimParams } = useStore();
   const classes = useStyles();
   const removeMDARound = () => {
@@ -28,62 +29,51 @@ const MdaBars = (props) => {
     setDoseSettingsOpen(false);
     setCurMDARound(-1);
   };
-  /* const populateMDA = () => {
+  const [simInProgress, setSimInProgress] = useState(false);
+
+  const [editingMDAs, setEditingMDAs] = useState(false);
+  const [curMDARound, setCurMDARound] = useState(-1);
+  const [doseSettingsOpen, setDoseSettingsOpen] = useState(false);
+
+  const [simMDAtime, setSimMDAtime] = useState([]);
+  const [simMDAcoverage, setSimMDAcoverage] = useState([]);
+  const [simMDAadherence, setSimMDAadherence] = useState([]);
+  const [simMDAbednets, setSimMDAbednets] = useState([]);
+  const [simMDAregimen, setSimMDAregimen] = useState([]);
+  const [simMDAactive, setSimMDAactive] = useState([]);
+
+  const populatePredictionBars = () => {
+    const numberOfYears = 11;
     let MDAtime = [];
-    for (let i = 0; i < 40; i++) {
-      MDAtime.push(6 + 6 * i);
-    }
-    SimulatorEngine.simControler.mdaObj.time = [...MDAtime];
-    SimulatorEngine.simControler.mdaObj2015.time = [...MDAtime];
-
-    let MDAcoverage = [];
-    for (let i = 0; i < 40; i++) {
-      MDAcoverage.push(simParams.coverage);
-    }
-    SimulatorEngine.simControler.mdaObj.coverage = [...MDAcoverage];
-    SimulatorEngine.simControler.mdaObj2015.coverage = [...MDAcoverage];
-
-    let MDAadherence = [];
-    for (let i = 0; i < 40; i++) {
-      MDAadherence.push(simParams.rho);
-    }
-    SimulatorEngine.simControler.mdaObj.adherence = [...MDAadherence];
-    SimulatorEngine.simControler.mdaObj2015.adherence = [...MDAadherence];
-
-    let MDAactive = [];
-    for (let i = 0; i < 40; i++) {
-      if (simParams.mdaSixMonths === 12 && i % 2 === 1) {
-        MDAactive.push(false);
-      } else {
-        MDAactive.push(true); // alternate here
-      }
-    }
-    SimulatorEngine.simControler.mdaObj.active = [...MDAactive];
-    SimulatorEngine.simControler.mdaObj2015.active = [...MDAactive];
-
-    console.log(
-      "SimulatorEngine.simControler.mdaObj",
-      SimulatorEngine.simControler.mdaObj
-    );
-  }; */
-  const populateMDA4UIonly = () => {
-    let MDAtime = [];
-    for (let i = 0; i < 40; i++) {
+    for (let i = 0; i < numberOfYears; i++) {
       MDAtime.push(6 + 6 * i);
     }
     setSimMDAtime([...MDAtime]);
     let MDAcoverage = [];
-    for (let i = 0; i < 40; i++) {
+    for (let i = 0; i < numberOfYears; i++) {
       MDAcoverage.push(simParams.coverage);
     }
     setSimMDAcoverage([...MDAcoverage]);
+
     let MDAadherence = [];
-    for (let i = 0; i < 40; i++) {
+    for (let i = 0; i < numberOfYears; i++) {
       MDAadherence.push(simParams.rho);
     }
     setSimMDAadherence([...MDAadherence]);
+
+    let MDAbednets = [];
+    for (let i = 0; i < numberOfYears; i++) {
+      MDAbednets.push(simParams.covN);
+    }
+    setSimMDAbednets([...MDAcoverage]);
+    let MDAregimen = [];
+    for (let i = 0; i < numberOfYears; i++) {
+      MDAregimen.push(simParams.mdaRegimen);
+    }
+    setSimMDAregimen([...MDAregimen]);
+
     let MDAactive = [];
-    for (let i = 0; i < 40; i++) {
+    for (let i = 0; i < numberOfYears; i++) {
       if (simParams.mdaSixMonths === 12 && i % 2 === 1) {
         MDAactive.push(false);
       } else {
@@ -93,45 +83,47 @@ const MdaBars = (props) => {
     setSimMDAactive([...MDAactive]);
     // console.log(SimulatorEngine.simControler.mdaObj)
   };
+  React.useEffect(() => {
+    populatePredictionBars();
+  }, []);
 
-  const [simInProgress, setSimInProgress] = useState(false);
-
-  const [editingMDAs, setEditingMDAs] = useState(false);
-  const [curMDARound, setCurMDARound] = useState(-1);
-  const [doseSettingsOpen, setDoseSettingsOpen] = useState(false);
-
-  const [simMDAtime, setSimMDAtime] = useState(
-    props.data.time ? props.data.time : []
-  );
-  const [simMDAcoverage, setSimMDAcoverage] = useState(
-    props.data.coverage ? props.data.coverage : []
-  );
-  const [simMDAadherence, setSimMDAadherence] = useState(
-    props.data.adherence ? props.data.adherence : []
-  );
-  const [simMDAactive, setSimMDAactive] = useState(
-    props.data.active ? props.data.active : []
-  );
-
-  /*   useEffect(() => {
-    SimulatorEngine.simControler.mdaObj.time = [...simMDAtime];
-    SimulatorEngine.simControler.mdaObj.coverage = [...simMDAcoverage];
-    SimulatorEngine.simControler.mdaObj.adherence = [...simMDAadherence];
-    SimulatorEngine.simControler.mdaObj.active = [...simMDAactive];
-
-    SimulatorEngine.simControler.mdaObj2015.time = [...simMDAtime];
-    SimulatorEngine.simControler.mdaObj2015.coverage = [...simMDAcoverage];
-    SimulatorEngine.simControler.mdaObj2015.adherence = [...simMDAadherence];
-    SimulatorEngine.simControler.mdaObj2015.active = [...simMDAactive];
-    // console.log('MDA change', simMDAtime, simMDAcoverage, simMDAadherence)
-    // console.log('mdaObj2015', SimulatorEngine.simControler.mdaObj2015)
-  }, [simMDAtime, simMDAcoverage, simMDAadherence, simMDAactive]); */
   return (
     <>
       <div className="bars">
+        {/* history */}
+        {history &&
+          history.time &&
+          history.time.map((e, i) => (
+            <div
+              key={`bar-hist-${i}`}
+              className={`bar history`}
+              title={
+                history.time[i] +
+                ", " +
+                history.coverage[i] +
+                ", " +
+                history.adherence[i] +
+                ", " +
+                history.bednets[i] +
+                ", " +
+                history.regimen[i] +
+                " "
+              }
+            >
+              <span
+                style={{
+                  height: simMDAcoverage[i],
+                }}
+              ></span>
+            </div>
+          ))}
+        <div key="splitter" style={{ color: "red" }}>
+          |
+        </div>
+        {/* prediction */}
         {simMDAtime.map((e, i) => (
           <div
-            key={`bar${i}`}
+            key={`bar-${i}`}
             onClick={(a) => {
               setCurMDARound(i);
             }}
@@ -142,6 +134,10 @@ const MdaBars = (props) => {
               simMDAcoverage[i] +
               ", " +
               simMDAadherence[i] +
+              ", " +
+              simMDAbednets[i] +
+              ", " +
+              simMDAregimen[i] +
               ", " +
               simMDAactive[i] +
               " "
