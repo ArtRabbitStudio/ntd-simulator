@@ -213,7 +213,28 @@ const Simulator = (props) => {
       // populate mdaObj // populateMDA();
       const newMdaObj = await loadMda();
       SimulatorEngine.simControler.mdaObj = newMdaObj;
-      SimulatorEngine.simControler.mdaObj2015 = newMdaObj;
+      const yearsToLeaveOut = 14;
+      let newMdaObj2015 = {
+        time: newMdaObj.time.filter(function (value, index, arr) {
+          return index > yearsToLeaveOut;
+        }),
+        coverage: newMdaObj.coverage.filter(function (value, index, arr) {
+          return index > yearsToLeaveOut;
+        }),
+        adherence: newMdaObj.adherence.filter(function (value, index, arr) {
+          return index > yearsToLeaveOut;
+        }),
+        bednets: newMdaObj.bednets.filter(function (value, index, arr) {
+          return index > yearsToLeaveOut;
+        }),
+        regimen: newMdaObj.regimen.filter(function (value, index, arr) {
+          return index > yearsToLeaveOut;
+        }),
+        active: newMdaObj.active.filter(function (value, index, arr) {
+          return index > yearsToLeaveOut;
+        }),
+      };
+      SimulatorEngine.simControler.mdaObj2015 = newMdaObj2015;
 
       const newParams = await loadParams();
       SimulatorEngine.simControler.parametersJSON = newParams;
@@ -284,7 +305,29 @@ const Simulator = (props) => {
         // populate mdaObj // populateMDA();
         const newMdaObj = await loadMda();
         SimulatorEngine.simControler.mdaObj = newMdaObj;
-        SimulatorEngine.simControler.mdaObj2015 = newMdaObj;
+
+        const yearsToLeaveOut = 14;
+        let newMdaObj2015 = {
+          time: newMdaObj.time.filter(function (value, index, arr) {
+            return index > yearsToLeaveOut;
+          }),
+          coverage: newMdaObj.coverage.filter(function (value, index, arr) {
+            return index > yearsToLeaveOut;
+          }),
+          adherence: newMdaObj.adherence.filter(function (value, index, arr) {
+            return index > yearsToLeaveOut;
+          }),
+          bednets: newMdaObj.bednets.filter(function (value, index, arr) {
+            return index > yearsToLeaveOut;
+          }),
+          regimen: newMdaObj.regimen.filter(function (value, index, arr) {
+            return index > yearsToLeaveOut;
+          }),
+          active: newMdaObj.active.filter(function (value, index, arr) {
+            return index > yearsToLeaveOut;
+          }),
+        };
+        SimulatorEngine.simControler.mdaObj2015 = newMdaObj2015;
 
         const newParams = await loadParams();
         SimulatorEngine.simControler.parametersJSON = newParams;
@@ -473,7 +516,9 @@ const Simulator = (props) => {
                         simInProgress={simInProgress}
                       />
                     </div>
-                    {scenarioMDAs[0] && <MdaBars data={scenarioMDAs[0]} />}
+                    {scenarioMDAs[tabIndex] && (
+                      <MdaBars data={scenarioMDAs[tabIndex]} />
+                    )}
                   </div>
                 </div>
               </TabPanel>

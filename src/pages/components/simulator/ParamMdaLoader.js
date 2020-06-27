@@ -18,6 +18,13 @@ export const loadMda = async () => {
     active: mdaJSON.data.map((item) => true),
   };
   // returns one more line than it's ought to?
+  newMdaObj.time.length = 20;
+  newMdaObj.coverage.length = 20;
+  newMdaObj.regimen.length = 20;
+  newMdaObj.bednets.length = 20;
+  newMdaObj.adherence.length = 20;
+  newMdaObj.active.length = 20;
+
   console.log(newMdaObj);
   return newMdaObj;
 };
