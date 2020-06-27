@@ -26,10 +26,27 @@ const useStyles = makeStyles((theme) => ({
   formControlText: {
     margin: theme.spacing(0, 0, -1, 0),
   },
-  formControlChart: {
+  formControlPrecision: {
+    display: "block",
+    float: "left",
+    margin: theme.spacing(0, 0, 0, 2),
+    width: 300,
+  },
+  precisionLabel: {
+    display: "block",
+    float: "left",
+  },
+  precisionSlider: {
+    margin: theme.spacing(0, 2, 0, 0),
+    display: "block",
+    float: "left",
+    width: 120
+  },
+  formControlPrevalence: {
     float: 'right',
     margin: theme.spacing(0, 2, 0, 0),
   },
+
   contentLeftColumn: {},
   settingsIcon: {
     backgroundColor: "transparent",
@@ -98,9 +115,6 @@ const useStyles = makeStyles((theme) => ({
     float: "left"
   },
   precision: {
-    display: "block",
-    float: "left",
-    margin: theme.spacing(0, 0, 0, 2),
   },
   progress: {
     width: "100%",
@@ -138,7 +152,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundRepeat: "no-repeat",
     width: "fit-content",
     paddingRight: 30,
-    margin: theme.spacing(-1, 0, 5, 0),
+    margin: theme.spacing(0, 0, 0, 0),
     padding: theme.spacing(1, 0),
   },
   modalButton: {

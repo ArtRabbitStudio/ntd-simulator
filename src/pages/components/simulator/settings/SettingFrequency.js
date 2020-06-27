@@ -15,7 +15,7 @@ const SettingFrequency = ({ inModal, label }) => {
   const classes = useStyles();
   const { simParams, dispatchSimParams } = useStore();
 
-  const handleFrequencyChange = (event) => {
+  const handleChange = (event) => {
     dispatchSimParams({ type: "mdaSixMonths", payload: event.target.value });
   };
 
@@ -30,7 +30,7 @@ const SettingFrequency = ({ inModal, label }) => {
         labelId="demo-simple-select-helper-label"
         id="demo-simple-select-helper"
         value={simParams.mdaSixMonths}
-        onChange={handleFrequencyChange}
+        onChange={handleChange}
       >
         <MenuItem value={12}>Annual</MenuItem>
         <MenuItem value={6}>Every 6 months</MenuItem>

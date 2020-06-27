@@ -15,21 +15,22 @@ const SettingPrecision = ({ inModal, label, classAdd }) => {
   const { simParams, dispatchSimParams } = useStore();
 
   return (
-    <FormControl className={`${classes.formControlChart} ${classAdd}`}>
-      <FormLabel component="legend" htmlFor="precision">
-        {label}
-      </FormLabel>
+    <FormControl className={`${classes.formControlPrecision} ${classAdd}`}>
       <Slider
-        value={5}
+        className={classes.precisionSlider}
+        value={simParams.runs}
         min={1}
         step={1}
-        max={10}
+        max={100}
         onChange={(event, newValue) => {
-          dispatchSimParams({ type: "precision", payload: newValue });
+          dispatchSimParams({ type: "runs", payload: newValue });
         }}
         aria-labelledby="slider"
         valueLabelDisplay="auto"
       />
+      <FormLabel component="legend" htmlFor="precision" className={classes.precisionLabel}>
+        {label}
+      </FormLabel>
     </FormControl>
 
   )

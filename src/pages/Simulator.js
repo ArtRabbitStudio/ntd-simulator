@@ -28,6 +28,8 @@ import SettingMosquitoType from "./components/simulator/settings/SettingMosquito
 import SettingBedNetCoverage from "./components/simulator/settings/SettingBedNetCoverage";
 import SettingInsecticideCoverage from "./components/simulator/settings/SettingInsecticideCoverage";
 import SettingPrecision from "./components/simulator/settings/SettingPrecision";
+import SettingSystematicAdherence from "./components/simulator/settings/SettingSystematicAdherence";
+import SettingSpecificScenario from "./components/simulator/settings/SettingSpecificScenario";
 
 
 SimulatorEngine.simControler.documentReady();
@@ -122,8 +124,8 @@ const Simulator = (props) => {
     }
   }, [tabIndex]);
 
-  const handlePrecisionChange = (event, newValue) => {
-    // TODO
+  const handleAdherenceChange = (event) => {
+    // todo
   };
 
   const [simulationProgress, setSimulationProgress] = useState(0);
@@ -469,20 +471,29 @@ const Simulator = (props) => {
                           </TextContents>
 
                           <SettingName inModal={true} label="Scenario name" />
-                          <SettingFrequency inModal={true} label="Frequency" />
-                          <SettingTargetCoverage inModal={true} label="Target coverage" />
+                          <SettingBedNetCoverage inModal={true} label="Bed Net Coverage" />
+                          <SettingFrequency inModal={true} label="Treatment frequency" />
                           <SettingDrugRegimen inModal={true} label="Drug regimen" />
-                          <SettingBasePrevalence inModal={true} label="Base prevalence" />
-                          <SettingNumberOfRuns inModal={true} label="Number of runs" />
+                          <SettingTargetCoverage inModal={true} label="Treatment target coverage" />
+                          <SettingSystematicAdherence inModal={true} label="Systematic adherence" value={0} onChange={handleAdherenceChange} />
+                          { /* no longer in use <SettingBasePrevalence inModal={true} label="Base prevalence" /> */}
+                          { /* no longer in use <SettingNumberOfRuns inModal={true} label="Number of runs" /> */}
+                          <SettingInsecticideCoverage inModal={true} label="Vector: Insecticide Coverage" />
                           <SettingMosquitoType inModal={true} label="Mosquito type" />
-                          <SettingBedNetCoverage inModal={true} label="Vector: Bed Net Coverage (%)" />
-                          <SettingInsecticideCoverage inModal={true} label="Vector: Insecticide Coverage (%)" />
+                          <TextContents>
+                            <Typography paragraph variant="body1" component="p">
+                              Are you interested in a specific scenario?
+                            </Typography>
+                          </TextContents>
+                          <SettingSpecificScenario inModal={true} />
+
+
                         </ChartSettings>
 
 
                         <FormControl
                           variant="outlined"
-                          className={classes.formControlChart}
+                          className={classes.formControlPrevalence}
                         >
                           <Select
                             labelId="larvae-prevalence"
