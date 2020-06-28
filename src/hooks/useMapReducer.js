@@ -48,7 +48,6 @@ const reduce = (state, { type, payload }) => {
     case 'STOP_PLAY':
       return { ...state, playing: false }
     case 'VIEWPORT':
-      console.log('viewport called');
       return { ...state, viewport: payload, ready: true }
     case 'HOVER':
       return {

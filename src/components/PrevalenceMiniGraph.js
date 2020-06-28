@@ -50,9 +50,8 @@ function PrevalenceMiniGraph({
   const startX = xScale(start)
   const endX = xScale(end)
   const seriesObj = filter(cleanedPrevalence,(value,index)=>{
-      return ( index >= start && index <= end )
+      return ( (2000 + index) >= start && (2000+index) <= end )
   })
-
   
   return (
     <svg

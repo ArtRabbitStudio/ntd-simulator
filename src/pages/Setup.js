@@ -3,7 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { observer } from "mobx-react";
 import React, { useEffect, useState, Fragment } from "react";
 import { useHistory } from "react-router-dom";
-import { orderBy } from 'lodash'
+import { orderBy,map } from 'lodash'
 import PrevalenceMiniGraph from "../components/PrevalenceMiniGraph";
 import { useDataAPI, useUIState } from "../hooks/stateHooks";
 import { Layout } from "../layout";
@@ -168,7 +168,31 @@ const Setup = (props) => {
       </Layout>
     )
   }
-  
+  let mdaObjTimeFiltered = null;
+  if ( simParams.IUData.mdaObj ) {
+    const startYear = 2010
+    const endYear = 2019
+    mdaObjTimeFiltered = {
+      active: [],
+      time:   [],
+      adherence: [],
+      bednets:  [],
+      coverage: [],
+      regimen: []
+    }
+    map(simParams.IUData.mdaObj.time,(e,i) => {
+
+          const currentYear = (2000 + e/12)
+          if ( currentYear >= startYear && currentYear <= endYear ) {
+            mdaObjTimeFiltered.time.push(simParams.IUData.mdaObj.time[i])
+            mdaObjTimeFiltered.active.push(simParams.IUData.mdaObj.active[i])
+            mdaObjTimeFiltered.adherence.push(simParams.IUData.mdaObj.adherence[i])
+            mdaObjTimeFiltered.bednets.push(simParams.IUData.mdaObj.bednets[i])
+            mdaObjTimeFiltered.coverage.push(simParams.IUData.mdaObj.coverage[i])
+            mdaObjTimeFiltered.regimen.push(simParams.IUData.mdaObj.regimen[i])
+          }
+    })
+  }
 
   const handleAdherenceChange = (event) => {
     // TODO
@@ -206,7 +230,7 @@ const Setup = (props) => {
           <div className={classes.chart}>
             <Typography variant="h6" component="h6" className={classes.headline} >Espen intervention data</Typography>
             <div className="bars setup">
-                {simParams.IUData.mdaObj && simParams.IUData.mdaObj.time.map((e, i) => (
+                {simParams.IUData.mdaObj && mdaObjTimeFiltered.time.map((e, i) => (
                 <div
                   key={`bar-setup-${i}`}
                   className={`bar setup c${simParams.IUData.mdaObj.coverage[i]}`}
@@ -233,7 +257,7 @@ const Setup = (props) => {
               ))}
             </div>
                 <div className="bars setup">
-                {simParams.IUData.mdaObj && simParams.IUData.mdaObj.time.map((e, i) => (
+                {simParams.IUData.mdaObj && mdaObjTimeFiltered.time.map((e, i) => (
                   <Typography key={`bar-legend=${i}`} className={classes.legend} component="p">{ '‘' +(2000+(simParams.IUData.mdaObj.time[i]/12)).toString().substr(-2) }</Typography>
                 ))}
                   
