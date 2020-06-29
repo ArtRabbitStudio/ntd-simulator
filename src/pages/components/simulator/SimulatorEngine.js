@@ -1,18 +1,18 @@
 //import { Random } from './sim'
 //import { Random } from './sim-0.26'
-import { Random } from "./sim";
-import { subtract } from "mathjs";
-export var s = new Random();
+import { Random } from './sim'
+import { subtract } from 'mathjs'
+export var s = new Random()
 export var SessionData = {
   storeResults: (results, scenLabel, stats) => {
     //takes results: an Array of json with each json obj having ts, Ms, Ws.
     //combines these with parameter information and stores to be retrieved whenever.
-    var sessionData = JSON.parse(localStorage.getItem("sessionData")); //retrieve session dat from storage.
+    var sessionData = JSON.parse(localStorage.getItem('sessionData')) //retrieve session dat from storage.
     if (sessionData == null || sessionData.scenarios == null) {
-      sessionData = { scenarios: [] };
+      sessionData = { scenarios: [] }
     }
     if (scenLabel == null) {
-      scenLabel = "Scenario " + (ScenarioIndex.getIndex() + 1);
+      scenLabel = 'Scenario ' + (ScenarioIndex.getIndex() + 1)
     }
     var scenario = {
       params: params,
@@ -20,53 +20,53 @@ export var SessionData = {
       label: scenLabel,
       mda: simControler.mdaObj,
       mda2015: simControler.mdaObj2015,
-    };
-    var scenInd = ScenarioIndex.getIndex();
-
-    sessionData.scenarios[scenInd] = scenario;
-    var toStore = JSON.stringify(sessionData);
-    try {
-      localStorage.setItem("sessionData", toStore);
-    } catch (error) {
-      alert("Too many scenarios to store. Try deleting some.");
     }
-    return sessionData;
+    var scenInd = ScenarioIndex.getIndex()
+
+    sessionData.scenarios[scenInd] = scenario
+    var toStore = JSON.stringify(sessionData)
+    try {
+      localStorage.setItem('sessionData', toStore)
+    } catch (error) {
+      alert('Too many scenarios to store. Try deleting some.')
+    }
+    return sessionData
   },
   storeSession: (session) => {
-    var toStore = JSON.stringify(session);
-    localStorage.setItem("sessionData", toStore);
+    var toStore = JSON.stringify(session)
+    localStorage.setItem('sessionData', toStore)
   },
   storeStats: (stats) => {
-    var sessionData = JSON.parse(localStorage.getItem("sessionData")); //retrieve session dat from storage.
-    var scenInd = ScenarioIndex.getIndex();
-    sessionData.scenarios[scenInd]["stats"] = stats;
-    var toStore = JSON.stringify(sessionData);
-    localStorage.setItem("sessionData", toStore);
+    var sessionData = JSON.parse(localStorage.getItem('sessionData')) //retrieve session dat from storage.
+    var scenInd = ScenarioIndex.getIndex()
+    sessionData.scenarios[scenInd]['stats'] = stats
+    var toStore = JSON.stringify(sessionData)
+    localStorage.setItem('sessionData', toStore)
   },
   createNewSession: () => {
-    var sessionData = JSON.parse(localStorage.getItem("sessionData"));
+    var sessionData = JSON.parse(localStorage.getItem('sessionData'))
     if (sessionData == null || sessionData.scenarios == null) {
-      sessionData = { scenarios: [] };
+      sessionData = { scenarios: [] }
     }
-    var scenario = { params: params, results: [] };
-    var scenInd = ScenarioIndex.getIndex();
+    var scenario = { params: params, results: [] }
+    var scenInd = ScenarioIndex.getIndex()
 
-    sessionData.scenarios[scenInd] = scenario;
-    var toStore = JSON.stringify(sessionData);
+    sessionData.scenarios[scenInd] = scenario
+    var toStore = JSON.stringify(sessionData)
   },
   deleteSession: () => {
     //delete session data to start fresh when page loads.
-    localStorage.setItem("sessionData", null);
+    localStorage.setItem('sessionData', null)
   },
   retrieveSessions: () => {
-    var ses = JSON.parse(localStorage.getItem("sessionData"));
+    var ses = JSON.parse(localStorage.getItem('sessionData'))
     if (ses && ses.scenarios && ses.scenarios[0] && ses.scenarios[0].label) {
-      return ses;
+      return ses
     } else {
-      ses = { scenarios: [] };
-      var toStore = JSON.stringify(ses);
-      localStorage.setItem("sessionData", toStore);
-      return ses;
+      ses = { scenarios: [] }
+      var toStore = JSON.stringify(ses)
+      localStorage.setItem('sessionData', toStore)
+      return ses
     }
   },
   convertRun: (m, endemicity) => {
@@ -79,132 +79,132 @@ export var SessionData = {
       reductionYears: m.reductionYears(),
       nRounds: m.nRounds(),
       endemicity: endemicity,
-    };
+    }
   },
   nRounds: (i) => {
-    var ses = SessionData.retrieveSessions();
-    var scen = ses.scenarios[i];
-    var n = scen.results.length;
-    var rounds = [];
+    var ses = SessionData.retrieveSessions()
+    var scen = ses.scenarios[i]
+    var n = scen.results.length
+    var rounds = []
     for (var j = 0; j < n; j++) {
-      rounds.push(scen.results[j].nRounds);
+      rounds.push(scen.results[j].nRounds)
     }
-    return rounds;
+    return rounds
   },
   reductions: (i, yr, endemicity) => {
-    var ses = SessionData.retrieveSessions();
-    var scen = ses.scenarios[i];
-    var n = scen.results.length;
-    var red = 0;
-    var nn = 0;
+    var ses = SessionData.retrieveSessions()
+    var scen = ses.scenarios[i]
+    var n = scen.results.length
+    var red = 0
+    var nn = 0
     for (var j = 0; j < n; j++) {
       if (endemicity) {
         if (scen.results[j].endemicity == endemicity) {
-          red += scen.results[j].reductionYears[yr];
-          nn += 1;
+          red += scen.results[j].reductionYears[yr]
+          nn += 1
         }
       } else {
-        red += scen.results[j].reductionYears[yr];
-        nn += 1;
+        red += scen.results[j].reductionYears[yr]
+        nn += 1
       }
     }
-    return red / nn;
+    return red / nn
   },
   ran: (i) => {
-    var ses = SessionData.retrieveSessions();
+    var ses = SessionData.retrieveSessions()
 
     if (!ses) {
-      return false;
+      return false
     }
     if (!ses.scenarios[i]) {
-      return false;
+      return false
     }
 
-    var res = ses.scenarios[i].results;
+    var res = ses.scenarios[i].results
     if (res.length > 0) {
-      return true;
+      return true
     } else {
-      return false;
+      return false
     }
   },
   deleteScenario: (tabIndex) => {
-    var ses = SessionData.retrieveSessions();
+    var ses = SessionData.retrieveSessions()
     // console.log(ses)
     // console.log('Deleting scenario at index:', tabIndex)
-    var sessionArray = ses.scenarios;
-    var newSessionArray = [...sessionArray];
+    var sessionArray = ses.scenarios
+    var newSessionArray = [...sessionArray]
     // console.log(sessionArray)
 
     /*     var newSessionArray = newSessionArray
       .slice(0, tabIndex)
       .concat(newSessionArray.slice(tabIndex + 1, newSessionArray.length)) */
-    newSessionArray.splice(tabIndex, 1);
+    newSessionArray.splice(tabIndex, 1)
     // console.log(newSessionArray)
 
-    var toStore = { scenarios: newSessionArray };
-    var stringToStore = JSON.stringify(toStore);
+    var toStore = { scenarios: newSessionArray }
+    var stringToStore = JSON.stringify(toStore)
     //console.log(stringToStore)
-    localStorage.setItem("sessionData", stringToStore);
+    localStorage.setItem('sessionData', stringToStore)
     ScenarioIndex.setIndex(
       newSessionArray.length - 1 === -1 ? 0 : newSessionArray.length - 1
-    );
+    )
   },
-};
+}
 export var ScenarioIndex = {
   getIndex: function () {
-    return Number(localStorage.getItem("scenarioIndex"));
+    return Number(localStorage.getItem('scenarioIndex'))
   },
   setIndex: function (ind) {
     try {
-      var ses = SessionData.retrieveSessions();
-      var scen = ses.scenarios[ind];
-      params = scen.params;
+      var ses = SessionData.retrieveSessions()
+      var scen = ses.scenarios[ind]
+      params = scen.params
     } catch (err) {}
 
-    return localStorage.setItem("scenarioIndex", ind);
+    return localStorage.setItem('scenarioIndex', ind)
   },
-};
+}
 export var Person = function (a, b) {
   //constructor(a,b) {
-  this.b = s.gamma(a, b);
-  this.M = 0.5;
-  this.W = 0;
-  this.WM = 0;
-  this.WF = 0;
-  this.I = 0;
-  this.bednet = 0;
-  this.t = 0;
-  this.u = s.normal(params.u0, Math.sqrt(params.sigma));
+  this.b = s.gamma(a, b)
+  this.M = 0.5
+  this.W = 0
+  this.WM = 0
+  this.WF = 0
+  this.I = 0
+  this.bednet = 0
+  this.t = 0
+  this.u = s.normal(params.u0, Math.sqrt(params.sigma))
 
   //}
 
   this.repRate = function () {
     if (params.nu == 0) {
       if (this.WM > 0) {
-        return this.WF;
+        return this.WF
       } else {
-        return 0.0;
+        return 0.0
       }
     } else {
-      return params.alpha * Math.min(this.WF, (1 / params.nu) * this.WM);
+      return params.alpha * Math.min(this.WF, (1 / params.nu) * this.WM)
     }
-  };
+  }
 
   this.biteRate = function () {
     if (this.a < 108.0) {
       //less than 9 * 12 = 108.0
-      return this.a / 108.0;
+      return this.a / 108.0
     } else {
-      return 1.0;
+      return 1.0
     }
-  };
+  }
 
   this.react = function () {
-    var bNReduction = 1 - (1 - params.sN) * this.bedNet;
+    var bNReduction = 1 - (1 - params.sN) * this.bedNet
     //immune state update
 
     //I +=  (param->dt) *( (double) W - param->z * I);
-    this.I = statFunctions.immuneRK4Step(this.W, this.I);
+    this.I = statFunctions.immuneRK4Step(this.W, this.I)
     //male worm update
     var births = statFunctions.poisson(
       0.5 *
@@ -215,10 +215,10 @@ export var Person = function (a, b) {
         Math.exp(-1 * params.theta * this.I) *
         this.b *
         params.dt
-    ); //exp(-1 * beta * I)
+    ) //exp(-1 * beta * I)
     //births = param->poisson_dist(0.5 * param->xi  * biteRate() * param->L3 * exp(-1 * param->theta * I) * b *  param->dt); //exp(-1 * beta * I)
-    var deaths = statFunctions.poisson(params.mu * this.WM * params.dt);
-    this.WM += births - deaths;
+    var deaths = statFunctions.poisson(params.mu * this.WM * params.dt)
+    this.WM += births - deaths
 
     //female worm update
     births = statFunctions.poisson(
@@ -230,43 +230,43 @@ export var Person = function (a, b) {
         Math.exp(-1 * params.theta * this.I) *
         this.b *
         params.dt
-    );
-    deaths = statFunctions.poisson(params.mu * this.WF * params.dt);
-    this.WF += births - deaths;
+    )
+    deaths = statFunctions.poisson(params.mu * this.WF * params.dt)
+    this.WF += births - deaths
 
     // Panayiota: adding in fecRed parameter looks like it changes the calculation of M in this way.
     // Is this right?
 
     //this.M += params.dt * (this.repRate() - params.gamma * this.M)
-    var x = 1;
+    var x = 1
     if (this.treated > 0) {
-      x = 0;
+      x = 0
     }
     // this.M += params.dt * (this.repRate() *(1.0 - this.treated) - params.gamma * this.M)
-    this.M += params.dt * (this.repRate() * x - params.gamma * this.M);
+    this.M += params.dt * (this.repRate() * x - params.gamma * this.M)
 
-    this.treated = this.treated - 1;
+    this.treated = this.treated - 1
     //M += param->dt * (repRate() - param->gamma * M);
     //total worm count
-    this.W = this.WM + this.WF;
+    this.W = this.WM + this.WF
     //time-step
-    this.t += params.dt;
-    this.a += params.dt;
+    this.t += params.dt
+    this.a += params.dt
     //ensure all positive state variables remain positive
     if (this.W < 0) {
-      this.W = 0;
+      this.W = 0
     }
     if (this.WM < 0) {
-      this.WM = 0;
+      this.WM = 0
     }
     if (this.WF < 0) {
-      this.WF = 0;
+      this.WF = 0
     }
     if (this.I < 0) {
-      this.I = 0.0;
+      this.I = 0.0
     }
     if (this.M < 0) {
-      this.M = 0.0;
+      this.M = 0.0
     }
     // add in the function where we use the aImp variable.
     if (Math.random() < 1 - Math.exp(-1.0 * params.aImp * params.dt)) {
@@ -275,8 +275,8 @@ export var Person = function (a, b) {
       // Panayiota: I'm not sure that I understand what the randomImportation function is doing. It seems to me to be randomly
       // setting the number of worms in a person to some value (shown below), if the importation criteria is met
       // based on the value of aImp. Is this what you want?
-      this.WM = (0.5 * params.xi * this.biteRate() * 10.0) / params.mu;
-      this.WF = (0.5 * params.xi * this.biteRate() * 10.0) / params.mu;
+      this.WM = (0.5 * params.xi * this.biteRate() * 10.0) / params.mu
+      this.WF = (0.5 * params.xi * this.biteRate() * 10.0) / params.mu
     }
 
     //simulate event where host dies and is replaced by a new host.
@@ -285,213 +285,213 @@ export var Person = function (a, b) {
       this.a > 1200.0
     ) {
       //if over age 100
-      this.initialise();
-      this.a = 0; //birth event so age is 0.
+      this.initialise()
+      this.a = 0 //birth event so age is 0.
     }
-  };
+  }
 
   this.initialise = function () {
-    this.W = 0;
-    this.WM = 0;
-    this.WF = 0;
-    this.I = 0.0;
-    this.M = 0.0; //0
-    this.bedNet = 0;
-    this.u = s.normal(params.u0, Math.sqrt(params.sigma));
-    this.treated = 0;
-  };
-};
+    this.W = 0
+    this.WM = 0
+    this.WF = 0
+    this.I = 0.0
+    this.M = 0.0 //0
+    this.bedNet = 0
+    this.u = s.normal(params.u0, Math.sqrt(params.sigma))
+    this.treated = 0
+  }
+}
 export var Model = function (n) {
   //constructor(n){
 
-  this.sU = 0;
-  this.sB = 0;
-  this.sN = 0;
-  this.people = new Array();
-  this.n = n;
-  this.bedNetInt = 0;
-  this.ts = [];
-  this.Ms = [];
-  this.Ws = [];
-  this.Ls = [];
+  this.sU = 0
+  this.sB = 0
+  this.sN = 0
+  this.people = new Array()
+  this.n = n
+  this.bedNetInt = 0
+  this.ts = []
+  this.Ms = []
+  this.Ws = []
+  this.Ls = []
   for (var i = 0; i < n; i++) {
-    this.people.push(new Person(params.a, params.b));
+    this.people.push(new Person(params.a, params.b))
   }
   //}
 
   this.saveOngoing = function (t, mp, wp, lp) {
-    lp = 1 - Math.exp(-lp); //convert to a prevalence
-    this.ts.push(t);
-    this.Ms.push(mp * 100); //convert all to percentages.
-    this.Ws.push(wp * 100);
-    this.Ls.push(lp * 100);
-  };
+    lp = 1 - Math.exp(-lp) //convert to a prevalence
+    this.ts.push(t)
+    this.Ms.push(mp * 100) //convert all to percentages.
+    this.Ws.push(wp * 100)
+    this.Ls.push(lp * 100)
+  }
 
   this.L3 = function () {
-    var mf = 0.0;
-    var bTot = 0.0;
+    var mf = 0.0
+    var bTot = 0.0
     for (var i = 0; i < this.n; i++) {
       //mf += param->kappas1 * pow(1 - exp(-param->r1 *( host_pop[i].mfConc() * host_pop[i].b)/param->kappas1), 2.0);
-      mf += this.people[i].b * statFunctions.L3Uptake(this.people[i].M);
-      bTot += this.people[i].b;
+      mf += this.people[i].b * statFunctions.L3Uptake(this.people[i].M)
+      bTot += this.people[i].b
     }
-    mf = mf / bTot; //(double) n;
+    mf = mf / bTot //(double) n;
     return (
       (mf *
         (1 + this.bedNetInt * params.covN * (params.sN - 1)) *
         params.lbda *
         params.g) /
       (params.sig + params.lbda * params.psi1)
-    );
-  };
+    )
+  }
 
   this.prevalence = function () {
-    var p = 0;
+    var p = 0
     for (var i = 0; i < this.n; i++) {
-      p += s.random() < 1 - Math.exp(-this.people[i].M);
+      p += s.random() < 1 - Math.exp(-this.people[i].M)
     }
-    return p / this.n;
-  };
+    return p / this.n
+  }
 
   this.aPrevalence = function () {
-    var p = 0;
+    var p = 0
     for (var i = 0; i < this.n; i++) {
-      p += this.people[i].W > 0;
+      p += this.people[i].W > 0
     }
-    return p / this.n;
-  };
+    return p / this.n
+  }
 
   this.MDAEvent = function () {
     for (var i = 0; i < this.n; i++) {
       if (s.normal(this.people[i].u, 1) < 0) {
-        this.people[i].M = params.mfPropMDA * this.people[i].M;
-        this.people[i].WM = Math.floor(params.wPropMDA * this.people[i].WM);
-        this.people[i].WF = Math.floor(params.wPropMDA * this.people[i].WF);
-        this.people[i].treated = params.fecRed;
+        this.people[i].M = params.mfPropMDA * this.people[i].M
+        this.people[i].WM = Math.floor(params.wPropMDA * this.people[i].WM)
+        this.people[i].WF = Math.floor(params.wPropMDA * this.people[i].WF)
+        this.people[i].treated = params.fecRed
       }
     }
-  };
+  }
 
   this.bedNetEvent = function () {
-    params.sig = params.sig + params.lbda * params.dN * params.covN;
+    params.sig = params.sig + params.lbda * params.dN * params.covN
     for (var i = 0; i < this.n; i++) {
       if (s.random() < params.covN) {
         //param->uniform_dist()<param->covMDA
-        this.people[i].bedNet = 1; //using bed-net
+        this.people[i].bedNet = 1 //using bed-net
       } else {
-        this.people[i].bedNet = 0; //not using bed-net
+        this.people[i].bedNet = 0 //not using bed-net
       }
     }
-  };
+  }
 
   this.nRounds = function () {
-    var inds = [];
+    var inds = []
     for (var i = 0; i < this.Ms.length; i++) {
       if (this.Ms[i] < 1.0) {
-        inds.push(i);
+        inds.push(i)
       }
     }
     if (params.mdaFreq == 12) {
-      return Math.floor(this.ts[inds[0]]);
+      return Math.floor(this.ts[inds[0]])
     } else {
-      return Math.floor(2 * this.ts[inds[0]]);
+      return Math.floor(2 * this.ts[inds[0]])
     }
-  };
+  }
 
   this.reduction = function (yr) {
-    var myr = yr * 6;
-    return this.Ms[myr] / this.Ms[0];
-  };
+    var myr = yr * 6
+    return this.Ms[myr] / this.Ms[0]
+  }
 
   this.reductionYears = function () {
-    var ryrs = [];
+    var ryrs = []
     for (var yr = 0; yr < 31; yr++) {
-      ryrs.push(this.reduction(yr));
+      ryrs.push(this.reduction(yr))
     }
-    return ryrs;
-  };
+    return ryrs
+  }
 
   this.evolveAndSaves = function (tot_t, mdaJSON, paramsNumber) {
-    var t = 0;
-    var icount = 0;
-    var maxMDAt = 1200.0;
-    var maxoldMDAt; //used in triple drug treatment.
+    var t = 0
+    var icount = 0
+    var maxMDAt = 1200.0
+    var maxoldMDAt //used in triple drug treatment.
 
     // location to take in the json from the file
     // var myJSON = '{"time":[60, 96, 120,144, 180], "coverage":[0.9, 0.9,0.9,0.9,0.9], "adherence" : [1, 1, 1, 1, 1]}';
     // var mdaJSON = JSON.parse(myJSON);
     //
     // // set mda round
-    var mdaRound = 0;
+    var mdaRound = 0
     // how many mda's will we do and when will the next one be
     // console.log(simControler.mdaObj)
-    var numMDA = simControler.mdaObj.time.length;
+    var numMDA = simControler.mdaObj.time.length
 
     // next mda will occur at 12000 + the initial time given in the mdaObj
-    var nextMDA = 1200 + simControler.mdaObj.time[mdaRound];
+    var nextMDA = 1200 + simControler.mdaObj.time[mdaRound]
 
     //update the Intervention parameters, covMDA, rho, mfPropMDA, wPropMDA and covN
-    statFunctions.updateInterventionParams(mdaRound);
+    statFunctions.updateInterventionParams(mdaRound)
 
     // params.covMDA = simControler.mdaObj.coverage[mdaRound] / 100
     // params.rho = simControler.mdaObj.adherence[mdaRound] / 100
-    params.sigma = params.rho / (1 - params.rho);
+    params.sigma = params.rho / (1 - params.rho)
     params.u0 =
-      -statFunctions.NormSInv(params.covMDA) * Math.sqrt(1 + params.sigma);
+      -statFunctions.NormSInv(params.covMDA) * Math.sqrt(1 + params.sigma)
     // add z values for our normally distributed value of u, therefore when the parameters of the normal change,
     // we can easily map these values to corresponding z values for the new normal distribution
-    var z_values = [];
+    var z_values = []
     for (var i = 0; i < this.n; i++) {
-      this.people[i].u = s.normal(params.u0, Math.sqrt(params.sigma));
+      this.people[i].u = s.normal(params.u0, Math.sqrt(params.sigma))
       // x = (this.people[i].u - params.u0)/Math.sqrt(params.sigma)
-      z_values.push((this.people[i].u - params.u0) / Math.sqrt(params.sigma));
+      z_values.push((this.people[i].u - params.u0) / Math.sqrt(params.sigma))
     }
-    this.bedNetInt = 0;
+    this.bedNetInt = 0
 
     // add a parameter to flag when we update parameters
     // this is assuming that the "historic" portion of the simulation begins after 100 years,
     // before that we are running to an equilibrium starting point.
-    var paramsUpdate = 1200;
+    var paramsUpdate = 1200
 
     // add a parameter to access the aImp historic entry
-    var aImpYear = 2000;
+    var aImpYear = 2000
 
     for (var i = 0; i < this.n; i++) {
       //infect everyone initially.
       //this.people[i].WM = 1;
       //this.people[i].WF = 1;
-      this.people[i].M = 1.0;
+      this.people[i].M = 1.0
     }
 
     if (params.IDAControl === 1) {
       //if switching to IDA after five treatment rounds.
-      maxoldMDAt = 1200.0 + 5.0 * params.mdaFreq;
+      maxoldMDAt = 1200.0 + 5.0 * params.mdaFreq
     } else {
-      maxoldMDAt = 2 * maxMDAt; //this just makes maxoldMDAt larger than total treatment time so there is never a switch.
+      maxoldMDAt = 2 * maxMDAt //this just makes maxoldMDAt larger than total treatment time so there is never a switch.
     }
 
     //double currentL3 = 0.5;
     // console.log("mosquito species: ", params.mosquitoSpecies, "\n");
-    params.L3 = 5.0;
+    params.L3 = 5.0
     // console.log("0----------100\n-");
     while (t < tot_t * 12.0) {
       //for 100 years update annually, then update monthly when recording and intervention is occuring.
       if (t < 960.0) {
         //1200.0
-        params.dt = 12.0;
+        params.dt = 12.0
       } else {
-        params.dt = 1.0;
+        params.dt = 1.0
       }
       for (var i = 0; i < this.n; i++) {
-        this.people[i].react();
+        this.people[i].react()
       }
 
       //update
-      t = this.people[0].t;
+      t = this.people[0].t
       if (t < 12.0 * 80.0) {
-        params.L3 = 2.0;
+        params.L3 = 2.0
       } else {
-        params.L3 = this.L3();
+        params.L3 = this.L3()
       }
       if (t % 2 == 0 && t < Math.floor(t) + params.dt) {
         //cout << "t = " << (double) t/12.0 << "\n";
@@ -500,7 +500,7 @@ export var Model = function (n) {
           this.prevalence(),
           this.aPrevalence(),
           params.L3
-        );
+        )
       }
       if (
         Math.floor(t) % Math.floor((tot_t * 12.0) / 10.0) == 0 &&
@@ -508,8 +508,8 @@ export var Model = function (n) {
       ) {
       }
       if (t >= 1200.0 && t < 1200.0 + params.dt) {
-        this.bedNetEvent();
-        this.bedNetInt = 1;
+        this.bedNetEvent()
+        this.bedNetInt = 1
       }
 
       //  adding in the use of the fecRed parameter.
@@ -528,44 +528,42 @@ export var Model = function (n) {
       //if (t >= paramsUpdate){
       if (t >= paramsUpdate && aImpYear < 2020) {
         // update yearly parameters for MDA and aImp here.
-        statFunctions.updateSimParams(aImpYear, paramsNumber);
-        paramsUpdate += 12.0;
-        aImpYear += 1;
+        statFunctions.updateSimParams(aImpYear, paramsNumber)
+        paramsUpdate += 12.0
+        aImpYear += 1
       }
       if (t >= 1200 + 20 * 12) {
-        params.aImp = 0;
+        params.aImp = 0
       }
 
       if (t >= nextMDA) {
-        this.MDAEvent();
-        this.bedNetEvent();
-        statFunctions.setBR(true); //intervention true.
-        statFunctions.setVH(true);
-        statFunctions.setMu(true);
+        this.MDAEvent()
+        this.bedNetEvent()
+        statFunctions.setBR(true) //intervention true.
+        statFunctions.setVH(true)
+        statFunctions.setMu(true)
         if (mdaRound <= numMDA) {
           // if we haven't done all the mda's yet,
           // update the mda round and the time for the next one
-          mdaRound += 1;
-          nextMDA = 1200 + simControler.mdaObj.time[mdaRound];
+          mdaRound += 1
+          nextMDA = 1200 + simControler.mdaObj.time[mdaRound]
 
           //update the Intervention parameters, covMDA, rho, mfPropMDA, wPropMDA and covN
-          statFunctions.updateInterventionParams(mdaRound);
+          statFunctions.updateInterventionParams(mdaRound)
           // params.covMDA = simControler.mdaObj.coverage[mdaRound] / 100
           // params.rho = simControler.mdaObj.adherence[mdaRound] / 100
-          params.sigma = params.rho / (1 - params.rho);
+          params.sigma = params.rho / (1 - params.rho)
           params.u0 =
-            -statFunctions.NormSInv(params.covMDA) *
-            Math.sqrt(1 + params.sigma);
+            -statFunctions.NormSInv(params.covMDA) * Math.sqrt(1 + params.sigma)
 
           for (i = 0; i < this.n; i++) {
-            this.people[i].u =
-              z_values[i] * Math.sqrt(params.sigma) + params.u0;
+            this.people[i].u = z_values[i] * Math.sqrt(params.sigma) + params.u0
           }
         }
         // if we have performed all the mda's already, then set the next mda time to infinity,
         // so we will never check for mda's again
         else {
-          nextMDA = Infinity;
+          nextMDA = Infinity
         }
       }
 
@@ -580,15 +578,15 @@ export var Model = function (n) {
       //   statFunctions.setMu(true)
       // }
 
-      icount++;
+      icount++
     }
-    this.Ws = this.Ws.slice(200, this.Ws.length);
-    this.Ms = this.Ms.slice(200, this.Ms.length);
-    this.Ls = this.Ls.slice(200, this.Ls.length);
-    var maxt = this.ts[200];
-    this.ts = subtract(this.ts.slice(200, this.ts.length), maxt); // !!!!!!!!!!!!!!
-  };
-};
+    this.Ws = this.Ws.slice(200, this.Ws.length)
+    this.Ms = this.Ms.slice(200, this.Ms.length)
+    this.Ls = this.Ls.slice(200, this.Ls.length)
+    var maxt = this.ts[200]
+    this.ts = subtract(this.ts.slice(200, this.ts.length), maxt) // !!!!!!!!!!!!!!
+  }
+}
 export var params = {
   riskMu1: 1.0,
   riskMu2: 1.0,
@@ -628,14 +626,14 @@ export var params = {
   sysCompN: 0.99, //systematic non-compliance of bed nets. set to near one.
   rhoCN: 0.0, //correlation between receiving chemotherapy and use of bed nets.
   IDAControl: 0, //if 1 then programme switches to IDA after five rounds of standard MDA defined with chi and tau.
-};
+}
 export var statFunctions = {
   immuneRK4Step: function (W, I) {
-    var k1 = params.dt * (W - params.z * I);
-    var k2 = params.dt * (W - params.z * (I + 0.5 * k1));
-    var k3 = params.dt * (W - params.z * (I + 0.5 * k2));
-    var k4 = params.dt * (W - params.z * (I + k3));
-    return I + 0.1666667 * (k1 + 2.0 * k2 + 2.0 * k3 + k4);
+    var k1 = params.dt * (W - params.z * I)
+    var k2 = params.dt * (W - params.z * (I + 0.5 * k1))
+    var k3 = params.dt * (W - params.z * (I + 0.5 * k2))
+    var k4 = params.dt * (W - params.z * (I + k3))
+    return I + 0.1666667 * (k1 + 2.0 * k2 + 2.0 * k3 + k4)
   },
 
   L3Uptake: function (mf) {
@@ -643,11 +641,9 @@ export var statFunctions = {
       return (
         params.kappas1 *
         Math.pow(1 - Math.exp((-params.r1 * mf) / params.kappas1), 2.0)
-      );
+      )
     } else {
-      return (
-        params.kappas1 * (1 - Math.exp((-params.r1 * mf) / params.kappas1))
-      );
+      return params.kappas1 * (1 - Math.exp((-params.r1 * mf) / params.kappas1))
     }
   },
 
@@ -655,130 +651,130 @@ export var statFunctions = {
     return (
       (-1 / lambda) *
       Math.log(1 - Math.random() * (1 - Math.exp(-lambda * trunc)))
-    );
+    )
   },
 
   poisson: function (mean) {
-    var L = Math.exp(-mean);
-    var p = 1.0;
-    var k = 0;
+    var L = Math.exp(-mean)
+    var p = 1.0
+    var k = 0
 
     do {
-      k++;
-      p *= Math.random();
-    } while (p > L);
+      k++
+      p *= Math.random()
+    } while (p > L)
 
-    return k - 1;
+    return k - 1
   },
 
   NormSInv: function (p) {
     var a1 = -39.6968302866538,
       a2 = 220.946098424521,
-      a3 = -275.928510446969;
+      a3 = -275.928510446969
     var a4 = 138.357751867269,
       a5 = -30.6647980661472,
-      a6 = 2.50662827745924;
+      a6 = 2.50662827745924
     var b1 = -54.4760987982241,
       b2 = 161.585836858041,
-      b3 = -155.698979859887;
+      b3 = -155.698979859887
     var b4 = 66.8013118877197,
       b5 = -13.2806815528857,
-      c1 = -7.78489400243029e-3;
+      c1 = -7.78489400243029e-3
     var c2 = -0.322396458041136,
       c3 = -2.40075827716184,
-      c4 = -2.54973253934373;
+      c4 = -2.54973253934373
     var c5 = 4.37466414146497,
       c6 = 2.93816398269878,
-      d1 = 7.78469570904146e-3;
+      d1 = 7.78469570904146e-3
     var d2 = 0.32246712907004,
       d3 = 2.445134137143,
-      d4 = 3.75440866190742;
+      d4 = 3.75440866190742
     var p_low = 0.02425,
-      p_high = 1 - p_low;
-    var q, r;
-    var retVal;
+      p_high = 1 - p_low
+    var q, r
+    var retVal
 
     if (p < 0 || p > 1) {
-      console.error("NormSInv: Argument out of range.");
-      retVal = 0;
+      console.error('NormSInv: Argument out of range.')
+      retVal = 0
     } else if (p < p_low) {
-      q = Math.sqrt(-2 * Math.log(p));
+      q = Math.sqrt(-2 * Math.log(p))
       retVal =
         (((((c1 * q + c2) * q + c3) * q + c4) * q + c5) * q + c6) /
-        ((((d1 * q + d2) * q + d3) * q + d4) * q + 1);
+        ((((d1 * q + d2) * q + d3) * q + d4) * q + 1)
     } else if (p <= p_high) {
-      q = p - 0.5;
-      r = q * q;
+      q = p - 0.5
+      r = q * q
       retVal =
         ((((((a1 * r + a2) * r + a3) * r + a4) * r + a5) * r + a6) * q) /
-        (((((b1 * r + b2) * r + b3) * r + b4) * r + b5) * r + 1);
+        (((((b1 * r + b2) * r + b3) * r + b4) * r + b5) * r + 1)
     } else {
-      q = Math.sqrt(-2 * Math.log(1 - p));
+      q = Math.sqrt(-2 * Math.log(1 - p))
       retVal =
         -(((((c1 * q + c2) * q + c3) * q + c4) * q + c5) * q + c6) /
-        ((((d1 * q + d2) * q + d3) * q + d4) * q + 1);
+        ((((d1 * q + d2) * q + d3) * q + d4) * q + 1)
     }
 
-    return retVal;
+    return retVal
   },
 
   setBR: function (intervention) {
     if (intervention) {
-      params.lbda = params.lbdaR * params.lbda_original;
+      params.lbda = params.lbdaR * params.lbda_original
       params.xi =
-        params.lbda * params.v_to_h * params.psi1 * params.psi2 * params.s2;
+        params.lbda * params.v_to_h * params.psi1 * params.psi2 * params.s2
     } else {
-      params.lbda = params.lbda_original;
+      params.lbda = params.lbda_original
       params.xi =
-        params.lbda * params.v_to_h * params.psi1 * params.psi2 * params.s2;
+        params.lbda * params.v_to_h * params.psi1 * params.psi2 * params.s2
     }
   },
 
   setVH: function (intervention) {
     if (intervention) {
-      params.v_to_h = params.v_to_hR * params.v_to_h_original;
+      params.v_to_h = params.v_to_hR * params.v_to_h_original
       params.xi =
-        params.lbda * params.v_to_h * params.psi1 * params.psi2 * params.s2;
+        params.lbda * params.v_to_h * params.psi1 * params.psi2 * params.s2
     } else {
-      params.v_to_h = params.v_to_h_original;
+      params.v_to_h = params.v_to_h_original
       params.xi =
-        params.lbda * params.v_to_h * params.psi1 * params.psi2 * params.s2;
+        params.lbda * params.v_to_h * params.psi1 * params.psi2 * params.s2
     }
   },
 
   setMu: function (intervention) {
     if (intervention) {
-      params.sig = params.sigR; //increase mortality due to bed nets. dN = 0.41 death rate
+      params.sig = params.sigR //increase mortality due to bed nets. dN = 0.41 death rate
     } else {
-      params.sig = params.sig_original;
+      params.sig = params.sig_original
     }
   },
 
   setPropMDA: function (regimen) {
     // var ps = simControler.modelParams();
-    var ps = simControler.params;
-    var chis = [0.99, 0.95, 0.99, 1.0, Number(ps.microfilaricide) / 100, 0.99];
-    var taus = [0.35, 0.55, 0.1, 1.0, Number(ps.macrofilaricide) / 100, 0.1];
-    params.mfPropMDA = 1 - chis[Number(regimen) - 1];
-    params.wPropMDA = 1 - taus[Number(regimen) - 1];
+    var ps = simControler.params
+    var chis = [0.99, 0.95, 0.99, 1.0, Number(ps.microfilaricide) / 100, 0.99]
+    var taus = [0.35, 0.55, 0.1, 1.0, Number(ps.macrofilaricide) / 100, 0.1]
+    params.mfPropMDA = 1 - chis[Number(regimen) - 1]
+    params.wPropMDA = 1 - taus[Number(regimen) - 1]
   },
 
   closest: function (num, arr) {
-    var mid;
-    var lo = 0;
-    var hi = arr.length - 1;
+    var mid
+    var lo = 0
+    var hi = arr.length - 1
     while (hi - lo > 1) {
-      mid = Math.floor((lo + hi) / 2);
+      mid = Math.floor((lo + hi) / 2)
       if (arr[mid] < num) {
-        lo = mid;
+        lo = mid
       } else {
-        hi = mid;
+        hi = mid
       }
     }
     if (num - arr[lo] <= arr[hi] - num) {
-      return lo;
+      return lo
     }
-    return hi;
+    return hi
   },
 
   setVHFromPrev: function (p, species) {
@@ -855,108 +851,108 @@ export var statFunctions = {
         0.17532108,
         0.1827041,
         0.18676246,
-      ];
-    var vhs, prevs;
+      ]
+    var vhs, prevs
     if (species === 0) {
-      vhs = anVH;
-      prevs = anP;
+      vhs = anVH
+      prevs = anP
     } else {
-      vhs = cVH;
-      prevs = cP;
+      vhs = cVH
+      prevs = cP
     }
 
-    var i = this.closest(p, prevs);
-    return vhs[i];
+    var i = this.closest(p, prevs)
+    return vhs[i]
   },
 
   updateSimParams: function (aImpYear, paramsNumber) {
     // the aImpHistoric has a year entry, starting at 2000, and also a number to signify which simulation has been run
     // params.aImp = simControler.parametersJSON.aImpHistoric[aImpYear][paramsNumber];
     // params.aImp = simControler.parametersJSON.aImp[paramsNumber];
-    params.aImp = simControler.parametersJSON["aImp_" + aImpYear][paramsNumber];
+    params.aImp = simControler.parametersJSON['aImp_' + aImpYear][paramsNumber]
   },
 
   updateInterventionParams: function (mdaRound) {
     // get parameters from the correct mdaRound
-    params.covMDA = simControler.mdaObj.coverage[mdaRound] / 100;
-    params.rho = simControler.mdaObj.adherence[mdaRound];
+    params.covMDA = simControler.mdaObj.coverage[mdaRound] / 100
+    params.rho = simControler.mdaObj.adherence[mdaRound]
 
-    let regimen = simControler.mdaObj.regimen[mdaRound];
+    let regimen = simControler.mdaObj.regimen[mdaRound]
 
-    if (regimen === "xIA") {
-      params.wPropMDA = 0.65;
-      params.mfPropMDA = 0.01;
-      params.fecRed = 9.0;
-    } else if (regimen === "xxA") {
-      params.wPropMDA = 0.65;
-      params.mfPropMDA = 1;
-      params.fecRed = 0;
-    } else if (regimen === "xDA") {
-      params.wPropMDA = 0.45;
-      params.mfPropMDA = 0.05;
-      params.fecRed = 6.0;
-    } else if (regimen === "IDA") {
-      params.wPropMDA = 0;
-      params.mfPropMDA = 0;
-      params.fecRed = 0;
+    if (regimen === 'xIA') {
+      params.wPropMDA = 0.65
+      params.mfPropMDA = 0.01
+      params.fecRed = 9.0
+    } else if (regimen === 'xxA') {
+      params.wPropMDA = 0.65
+      params.mfPropMDA = 1
+      params.fecRed = 0
+    } else if (regimen === 'xDA') {
+      params.wPropMDA = 0.45
+      params.mfPropMDA = 0.05
+      params.fecRed = 6.0
+    } else if (regimen === 'IDA') {
+      params.wPropMDA = 0
+      params.mfPropMDA = 0
+      params.fecRed = 0
     }
 
     // // similarly for the bednet data. This would just treat it as a vector that we can get the bed net coverage from.
     // // covN is the parameter for how much bed net coverage there is
-    params.covN = simControler.mdaObj.bednets[mdaRound];
+    params.covN = simControler.mdaObj.bednets[mdaRound]
   },
 
   setInputParams: function (dict, i) {
     // var ps = simControler.modelParams();
-    var ps = simControler.params;
-    params.inputs = ps;
-    params.runs = Number(ps.runs);
-    params.nMDA = dict && dict.nMDA ? dict.nMDA : Number(ps.mda);
-    params.mdaFreq = ps.mdaSixMonths === "True" ? 6.0 : 12.0;
+    var ps = simControler.params
+    params.inputs = ps
+    params.runs = Number(ps.runs)
+    params.nMDA = dict && dict.nMDA ? dict.nMDA : Number(ps.mda)
+    params.mdaFreq = ps.mdaSixMonths === 'True' ? 6.0 : 12.0
     var end =
-      dict && dict.endemicity ? dict.endemicity / 100 : ps.endemicity / 100;
+      dict && dict.endemicity ? dict.endemicity / 100 : ps.endemicity / 100
     //    console.log(end)
-    var sps = ps.species;
+    var sps = ps.species
     //    console.log(sps)
     // params.v_to_h = Number(statFunctions.setVHFromPrev(end, Number(sps))) //Number(ps.endemicity);//
 
     //    console.log(params.v_to_h)
-    params.covMDA = Number(ps.coverage / 100.0);
-    params.covN = Number(ps.covN / 100);
-    params.v_to_hR = 1 - Number(ps.v_to_hR / 100);
-    params.vecCap = Number(ps.vecCap);
-    params.vecComp = Number(ps.vecComp);
-    params.vecD = Number(ps.vecD);
-    statFunctions.setPropMDA(Number(ps.mdaRegimen));
-    params.rho = Number(ps.rho);
-    params.rhoBComp = Number(ps.rhoBComp);
-    params.rhoCN = Number(ps.rhoCN);
-    params.species = Number(ps.species);
-    params.mosquitoSpecies = params.species;
+    params.covMDA = Number(ps.coverage / 100.0)
+    params.covN = Number(ps.covN / 100)
+    params.v_to_hR = 1 - Number(ps.v_to_hR / 100)
+    params.vecCap = Number(ps.vecCap)
+    params.vecComp = Number(ps.vecComp)
+    params.vecD = Number(ps.vecD)
+    statFunctions.setPropMDA(Number(ps.mdaRegimen))
+    params.rho = Number(ps.rho)
+    params.rhoBComp = Number(ps.rhoBComp)
+    params.rhoCN = Number(ps.rhoCN)
+    params.species = Number(ps.species)
+    params.mosquitoSpecies = params.species
     //calculate other parameters for params
     if (params.species == 0) {
-      params.shapeRisk = 0.065;
+      params.shapeRisk = 0.065
     } else {
-      params.shapeRisk = 0.08;
+      params.shapeRisk = 0.08
     }
     // the part where we get parameters from the JSON for the initial longtime simulation to equilibrium
-    params.v_to_h = simControler.parametersJSON.v_to_h[i];
-    params.shapeRisk = simControler.parametersJSON.shapeRisk[i];
-    params.aImp = simControler.parametersJSON.aImp[i];
+    params.v_to_h = simControler.parametersJSON.v_to_h[i]
+    params.shapeRisk = simControler.parametersJSON.shapeRisk[i]
+    params.aImp = simControler.parametersJSON.aImp[i]
 
-    params.lbda_original = params.lbda;
-    params.v_to_h_original = params.v_to_h;
-    params.sig_original = params.sig;
+    params.lbda_original = params.lbda
+    params.v_to_h_original = params.v_to_h
+    params.sig_original = params.sig
     params.xi =
-      params.lbda * params.v_to_h * params.psi1 * params.psi2 * params.s2; //constant bite rate (5760.0 / 30.0)
-    params.a = params.shapeRisk; //shape parameter (can vary)
-    params.b = 1 / params.a; //scale parameter determined so mean is 1.
+      params.lbda * params.v_to_h * params.psi1 * params.psi2 * params.s2 //constant bite rate (5760.0 / 30.0)
+    params.a = params.shapeRisk //shape parameter (can vary)
+    params.b = 1 / params.a //scale parameter determined so mean is 1.
     //sys-compliance parameters
-    params.sigma = params.rho / (1 - params.rho);
+    params.sigma = params.rho / (1 - params.rho)
     params.u0 =
-      -statFunctions.NormSInv(params.covMDA) * Math.sqrt(1 + params.sigma);
+      -statFunctions.NormSInv(params.covMDA) * Math.sqrt(1 + params.sigma)
   },
-};
+}
 export var simControler = {
   /*
     DEFINE CLASS SESSION DATA TO STORE AND RETRIEVE RUNS.
@@ -981,18 +977,18 @@ export var simControler = {
   /* DOM manipulation */
 
   scenarioRunStats: (simulatorCallback) => {
-    var scenInd = ScenarioIndex.getIndex();
-    var scenario = SessionData.retrieveSessions()["scenarios"][scenInd];
+    var scenInd = ScenarioIndex.getIndex()
+    var scenario = SessionData.retrieveSessions()['scenarios'][scenInd]
     var ts = [],
       dyrs = [],
-      ryrs = [];
+      ryrs = []
 
-    ts = scenario["results"][0]["ts"];
+    ts = scenario['results'][0]['ts']
 
-    var stats = simControler.reductionStatsCalc(scenario, params.covMDA);
+    var stats = simControler.reductionStatsCalc(scenario, params.covMDA)
 
-    dyrs = stats.doses;
-    ryrs = stats.reduction;
+    dyrs = stats.doses
+    ryrs = stats.reduction
 
     //    console.log(ts)
     //    console.log(dyrs)
@@ -1003,7 +999,7 @@ export var simControler = {
       Ws: stats.medW,
       Ms: stats.medM,
       Ls: stats.medL,
-    });
+    })
 
     // simControler.dump(scenario);
     // $("#scenario-statistic")[0].innerHTML = JSON.stringify(obj);
@@ -1015,29 +1011,29 @@ export var simControler = {
       Ws: stats.medW,
       Ms: stats.medM,
       Ls: stats.medL,
-    };
-    simulatorCallback(JSON.stringify(scenario), simControler.newScenario);
+    }
+    simulatorCallback(JSON.stringify(scenario), simControler.newScenario)
     // console.log(JSON.stringify(scenario));
     // return JSON.stringify(scenario);
     //fixInput(false);
   },
   median: (values) => {
     values.sort(function (a, b) {
-      return a - b;
-    });
+      return a - b
+    })
 
-    var half = Math.floor(values.length / 2);
+    var half = Math.floor(values.length / 2)
 
-    if (values.length % 2) return values[half];
-    else return (values[half - 1] + values[half]) / 2.0;
+    if (values.length % 2) return values[half]
+    else return (values[half - 1] + values[half]) / 2.0
   },
 
   runMapSimulation: function (tabIndex, simulatorCallback) {
     //statFunctions.setInputParams({ nMDA: 60 })
     //max number of mda rounds even if doing it six monthly.
 
-    var mdaJSON = simControler.mdaObj; //generateMDAFromForm()
-    var maxN = simControler.params.runs; // Number($("#runs").val());
+    var mdaJSON = simControler.mdaObj //generateMDAFromForm()
+    var maxN = simControler.params.runs // Number($("#runs").val());
 
     //####//####//####//####//####//####//####
     // I don't know how this will be implemented, but we need the input parameters
@@ -1046,7 +1042,7 @@ export var simControler = {
 
     // numberParamSets should tell us how many sets of parameters we have input
     // however that is done for a JSON file should go here. This will then be used for randomly choosing parameters
-    var numberParamSets = simControler.parametersJSON.Population.length; //number_rows(simControler.parametersJSON);
+    var numberParamSets = simControler.parametersJSON.Population.length //number_rows(simControler.parametersJSON);
 
     //####//####//####//####//####//####
 
@@ -1060,79 +1056,79 @@ export var simControler = {
     // // Initialise at 0 so we begin on the first line of the simControler.parametersJSON file
     // var paramsNumber = 0
 
-    var runs = [];
-    var progression = 0;
+    var runs = []
+    var progression = 0
     //    this.fixInput()
 
     var progress = setInterval(() => {
       // randomly choose a set of parameters
-      var paramsNumber = Math.floor(Math.random() * numberParamSets);
+      var paramsNumber = Math.floor(Math.random() * numberParamSets)
 
       // change the parameters for every simulation here
-      statFunctions.setInputParams({ nMDA: 60 }, paramsNumber);
+      statFunctions.setInputParams({ nMDA: 60 }, paramsNumber)
 
       // get the population size from the simControler.parametersJSON file
-      var population = simControler.parametersJSON.Population[paramsNumber];
-      var m = new Model(population);
+      var population = simControler.parametersJSON.Population[paramsNumber]
+      var m = new Model(population)
 
       //change time to 131 below, as we potentially have 31 years simulation after running to equilibrium
       // the historic 2000-2019 and then to 2030
-      m.evolveAndSaves(131.0, mdaJSON, paramsNumber);
-      runs.push(SessionData.convertRun(m));
-      simulatorCallback(parseInt((progression * 100) / maxN));
+      m.evolveAndSaves(131.0, mdaJSON, paramsNumber)
+      runs.push(SessionData.convertRun(m))
+      simulatorCallback(parseInt((progression * 100) / maxN))
 
       // // step forward the position at which we will get the next set of parameters in the next simulation
       // paramsNumber += paramsStep
 
       if (progression === maxN) {
-        clearInterval(progress);
-        SessionData.storeResults(runs, "Scenario #" + (tabIndex + 1));
-        simControler.scenarioRunStats(simulatorCallback);
+        clearInterval(progress)
+        SessionData.storeResults(runs, 'Scenario #' + (tabIndex + 1))
+        simControler.scenarioRunStats(simulatorCallback)
       } else {
-        progression += 1;
+        progression += 1
       }
-    }, 10);
+    }, 10)
   },
   reductionStatsCalc: (scenario, coverage) => {
-    var n = scenario["results"].length;
+    var n = scenario['results'].length
     var T =
-      scenario["results"] &&
-      scenario["results"][0] &&
-      scenario["results"][0]["ts"]
-        ? scenario["results"][0]["ts"].length
-        : 0; // this is just a hotfix so it doesn't crash, however things don't work as they are supposed to
+      scenario['results'] &&
+      scenario['results'][0] &&
+      scenario['results'][0]['ts']
+        ? scenario['results'][0]['ts'].length
+        : 0 // this is just a hotfix so it doesn't crash, however things don't work as they are supposed to
     //    console.log('T')
     //    console.log(T)
-    var prev0;
-    var totR = new Array(T);
-    var doses = new Array(T);
-    var medM = new Array(T);
-    var medW = new Array(T);
-    var medL = new Array(T);
-    var doses_year = params.mdaFreq === 6 ? 2 : 1;
+    var prev0
+    var totR = new Array(T)
+    var doses = new Array(T)
+    var medM = new Array(T)
+    var medW = new Array(T)
+    var medL = new Array(T)
+    var doses_year = params.mdaFreq === 6 ? 2 : 1
     for (var t = 0; t < T; t++) {
-      totR[t] = 0;
-      doses[t] = 0;
+      totR[t] = 0
+      doses[t] = 0
       // eslint-disable-next-line no-unused-expressions
       var mM = [],
         mW = [],
-        mL = [];
+        mL = []
       for (var i = 0; i < n; i++) {
-        var prev;
-        prev0 = prev = scenario["results"][i]["Ms"][0];
-        var red = scenario["results"][i]["Ms"][t] / prev0;
-        prev = scenario["results"][i]["Ms"][t];
-        mM.push(scenario["results"][i]["Ms"][t]);
-        mW.push(scenario["results"][i]["Ws"][t]);
-        mL.push(scenario["results"][i]["Ls"][t]);
-        totR[t] += red;
-        if (prev > 1.0) doses[t] += 100000 * coverage * doses_year;
+        var prev
+        prev0 = prev = scenario['results'][i]['Ms'][0]
+        var red = scenario['results'][i]['Ms'][t] / prev0
+        prev = scenario['results'][i]['Ms'][t]
+        mM.push(scenario['results'][i]['Ms'][t])
+        mW.push(scenario['results'][i]['Ws'][t])
+        mL.push(scenario['results'][i]['Ls'][t])
+        totR[t] += red
+        if (prev > 1.0) doses[t] += 100000 * coverage * doses_year
       }
-      totR[t] = (1 - totR[t] / n) * 100.0;
-      doses[t] = doses[t] / n;
-      medM[t] = simControler.median(mM);
-      medW[t] = simControler.median(mW);
-      medL[t] = simControler.median(mL);
+      totR[t] = (1 - totR[t] / n) * 100.0
+      doses[t] = doses[t] / n
+      medM[t] = simControler.median(mM)
+      medW[t] = simControler.median(mW)
+      medL[t] = simControler.median(mL)
     }
 
     return {
@@ -1141,27 +1137,27 @@ export var simControler = {
       medM: medM,
       medW: medW,
       medL: medL,
-    };
+    }
   },
   runScenario: function (paramsFromUI, tabIndex, simulatorCallback) {
     //        console.log(paramsFromUI);
-    this.params = { ...paramsFromUI };
-    ScenarioIndex.setIndex(tabIndex);
-    SessionData.createNewSession();
+    this.params = { ...paramsFromUI }
+    ScenarioIndex.setIndex(tabIndex)
+    SessionData.createNewSession()
     // console.log(this);
     /*     simControler.fixInput(false); */
 
     if (SessionData.ran(tabIndex)) {
-      ScenarioIndex.setIndex(tabIndex);
+      ScenarioIndex.setIndex(tabIndex)
     } else {
       //     this.runMapSimulation(tabIndex, simulatorCallback)
     }
-    this.runMapSimulation(tabIndex, simulatorCallback);
+    this.runMapSimulation(tabIndex, simulatorCallback)
   },
   fixInput: (fix_input) => {
-    var curScen = ScenarioIndex.getIndex();
+    var curScen = ScenarioIndex.getIndex()
     if (fix_input == null) {
-      fix_input = true;
+      fix_input = true
     }
     if (fix_input) {
     } else {
@@ -1171,20 +1167,20 @@ export var simControler = {
     }
   },
   documentReady: function () {
-    params.lbda_original = params.lbda;
-    params.v_to_h_original = params.v_to_h;
-    params.sig_original = params.sig;
+    params.lbda_original = params.lbda
+    params.v_to_h_original = params.v_to_h
+    params.sig_original = params.sig
     params.xi =
-      params.lbda * params.v_to_h * params.psi1 * params.psi2 * params.s2; //constant bite rate (5760.0 / 30.0)
-    params.a = params.shapeRisk; //shape parameter (can vary)
-    params.b = 1 / params.a; //scale parameter determined so mean is 1.
+      params.lbda * params.v_to_h * params.psi1 * params.psi2 * params.s2 //constant bite rate (5760.0 / 30.0)
+    params.a = params.shapeRisk //shape parameter (can vary)
+    params.b = 1 / params.a //scale parameter determined so mean is 1.
     //bed net parameters
-    params.sN = 0.03;
-    params.dN = 0.41;
+    params.sN = 0.03
+    params.dN = 0.41
     //sys-compliance parameters
-    params.sigma = params.rho / (1 - params.rho);
+    params.sigma = params.rho / (1 - params.rho)
     params.u0 =
-      -statFunctions.NormSInv(params.covMDA) * Math.sqrt(1 + params.sigma);
+      -statFunctions.NormSInv(params.covMDA) * Math.sqrt(1 + params.sigma)
 
     // SessionData.deleteSession()
     // ScenarioIndex.setIndex(-1)
@@ -1218,10 +1214,16 @@ export var simControler = {
     active: [], // true, false, true, ...
   },
   mdaObj2015: {
-    // this object gets populated from populateMDA()
-    // and it holds reference to original MDA state (every single round)
-    // so user can come back to it if he deletes certain rounds of MDA
-    // and wishes to undo his actions
+    // this object contains 2015-2019 only
+    time: [], // 60, 96, 120, 144, 180
+    coverage: [], // 0.9, 0.9, 0.9, 0.9, 0.9
+    adherence: [], // 1, 1, 1, 1, 1
+    bednets: [], // 60, 96, 120, 144, 180
+    regimen: [], // "xiA" / "xDA" ...
+    active: [], // true, false, true, ...
+  },
+  mdaObjFuture: {
+    // this object gets populated based on input parameter
     time: [], // 60, 96, 120, 144, 180
     coverage: [], // 0.9, 0.9, 0.9, 0.9, 0.9
     adherence: [], // 1, 1, 1, 1, 1
@@ -1231,4 +1233,4 @@ export var simControler = {
   },
   newScenario: true,
   parametersJSON: {}, // ParametersJSONFileFromTom
-};
+}

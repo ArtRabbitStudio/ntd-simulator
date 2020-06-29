@@ -27,7 +27,7 @@ const initialState = {
   },
   mdaObjDefaultPrediction: null, // future mdaObjPrediction for IU
   mdaObjTweakedPrediction: null, // future mdaObjPrediction for IU
-  needsRerun: false, // future mdaObjPrediction for IU
+  needsRerun: false,
 }
 
 const reducer = (simParams, action) => {
@@ -51,6 +51,19 @@ const reducer = (simParams, action) => {
       return {
         ...simParams,
         mdaObjTweakedPrediction: action.payload,
+      }
+    case 'resetTweakedPrediction':
+      return {
+        ...simParams,
+        mdaObjTweakedPrediction: {
+          time: [...simParams.mdaObjDefaultPrediction.time],
+          coverage: [...simParams.mdaObjDefaultPrediction.coverage],
+          adherence: [...simParams.mdaObjDefaultPrediction.adherence],
+          bednets: [...simParams.mdaObjDefaultPrediction.bednets],
+          regimen: [...simParams.mdaObjDefaultPrediction.regimen],
+          active: [...simParams.mdaObjDefaultPrediction.active],
+        },
+        needsRerun: false,
       }
     case 'everythingbuthistoric':
       let newIUDataall = { ...simParams.IUData }

@@ -217,7 +217,9 @@ const Simulator = (props) => {
       console.log('scenarioInputs', scenarioInputs)
     }, [scenarioInputs]) */
   const resetCurrentScenario = () => {
-    // todo
+    dispatchSimParams({
+      type: 'resetTweakedPrediction',
+    })
   }
   const runCurrentScenario = async () => {
     console.log('runCurrentScenario', !simInProgress, doWeHaveData)
@@ -319,7 +321,11 @@ const Simulator = (props) => {
 
         // populate mdaObj // populateMDA();
         const mdaHistory = await loadMdaHistory()
-        SimulatorEngine.simControler.mdaObj = mdaHistory
+        const mdaPrediction = {}
+        const fullMDA = {
+          time: [...mdaHistory.time, ...mdaPrediction.time],
+        }
+        SimulatorEngine.simControler.mdaObj = fullMDA
 
         const yearsToLeaveOut = 14
         let mdaHistory2015 = {
@@ -343,6 +349,7 @@ const Simulator = (props) => {
           }),
         }
         SimulatorEngine.simControler.mdaObj2015 = mdaHistory2015
+        SimulatorEngine.simControler.mdaObjFuture = mdaPrediction
 
         const newParams = await loadParams()
         SimulatorEngine.simControler.parametersJSON = newParams

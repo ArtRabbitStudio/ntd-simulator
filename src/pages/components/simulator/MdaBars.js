@@ -140,6 +140,10 @@ const MdaBars = (props) => {
           type: 'needsRerun',
           payload: true,
         })
+        dispatchSimParams({
+          type: 'mdaObjTweakedPrediction',
+          payload: tweakedMDAs,
+        })
       } else {
         dispatchSimParams({
           type: 'needsRerun',
