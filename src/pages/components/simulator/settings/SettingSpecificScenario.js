@@ -11,7 +11,7 @@ import {
   Button,
 } from "@material-ui/core";
 
-const SettingSpecificScenario = ({ inModal, label }) => {
+const SettingSpecificScenario = ({ inModal, label, classAdd }) => {
 
   const classes = useStyles();
   const { simParams, dispatchSimParams } = useStore();
@@ -39,6 +39,7 @@ const SettingSpecificScenario = ({ inModal, label }) => {
         <Select
           labelId="demo-simple-select-helper-label"
           id="demo-simple-select-helper"
+          MenuProps={{ disablePortal: true }}
           value={0}
           onChange={handleChange}
         >

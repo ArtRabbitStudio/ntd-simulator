@@ -17,6 +17,8 @@ import {
   SettingSystematicAdherence, SettingTargetCoverage, SettingBedNetCoverage, SettingDrugRegimen
 } from "./settings";
 
+//import ClickAway from "../../../hooks/clickAway";
+
 const MdaBars = (props) => {
   console.log(props.history);
   const history = props.history;
@@ -194,120 +196,119 @@ const MdaBars = (props) => {
       </div>
 
       {doseSettingsOpen && (
-        /* <ClickAwayListener onClickAway={closeRoundModal}> */
-        <Paper elevation={3} className={classes.roundModal}>
-          <CloseButton action={closeRoundModal} />
-          {simMDAactive[curMDARound] === false && (
-            <Button
-              className={classes.modalButton}
-              variant="contained"
-              color="primary"
-              disabled={simInProgress}
-              style={{
-                position: "absolute",
-                zIndex: 9999,
-                marginLeft: "3rem",
-                marginTop: "13rem",
-              }}
-              onClick={() => {
-                let newArray = [...simMDAactive];
-                newArray[curMDARound] = true;
-                setSimMDAactive([...newArray]);
-                // setCurMDARound(-1);
-                // setDoseSettingsOpen(false);
-              }}
-            >
-              Activate
-            </Button>
-          )}
-          <div
-            style={{
-              opacity: simMDAactive[curMDARound] === false ? 0.2 : 1,
-            }}
-          >
-            <Typography className={classes.title} variant="h4" component="h4">
-              {/* MDA round #  */}
-              {simParams.mdaSixMonths === 6
-                ? curMDARound % 2
-                  ? new Date().getFullYear() + Math.floor(curMDARound / 2)
-                  : new Date().getFullYear() + curMDARound / 2
-                : new Date().getFullYear() + curMDARound}
-              {curMDARound % 2 ? " - round 2" : ""}
-            </Typography>
-
-
-            <SettingTargetCoverage
-              inModal={true}
-              label="Treatment target coverage"
-              classAdd="spaced"
-              value={simMDAcoverage[curMDARound]}
-              onChange={(event, newValue) => {
-                let newArray = [...simMDAcoverage];
-                newArray[curMDARound] = newValue;
-                setSimMDAcoverage([...newArray]);
-              }}
-            />
-
-            <SettingBedNetCoverage
-              inModal={true}
-              label="Bed Net Coverage"
-              classAdd="spaced"
-              value={50} /* todo */
-              onChange={(event, newValue) => {
-                console.log('todo', newValue);
-              }}
-            />
-
-            <SettingDrugRegimen
-              inModal={true}
-              label="Drug regimen"
-              classAdd="spaced"
-              value={'xIA'} /* todo */
-              onChange={(event, newValue) => {
-                console.log('todo', newValue);
-              }}
-            />
-
-            <SettingSystematicAdherence
-              inModal={true}
-              label="Systematic adherence"
-              classAdd="spaced"
-              value={simMDAadherence[curMDARound]}
-              onChange={(event, newValue) => {
-                let newArray = [...simMDAadherence];
-                newArray[curMDARound] = newValue;
-                setSimMDAadherence([...newArray]);
-              }}
-            />
-
-
-            <div className={classes.modalButtons}>
-              <Button
-                className={classes.modalButton}
-                variant="contained"
-                disabled={simInProgress}
-                onClick={() => {
-                  removeMDARound();
-                }}
-              >
-                REMOVE
-                </Button>
+        <ClickAwayListener onClickAway={closeRoundModal} >
+          <Paper elevation={3} className={classes.roundModal}>
+            <CloseButton action={closeRoundModal} />
+            {simMDAactive[curMDARound] === false && (
               <Button
                 className={classes.modalButton}
                 variant="contained"
                 color="primary"
                 disabled={simInProgress}
+                style={{
+                  position: "absolute",
+                  zIndex: 9999,
+                  marginLeft: "3rem",
+                  marginTop: "13rem",
+                }}
                 onClick={() => {
-                  setCurMDARound(-1);
-                  setDoseSettingsOpen(false);
+                  let newArray = [...simMDAactive];
+                  newArray[curMDARound] = true;
+                  setSimMDAactive([...newArray]);
+                  // setCurMDARound(-1);
+                  // setDoseSettingsOpen(false);
                 }}
               >
-                UPDATE
+                Activate
+              </Button>
+            )}
+            <div
+              style={{
+                opacity: simMDAactive[curMDARound] === false ? 0.2 : 1,
+              }}
+            >
+              <Typography className={classes.title} variant="h4" component="h4">
+                {/* MDA round #  */}
+                {simParams.mdaSixMonths === 6
+                  ? curMDARound % 2
+                    ? new Date().getFullYear() + Math.floor(curMDARound / 2)
+                    : new Date().getFullYear() + curMDARound / 2
+                  : new Date().getFullYear() + curMDARound}
+                {curMDARound % 2 ? " - round 2" : ""}
+              </Typography>
+
+
+              <SettingTargetCoverage
+                inModal={true}
+                label="Treatment target coverage"
+                classAdd="spaced"
+                value={simMDAcoverage[curMDARound]}
+                onChange={(event, newValue) => {
+                  let newArray = [...simMDAcoverage];
+                  newArray[curMDARound] = newValue;
+                  setSimMDAcoverage([...newArray]);
+                }}
+              />
+
+              <SettingBedNetCoverage
+                inModal={true}
+                label="Bed Net Coverage"
+                classAdd="spaced"
+                value={50} /* todo */
+                onChange={(event, newValue) => {
+                  console.log('todo', newValue);
+                }}
+              />
+
+              <SettingDrugRegimen
+                inModal={true}
+                label="Drug regimen"
+                classAdd="spaced"
+                value={'xIA'} /* todo */
+                onChange={(event, newValue) => {
+                  console.log('todo', newValue);
+                }}
+              />
+
+              <SettingSystematicAdherence
+                inModal={true}
+                label="Systematic adherence"
+                classAdd="spaced"
+                value={simMDAadherence[curMDARound]}
+                onChange={(event, newValue) => {
+                  let newArray = [...simMDAadherence];
+                  newArray[curMDARound] = newValue;
+                  setSimMDAadherence([...newArray]);
+                }}
+              />
+
+              <div className={classes.modalButtons}>
+                <Button
+                  className={`${classes.modalButton} light`}
+                  variant="contained"
+                  disabled={simInProgress}
+                  onClick={() => {
+                    removeMDARound();
+                  }}
+                >
+                  REMOVE
                 </Button>
+                <Button
+                  className={classes.modalButton}
+                  variant="contained"
+                  color="primary"
+                  disabled={simInProgress}
+                  onClick={() => {
+                    setCurMDARound(-1);
+                    setDoseSettingsOpen(false);
+                  }}
+                >
+                  UPDATE
+                </Button>
+              </div>
             </div>
-          </div>
-        </Paper>
-        /*</ClickAwayListener>*/
+          </Paper>
+        </ClickAwayListener>
       )}
     </>
   );

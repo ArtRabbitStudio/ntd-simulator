@@ -21,7 +21,7 @@ const useStyles = makeStyles(theme => ({
     },
     '&:hover': {
       '& .MuiTouchRipple-root': {
-        backgroundImage: `url(${CloseIconHover})`,
+        //backgroundImage: `url(${CloseIconHover})`,
 
       }
     }

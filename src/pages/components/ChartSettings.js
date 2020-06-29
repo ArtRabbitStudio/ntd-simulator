@@ -76,7 +76,9 @@ const ChartSettings = ({ title, buttonText, action, onOpen, children }) => {
     }
   };
 
-  const handleClickClose = () => {
+  const handleClickClose = (event) => {
+
+    console.log(event.target.classList);
     setOpen(false);
   };
 
@@ -91,23 +93,23 @@ const ChartSettings = ({ title, buttonText, action, onOpen, children }) => {
     <div className={classes.root}>
       <Fab color="inherit" aria-label="settings" className={classes.icon} onClick={handleClickOpen}> </Fab>
       {open &&
-        /*<ClickAwayListener onClickAway={handleClickClose}>*/
-        <Paper
-          elevation={3}
-          className={classes.modal}
-        >
-          <CloseButton action={handleClickClose} />
+        <ClickAwayListener onClickAway={handleClickClose}>
+          <Paper
+            elevation={3}
+            className={classes.modal}
+          >
+            <CloseButton action={handleClickClose} />
 
-          <div className={classes.body}>
-            <Typography variant="h3" component="h3">{title}</Typography>
-            <div className={classes.form}>
-              {children}
+            <div className={classes.body}>
+              <Typography variant="h3" component="h3">{title}</Typography>
+              <div className={classes.form}>
+                {children}
+              </div>
             </div>
-          </div>
 
-          <Button onClick={(event) => handleConfirm(event)} className={classes.button} variant="contained" color="primary">{buttonText}</Button>
-        </Paper>
-        /*</ClickAwayListener>*/
+            <Button onClick={(event) => handleConfirm(event)} className={classes.button} variant="contained" color="primary">{buttonText}</Button>
+          </Paper>
+        </ClickAwayListener>
       }
     </div>
   )

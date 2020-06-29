@@ -13,62 +13,63 @@ import FormControl from '@material-ui/core/FormControl'
 import Select from '@material-ui/core/Select'
 
 import {
-    DISEASE_LABELS, DISEASE_LIMF
+  DISEASE_LABELS, DISEASE_LIMF
 } from '../../constants'
 
 const useStyles = makeStyles(theme => ({
-    root: {
-        zIndex: 9,
-        position: 'relative',
+  root: {
+    zIndex: 9,
+    position: 'relative',
+  },
+  formControl: {
+    margin: theme.spacing(0, 0, 2, 0),
+    width: 'calc(100% - 16px)',
+    textAlign: 'left',
+    '& > label': {},
+    [theme.breakpoints.up('sm')]: {
+      margin: theme.spacing(0, 0, 2, 0),
     },
-    formControl: {
-        margin: theme.spacing(0, 0, 2, 0),
-        width: 'calc(100% - 16px)',
-        textAlign: 'left',
-        '& > label': {},
-        [theme.breakpoints.up('sm')]: {
-            margin: theme.spacing(0, 0, 2, 0),
-        },
-        [theme.breakpoints.up('md')]: {
-            margin: theme.spacing(0, 0, 0, 0),
-            width: 'calc(50% - 16px)',
-        },
-        [theme.breakpoints.up('lg')]: {
-        },
+    [theme.breakpoints.up('md')]: {
+      margin: theme.spacing(0, 0, 0, 0),
+      width: 'calc(50% - 16px)',
     },
+    [theme.breakpoints.up('lg')]: {
+    },
+  },
 }))
 
 const Inputs = props => {
-    const classes = useStyles()
+  const classes = useStyles()
 
-    const { diseases } = useDataAPI()
-    const { disease, setDisease } = useUIState()
-    const history = useHistory()
+  const { diseases } = useDataAPI()
+  const { disease, setDisease } = useUIState()
+  const history = useHistory()
 
-    const handleDiseaseChange = (event, value) => {
-        setDisease(event);
-    }
+  const handleDiseaseChange = (event, value) => {
+    setDisease(event);
+  }
 
-    return (
-        <Box className={classes.root}>
-            <FormControl className={`${classes.formControl}`}>
-                <Select
-                    labelId="disease-label"
-                    id="disease"
-                    value={disease}
-                    variant="outlined"
-                    onChange={handleDiseaseChange}
+  return (
+    <Box className={classes.root}>
+      <FormControl className={`${classes.formControl}`}>
+        <Select
+          labelId="disease-label"
+          id="disease"
+          value={disease}
+          variant="outlined"
+          onChange={handleDiseaseChange}
+          MenuProps={{ disablePortal: true }}
 
-                >
-                    {diseases.map(r => (
-                        <MenuItem key={r} value={r}>
-                            {DISEASE_LABELS[r]}
-                        </MenuItem>
-                    ))}
-                </Select>
-            </FormControl>
-        </Box>
-    )
+        >
+          {diseases.map(r => (
+            <MenuItem key={r} value={r}>
+              {DISEASE_LABELS[r]}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+    </Box>
+  )
 }
 
 

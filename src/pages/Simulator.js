@@ -332,7 +332,7 @@ const Simulator = (props) => {
       }
     }
   };
- 
+
 
 
 
@@ -469,6 +469,7 @@ const Simulator = (props) => {
                               labelId="larvae-prevalence"
                               id="larvae-prevalence"
                               value={graphMetric}
+                              MenuProps={{ disablePortal: true }}
                               onChange={(ev) => {
                                 // console.log(ev.target.value)
                                 setGraphMetric(ev.target.value);

@@ -180,6 +180,9 @@ const useStyles = makeStyles((theme) => ({
     //borderTopLeftRadius: 0,
     //borderTopRightRadius: 0,
     borderRadius: 0,
+    '&.light': {
+      backgroundColor: "#cce8f4"
+    }
   },
   roundModal: {
     padding: theme.spacing(3, 3, 0, 3),

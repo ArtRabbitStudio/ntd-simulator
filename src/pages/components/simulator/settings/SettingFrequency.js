@@ -27,9 +27,11 @@ const SettingFrequency = ({ inModal, label, classAdd }) => {
     >
       <FormLabel component="legend">{label}</FormLabel>
       <Select
+
         /* MenuProps={{ disablePortal: true, classes: { paper: classes.selectPaper }, }} */
         labelId="demo-simple-select-helper-label"
         id="demo-simple-select-helper"
+        MenuProps={{ disablePortal: true }}
         value={simParams.mdaSixMonths}
         onChange={handleChange}
       >

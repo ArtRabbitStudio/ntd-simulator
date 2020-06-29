@@ -48,6 +48,7 @@ const SettingDrugRegimen = ({ inModal, label, value, onChange, classAdd }) => {
         id="demo-simple-select-helper"
         value={value ? value : simParams.mdaRegimen}
         onChange={onChange ? onChange : handleChange}
+        MenuProps={{ disablePortal: true }}
       >
         <MenuItem value={'xIA'}>albendazole + ivermectin</MenuItem>
         <MenuItem value={'xDA'}>
