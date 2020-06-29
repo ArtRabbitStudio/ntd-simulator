@@ -143,6 +143,9 @@ const Setup = (props) => {
   const {
     selectedIUData
   } = useDataAPI();
+
+  console.log('selectedIUData',selectedIUData[0]);
+
   const doWeHaveData = simParams.IUData.IUloaded === implementationUnit;
   const loadData = async () =>{
     await loadAllIUhistoricData(simParams,dispatchSimParams,implementationUnit);
@@ -194,6 +197,8 @@ const Setup = (props) => {
     })
   }
 
+  const selecteIUName = selectedIUData[0] ? selectedIUData[0]['name'] : '';
+
   const handleAdherenceChange = (event) => {
     // TODO
     //alert('todo')
@@ -216,7 +221,7 @@ const Setup = (props) => {
         </Typography>
         <TextContents>
           <Typography paragraph variant="body1" component="p">
-            {`We hold the following information for ${implementationUnit}.`}
+            {`We hold the following information for ${selecteIUName}.`}
             <br />
             This data will be used to initialise the simulation.
           </Typography>
