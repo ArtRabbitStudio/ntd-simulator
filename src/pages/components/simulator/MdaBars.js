@@ -121,6 +121,7 @@ const MdaBars = (props) => {
     }
     setTweakedMDAs(newMDAs)
   }, [
+    simMDAtime,
     simMDAcoverage,
     simMDAadherence,
     simMDAbednets,
@@ -147,7 +148,7 @@ const MdaBars = (props) => {
       }
     }
     //    dispatchSimParams({ type: "dddd", mdaObjPred });
-  }, [tweakedMDAs])
+  }, [defaultMDAs, tweakedMDAs])
 
   return (
     <>
@@ -331,9 +332,11 @@ const MdaBars = (props) => {
                 inModal={true}
                 label="Bed Net Coverage"
                 classAdd="spaced"
-                value={50} /* todo */
+                value={simMDAbednets[curMDARound]}
                 onChange={(event, newValue) => {
-                  console.log('todo', newValue)
+                  let newArray = [...simMDAbednets]
+                  newArray[curMDARound] = newValue
+                  setSimMDAbednets([...newArray])
                 }}
               />
 
@@ -341,9 +344,12 @@ const MdaBars = (props) => {
                 inModal={true}
                 label="Drug regimen"
                 classAdd="spaced"
-                value={'xIA'} /* todo */
+                // value={'xIA'} /* todo */
+                value={simMDAregimen[curMDARound]}
                 onChange={(event, newValue) => {
-                  console.log('todo', newValue)
+                  let newArray = [...simMDAregimen]
+                  newArray[curMDARound] = newValue
+                  setSimMDAregimen([...newArray])
                 }}
               />
 

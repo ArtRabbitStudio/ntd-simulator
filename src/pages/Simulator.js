@@ -157,7 +157,10 @@ const Simulator = (props) => {
       setSimulationProgress(resultObject)
     } else {
       console.log('Simulation returned results!')
-
+      dispatchSimParams({
+        type: 'needsRerun',
+        payload: false,
+      })
       if (typeof scenarioResults[tabIndex] === 'undefined') {
         //console.log('scenarioResults',resultObject)
         setScenarioResults([...scenarioResults, JSON.parse(resultObject)])
@@ -211,7 +214,7 @@ const Simulator = (props) => {
       console.log('scenarioInputs', scenarioInputs)
     }, [scenarioInputs]) */
   const runCurrentScenario = async () => {
-    //console.log('runnCurrentScenario',!simInProgress,doWeHaveData)
+    console.log('runnCurrentScenario', !simInProgress, doWeHaveData)
     //console.log('simParams',simParams)
     if (!simInProgress && doWeHaveData) {
       setSimInProgress(true)
