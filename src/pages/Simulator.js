@@ -24,8 +24,9 @@ import HeadWithInputs from './components/HeadWithInputs'
 import SelectCountry from './components/SelectCountry'
 import MdaBars from './components/simulator/MdaBars'
 import {
-  loadMdaHistory,
   loadParams,
+  loadMdaHistory,
+  generateMdaFuture,
 } from './components/simulator/ParamMdaLoader'
 import * as SimulatorEngine from './components/simulator/SimulatorEngine'
 import useStyles from './components/simulator/styles'
@@ -112,7 +113,7 @@ const Simulator = (props) => {
     window.location.reload()
   }
 
-  /* Simuilation, tabs etc */
+  /* Simulation, tabs etc */
   const [simInProgress, setSimInProgress] = useState(false)
   // console.log(parseInt(window.localStorage.getItem('scenarioIndex')))
   // console.log(parseInt(window.localStorage.getItem('scenarioIndex')) + 1)
@@ -137,6 +138,15 @@ const Simulator = (props) => {
         type: 'everythingbuthistoric',
         payload: scenarioInputs[tabIndex],
       })
+      /* const mdaPrediction = generateMdaFuture(simParams)
+      dispatchSimParams({
+        type: 'mdaObjDefaultPrediction',
+        payload: mdaPrediction,
+      })
+      dispatchSimParams({
+        type: 'mdaObjTweakedPrediction',
+        payload: mdaPrediction,
+      }) */
       SimulatorEngine.ScenarioIndex.setIndex(tabIndex)
     }
   }, [tabIndex])
@@ -323,9 +333,21 @@ const Simulator = (props) => {
         // console.log('settingTabLength', tabLength + 1)
         //console.log(tabIndex, simParams)
 
+        const newParams = await loadParams()
+        SimulatorEngine.simControler.parametersJSON = newParams
+
         // populate mdaObj // populateMDA();
         const mdaHistory = await loadMdaHistory()
-        const mdaPrediction = simParams.mdaObjTweakedPrediction // mdaObjTweakedPrediction // mdaObjDefaultPrediction
+        const mdaPrediction = generateMdaFuture(simParams)
+        dispatchSimParams({
+          type: 'mdaObjDefaultPrediction',
+          payload: mdaPrediction,
+        })
+        dispatchSimParams({
+          type: 'mdaObjTweakedPrediction',
+          payload: mdaPrediction,
+        })
+        //        simParams.mdaObjTweakedPrediction // mdaObjTweakedPrediction // mdaObjDefaultPrediction
         console.log('mdaPrediction')
         console.log(mdaPrediction)
         const fullMDA =
@@ -368,8 +390,6 @@ const Simulator = (props) => {
         SimulatorEngine.simControler.mdaObj2015 = mdaHistory2015
         SimulatorEngine.simControler.mdaObjFuture = mdaPrediction
 
-        const newParams = await loadParams()
-        SimulatorEngine.simControler.parametersJSON = newParams
         console.log('runningScenario')
 
         SimulatorEngine.simControler.newScenario = true

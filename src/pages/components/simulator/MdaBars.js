@@ -54,66 +54,35 @@ const MdaBars = (props) => {
   const [simMDAregimen, setSimMDAregimen] = useState([])
   const [simMDAactive, setSimMDAactive] = useState([])
 
-  const populatePredictionBars = () => {
-    const numberOfYears = 11 * 2
-    let MDAtime = []
-    for (let i = 0; i < numberOfYears; i++) {
-      MDAtime.push(6 + 6 * i + 228)
-    }
-    setSimMDAtime([...MDAtime])
-    let MDAcoverage = []
-    for (let i = 0; i < numberOfYears; i++) {
-      MDAcoverage.push(simParams.coverage)
-    }
-    setSimMDAcoverage([...MDAcoverage])
-
-    let MDAadherence = []
-    for (let i = 0; i < numberOfYears; i++) {
-      MDAadherence.push(simParams.rho)
-    }
-    setSimMDAadherence([...MDAadherence])
-
-    let MDAbednets = []
-    for (let i = 0; i < numberOfYears; i++) {
-      MDAbednets.push(simParams.covN)
-    }
-    setSimMDAbednets([...MDAbednets])
-    let MDAregimen = []
-    for (let i = 0; i < numberOfYears; i++) {
-      MDAregimen.push(simParams.mdaRegimen)
-    }
-    setSimMDAregimen([...MDAregimen])
-
-    let MDAactive = []
-    for (let i = 0; i < numberOfYears; i++) {
-      if (simParams.mdaSixMonths === 12 && i % 2 === 1) {
-        MDAactive.push(false)
-      } else {
-        MDAactive.push(true) // alternate here
-      }
-    }
-    setSimMDAactive([...MDAactive])
-    const newMDAs = {
-      time: [...MDAtime],
-      coverage: [...MDAcoverage],
-      adherence: [...MDAadherence],
-      bednets: [...MDAbednets],
-      regimen: [...MDAregimen],
-      active: [...MDAactive],
-    }
-    setDefaultMDAs(newMDAs)
-    dispatchSimParams({
-      type: 'mdaObjDefaultPrediction',
-      payload: newMDAs,
-    })
-    dispatchSimParams({
-      type: 'mdaObjTweakedPrediction',
-      payload: newMDAs,
-    })
-  }
   React.useEffect(() => {
-    populatePredictionBars()
-  }, [])
+    const prediction = simParams.mdaObjDefaultPrediction
+    if (prediction && prediction.time) {
+      setSimMDAtime([...prediction.time])
+      setSimMDAcoverage([...prediction.coverage])
+      setSimMDAadherence([...prediction.adherence])
+      setSimMDAbednets([...prediction.bednets])
+      setSimMDAregimen([...prediction.regimen])
+      const numberOfYears = 22
+      let MDAactive = []
+      for (let i = 0; i < numberOfYears; i++) {
+        if (simParams.mdaSixMonths === 12 && i % 2 === 1) {
+          MDAactive.push(false)
+        } else {
+          MDAactive.push(true) // alternate here
+        }
+      }
+      setSimMDAactive([...MDAactive])
+      const newMDAs = {
+        time: [...prediction.time],
+        coverage: [...prediction.coverage],
+        adherence: [...prediction.adherence],
+        bednets: [...prediction.bednets],
+        regimen: [...prediction.regimen],
+        active: [...MDAactive],
+      }
+      setDefaultMDAs(newMDAs)
+    }
+  }, [simParams.mdaObjDefaultPrediction])
   React.useEffect(() => {
     const newMDAs = {
       time: [...simMDAtime],

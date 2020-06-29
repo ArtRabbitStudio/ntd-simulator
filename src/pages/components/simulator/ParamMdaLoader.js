@@ -120,3 +120,44 @@ export const loadParams = async () => {
   }
   return newParams
 }
+
+export const generateMdaFuture = (simParams) => {
+  const numberOfYears = 11 * 2
+  let MDAtime = []
+  for (let i = 0; i < numberOfYears; i++) {
+    MDAtime.push(6 + 6 * i + 228)
+  }
+  let MDAcoverage = []
+  for (let i = 0; i < numberOfYears; i++) {
+    MDAcoverage.push(simParams.coverage)
+  }
+  let MDAadherence = []
+  for (let i = 0; i < numberOfYears; i++) {
+    MDAadherence.push(simParams.rho)
+  }
+  let MDAbednets = []
+  for (let i = 0; i < numberOfYears; i++) {
+    MDAbednets.push(simParams.covN)
+  }
+  let MDAregimen = []
+  for (let i = 0; i < numberOfYears; i++) {
+    MDAregimen.push(simParams.mdaRegimen)
+  }
+  let MDAactive = []
+  for (let i = 0; i < numberOfYears; i++) {
+    if (simParams.mdaSixMonths === 12 && i % 2 === 1) {
+      MDAactive.push(false)
+    } else {
+      MDAactive.push(true) // alternate here
+    }
+  }
+  const newMDAs = {
+    time: [...MDAtime],
+    coverage: [...MDAcoverage],
+    adherence: [...MDAadherence],
+    bednets: [...MDAbednets],
+    regimen: [...MDAregimen],
+    active: [...MDAactive],
+  }
+  return newMDAs
+}
