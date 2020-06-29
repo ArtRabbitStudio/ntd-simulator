@@ -181,10 +181,10 @@ const Simulator = (props) => {
           ...scenarioInputs,
           JSON.parse(resultObject).params.inputs,
         ])
-        console.log(
+        /*         console.log(
           'JSON.parse(resultObject).mda2015.time,',
           JSON.parse(resultObject).mda2015.time
-        )
+        ) */
         /*         console.log(
           'JSON.parse(resultObject).mdaFuture.time,',
           JSON.parse(resultObject).mdaFuture.time
@@ -234,6 +234,7 @@ const Simulator = (props) => {
     dispatchSimParams({
       type: 'resetTweakedPrediction',
     })
+    // but this should as well reset globa params, right?
   }
   const runCurrentScenario = async () => {
     console.log('runCurrentScenario', !simInProgress, doWeHaveData)
@@ -428,6 +429,15 @@ const Simulator = (props) => {
         })
         setScenarioMDAs(MDAs)
       }
+      const mdaPrediction = generateMdaFuture(simParams)
+      dispatchSimParams({
+        type: 'mdaObjDefaultPrediction',
+        payload: mdaPrediction,
+      })
+      dispatchSimParams({
+        type: 'mdaObjTweakedPrediction',
+        payload: mdaPrediction,
+      })
     }
   }, [])
   return (

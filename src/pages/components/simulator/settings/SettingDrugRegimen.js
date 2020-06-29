@@ -1,35 +1,28 @@
-import React from 'react';
-import useStyles from "../styles";
+import React from 'react'
+import useStyles from '../styles'
 
-import { useStore } from "../../../../store/simulatorStore";
+import { useStore } from '../../../../store/simulatorStore'
 
-import {
-  FormControl,
-  Select,
-  FormLabel,
-  MenuItem
-} from "@material-ui/core";
+import { FormControl, Select, FormLabel, MenuItem } from '@material-ui/core'
 
 const SettingDrugRegimen = ({ inModal, label, value, onChange, classAdd }) => {
+  const classes = useStyles()
+  const { simParams, dispatchSimParams } = useStore()
 
-  const classes = useStyles();
-  const { simParams, dispatchSimParams } = useStore();
-
-  console.log('in drop down simParams.mdaRegimen', simParams.mdaRegimen)
+  // console.log('in drop down simParams.mdaRegimen', simParams.mdaRegimen)
 
   const handleChange = (event) => {
     dispatchSimParams({
-      type: "mdaRegimen",
+      type: 'mdaRegimen',
       payload: event.target.value,
-    });
-  };
+    })
+  }
 
-  //TODO convert 
+  //TODO convert
   //xIA IVM+ALB
   //xDA DEC+ALB
-  //xxA ALB alone 
+  //xxA ALB alone
   //IDA tripple  drug
-
 
   return (
     <FormControl
@@ -37,10 +30,7 @@ const SettingDrugRegimen = ({ inModal, label, value, onChange, classAdd }) => {
       variant="outlined"
       className={`${classes.formControl} ${classAdd}`}
     >
-      <FormLabel
-        component="legend"
-        htmlFor="demo-simple-select-helper-label"
-      >
+      <FormLabel component="legend" htmlFor="demo-simple-select-helper-label">
         {label}
       </FormLabel>
       <Select
@@ -51,9 +41,7 @@ const SettingDrugRegimen = ({ inModal, label, value, onChange, classAdd }) => {
         MenuProps={{ disablePortal: true }}
       >
         <MenuItem value={'xIA'}>albendazole + ivermectin</MenuItem>
-        <MenuItem value={'xDA'}>
-          albendazole + diethylcarbamazine
-        </MenuItem>
+        <MenuItem value={'xDA'}>albendazole + diethylcarbamazine</MenuItem>
         <MenuItem value={'xxI'}>ivermectin</MenuItem>
         <MenuItem value={'IDA'}>
           ivermectin + albendazole + diethylcarbamazine
@@ -62,4 +50,4 @@ const SettingDrugRegimen = ({ inModal, label, value, onChange, classAdd }) => {
     </FormControl>
   )
 }
-export default SettingDrugRegimen;
+export default SettingDrugRegimen

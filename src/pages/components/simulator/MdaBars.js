@@ -24,6 +24,7 @@ import {
 
 const MdaBars = (props) => {
   const history = props.history
+  console.log('history', history)
   const { simParams, dispatchSimParams } = useStore()
   const classes = useStyles()
   const removeMDARound = () => {
@@ -55,11 +56,14 @@ const MdaBars = (props) => {
 
   const numberOfYears = 22
   React.useEffect(() => {
+    console.log(simParams.coverage)
+    console.log(simParams.mdaObjDefaultPrediction)
     // populate state from Store
     const prediction = simParams.mdaObjDefaultPrediction
     if (prediction && prediction.time) {
       setSimMDAtime([...prediction.time])
       setSimMDAcoverage([...prediction.coverage])
+      console.log([...prediction.coverage])
       setSimMDAadherence([...prediction.adherence])
       setSimMDAbednets([...prediction.bednets])
       setSimMDAregimen([...prediction.regimen])
@@ -82,7 +86,13 @@ const MdaBars = (props) => {
       }
       setDefaultMDAs(newMDAs)
     }
-  }, [simParams.mdaObjDefaultPrediction])
+    // console.log(simMDAcoverage)
+  }, [simParams.mdaObjDefaultPrediction, simParams.mdaTweakedPrediction])
+  React.useEffect(() => {
+    const prediction = simParams.mdaObjDefaultPrediction
+    const newArray = [...prediction.coverage.map((item) => simParams.coverage)]
+    setSimMDAcoverage(newArray)
+  }, [simParams.coverage])
   React.useEffect(() => {
     let MDAactive = []
     for (let i = 0; i < numberOfYears; i++) {
@@ -162,7 +172,7 @@ const MdaBars = (props) => {
               >
                 <span
                   style={{
-                    height: simMDAcoverage[i],
+                    height: history.coverage[i],
                   }}
                 ></span>
               </div>
@@ -183,7 +193,7 @@ const MdaBars = (props) => {
               >
                 <span
                   style={{
-                    height: simMDAcoverage[i],
+                    height: history.coverage[i],
                   }}
                 ></span>
               </div>
