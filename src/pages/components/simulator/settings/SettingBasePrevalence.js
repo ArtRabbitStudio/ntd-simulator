@@ -9,13 +9,13 @@ import {
   FormLabel,
 } from "@material-ui/core";
 
-const SettingBasePrevalence = ({ inModal, label }) => {
+const SettingBasePrevalence = ({ inModal, label, classAdd }) => {
 
   const classes = useStyles();
   const { simParams, dispatchSimParams } = useStore();
 
   return (
-    <FormControl fullWidth className={classes.formControl}>
+    <FormControl fullWidth className={`${classes.formControl} ${classAdd}`}>
       <FormLabel
         component="legend"
         htmlFor="endemicity"

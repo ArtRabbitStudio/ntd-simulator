@@ -9,13 +9,13 @@ import {
   FormLabel,
 } from "@material-ui/core";
 
-const SettingInsecticideCoverage = ({ inModal, label }) => {
+const SettingInsecticideCoverage = ({ inModal, label, classAdd }) => {
 
   const classes = useStyles();
   const { simParams, dispatchSimParams } = useStore();
 
   return (
-    <FormControl fullWidth>
+    <FormControl fullWidth className={`${classes.formControl} ${classAdd}`}>
       <FormLabel
         component="legend"
         htmlFor="v_to_hR"

@@ -10,12 +10,12 @@ import {
   MenuItem
 } from "@material-ui/core";
 
-const SettingDrugRegimen = ({ inModal, label }) => {
+const SettingDrugRegimen = ({ inModal, label, value, onChange, classAdd }) => {
 
   const classes = useStyles();
   const { simParams, dispatchSimParams } = useStore();
 
-  console.log('in drop down simParams.mdaRegimen',simParams.mdaRegimen)
+  console.log('in drop down simParams.mdaRegimen', simParams.mdaRegimen)
 
   const handleChange = (event) => {
     dispatchSimParams({
@@ -24,7 +24,7 @@ const SettingDrugRegimen = ({ inModal, label }) => {
     });
   };
 
-//TODO convert 
+  //TODO convert 
   //xIA IVM+ALB
   //xDA DEC+ALB
   //xxA ALB alone 
@@ -35,7 +35,7 @@ const SettingDrugRegimen = ({ inModal, label }) => {
     <FormControl
       fullWidth
       variant="outlined"
-      className={classes.formControl}
+      className={`${classes.formControl} ${classAdd}`}
     >
       <FormLabel
         component="legend"
@@ -46,8 +46,8 @@ const SettingDrugRegimen = ({ inModal, label }) => {
       <Select
         labelId="demo-simple-select-helper-label"
         id="demo-simple-select-helper"
-        value={simParams.mdaRegimen}
-        onChange={handleChange}
+        value={value ? value : simParams.mdaRegimen}
+        onChange={onChange ? onChange : handleChange}
       >
         <MenuItem value={'xIA'}>albendazole + ivermectin</MenuItem>
         <MenuItem value={'xDA'}>

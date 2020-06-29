@@ -10,13 +10,13 @@ import {
   Tooltip
 } from "@material-ui/core";
 
-const SettingSystematicAdherence = ({ inModal, label, value, onChange }) => {
+const SettingSystematicAdherence = ({ inModal, label, classAdd, value, onChange }) => {
 
   const classes = useStyles();
   const { simParams, dispatchSimParams } = useStore();
 
   return (
-    <FormControl fullWidth className={classes.formControl}>
+    <FormControl fullWidth className={`${classes.formControl} ${classAdd}`}>
       <Tooltip
         title="Controls how randomly coverage is applied. For 0, coverage is completely random. For 1, the same individuals are always treated."
         aria-label="info"

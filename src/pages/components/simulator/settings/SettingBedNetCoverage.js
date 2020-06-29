@@ -9,13 +9,17 @@ import {
   FormLabel,
 } from "@material-ui/core";
 
-const SettingBedNetCoverage = ({ inModal, label }) => {
+const SettingBedNetCoverage = ({ inModal, label, value, onChange, classAdd }) => {
 
   const classes = useStyles();
   const { simParams, dispatchSimParams } = useStore();
 
+  const handleChange = (event, newValue) => {
+    dispatchSimParams({ type: "covN", payload: newValue });
+  };
+
   return (
-    <FormControl fullWidth className={classes.formControl}>
+    <FormControl fullWidth className={`${classes.formControl} ${classAdd}`}>
       <FormLabel
         component="legend"
         htmlFor="covN"
@@ -24,15 +28,13 @@ const SettingBedNetCoverage = ({ inModal, label }) => {
         {label}
       </FormLabel>
       <Slider
-        value={simParams.covN}
-        id="covN"
-        min={1}
+        value={value ? value : simParams.covN}
+        min={0}
         step={1}
         max={100}
-        onChange={(event, newValue) => {
-          dispatchSimParams({ type: "covN", payload: newValue });
-        }}
+        onChange={onChange ? onChange : handleChange}
         aria-labelledby="slider"
+        id="covN"
         marks={[
           { value: 0, label: "0" },
           { value: 100, label: "100" },

@@ -9,33 +9,33 @@ import {
   FormLabel,
 } from "@material-ui/core";
 
-const SettingTargetCoverage = ({ inModal, label }) => {
+const SettingTargetCoverage = ({ inModal, label, classAdd, value, onChange }) => {
 
   const classes = useStyles();
   const { simParams, dispatchSimParams } = useStore();
 
-  const handleCoverageChange = (event, newValue) => {
+  const handleChange = (event, newValue) => {
     // this used to be a special occastion. If nothing changes we can use the handleSlerChanges handler instead.
     dispatchSimParams({ type: "coverage", payload: newValue });
   };
 
   return (
-    <FormControl fullWidth className={classes.formControl}>
+    <FormControl fullWidth className={`${classes.formControl} ${classAdd}`}>
       <FormLabel
         component="legend"
         htmlFor="coverage"
         className={inModal ? '' : classes.withSlider}
       >{label}</FormLabel>
       <Slider
-        value={simParams.coverage}
+        value={value ? value : simParams.coverage}
         min={0}
         step={1}
         max={100}
-        onChange={handleCoverageChange}
+        onChange={onChange ? onChange : handleChange}
         aria-labelledby="slider"
         marks={[
-          { value: 0, label: "0" },
-          { value: 100, label: "100" },
+          { value: 10, label: "0" },
+          { value: 200, label: "100" },
         ]}
         valueLabelDisplay={inModal ? "auto" : "on"}
       />

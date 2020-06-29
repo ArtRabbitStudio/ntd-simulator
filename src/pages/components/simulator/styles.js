@@ -18,6 +18,10 @@ const useStyles = makeStyles((theme) => ({
   formControl: {
     margin: theme.spacing(0, 0, 1, 0),
     minWidth: "100%",
+    "&.spaced": {
+      margin: theme.spacing(0, 0, 3, 0),
+    },
+
     "& > label": {},
   },
   formControlSelect: {

@@ -10,7 +10,7 @@ import {
   MenuItem
 } from "@material-ui/core";
 
-const SettingFrequency = ({ inModal, label }) => {
+const SettingFrequency = ({ inModal, label, classAdd }) => {
 
   const classes = useStyles();
   const { simParams, dispatchSimParams } = useStore();
@@ -23,7 +23,7 @@ const SettingFrequency = ({ inModal, label }) => {
     <FormControl
       fullWidth
       variant="outlined"
-      className={classes.formControl}
+      className={`${classes.formControl} ${classAdd}`}
     >
       <FormLabel component="legend">{label}</FormLabel>
       <Select
