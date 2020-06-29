@@ -23,9 +23,11 @@ const initialState = {
   IUData: {
     IUloaded: null, //which IU is loaded if any
     mdaObj: null, // historic mdaObj for IU
-    mdaObjPrediciton: null, // future mdaObjPrediction for IU
     params: null, // parms object for IU
   },
+  mdaObjDefaultPrediction: null, // future mdaObjPrediction for IU
+  mdaObjTweakedPrediction: null, // future mdaObjPrediction for IU
+  needsRerun: false, // future mdaObjPrediction for IU
 }
 
 const reducer = (simParams, action) => {
@@ -35,8 +37,23 @@ const reducer = (simParams, action) => {
         ...simParams,
         ...action.payload,
       }
+    case 'needsRerun':
+      return {
+        ...simParams,
+        needsRerun: action.payload,
+      }
+    case 'mdaObjDefaultPrediction':
+      return {
+        ...simParams,
+        mdaObjDefaultPrediction: action.payload,
+      }
+    case 'mdaObjTweakedPrediction':
+      return {
+        ...simParams,
+        mdaObjTweakedPrediction: action.payload,
+      }
     case 'everythingbuthistoric':
-      let newIUDataall = simParams.IUData
+      let newIUDataall = { ...simParams.IUData }
       return {
         ...simParams,
         ...action.payload,
@@ -48,28 +65,21 @@ const reducer = (simParams, action) => {
         IUData: action.payload,
       }
     case 'IUloaded':
-      let newIUDataiuloaded = simParams.IUData
+      let newIUDataiuloaded = { ...simParams.IUData }
       newIUDataiuloaded.IUloaded = action.payload
       return {
         ...simParams,
         IUData: newIUDataiuloaded,
       }
     case 'mdaObj':
-      let newIUDatamda = simParams.IUData
+      let newIUDatamda = { ...simParams.IUData }
       newIUDatamda.mdaObj = action.payload
       return {
         ...simParams,
         IUData: newIUDatamda,
       }
-    case 'mdaObjPrediciton':
-      let newIUDatamdaPred = simParams.IUData
-      newIUDatamdaPred.mdaObj = action.payload
-      return {
-        ...simParams,
-        IUData: newIUDatamdaPred,
-      }
     case 'params':
-      let newIUDataparams = simParams.IUData
+      let newIUDataparams = { ...simParams.IUData }
       newIUDataparams.params = action.payload
       return {
         ...simParams,

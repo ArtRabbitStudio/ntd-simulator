@@ -7,99 +7,147 @@ import {
   Slider,
   Tooltip,
   Typography,
-} from "@material-ui/core";
-import React, { useState } from "react";
-import { useStore } from "../../../store/simulatorStore";
-import CloseButton from "./../CloseButton";
-import useStyles from "./styles";
+} from '@material-ui/core'
+import React, { useState } from 'react'
+import { useStore } from '../../../store/simulatorStore'
+import CloseButton from './../CloseButton'
+import useStyles from './styles'
 //setting
 import {
   SettingSystematicAdherence,
   SettingTargetCoverage,
   SettingBedNetCoverage,
   SettingDrugRegimen,
-} from "./settings";
+} from './settings'
 
 //import ClickAway from "../../../hooks/clickAway";
 
 const MdaBars = (props) => {
-  console.log(props.history);
-  const history = props.history;
-  const { simParams, dispatchSimParams } = useStore();
-  const classes = useStyles();
+  // console.log(props.history)
+  const history = props.history
+  const { simParams, dispatchSimParams } = useStore()
+  const classes = useStyles()
   const removeMDARound = () => {
-    let newArray = [...simMDAactive];
-    newArray[curMDARound] = false;
-    setSimMDAactive([...newArray]);
-    setCurMDARound(-1);
-    setDoseSettingsOpen(false);
-  };
+    let newArray = [...simMDAactive]
+    newArray[curMDARound] = false
+    setSimMDAactive([...newArray])
+    setCurMDARound(-1)
+    setDoseSettingsOpen(false)
+  }
   const closeRoundModal = (event) => {
-    setDoseSettingsOpen(false);
-    setCurMDARound(-1);
-  };
-  const [simInProgress, setSimInProgress] = useState(false);
+    setDoseSettingsOpen(false)
+    setCurMDARound(-1)
+  }
+  const [simInProgress, setSimInProgress] = useState(false)
 
-  const [editingMDAs, setEditingMDAs] = useState(false);
-  const [curMDARound, setCurMDARound] = useState(-1);
-  const [doseSettingsOpen, setDoseSettingsOpen] = useState(false);
+  const [editingMDAs, setEditingMDAs] = useState(false)
+  const [curMDARound, setCurMDARound] = useState(-1)
+  const [doseSettingsOpen, setDoseSettingsOpen] = useState(false)
 
-  const [simMDAtime, setSimMDAtime] = useState([]);
-  const [simMDAcoverage, setSimMDAcoverage] = useState([]);
-  const [simMDAadherence, setSimMDAadherence] = useState([]);
-  const [simMDAbednets, setSimMDAbednets] = useState([]);
-  const [simMDAregimen, setSimMDAregimen] = useState([]);
-  const [simMDAactive, setSimMDAactive] = useState([]);
+  const [defaultMDAs, setDefaultMDAs] = useState(null)
+  const [tweakedMDAs, setTweakedMDAs] = useState(null)
+
+  const [simMDAtime, setSimMDAtime] = useState([])
+  const [simMDAcoverage, setSimMDAcoverage] = useState([])
+  const [simMDAadherence, setSimMDAadherence] = useState([])
+  const [simMDAbednets, setSimMDAbednets] = useState([])
+  const [simMDAregimen, setSimMDAregimen] = useState([])
+  const [simMDAactive, setSimMDAactive] = useState([])
 
   const populatePredictionBars = () => {
-    const numberOfYears = 11 * 2;
-    let MDAtime = [];
+    const numberOfYears = 11 * 2
+    let MDAtime = []
     for (let i = 0; i < numberOfYears; i++) {
-      MDAtime.push(6 + 6 * i);
+      MDAtime.push(6 + 6 * i)
     }
-    setSimMDAtime([...MDAtime]);
-    let MDAcoverage = [];
+    setSimMDAtime([...MDAtime])
+    let MDAcoverage = []
     for (let i = 0; i < numberOfYears; i++) {
-      MDAcoverage.push(simParams.coverage);
+      MDAcoverage.push(simParams.coverage)
     }
-    setSimMDAcoverage([...MDAcoverage]);
+    setSimMDAcoverage([...MDAcoverage])
 
-    let MDAadherence = [];
+    let MDAadherence = []
     for (let i = 0; i < numberOfYears; i++) {
-      MDAadherence.push(simParams.rho);
+      MDAadherence.push(simParams.rho)
     }
-    setSimMDAadherence([...MDAadherence]);
+    setSimMDAadherence([...MDAadherence])
 
-    let MDAbednets = [];
+    let MDAbednets = []
     for (let i = 0; i < numberOfYears; i++) {
-      MDAbednets.push(simParams.covN);
+      MDAbednets.push(simParams.covN)
     }
-    setSimMDAbednets([...MDAcoverage]);
-    let MDAregimen = [];
+    setSimMDAbednets([...MDAbednets])
+    let MDAregimen = []
     for (let i = 0; i < numberOfYears; i++) {
-      MDAregimen.push(simParams.mdaRegimen);
+      MDAregimen.push(simParams.mdaRegimen)
     }
-    setSimMDAregimen([...MDAregimen]);
+    setSimMDAregimen([...MDAregimen])
 
-    let MDAactive = [];
+    let MDAactive = []
     for (let i = 0; i < numberOfYears; i++) {
       if (simParams.mdaSixMonths === 12 && i % 2 === 1) {
-        MDAactive.push(false);
+        MDAactive.push(false)
       } else {
-        MDAactive.push(true); // alternate here
+        MDAactive.push(true) // alternate here
       }
     }
-    setSimMDAactive([...MDAactive]);
-    // console.log(SimulatorEngine.simControler.mdaObj)
-  };
+    setSimMDAactive([...MDAactive])
+    const newMDAs = {
+      time: [...MDAtime],
+      coverage: [...MDAcoverage],
+      adherence: [...MDAadherence],
+      bednets: [...MDAbednets],
+      regimen: [...MDAregimen],
+      active: [...MDAactive],
+    }
+    setDefaultMDAs(newMDAs)
+    dispatchSimParams({
+      type: 'mdaObjDefaultPrediction',
+      payload: newMDAs,
+    })
+  }
   React.useEffect(() => {
-    populatePredictionBars();
-  }, []);
+    populatePredictionBars()
+  }, [])
   React.useEffect(() => {
+    const newMDAs = {
+      time: [...simMDAtime],
+      coverage: [...simMDAcoverage],
+      adherence: [...simMDAadherence],
+      bednets: [...simMDAbednets],
+      regimen: [...simMDAregimen],
+      active: [...simMDAactive],
+    }
+    setTweakedMDAs(newMDAs)
+  }, [
+    simMDAcoverage,
+    simMDAadherence,
+    simMDAbednets,
+    simMDAregimen,
+    simMDAactive,
+  ])
+  React.useEffect(() => {
+    if (tweakedMDAs && tweakedMDAs.time && tweakedMDAs.time.length > 0) {
+      const needsRerun =
+        JSON.stringify(defaultMDAs) !== JSON.stringify(tweakedMDAs)
+      console.log('needsRerun', needsRerun)
+      console.log(defaultMDAs)
+      console.log(tweakedMDAs)
+      if (needsRerun) {
+        dispatchSimParams({
+          type: 'needsRerun',
+          payload: true,
+        })
+      } else {
+        dispatchSimParams({
+          type: 'needsRerun',
+          payload: false,
+        })
+      }
+    }
     //    dispatchSimParams({ type: "dddd", mdaObjPred });
-    /*     SimulatorEngine.simControler.mdaObj.active = [...MDAactive];
-    SimulatorEngine.simControler.mdaObj2015.active = [...MDAactive]; */
-  }, []);
+  }, [tweakedMDAs])
 
   return (
     <>
@@ -113,15 +161,15 @@ const MdaBars = (props) => {
                 className={`bar history`}
                 title={
                   history.time[i] +
-                  ", " +
+                  ', ' +
                   history.coverage[i] +
-                  ", " +
+                  ', ' +
                   history.adherence[i] +
-                  ", " +
+                  ', ' +
                   history.bednets[i] +
-                  ", " +
+                  ', ' +
                   history.regimen[i] +
-                  " "
+                  ' '
                 }
               >
                 <span
@@ -134,15 +182,15 @@ const MdaBars = (props) => {
                 className={`bar history`}
                 title={
                   history.time[i] +
-                  ", " +
+                  ', ' +
                   history.coverage[i] +
-                  ", " +
+                  ', ' +
                   history.adherence[i] +
-                  ", " +
+                  ', ' +
                   history.bednets[i] +
-                  ", " +
+                  ', ' +
                   history.regimen[i] +
-                  " "
+                  ' '
                 }
               >
                 <span
@@ -161,26 +209,26 @@ const MdaBars = (props) => {
           <div
             key={`bar-${i}`}
             onClick={(a) => {
-              setCurMDARound(i);
+              setCurMDARound(i)
             }}
-            className={`bar ${simMDAactive[i] === false ? "removed" : ""}`}
+            className={`bar ${simMDAactive[i] === false ? 'removed' : ''}`}
             title={
               simMDAtime[i] +
-              ", " +
+              ', ' +
               simMDAcoverage[i] +
-              ", " +
+              ', ' +
               simMDAadherence[i] +
-              ", " +
+              ', ' +
               simMDAbednets[i] +
-              ", " +
+              ', ' +
               simMDAregimen[i] +
-              ", " +
+              ', ' +
               simMDAactive[i] +
-              " "
+              ' '
             }
           >
             <span
-              className={i === curMDARound ? "current" : ""}
+              className={i === curMDARound ? 'current' : ''}
               style={{
                 height: simMDAcoverage[i],
               }}
@@ -198,7 +246,7 @@ const MdaBars = (props) => {
                   <span
                     className="i plus"
                     onClick={(a) => {
-                      setDoseSettingsOpen(true);
+                      setDoseSettingsOpen(true)
                     }}
                   ></span>
                 )}
@@ -206,7 +254,7 @@ const MdaBars = (props) => {
                   <span
                     className="i edit"
                     onClick={(a) => {
-                      setDoseSettingsOpen(true);
+                      setDoseSettingsOpen(true)
                     }}
                   ></span>
                 )}
@@ -214,8 +262,8 @@ const MdaBars = (props) => {
                   <span
                     className="i remove"
                     onClick={(a) => {
-                      removeMDARound();
-                      a.stopPropagation();
+                      removeMDARound()
+                      a.stopPropagation()
                     }}
                   ></span>
                 )}
@@ -236,15 +284,15 @@ const MdaBars = (props) => {
                 color="primary"
                 disabled={simInProgress}
                 style={{
-                  position: "absolute",
+                  position: 'absolute',
                   zIndex: 9999,
-                  marginLeft: "3rem",
-                  marginTop: "13rem",
+                  marginLeft: '3rem',
+                  marginTop: '13rem',
                 }}
                 onClick={() => {
-                  let newArray = [...simMDAactive];
-                  newArray[curMDARound] = true;
-                  setSimMDAactive([...newArray]);
+                  let newArray = [...simMDAactive]
+                  newArray[curMDARound] = true
+                  setSimMDAactive([...newArray])
                   // setCurMDARound(-1);
                   // setDoseSettingsOpen(false);
                 }}
@@ -264,7 +312,7 @@ const MdaBars = (props) => {
                     ? new Date().getFullYear() + Math.floor(curMDARound / 2)
                     : new Date().getFullYear() + curMDARound / 2
                   : new Date().getFullYear() + curMDARound}
-                {curMDARound % 2 ? " - round 2" : ""}
+                {curMDARound % 2 ? ' - round 2' : ''}
               </Typography>
 
               <SettingTargetCoverage
@@ -273,9 +321,9 @@ const MdaBars = (props) => {
                 classAdd="spaced"
                 value={simMDAcoverage[curMDARound]}
                 onChange={(event, newValue) => {
-                  let newArray = [...simMDAcoverage];
-                  newArray[curMDARound] = newValue;
-                  setSimMDAcoverage([...newArray]);
+                  let newArray = [...simMDAcoverage]
+                  newArray[curMDARound] = newValue
+                  setSimMDAcoverage([...newArray])
                 }}
               />
 
@@ -285,7 +333,7 @@ const MdaBars = (props) => {
                 classAdd="spaced"
                 value={50} /* todo */
                 onChange={(event, newValue) => {
-                  console.log("todo", newValue);
+                  console.log('todo', newValue)
                 }}
               />
 
@@ -293,9 +341,9 @@ const MdaBars = (props) => {
                 inModal={true}
                 label="Drug regimen"
                 classAdd="spaced"
-                value={"xIA"} /* todo */
+                value={'xIA'} /* todo */
                 onChange={(event, newValue) => {
-                  console.log("todo", newValue);
+                  console.log('todo', newValue)
                 }}
               />
 
@@ -305,9 +353,9 @@ const MdaBars = (props) => {
                 classAdd="spaced"
                 value={simMDAadherence[curMDARound]}
                 onChange={(event, newValue) => {
-                  let newArray = [...simMDAadherence];
-                  newArray[curMDARound] = newValue;
-                  setSimMDAadherence([...newArray]);
+                  let newArray = [...simMDAadherence]
+                  newArray[curMDARound] = newValue
+                  setSimMDAadherence([...newArray])
                 }}
               />
 
@@ -317,7 +365,7 @@ const MdaBars = (props) => {
                   variant="contained"
                   disabled={simInProgress}
                   onClick={() => {
-                    removeMDARound();
+                    removeMDARound()
                   }}
                 >
                   REMOVE
@@ -328,8 +376,8 @@ const MdaBars = (props) => {
                   color="primary"
                   disabled={simInProgress}
                   onClick={() => {
-                    setCurMDARound(-1);
-                    setDoseSettingsOpen(false);
+                    setCurMDARound(-1)
+                    setDoseSettingsOpen(false)
                   }}
                 >
                   UPDATE
@@ -340,6 +388,6 @@ const MdaBars = (props) => {
         </ClickAwayListener>
       )}
     </>
-  );
-};
-export default MdaBars;
+  )
+}
+export default MdaBars

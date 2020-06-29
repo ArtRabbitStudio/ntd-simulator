@@ -32,9 +32,10 @@ export const loadAllIUhistoricData = async (
       IUData: {
         IUloaded: implementationUnit,
         mdaObj: mdaData,
-        mdaObjPrediciton: mdaData,
         params: params,
       },
+      mdaObjDefaultPrediction: null,
+      mdaObjTweakedPrediction: null,
     }
     const bednets = last(mdaData.bednets)
     if (bednets) defaults.covN = bednets

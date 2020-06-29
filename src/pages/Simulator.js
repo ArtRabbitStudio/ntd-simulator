@@ -10,23 +10,23 @@ import {
   Tab,
   Tabs,
   Typography,
-} from "@material-ui/core";
-import { useTheme } from "@material-ui/styles";
-import PropTypes from "prop-types";
-import React, { useEffect, useState } from "react";
-import ScenarioGraph from "../components/ScenarioGraph";
-import { Layout } from "../layout";
-import { useStore } from "./../store/simulatorStore";
-import { useUIState } from "../hooks/stateHooks";
-import ChartSettings from "./components/ChartSettings";
-import ConfirmationDialog from "./components/ConfirmationDialog";
-import HeadWithInputs from "./components/HeadWithInputs";
-import SelectCountry from "./components/SelectCountry";
-import MdaBars from "./components/simulator/MdaBars";
-import { loadMda, loadParams } from "./components/simulator/ParamMdaLoader";
-import * as SimulatorEngine from "./components/simulator/SimulatorEngine";
-import useStyles from "./components/simulator/styles";
-import TextContents from "./components/TextContents";
+} from '@material-ui/core'
+import { useTheme } from '@material-ui/styles'
+import PropTypes from 'prop-types'
+import React, { useEffect, useState } from 'react'
+import ScenarioGraph from '../components/ScenarioGraph'
+import { Layout } from '../layout'
+import { useStore } from './../store/simulatorStore'
+import { useUIState } from '../hooks/stateHooks'
+import ChartSettings from './components/ChartSettings'
+import ConfirmationDialog from './components/ConfirmationDialog'
+import HeadWithInputs from './components/HeadWithInputs'
+import SelectCountry from './components/SelectCountry'
+import MdaBars from './components/simulator/MdaBars'
+import { loadMda, loadParams } from './components/simulator/ParamMdaLoader'
+import * as SimulatorEngine from './components/simulator/SimulatorEngine'
+import useStyles from './components/simulator/styles'
+import TextContents from './components/TextContents'
 
 // settings
 import {
@@ -42,19 +42,19 @@ import {
   SettingPrecision,
   SettingSystematicAdherence,
   SettingSpecificScenario,
-} from "./components/simulator/settings";
+} from './components/simulator/settings'
 
-SimulatorEngine.simControler.documentReady();
+SimulatorEngine.simControler.documentReady()
 
 function a11yProps(index) {
   return {
     id: `simple-tab-${index}`,
-    "aria-controls": `simple-tabpanel-${index}`,
-  };
+    'aria-controls': `simple-tabpanel-${index}`,
+  }
 }
 
 function TabPanel(props) {
-  const { children, value, index, ...other } = props;
+  const { children, value, index, ...other } = props
 
   return (
     <Typography
@@ -67,146 +67,146 @@ function TabPanel(props) {
     >
       {value === index && <Box>{children}</Box>}
     </Typography>
-  );
+  )
 }
 TabPanel.propTypes = {
   children: PropTypes.node,
   index: PropTypes.any.isRequired,
   value: PropTypes.any.isRequired,
-};
+}
 
-let countryLinks = [];
+let countryLinks = []
 
 const Simulator = (props) => {
-  const classes = useStyles();
-  const theme = useTheme();
-  const { simParams, dispatchSimParams } = useStore();
-  const { country, implementationUnit } = useUIState();
+  const classes = useStyles()
+  const theme = useTheme()
+  const { simParams, dispatchSimParams } = useStore()
+  const { country, implementationUnit } = useUIState()
 
-  const doWeHaveData = simParams.IUData.IUloaded != null; // simParams.IUData.IUloaded === implementationUnit; // TODO: THIS IS CORRECT ONCE WE HAVE ALL THE DATA
+  const doWeHaveData = simParams.IUData.IUloaded != null // simParams.IUData.IUloaded === implementationUnit; // TODO: THIS IS CORRECT ONCE WE HAVE ALL THE DATA
   /* MDA object */
-  const [graphMetric, setGraphMetric] = useState("Ms");
+  const [graphMetric, setGraphMetric] = useState('Ms')
 
   // check for stale scenarios object in LS
-  const LSSessionData = JSON.parse(window.localStorage.getItem("sessionData"));
+  const LSSessionData = JSON.parse(window.localStorage.getItem('sessionData'))
   if (
     (LSSessionData !== null &&
       LSSessionData.scenarios &&
       LSSessionData.scenarios[0] &&
       LSSessionData.scenarios[0].mda &&
-      typeof LSSessionData.scenarios[0].mda2015 === "undefined") ||
+      typeof LSSessionData.scenarios[0].mda2015 === 'undefined') ||
     (LSSessionData !== null &&
       LSSessionData.scenarios &&
       LSSessionData.scenarios[0] &&
       LSSessionData.scenarios[0].mda &&
       typeof LSSessionData.scenarios[0].mda2015 &&
-      typeof LSSessionData.scenarios[0].mda2015.active === "undefined")
+      typeof LSSessionData.scenarios[0].mda2015.active === 'undefined')
   ) {
     // clear LS and relaod if stale project is found
-    window.localStorage.removeItem("sessionData");
-    window.localStorage.removeItem("scenarioIndex");
-    console.log("reloading");
-    window.location.reload();
+    window.localStorage.removeItem('sessionData')
+    window.localStorage.removeItem('scenarioIndex')
+    console.log('reloading')
+    window.location.reload()
   }
 
   /* Simuilation, tabs etc */
-  const [simInProgress, setSimInProgress] = useState(false);
+  const [simInProgress, setSimInProgress] = useState(false)
   // console.log(parseInt(window.localStorage.getItem('scenarioIndex')))
   // console.log(parseInt(window.localStorage.getItem('scenarioIndex')) + 1)
   // console.log(window.localStorage.getItem('sessionData'))
   const [tabLength, setTabLength] = useState(
-    JSON.parse(window.localStorage.getItem("sessionData")) === null
+    JSON.parse(window.localStorage.getItem('sessionData')) === null
       ? 0
-      : JSON.parse(window.localStorage.getItem("sessionData")).scenarios.length
-  );
+      : JSON.parse(window.localStorage.getItem('sessionData')).scenarios.length
+  )
   const [tabIndex, setTabIndex] = useState(
-    JSON.parse(window.localStorage.getItem("scenarioIndex")) || 0
-  );
+    JSON.parse(window.localStorage.getItem('scenarioIndex')) || 0
+  )
   const handleTabChange = (event, newValue) => {
-    setTabIndex(newValue);
-  };
+    setTabIndex(newValue)
+  }
   useEffect(() => {
     //    console.log('tab updated', tabIndex)
     //    console.log(scenarioInputs[tabIndex])
-    if (typeof scenarioInputs[tabIndex] != "undefined") {
+    if (typeof scenarioInputs[tabIndex] != 'undefined') {
       // set input arams if you have them
       dispatchSimParams({
-        type: "everythingbuthistoric",
+        type: 'everythingbuthistoric',
         payload: scenarioInputs[tabIndex],
-      });
-      SimulatorEngine.ScenarioIndex.setIndex(tabIndex);
+      })
+      SimulatorEngine.ScenarioIndex.setIndex(tabIndex)
     }
-  }, [tabIndex]);
+  }, [tabIndex])
 
   const handleAdherenceChange = (event) => {
     // todo
     //alert('todo')
-  };
+  }
 
-  const [simulationProgress, setSimulationProgress] = useState(0);
-  const [scenarioInputs, setScenarioInputs] = useState([]);
+  const [simulationProgress, setSimulationProgress] = useState(0)
+  const [scenarioInputs, setScenarioInputs] = useState([])
   const [scenarioResults, setScenarioResults] = useState(
-    window.localStorage.getItem("sessionData")
-      ? JSON.parse(window.localStorage.getItem("sessionData")).scenarios
+    window.localStorage.getItem('sessionData')
+      ? JSON.parse(window.localStorage.getItem('sessionData')).scenarios
       : []
-  );
-  const [scenarioMDAs, setScenarioMDAs] = useState([]);
+  )
+  const [scenarioMDAs, setScenarioMDAs] = useState([])
 
   const simulatorCallback = (resultObject, newScenario) => {
-    if (typeof resultObject == "number") {
-      setSimulationProgress(resultObject);
+    if (typeof resultObject == 'number') {
+      setSimulationProgress(resultObject)
     } else {
-      console.log("Simulation returned results!");
+      console.log('Simulation returned results!')
 
-      if (typeof scenarioResults[tabIndex] === "undefined") {
+      if (typeof scenarioResults[tabIndex] === 'undefined') {
         //console.log('scenarioResults',resultObject)
-        setScenarioResults([...scenarioResults, JSON.parse(resultObject)]);
+        setScenarioResults([...scenarioResults, JSON.parse(resultObject)])
         setScenarioInputs([
           ...scenarioInputs,
           JSON.parse(resultObject).params.inputs,
-        ]);
+        ])
         console.log(
-          "JSON.parse(resultObject).mda2015.time,",
+          'JSON.parse(resultObject).mda2015.time,',
           JSON.parse(resultObject).mda2015.time
-        );
-        setScenarioMDAs([...scenarioMDAs, JSON.parse(resultObject).mda2015]);
+        )
+        setScenarioMDAs([...scenarioMDAs, JSON.parse(resultObject).mda2015])
       } else {
-        let correctTabIndex = newScenario === true ? tabIndex + 1 : tabIndex;
+        let correctTabIndex = newScenario === true ? tabIndex + 1 : tabIndex
         //console.log('scenarioResults',resultObject)
-        let scenarioResultsNew = [...scenarioResults]; // 1. Make a shallow copy of the items
-        let resultItem = scenarioResultsNew[correctTabIndex]; // 2. Make a shallow copy of the resultItem you want to mutate
-        resultItem = JSON.parse(resultObject); // 3. Replace the property you're intested in
-        scenarioResultsNew[correctTabIndex] = resultItem; // 4. Put it back into our array. N.B. we *are* mutating the array here, but that's why we made a copy first
-        setScenarioResults(scenarioResultsNew); // 5. Set the state to our new copy
+        let scenarioResultsNew = [...scenarioResults] // 1. Make a shallow copy of the items
+        let resultItem = scenarioResultsNew[correctTabIndex] // 2. Make a shallow copy of the resultItem you want to mutate
+        resultItem = JSON.parse(resultObject) // 3. Replace the property you're intested in
+        scenarioResultsNew[correctTabIndex] = resultItem // 4. Put it back into our array. N.B. we *are* mutating the array here, but that's why we made a copy first
+        setScenarioResults(scenarioResultsNew) // 5. Set the state to our new copy
 
-        let scenarioInputsNew = [...scenarioInputs];
-        let inputsItem = scenarioInputsNew[correctTabIndex];
-        inputsItem = JSON.parse(resultObject).params.inputs;
-        scenarioInputsNew[correctTabIndex] = inputsItem;
-        setScenarioInputs(scenarioInputsNew);
+        let scenarioInputsNew = [...scenarioInputs]
+        let inputsItem = scenarioInputsNew[correctTabIndex]
+        inputsItem = JSON.parse(resultObject).params.inputs
+        scenarioInputsNew[correctTabIndex] = inputsItem
+        setScenarioInputs(scenarioInputsNew)
 
-        let scenarioMDAsNew = [...scenarioMDAs];
-        let MDAsItem = scenarioMDAsNew[correctTabIndex];
-        const returnedmda2015 = JSON.parse(resultObject);
+        let scenarioMDAsNew = [...scenarioMDAs]
+        let MDAsItem = scenarioMDAsNew[correctTabIndex]
+        const returnedmda2015 = JSON.parse(resultObject)
         MDAsItem = {
           time: [...returnedmda2015.mda2015.time],
           coverage: [...returnedmda2015.mda2015.coverage],
           adherence: [...returnedmda2015.mda2015.adherence],
           bednets: [...returnedmda2015.mda2015.bednets],
           regimen: [...returnedmda2015.mda2015.regimen],
-        };
-        scenarioMDAsNew[correctTabIndex] = MDAsItem;
+        }
+        scenarioMDAsNew[correctTabIndex] = MDAsItem
         // console.log('ccc', correctTabIndex, scenarioMDAsNew)
-        setScenarioMDAs(scenarioMDAsNew);
+        setScenarioMDAs(scenarioMDAsNew)
       }
-      setSimInProgress(false);
+      setSimInProgress(false)
       // console.log('newScenario', newScenario)
       if (newScenario === true) {
-        setTabLength(tabLength + 1);
-        setTabIndex(tabLength > 5 ? 4 : tabLength);
+        setTabLength(tabLength + 1)
+        setTabIndex(tabLength > 5 ? 4 : tabLength)
       }
     }
-  };
+  }
   /*   useEffect(() => {
       console.log('scenarioInputs', scenarioInputs)
     }, [scenarioInputs]) */
@@ -214,169 +214,169 @@ const Simulator = (props) => {
     //console.log('runnCurrentScenario',!simInProgress,doWeHaveData)
     //console.log('simParams',simParams)
     if (!simInProgress && doWeHaveData) {
-      setSimInProgress(true);
-      console.log(tabIndex, simParams);
+      setSimInProgress(true)
+      console.log(tabIndex, simParams)
       // populate mdaObj // populateMDA();
-      const newMdaObj = simParams.IUData.mdaObj;
-      SimulatorEngine.simControler.mdaObj = newMdaObj;
-      const yearsToLeaveOut = 14;
+      const newMdaObj = simParams.IUData.mdaObj
+      SimulatorEngine.simControler.mdaObj = newMdaObj
+      const yearsToLeaveOut = 14
       let newMdaObj2015 = {
         time: newMdaObj.time.filter(function (value, index, arr) {
-          return index > yearsToLeaveOut;
+          return index > yearsToLeaveOut
         }),
         coverage: newMdaObj.coverage.filter(function (value, index, arr) {
-          return index > yearsToLeaveOut;
+          return index > yearsToLeaveOut
         }),
         adherence: newMdaObj.adherence.filter(function (value, index, arr) {
-          return index > yearsToLeaveOut;
+          return index > yearsToLeaveOut
         }),
         bednets: newMdaObj.bednets.filter(function (value, index, arr) {
-          return index > yearsToLeaveOut;
+          return index > yearsToLeaveOut
         }),
         regimen: newMdaObj.regimen.filter(function (value, index, arr) {
-          return index > yearsToLeaveOut;
+          return index > yearsToLeaveOut
         }),
         active: newMdaObj.active.filter(function (value, index, arr) {
-          return index > yearsToLeaveOut;
+          return index > yearsToLeaveOut
         }),
-      };
-      SimulatorEngine.simControler.mdaObj2015 = newMdaObj2015;
+      }
+      SimulatorEngine.simControler.mdaObj2015 = newMdaObj2015
 
-      const newParams = simParams.IUData.params;
-      SimulatorEngine.simControler.parametersJSON = newParams;
-      console.log("runningScenario");
+      const newParams = simParams.IUData.params
+      SimulatorEngine.simControler.parametersJSON = newParams
+      console.log('runningScenario')
 
-      SimulatorEngine.simControler.newScenario = false;
+      SimulatorEngine.simControler.newScenario = false
       SimulatorEngine.simControler.runScenario(
         simParams,
         tabIndex,
         simulatorCallback
-      );
+      )
     }
-  };
+  }
 
   const removeCurrentScenario = () => {
     if (!simInProgress) {
       // alert('todo')
 
-      SimulatorEngine.SessionData.deleteScenario(tabIndex);
+      SimulatorEngine.SessionData.deleteScenario(tabIndex)
       //console.log(scenarioResults)
       //console.log(scenarioResults[tabIndex])
 
-      let newScenarios = [...scenarioResults];
+      let newScenarios = [...scenarioResults]
       newScenarios = newScenarios.filter(
         (item) => item !== scenarioResults[tabIndex]
-      );
-      setScenarioResults([...newScenarios]);
+      )
+      setScenarioResults([...newScenarios])
 
-      let newScenarioInputs = [...scenarioInputs];
+      let newScenarioInputs = [...scenarioInputs]
       newScenarioInputs = newScenarioInputs.filter(
         (item) => item !== scenarioInputs[tabIndex]
-      );
-      setScenarioInputs([...newScenarioInputs]);
+      )
+      setScenarioInputs([...newScenarioInputs])
 
-      let newScenarioMDAs = [...scenarioMDAs];
+      let newScenarioMDAs = [...scenarioMDAs]
       newScenarioMDAs = newScenarioMDAs.filter(
         (item) => item !== scenarioMDAs[tabIndex]
-      );
-      setScenarioMDAs(newScenarioMDAs);
+      )
+      setScenarioMDAs(newScenarioMDAs)
 
-      setTabLength(tabLength >= 1 ? tabLength - 1 : 0);
-      setTabIndex(tabIndex >= 1 ? tabIndex - 1 : 0);
+      setTabLength(tabLength >= 1 ? tabLength - 1 : 0)
+      setTabIndex(tabIndex >= 1 ? tabIndex - 1 : 0)
     }
-  };
+  }
 
   // confirmation for remove scenario
-  const [confirmatonOpen, setConfirmatonOpen] = useState(false);
+  const [confirmatonOpen, setConfirmatonOpen] = useState(false)
   const confirmRemoveCurrentScenario = () => {
     if (!simInProgress) {
-      setConfirmatonOpen(true);
+      setConfirmatonOpen(true)
     }
-  };
+  }
   const confirmedRemoveCurrentScenario = () => {
     if (!simInProgress) {
-      setConfirmatonOpen(false);
-      removeCurrentScenario();
+      setConfirmatonOpen(false)
+      removeCurrentScenario()
     }
-  };
+  }
 
   const runNewScenario = async () => {
     if (!simInProgress) {
       if (tabLength < 5) {
         // populateMDA();
-        setSimInProgress(true);
+        setSimInProgress(true)
         // console.log('settingTabLength', tabLength + 1)
         //console.log(tabIndex, simParams)
 
         // populate mdaObj // populateMDA();
-        const newMdaObj = await loadMda();
-        SimulatorEngine.simControler.mdaObj = newMdaObj;
+        const newMdaObj = await loadMda()
+        SimulatorEngine.simControler.mdaObj = newMdaObj
 
-        const yearsToLeaveOut = 14;
+        const yearsToLeaveOut = 14
         let newMdaObj2015 = {
           time: newMdaObj.time.filter(function (value, index, arr) {
-            return index > yearsToLeaveOut;
+            return index > yearsToLeaveOut
           }),
           coverage: newMdaObj.coverage.filter(function (value, index, arr) {
-            return index > yearsToLeaveOut;
+            return index > yearsToLeaveOut
           }),
           adherence: newMdaObj.adherence.filter(function (value, index, arr) {
-            return index > yearsToLeaveOut;
+            return index > yearsToLeaveOut
           }),
           bednets: newMdaObj.bednets.filter(function (value, index, arr) {
-            return index > yearsToLeaveOut;
+            return index > yearsToLeaveOut
           }),
           regimen: newMdaObj.regimen.filter(function (value, index, arr) {
-            return index > yearsToLeaveOut;
+            return index > yearsToLeaveOut
           }),
           active: newMdaObj.active.filter(function (value, index, arr) {
-            return index > yearsToLeaveOut;
+            return index > yearsToLeaveOut
           }),
-        };
-        SimulatorEngine.simControler.mdaObj2015 = newMdaObj2015;
+        }
+        SimulatorEngine.simControler.mdaObj2015 = newMdaObj2015
 
-        const newParams = await loadParams();
-        SimulatorEngine.simControler.parametersJSON = newParams;
-        console.log("runningScenario");
+        const newParams = await loadParams()
+        SimulatorEngine.simControler.parametersJSON = newParams
+        console.log('runningScenario')
 
-        SimulatorEngine.simControler.newScenario = true;
+        SimulatorEngine.simControler.newScenario = true
         SimulatorEngine.simControler.runScenario(
           simParams,
           tabLength,
           simulatorCallback
-        );
+        )
         //        console.log(tabLength)
       } else {
-        alert("Sorry maximum number of Scenarios is 5.");
+        alert('Sorry maximum number of Scenarios is 5.')
       }
     }
-  };
+  }
 
   useEffect(() => {
-    if (typeof scenarioResults[tabIndex] === "undefined") {
-      console.log("No scenarios? Running a new one...");
-      runNewScenario();
+    if (typeof scenarioResults[tabIndex] === 'undefined') {
+      console.log('No scenarios? Running a new one...')
+      runNewScenario()
     }
     /* let sessionDataJson =
           JSON.parse(window.localStorage.getItem('scenarios')) || [] */
-    let scenariosArray = JSON.parse(window.localStorage.getItem("sessionData"))
-      ? JSON.parse(window.localStorage.getItem("sessionData")).scenarios
-      : null;
+    let scenariosArray = JSON.parse(window.localStorage.getItem('sessionData'))
+      ? JSON.parse(window.localStorage.getItem('sessionData')).scenarios
+      : null
     // console.log('scenariosArray', scenariosArray)
     if (scenariosArray) {
-      let paramsInputs = scenariosArray.map((item) => item.params.inputs);
-      let MDAs = scenariosArray.map((item) => item.mda2015);
-      setScenarioInputs(paramsInputs);
-      if (typeof paramsInputs[tabIndex] != "undefined") {
+      let paramsInputs = scenariosArray.map((item) => item.params.inputs)
+      let MDAs = scenariosArray.map((item) => item.mda2015)
+      setScenarioInputs(paramsInputs)
+      if (typeof paramsInputs[tabIndex] != 'undefined') {
         // set input params if you have them
         dispatchSimParams({
-          type: "everythingbuthistoric",
+          type: 'everythingbuthistoric',
           payload: paramsInputs[tabIndex],
-        });
-        setScenarioMDAs(MDAs);
+        })
+        setScenarioMDAs(MDAs)
       }
     }
-  }, []);
+  }, [])
   return (
     <Layout>
       <HeadWithInputs title="prevalence simulator" />
@@ -520,16 +520,16 @@ const Simulator = (props) => {
                               MenuProps={{ disablePortal: true }}
                               onChange={(ev) => {
                                 // console.log(ev.target.value)
-                                setGraphMetric(ev.target.value);
+                                setGraphMetric(ev.target.value)
                               }}
                             >
-                              <MenuItem value={"Ms"}>
+                              <MenuItem value={'Ms'}>
                                 Prevalence mirofilerima
                               </MenuItem>
-                              <MenuItem value={"Ls"}>
+                              <MenuItem value={'Ls'}>
                                 Prevalence in the mosquito population
                               </MenuItem>
-                              <MenuItem value={"Ws"}>
+                              <MenuItem value={'Ws'}>
                                 Prevalence of worms in the lymph nodes
                               </MenuItem>
                             </Select>
@@ -539,29 +539,31 @@ const Simulator = (props) => {
                     </Grid>
 
                     <div className={classes.scenarioGraph}>
-                      <div className={classes.updateScenario}>
-                        <Button
-                          variant="contained"
-                          color="primary"
-                          disabled={
-                            simInProgress || scenarioResults.length === 0
-                          } /*  || scenarioInputs.length === 0 */
-                          onClick={runCurrentScenario}
-                        >
-                          UPDATE SCENARIO
-                        </Button>{" "}
-                        &nbsp;
-                        <Button
-                          variant="contained"
-                          color="secondary"
-                          disabled={
-                            simInProgress || scenarioResults.length === 0
-                          } /*  || scenarioInputs.length === 0 */
-                          onClick={runCurrentScenario}
-                        >
-                          Reset
-                        </Button>
-                      </div>
+                      {simParams.needsRerun && (
+                        <div className={classes.updateScenario}>
+                          <Button
+                            variant="contained"
+                            color="primary"
+                            disabled={
+                              simInProgress || scenarioResults.length === 0
+                            } /*  || scenarioInputs.length === 0 */
+                            onClick={runCurrentScenario}
+                          >
+                            UPDATE SCENARIO
+                          </Button>{' '}
+                          &nbsp;
+                          <Button
+                            variant="contained"
+                            color="secondary"
+                            disabled={
+                              simInProgress || scenarioResults.length === 0
+                            } /*  || scenarioInputs.length === 0 */
+                            onClick={runCurrentScenario}
+                          >
+                            Reset
+                          </Button>
+                        </div>
+                      )}
 
                       <ScenarioGraph
                         data={result}
@@ -581,7 +583,7 @@ const Simulator = (props) => {
             <ConfirmationDialog
               title="Do you want to delete this scenario?"
               onClose={() => {
-                setConfirmatonOpen(false);
+                setConfirmatonOpen(false)
               }}
               onConfirm={confirmedRemoveCurrentScenario}
               open={confirmatonOpen}
@@ -601,6 +603,6 @@ const Simulator = (props) => {
         </Grid>
       </section>
     </Layout>
-  );
-};
-export default Simulator;
+  )
+}
+export default Simulator
