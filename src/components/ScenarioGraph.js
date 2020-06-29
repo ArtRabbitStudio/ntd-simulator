@@ -3,16 +3,14 @@ import { zip, zipObject, map, flatten, flattenDeep, pick, values } from 'lodash'
 import { scaleLinear, extent, line } from 'd3'
 import AutoSizer from 'react-virtualized-auto-sizer'
 
-let fadeOutTimeout = null;
+let fadeOutTimeout = null
 
 function Path({ data, prop, x, y, color }) {
-  const coords = data.map(d => [x(d.ts), y(d[prop])])
+  const coords = data.map((d) => [x(d.ts), y(d[prop])])
   const l = line()(coords)
 
   return <path d={l} stroke={color} fill="none" strokeWidth="2" />
 }
-
-
 
 function ScenarioGraph({
   data,
@@ -21,109 +19,109 @@ function ScenarioGraph({
   metrics = ['Ms', 'Ws', 'Ls'],
   showAllResults,
   inputs,
-  simInProgress
+  simInProgress,
 }) {
   //console.log('init',data);
 
   const dataSelection = showAllResults ? data.results : [data.results[0]]
   const domainX = extent(flatten(map(dataSelection, 'ts')))
   const domainY = extent(
-    flattenDeep(map(data.results, x => values(pick(x, metrics))))
+    flattenDeep(map(data.results, (x) => values(pick(x, metrics))))
   )
   const ShowActivePoint = ({ active, coord }) => {
-
-    return (<g key={`active-${active}`} transform={`translate(${coord[0]},${coord[1]})`}>
-             
-              <circle
-                      fill={
-                        coord[2] <= 1 ? '#008DC9'
-                      : coord[2] >= 6 && coord[2] <= 10
-                      ? '#D86422'
-                      : coord[2] > 10
-                      ? '#D86422'
-                      : '#D86422'
-                      }
-                      fillOpacity={1}
-                      r={20}
-                      cx={2}
-                      cy={-18}
-                    ></circle>
-              <text
-                  fill="white"
-                  fontSize="12px"
-                  fontFamily="Roboto"
-                  pointerEvents="none"
-                  x={2}
-                  y={-18}
-                  textAnchor="middle"
-                  dominantBaseline="central"
-                >
-                  {`${coord[2].toFixed(1)}%`}
-                </text>
-    
-                
-      </g>);
-
+    return (
+      <g
+        key={`active-${active}`}
+        transform={`translate(${coord[0]},${coord[1]})`}
+      >
+        <circle
+          fill={
+            coord[2] <= 1
+              ? '#008DC9'
+              : coord[2] >= 6 && coord[2] <= 10
+              ? '#D86422'
+              : coord[2] > 10
+              ? '#D86422'
+              : '#D86422'
+          }
+          fillOpacity={1}
+          r={20}
+          cx={2}
+          cy={-18}
+        ></circle>
+        <text
+          fill="white"
+          fontSize="12px"
+          fontFamily="Roboto"
+          pointerEvents="none"
+          x={2}
+          y={-18}
+          textAnchor="middle"
+          dominantBaseline="central"
+        >
+          {`${coord[2].toFixed(1)}%`}
+        </text>
+      </g>
+    )
   }
   const InfoPoints = ({ data, prop, x, y, color }) => {
-    const coords = data.map(d => [x(d.ts), y(d[prop]),d[prop]])
+    const coords = data.map((d) => [x(d.ts), y(d[prop]), d[prop]])
     //console.log(coords);
-    let points = null;
+    let points = null
 
-    
-    points = coords.map((coord,i)=>{
-        
-        return <g key={`info-${i}`} transform={`translate(${coord[0]},${coord[1]})`}>
-
-                    <circle
-                          key={`${i}`}
-                          fill={'#D86422'}
-                          fillOpacity={.8}
-                          r={3}
-                          cx={0}
-                          cy={0}
-                        ></circle>
-                     
-          </g>
-
-    });
-    if ( activeInfo != null ) {
-      points.push(<ShowActivePoint active={activeInfo} coord={coords[activeInfo]} />);
-    }
-    let hoverPoints = coords.map((coord,i)=>{
-      
-      return <g key={`hover-${i}`} transform={`translate(${coord[0]},${coord[1]})`}>
-
-                    <circle
-                          key={`${i}-h`}
-                          fill={'#D86422'}
-                          fillOpacity={0}
-                          r={6}
-                          cx={0}
-                          cy={0}
-                          cursor='crosshair'
-                          onMouseEnter={() => handleEnter(i)}
-                          onMouseLeave={handleLeave}
-                        ></circle>
-                   
+    points = coords.map((coord, i) => {
+      return (
+        <g key={`info-${i}`} transform={`translate(${coord[0]},${coord[1]})`}>
+          <circle
+            key={`${i}`}
+            fill={'#D86422'}
+            fillOpacity={0.8}
+            r={3}
+            cx={0}
+            cy={0}
+          ></circle>
         </g>
+      )
+    })
+    if (activeInfo != null) {
+      points.push(
+        <ShowActivePoint active={activeInfo} coord={coords[activeInfo]} />
+      )
+    }
+    let hoverPoints = coords.map((coord, i) => {
+      return (
+        <g key={`hover-${i}`} transform={`translate(${coord[0]},${coord[1]})`}>
+          <circle
+            key={`${i}-h`}
+            fill={'#D86422'}
+            fillOpacity={0}
+            r={6}
+            cx={0}
+            cy={0}
+            cursor="crosshair"
+            onMouseEnter={() => handleEnter(i)}
+            onMouseLeave={handleLeave}
+          ></circle>
+        </g>
+      )
+    })
+    const allPoints = points.concat(hoverPoints)
 
-    });
-    const allPoints = points.concat(hoverPoints) 
-
-    return allPoints;
-  
+    return allPoints
   }
-
 
   const [activeInfo, setActiveInfo] = useState()
 
-  const handleEnter = id => {
-    if ( fadeOutTimeout != null ) { clearTimeout(fadeOutTimeout) }
+  const handleEnter = (id) => {
+    if (fadeOutTimeout != null) {
+      clearTimeout(fadeOutTimeout)
+    }
     setActiveInfo(id)
   }
   const handleLeave = () => {
-    fadeOutTimeout = setTimeout( ()=> { setActiveInfo(null); }, 50);
+    fadeOutTimeout = setTimeout(() => {
+      setActiveInfo(null)
+    }, 50)
   }
 
   const lPad = 50
@@ -133,40 +131,46 @@ function ScenarioGraph({
   const svgHeight = height + yPad * 2
   const svgWidth = width
 
-  const x = scaleLinear()
-    .domain(domainX)
-    .range([0, width])
-    .nice()
+  const x = scaleLinear().domain(domainX).range([0, width]).nice()
 
-  const y = scaleLinear()
-    .domain(domainY)
-    .range([height, 0])
-    .nice()
+  const y = scaleLinear().domain(domainY).range([height, 0]).nice()
 
   const ticksX = x.ticks()
   const ticksY = y.ticks()
 
-  const renderResult = (d,main) => {
+  const renderResult = (d, main) => {
     if (simInProgress) return
     const { ts, Ms, Ws, Ls } = d
     const series = zip(ts, Ms, Ws, Ls)
-    const seriesObj = map(series, x => zipObject(['ts', 'Ms', 'Ws', 'Ls'], x))
+    const seriesObj = map(series, (x) => zipObject(['ts', 'Ms', 'Ws', 'Ls'], x))
 
     //console.log(series);
     //console.log(seriesObj);
-    const color = main ? "#D86422" : "#eeee"
+    const color = main ? '#D86422' : '#eeee'
     return (
       <>
-        
-        
-        {metrics.map(m => (
-          <Path key={`${m}-l`} data={seriesObj} prop={m} x={x} y={y} color={color} />
+        {metrics.map((m) => (
+          <Path
+            key={`${m}-l`}
+            data={seriesObj}
+            prop={m}
+            x={x}
+            y={y}
+            color={color}
+          />
         ))}
 
-        {main && metrics.map(m => (
-          <InfoPoints key={`${m}-p`} data={seriesObj} prop={m} x={x} y={y} color={color} />
-        ))}
-        
+        {main &&
+          metrics.map((m) => (
+            <InfoPoints
+              key={`${m}-ps`}
+              data={seriesObj}
+              prop={m}
+              x={x}
+              y={y}
+              color={color}
+            />
+          ))}
       </>
     )
   }
@@ -220,18 +224,20 @@ function ScenarioGraph({
             </g>
           )
         })}
-        {data.results && data.results.map((result, i) => (
-          <g key={`results1-${i}`}>{renderResult(result,false)}</g>
-        ))}
-        {data.stats && [data.stats].map((result, i) => (
-          <g key={`results-${i}`}>{renderResult(result,true)}</g>
-        ))}
+        {data.results &&
+          data.results.map((result, i) => (
+            <g key={`results1-${i}`}>{renderResult(result, false)}</g>
+          ))}
+        {data.stats &&
+          [data.stats].map((result, i) => (
+            <g key={`results-${i}`}>{renderResult(result, true)}</g>
+          ))}
       </g>
     </svg>
   )
 }
 
-export default props => (
+export default (props) => (
   <AutoSizer disableHeight>
     {({ width }) => <ScenarioGraph {...props} width={width} />}
   </AutoSizer>

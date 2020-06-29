@@ -23,7 +23,6 @@ import {
 //import ClickAway from "../../../hooks/clickAway";
 
 const MdaBars = (props) => {
-  console.log(props.history)
   const history = props.history
   const { simParams, dispatchSimParams } = useStore()
   const classes = useStyles()
@@ -54,7 +53,9 @@ const MdaBars = (props) => {
   const [simMDAregimen, setSimMDAregimen] = useState([])
   const [simMDAactive, setSimMDAactive] = useState([])
 
+  const numberOfYears = 22
   React.useEffect(() => {
+    // populate state from Store
     const prediction = simParams.mdaObjDefaultPrediction
     if (prediction && prediction.time) {
       setSimMDAtime([...prediction.time])
@@ -62,7 +63,6 @@ const MdaBars = (props) => {
       setSimMDAadherence([...prediction.adherence])
       setSimMDAbednets([...prediction.bednets])
       setSimMDAregimen([...prediction.regimen])
-      const numberOfYears = 22
       let MDAactive = []
       for (let i = 0; i < numberOfYears; i++) {
         if (simParams.mdaSixMonths === 12 && i % 2 === 1) {
@@ -83,6 +83,17 @@ const MdaBars = (props) => {
       setDefaultMDAs(newMDAs)
     }
   }, [simParams.mdaObjDefaultPrediction])
+  React.useEffect(() => {
+    let MDAactive = []
+    for (let i = 0; i < numberOfYears; i++) {
+      if (simParams.mdaSixMonths === 12 && i % 2 === 1) {
+        MDAactive.push(false)
+      } else {
+        MDAactive.push(true) // alternate here
+      }
+    }
+    setSimMDAactive([...MDAactive])
+  }, [simParams.mdaSixMonths])
   React.useEffect(() => {
     const newMDAs = {
       time: [...simMDAtime],
