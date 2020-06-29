@@ -24,7 +24,6 @@ import {
 
 const MdaBars = (props) => {
   const history = props.history
-  console.log('history', history)
   const { simParams, dispatchSimParams } = useStore()
   const classes = useStyles()
   const removeMDARound = () => {
@@ -38,36 +37,43 @@ const MdaBars = (props) => {
     setDoseSettingsOpen(false)
     setCurMDARound(-1)
   }
-  const [simInProgress, setSimInProgress] = useState(false)
 
-  const [editingMDAs, setEditingMDAs] = useState(false)
   const [curMDARound, setCurMDARound] = useState(-1)
   const [doseSettingsOpen, setDoseSettingsOpen] = useState(false)
 
   const [defaultMDAs, setDefaultMDAs] = useState(null)
   const [tweakedMDAs, setTweakedMDAs] = useState(null)
 
-  const [simMDAtime, setSimMDAtime] = useState([])
-  const [simMDAcoverage, setSimMDAcoverage] = useState([])
-  const [simMDAadherence, setSimMDAadherence] = useState([])
-  const [simMDAbednets, setSimMDAbednets] = useState([])
-  const [simMDAregimen, setSimMDAregimen] = useState([])
-  const [simMDAactive, setSimMDAactive] = useState([])
+  const [simMDAtime, setSimMDAtime] = useState(
+    simParams.mdaObjDefaultPrediction.time
+  )
+  const [simMDAcoverage, setSimMDAcoverage] = useState(
+    simParams.mdaObjDefaultPrediction.coverage
+  )
+  const [simMDAadherence, setSimMDAadherence] = useState(
+    simParams.mdaObjDefaultPrediction.adherence
+  )
+  const [simMDAbednets, setSimMDAbednets] = useState(
+    simParams.mdaObjDefaultPrediction.bednets
+  )
+  const [simMDAregimen, setSimMDAregimen] = useState(
+    simParams.mdaObjDefaultPrediction.regimen
+  )
+  const [simMDAactive, setSimMDAactive] = useState(
+    simParams.mdaObjDefaultPrediction.active
+  )
 
   const numberOfYears = 22
   React.useEffect(() => {
-    console.log(simParams.coverage)
-    console.log(simParams.mdaObjDefaultPrediction)
-    // populate state from Store
+    // console.log(simParams.mdaObjDefaultPrediction)
     const prediction = simParams.mdaObjDefaultPrediction
     if (prediction && prediction.time) {
-      setSimMDAtime([...prediction.time])
+      /*       setSimMDAtime([...prediction.time])
       setSimMDAcoverage([...prediction.coverage])
-      console.log([...prediction.coverage])
       setSimMDAadherence([...prediction.adherence])
       setSimMDAbednets([...prediction.bednets])
-      setSimMDAregimen([...prediction.regimen])
-      let MDAactive = []
+      setSimMDAregimen([...prediction.regimen]) */
+      /*       let MDAactive = []
       for (let i = 0; i < numberOfYears; i++) {
         if (simParams.mdaSixMonths === 12 && i % 2 === 1) {
           MDAactive.push(false)
@@ -75,24 +81,26 @@ const MdaBars = (props) => {
           MDAactive.push(true) // alternate here
         }
       }
-      setSimMDAactive([...MDAactive])
+      setSimMDAactive([...MDAactive]) */
       const newMDAs = {
         time: [...prediction.time],
         coverage: [...prediction.coverage],
         adherence: [...prediction.adherence],
         bednets: [...prediction.bednets],
         regimen: [...prediction.regimen],
-        active: [...MDAactive],
+        active: [...prediction.active],
       }
       setDefaultMDAs(newMDAs)
     }
-    // console.log(simMDAcoverage)
-  }, [simParams.mdaObjDefaultPrediction, simParams.mdaTweakedPrediction])
+  }, [simParams.mdaObjDefaultPrediction, simParams.mdaObjTweakedPrediction])
+
   React.useEffect(() => {
+    // global coverage change
     const prediction = simParams.mdaObjDefaultPrediction
     const newArray = [...prediction.coverage.map((item) => simParams.coverage)]
     setSimMDAcoverage(newArray)
   }, [simParams.coverage])
+
   React.useEffect(() => {
     let MDAactive = []
     for (let i = 0; i < numberOfYears; i++) {
@@ -104,6 +112,10 @@ const MdaBars = (props) => {
     }
     setSimMDAactive([...MDAactive])
   }, [simParams.mdaSixMonths])
+  /*   React.useEffect(() => {
+    console.log('mdaObjTweakedPrediction')
+    console.log(simParams.mdaObjTweakedPrediction)
+  }, [simParams.mdaObjTweakedPrediction]) */
   React.useEffect(() => {
     const newMDAs = {
       time: [...simMDAtime],
@@ -280,7 +292,6 @@ const MdaBars = (props) => {
                 className={classes.modalButton}
                 variant="contained"
                 color="primary"
-                disabled={simInProgress}
                 style={{
                   position: 'absolute',
                   zIndex: 9999,
@@ -366,7 +377,6 @@ const MdaBars = (props) => {
                 <Button
                   className={`${classes.modalButton} light`}
                   variant="contained"
-                  disabled={simInProgress}
                   onClick={() => {
                     removeMDARound()
                   }}
@@ -377,7 +387,6 @@ const MdaBars = (props) => {
                   className={classes.modalButton}
                   variant="contained"
                   color="primary"
-                  disabled={simInProgress}
                   onClick={() => {
                     setCurMDARound(-1)
                     setDoseSettingsOpen(false)
