@@ -23,7 +23,10 @@ import ConfirmationDialog from './components/ConfirmationDialog'
 import HeadWithInputs from './components/HeadWithInputs'
 import SelectCountry from './components/SelectCountry'
 import MdaBars from './components/simulator/MdaBars'
-import { loadMda, loadParams } from './components/simulator/ParamMdaLoader'
+import {
+  loadMdaHistory,
+  loadParams,
+} from './components/simulator/ParamMdaLoader'
 import * as SimulatorEngine from './components/simulator/SimulatorEngine'
 import useStyles from './components/simulator/styles'
 import TextContents from './components/TextContents'
@@ -213,8 +216,11 @@ const Simulator = (props) => {
   /*   useEffect(() => {
       console.log('scenarioInputs', scenarioInputs)
     }, [scenarioInputs]) */
+  const resetCurrentScenario = () => {
+    // todo
+  }
   const runCurrentScenario = async () => {
-    console.log('runnCurrentScenario', !simInProgress, doWeHaveData)
+    console.log('runCurrentScenario', !simInProgress, doWeHaveData)
     //console.log('simParams',simParams)
     if (!simInProgress && doWeHaveData) {
       setSimInProgress(true)
@@ -312,31 +318,31 @@ const Simulator = (props) => {
         //console.log(tabIndex, simParams)
 
         // populate mdaObj // populateMDA();
-        const newMdaObj = await loadMda()
-        SimulatorEngine.simControler.mdaObj = newMdaObj
+        const mdaHistory = await loadMdaHistory()
+        SimulatorEngine.simControler.mdaObj = mdaHistory
 
         const yearsToLeaveOut = 14
-        let newMdaObj2015 = {
-          time: newMdaObj.time.filter(function (value, index, arr) {
+        let mdaHistory2015 = {
+          time: mdaHistory.time.filter(function (value, index, arr) {
             return index > yearsToLeaveOut
           }),
-          coverage: newMdaObj.coverage.filter(function (value, index, arr) {
+          coverage: mdaHistory.coverage.filter(function (value, index, arr) {
             return index > yearsToLeaveOut
           }),
-          adherence: newMdaObj.adherence.filter(function (value, index, arr) {
+          adherence: mdaHistory.adherence.filter(function (value, index, arr) {
             return index > yearsToLeaveOut
           }),
-          bednets: newMdaObj.bednets.filter(function (value, index, arr) {
+          bednets: mdaHistory.bednets.filter(function (value, index, arr) {
             return index > yearsToLeaveOut
           }),
-          regimen: newMdaObj.regimen.filter(function (value, index, arr) {
+          regimen: mdaHistory.regimen.filter(function (value, index, arr) {
             return index > yearsToLeaveOut
           }),
-          active: newMdaObj.active.filter(function (value, index, arr) {
+          active: mdaHistory.active.filter(function (value, index, arr) {
             return index > yearsToLeaveOut
           }),
         }
-        SimulatorEngine.simControler.mdaObj2015 = newMdaObj2015
+        SimulatorEngine.simControler.mdaObj2015 = mdaHistory2015
 
         const newParams = await loadParams()
         SimulatorEngine.simControler.parametersJSON = newParams
@@ -561,7 +567,7 @@ const Simulator = (props) => {
                             disabled={
                               simInProgress || scenarioResults.length === 0
                             } /*  || scenarioInputs.length === 0 */
-                            onClick={runCurrentScenario}
+                            onClick={resetCurrentScenario}
                           >
                             Reset
                           </Button>

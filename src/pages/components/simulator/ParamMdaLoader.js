@@ -8,7 +8,7 @@ export const loadAllIUhistoricData = async (
 ) => {
   const doWeHaveData = simParams.IUData.IUloaded === implementationUnit
   if (!doWeHaveData) {
-    const mdaData = await loadMda()
+    const mdaData = await loadMdaHistory()
     const params = await loadParams()
     // set default values
     const defaults = {
@@ -36,6 +36,7 @@ export const loadAllIUhistoricData = async (
       },
       mdaObjDefaultPrediction: null,
       mdaObjTweakedPrediction: null,
+      needsRerun: false,
     }
     const bednets = last(mdaData.bednets)
     if (bednets) defaults.covN = bednets
@@ -53,7 +54,7 @@ export const loadAllIUhistoricData = async (
   }
 }
 
-export const loadMda = async () => {
+export const loadMdaHistory = async () => {
   const mdaResponse = await fetch('/data/simulator/MLI30034-mda.csv')
   let reader = mdaResponse.body.getReader()
   let decoder = new TextDecoder('utf-8')
