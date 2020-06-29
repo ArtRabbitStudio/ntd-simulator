@@ -1,5 +1,15 @@
 import {
-  Box, Button, CircularProgress, Fab, FormControl, Grid, MenuItem, Select, Tab, Tabs, Typography
+  Box,
+  Button,
+  CircularProgress,
+  Fab,
+  FormControl,
+  Grid,
+  MenuItem,
+  Select,
+  Tab,
+  Tabs,
+  Typography,
 } from "@material-ui/core";
 import { useTheme } from "@material-ui/styles";
 import PropTypes from "prop-types";
@@ -20,10 +30,19 @@ import TextContents from "./components/TextContents";
 
 // settings
 import {
-  SettingName, SettingFrequency, SettingTargetCoverage, SettingDrugRegimen, SettingBasePrevalence, SettingNumberOfRuns, SettingMosquitoType,
-  SettingBedNetCoverage, SettingInsecticideCoverage, SettingPrecision, SettingSystematicAdherence, SettingSpecificScenario
+  SettingName,
+  SettingFrequency,
+  SettingTargetCoverage,
+  SettingDrugRegimen,
+  SettingBasePrevalence,
+  SettingNumberOfRuns,
+  SettingMosquitoType,
+  SettingBedNetCoverage,
+  SettingInsecticideCoverage,
+  SettingPrecision,
+  SettingSystematicAdherence,
+  SettingSpecificScenario,
 } from "./components/simulator/settings";
-
 
 SimulatorEngine.simControler.documentReady();
 
@@ -196,7 +215,7 @@ const Simulator = (props) => {
     //console.log('simParams',simParams)
     if (!simInProgress && doWeHaveData) {
       setSimInProgress(true);
-      console.log(tabIndex, simParams)
+      console.log(tabIndex, simParams);
       // populate mdaObj // populateMDA();
       const newMdaObj = simParams.IUData.mdaObj;
       SimulatorEngine.simControler.mdaObj = newMdaObj;
@@ -333,10 +352,6 @@ const Simulator = (props) => {
     }
   };
 
-
-
-
-
   useEffect(() => {
     if (typeof scenarioResults[tabIndex] === "undefined") {
       console.log("No scenarios? Running a new one...");
@@ -407,9 +422,8 @@ const Simulator = (props) => {
               <TabPanel key={`scenario-result-${i}`} value={tabIndex} index={i}>
                 <div className={classes.simulatorBody}>
                   <div className={classes.simulatorInnerBody}>
-
                     <Grid container spacing={0}>
-                      <Grid item md={6} xs={12} >
+                      <Grid item md={6} xs={12}>
                         <Typography
                           className={classes.chartTitle}
                           variant="h3"
@@ -417,14 +431,20 @@ const Simulator = (props) => {
                         >
                           {`Scenario ${i + 1}`}
                         </Typography>
-                        <SettingPrecision classAdd={classes.precision} inModal={true} label="Precision" />
+                        <SettingPrecision
+                          classAdd={classes.precision}
+                          inModal={true}
+                          label="Precision"
+                        />
                       </Grid>
-                      <Grid item md={6} xs={12} >
+                      <Grid item md={6} xs={12}>
                         <div className={classes.rightControls}>
                           <Fab
                             color="inherit"
                             aria-label="REMOVE SCENARIO"
-                            disabled={simInProgress || scenarioResults.length === 0}
+                            disabled={
+                              simInProgress || scenarioResults.length === 0
+                            }
                             className={classes.removeIcon}
                             onClick={confirmRemoveCurrentScenario}
                           ></Fab>
@@ -435,31 +455,59 @@ const Simulator = (props) => {
                             action={runCurrentScenario}
                           >
                             <TextContents>
-                              <Typography paragraph variant="body1" component="p">
+                              <Typography
+                                paragraph
+                                variant="body1"
+                                component="p"
+                              >
                                 What scenario do you want to simulate?
-                            </Typography>
+                              </Typography>
                             </TextContents>
 
                             <SettingName inModal={true} label="Scenario name" />
-                            <SettingBedNetCoverage inModal={true} label="Bed Net Coverage" />
-                            <SettingFrequency inModal={true} label="Treatment frequency" />
-                            <SettingDrugRegimen inModal={true} label="Drug regimen" />
-                            <SettingTargetCoverage inModal={true} label="Treatment target coverage" />
-                            <SettingSystematicAdherence inModal={true} label="Systematic adherence" value={0} onChange={handleAdherenceChange} />
-                            { /* no longer in use <SettingBasePrevalence inModal={true} label="Base prevalence" /> */}
-                            { /* no longer in use <SettingNumberOfRuns inModal={true} label="Number of runs" /> */}
-                            <SettingInsecticideCoverage inModal={true} label="Vector: Insecticide Coverage" />
-                            <SettingMosquitoType inModal={true} label="Mosquito type" />
+                            <SettingBedNetCoverage
+                              inModal={true}
+                              label="Bed Net Coverage"
+                            />
+                            <SettingFrequency
+                              inModal={true}
+                              label="Treatment frequency"
+                            />
+                            <SettingDrugRegimen
+                              inModal={true}
+                              label="Drug regimen"
+                            />
+                            <SettingTargetCoverage
+                              inModal={true}
+                              label="Treatment target coverage"
+                            />
+                            <SettingSystematicAdherence
+                              inModal={true}
+                              label="Systematic adherence"
+                              value={0}
+                              onChange={handleAdherenceChange}
+                            />
+                            {/* no longer in use <SettingBasePrevalence inModal={true} label="Base prevalence" /> */}
+                            {/* no longer in use <SettingNumberOfRuns inModal={true} label="Number of runs" /> */}
+                            <SettingInsecticideCoverage
+                              inModal={true}
+                              label="Vector: Insecticide Coverage"
+                            />
+                            <SettingMosquitoType
+                              inModal={true}
+                              label="Mosquito type"
+                            />
                             <TextContents>
-                              <Typography paragraph variant="body1" component="p">
+                              <Typography
+                                paragraph
+                                variant="body1"
+                                component="p"
+                              >
                                 Are you interested in a specific scenario?
-                            </Typography>
+                              </Typography>
                             </TextContents>
                             <SettingSpecificScenario inModal={true} />
-
-
                           </ChartSettings>
-
 
                           <FormControl
                             variant="outlined"
@@ -477,13 +525,13 @@ const Simulator = (props) => {
                             >
                               <MenuItem value={"Ms"}>
                                 Prevalence mirofilerima
-                        </MenuItem>
+                              </MenuItem>
                               <MenuItem value={"Ls"}>
                                 Prevalence in the mosquito population
-                        </MenuItem>
+                              </MenuItem>
                               <MenuItem value={"Ws"}>
                                 Prevalence of worms in the lymph nodes
-                        </MenuItem>
+                              </MenuItem>
                             </Select>
                           </FormControl>
                         </div>
@@ -491,17 +539,29 @@ const Simulator = (props) => {
                     </Grid>
 
                     <div className={classes.scenarioGraph}>
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        className={classes.updateScenario}
-                        disabled={
-                          simInProgress || scenarioResults.length === 0
-                        } /*  || scenarioInputs.length === 0 */
-                        onClick={runCurrentScenario}
-                      >
-                        UPDATE SCENARIO
-                      </Button>
+                      <div className={classes.updateScenario}>
+                        <Button
+                          variant="contained"
+                          color="primary"
+                          disabled={
+                            simInProgress || scenarioResults.length === 0
+                          } /*  || scenarioInputs.length === 0 */
+                          onClick={runCurrentScenario}
+                        >
+                          UPDATE SCENARIO
+                        </Button>{" "}
+                        &nbsp;
+                        <Button
+                          variant="contained"
+                          color="secondary"
+                          disabled={
+                            simInProgress || scenarioResults.length === 0
+                          } /*  || scenarioInputs.length === 0 */
+                          onClick={runCurrentScenario}
+                        >
+                          Reset
+                        </Button>
+                      </div>
 
                       <ScenarioGraph
                         data={result}
@@ -517,8 +577,6 @@ const Simulator = (props) => {
                 </div>
               </TabPanel>
             ))}
-
-
 
             <ConfirmationDialog
               title="Do you want to delete this scenario?"
@@ -539,7 +597,6 @@ const Simulator = (props) => {
                 <span>{simulationProgress}%</span>
               </div>
             )}
-
           </Grid>
         </Grid>
       </section>

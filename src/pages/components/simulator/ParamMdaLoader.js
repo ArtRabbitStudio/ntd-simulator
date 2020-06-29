@@ -1,63 +1,65 @@
-import Papa from "papaparse";
+import Papa from 'papaparse'
 import { last, filter } from 'lodash'
 
-
-export const loadAllIUhistoricData = async (simParams,dispatchSimParams,implementationUnit) => {
-    const doWeHaveData = simParams.IUData.IUloaded === implementationUnit;
-    if ( !doWeHaveData ) {
-      const mdaData = await loadMda();
-      const params = await loadParams();
-      // set default values
-      const defaults = {
-        coverage: 90, // $("#MDACoverage").val(),
-        mda: 1, // $("#inputMDARounds").val(), TODO: what do we do here?
-        mdaSixMonths: 6, // TODO; what do we do here
-        endemicity: 10, // $("#endemicity").val(),
-        covN: 0, // $("#bedNetCoverage").val(),
-        v_to_hR: 0, // $("#insecticideCoverage").val(),
-        vecCap: 0, // $("#vectorialCapacity").val(),
-        vecComp: 0, //$("#vectorialCompetence").val(),
-        vecD: 0, //$("#vectorialDeathRate").val(),
-        mdaRegimen: 'xIA', // $("input[name=mdaRegimenRadios]:checked").val(),
-        rho: 0.2, // $("#sysAdherence").val(),
-        rhoBComp: 0, // $("#brMda").val(),
-        rhoCN: 0, // $("#bedNetMda").val(),
-        species: 0, // $("input[name=speciesRadios]:checked").val(),
-        macrofilaricide: 65, // $("#Macrofilaricide").val(),
-        microfilaricide: 65,
-        runs: 50,
-        IUData:
-        {
-          IUloaded: implementationUnit,
-          mdaObj: mdaData,
-          params: params
-        }
-      }
-      const bednets = last(mdaData.bednets)
-      if ( bednets ) defaults.covN =  bednets
-      const mdaRegimen = last(filter(mdaData.regimen,x => x != 'xxx'))
-      if ( mdaRegimen ) defaults.mdaRegimen =  mdaRegimen
-      const adherence = last(mdaData.adherence)
-      if ( adherence ) defaults.rho = adherence
-      const coverage = last(filter(mdaData.coverage,x => x != 0))
-      if ( coverage ) defaults.coverage =  coverage
-      console.log(defaults)
-      dispatchSimParams({
-        type: "everything",
-        payload: defaults,
-      });
+export const loadAllIUhistoricData = async (
+  simParams,
+  dispatchSimParams,
+  implementationUnit
+) => {
+  const doWeHaveData = simParams.IUData.IUloaded === implementationUnit
+  if (!doWeHaveData) {
+    const mdaData = await loadMda()
+    const params = await loadParams()
+    // set default values
+    const defaults = {
+      coverage: 90, // $("#MDACoverage").val(),
+      mda: 1, // $("#inputMDARounds").val(), TODO: what do we do here?
+      mdaSixMonths: 6, // TODO; what do we do here
+      endemicity: 10, // $("#endemicity").val(),
+      covN: 0, // $("#bedNetCoverage").val(),
+      v_to_hR: 0, // $("#insecticideCoverage").val(),
+      vecCap: 0, // $("#vectorialCapacity").val(),
+      vecComp: 0, //$("#vectorialCompetence").val(),
+      vecD: 0, //$("#vectorialDeathRate").val(),
+      mdaRegimen: 'xIA', // $("input[name=mdaRegimenRadios]:checked").val(),
+      rho: 0.2, // $("#sysAdherence").val(),
+      rhoBComp: 0, // $("#brMda").val(),
+      rhoCN: 0, // $("#bedNetMda").val(),
+      species: 0, // $("input[name=speciesRadios]:checked").val(),
+      macrofilaricide: 65, // $("#Macrofilaricide").val(),
+      microfilaricide: 65,
+      runs: 50,
+      IUData: {
+        IUloaded: implementationUnit,
+        mdaObj: mdaData,
+        mdaObjPrediciton: mdaData,
+        params: params,
+      },
     }
+    const bednets = last(mdaData.bednets)
+    if (bednets) defaults.covN = bednets
+    const mdaRegimen = last(filter(mdaData.regimen, (x) => x != 'xxx'))
+    if (mdaRegimen) defaults.mdaRegimen = mdaRegimen
+    const adherence = last(mdaData.adherence)
+    if (adherence) defaults.rho = adherence
+    const coverage = last(filter(mdaData.coverage, (x) => x != 0))
+    if (coverage) defaults.coverage = coverage
+    console.log(defaults)
+    dispatchSimParams({
+      type: 'everything',
+      payload: defaults,
+    })
+  }
 }
 
-
 export const loadMda = async () => {
-  const mdaResponse = await fetch("/data/simulator/MLI30034-mda.csv");
-  let reader = mdaResponse.body.getReader();
-  let decoder = new TextDecoder("utf-8");
-  const mdaResult = await reader.read();
-  const mdaCSV = decoder.decode(mdaResult.value);
+  const mdaResponse = await fetch('/data/simulator/MLI30034-mda.csv')
+  let reader = mdaResponse.body.getReader()
+  let decoder = new TextDecoder('utf-8')
+  const mdaResult = await reader.read()
+  const mdaCSV = decoder.decode(mdaResult.value)
   // console.log(mdaCSV);
-  const mdaJSON = Papa.parse(mdaCSV, { header: true });
+  const mdaJSON = Papa.parse(mdaCSV, { header: true })
   // console.log(mdaJSON.data);
   let newMdaObj = {
     time: mdaJSON.data.map((item) => Number(item.time)),
@@ -66,26 +68,26 @@ export const loadMda = async () => {
     bednets: mdaJSON.data.map((item) => Number(item.bednets)),
     adherence: mdaJSON.data.map((item) => Number(item.adherence)),
     active: mdaJSON.data.map((item) => true),
-  };
+  }
   // returns one more line than it's ought to?
-  newMdaObj.time.length = 20;
-  newMdaObj.coverage.length = 20;
-  newMdaObj.regimen.length = 20;
-  newMdaObj.bednets.length = 20;
-  newMdaObj.adherence.length = 20;
-  newMdaObj.active.length = 20;
+  newMdaObj.time.length = 20
+  newMdaObj.coverage.length = 20
+  newMdaObj.regimen.length = 20
+  newMdaObj.bednets.length = 20
+  newMdaObj.adherence.length = 20
+  newMdaObj.active.length = 20
 
-  return newMdaObj;
-};
+  return newMdaObj
+}
 
 export const loadParams = async () => {
   // populate parametersJSON
-  const IUParamsResponse = await fetch("/data/simulator/MLI30034-params.csv");
-  let reader = IUParamsResponse.body.getReader();
-  let decoder = new TextDecoder("utf-8");
-  const IUParamsResult = await reader.read();
-  const IUParamsCSV = decoder.decode(IUParamsResult.value);
-  const IUParamsJSON = Papa.parse(IUParamsCSV, { header: true });
+  const IUParamsResponse = await fetch('/data/simulator/MLI30034-params.csv')
+  let reader = IUParamsResponse.body.getReader()
+  let decoder = new TextDecoder('utf-8')
+  const IUParamsResult = await reader.read()
+  const IUParamsCSV = decoder.decode(IUParamsResult.value)
+  const IUParamsJSON = Papa.parse(IUParamsCSV, { header: true })
   //   console.log(IUParamsJSON.data);
   let newParams = {
     Population: IUParamsJSON.data.map((item) => Number(item.Population)),
@@ -113,6 +115,6 @@ export const loadParams = async () => {
     aImp_2018: IUParamsJSON.data.map((item) => Number(item.aImp_2018)),
     aImp_2019: IUParamsJSON.data.map((item) => Number(item.aImp_2019)),
     aImp_2020: IUParamsJSON.data.map((item) => Number(item.aImp_2020)),
-  };
-  return newParams;
-};
+  }
+  return newParams
+}

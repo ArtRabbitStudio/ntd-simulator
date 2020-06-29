@@ -12,9 +12,12 @@ import React, { useState } from "react";
 import { useStore } from "../../../store/simulatorStore";
 import CloseButton from "./../CloseButton";
 import useStyles from "./styles";
-//setting 
+//setting
 import {
-  SettingSystematicAdherence, SettingTargetCoverage, SettingBedNetCoverage, SettingDrugRegimen
+  SettingSystematicAdherence,
+  SettingTargetCoverage,
+  SettingBedNetCoverage,
+  SettingDrugRegimen,
 } from "./settings";
 
 //import ClickAway from "../../../hooks/clickAway";
@@ -49,7 +52,7 @@ const MdaBars = (props) => {
   const [simMDAactive, setSimMDAactive] = useState([]);
 
   const populatePredictionBars = () => {
-    const numberOfYears = 11;
+    const numberOfYears = 11 * 2;
     let MDAtime = [];
     for (let i = 0; i < numberOfYears; i++) {
       MDAtime.push(6 + 6 * i);
@@ -92,6 +95,11 @@ const MdaBars = (props) => {
   React.useEffect(() => {
     populatePredictionBars();
   }, []);
+  React.useEffect(() => {
+    //    dispatchSimParams({ type: "dddd", mdaObjPred });
+    /*     SimulatorEngine.simControler.mdaObj.active = [...MDAactive];
+    SimulatorEngine.simControler.mdaObj2015.active = [...MDAactive]; */
+  }, []);
 
   return (
     <>
@@ -100,32 +108,54 @@ const MdaBars = (props) => {
         {history &&
           history.time &&
           history.time.map((e, i) => (
-            <div
-              key={`bar-hist-${i}`}
-              className={`bar history`}
-              title={
-                history.time[i] +
-                ", " +
-                history.coverage[i] +
-                ", " +
-                history.adherence[i] +
-                ", " +
-                history.bednets[i] +
-                ", " +
-                history.regimen[i] +
-                " "
-              }
-            >
-              <span
-                style={{
-                  height: simMDAcoverage[i],
-                }}
-              ></span>
-            </div>
+            <React.Fragment key={`bar-hist-${i}`}>
+              <div
+                className={`bar history`}
+                title={
+                  history.time[i] +
+                  ", " +
+                  history.coverage[i] +
+                  ", " +
+                  history.adherence[i] +
+                  ", " +
+                  history.bednets[i] +
+                  ", " +
+                  history.regimen[i] +
+                  " "
+                }
+              >
+                <span
+                  style={{
+                    height: simMDAcoverage[i],
+                  }}
+                ></span>
+              </div>
+              <div
+                className={`bar history`}
+                title={
+                  history.time[i] +
+                  ", " +
+                  history.coverage[i] +
+                  ", " +
+                  history.adherence[i] +
+                  ", " +
+                  history.bednets[i] +
+                  ", " +
+                  history.regimen[i] +
+                  " "
+                }
+              >
+                <span
+                  style={{
+                    height: simMDAcoverage[i],
+                  }}
+                ></span>
+              </div>
+            </React.Fragment>
           ))}
-        <div key="splitter" style={{ color: "red" }}>
+        {/*         <div key="splitter" style={{ color: "red" }}>
           |
-        </div>
+        </div> */}
         {/* prediction */}
         {simMDAtime.map((e, i) => (
           <div
@@ -196,7 +226,7 @@ const MdaBars = (props) => {
       </div>
 
       {doseSettingsOpen && (
-        <ClickAwayListener onClickAway={closeRoundModal} >
+        <ClickAwayListener onClickAway={closeRoundModal}>
           <Paper elevation={3} className={classes.roundModal}>
             <CloseButton action={closeRoundModal} />
             {simMDAactive[curMDARound] === false && (
@@ -237,7 +267,6 @@ const MdaBars = (props) => {
                 {curMDARound % 2 ? " - round 2" : ""}
               </Typography>
 
-
               <SettingTargetCoverage
                 inModal={true}
                 label="Treatment target coverage"
@@ -256,7 +285,7 @@ const MdaBars = (props) => {
                 classAdd="spaced"
                 value={50} /* todo */
                 onChange={(event, newValue) => {
-                  console.log('todo', newValue);
+                  console.log("todo", newValue);
                 }}
               />
 
@@ -264,9 +293,9 @@ const MdaBars = (props) => {
                 inModal={true}
                 label="Drug regimen"
                 classAdd="spaced"
-                value={'xIA'} /* todo */
+                value={"xIA"} /* todo */
                 onChange={(event, newValue) => {
-                  console.log('todo', newValue);
+                  console.log("todo", newValue);
                 }}
               />
 

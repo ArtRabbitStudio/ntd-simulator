@@ -1,7 +1,7 @@
 // store.js
-import React, { createContext, useContext, useReducer, useState } from "react";
+import React, { createContext, useContext, useReducer, useState } from 'react'
 
-const StoreContext = createContext();
+const StoreContext = createContext()
 const initialState = {
   coverage: 90, // $("#MDACoverage").val(),
   mda: 2, // $("#inputMDARounds").val(),
@@ -23,147 +23,155 @@ const initialState = {
   IUData: {
     IUloaded: null, //which IU is loaded if any
     mdaObj: null, // historic mdaObj for IU
+    mdaObjPrediciton: null, // future mdaObjPrediction for IU
     params: null, // parms object for IU
-  }
-};
+  },
+}
 
 const reducer = (simParams, action) => {
   switch (action.type) {
-    case "everything":
+    case 'everything':
       return {
         ...simParams,
         ...action.payload,
-      };
-      case "everythingbuthistoric":
-        let newIUDataall = simParams.IUData;
-        return {
-          ...simParams,
-          ...action.payload,
-          IUData: newIUDataall
-        };
-    case "IUData":
+      }
+    case 'everythingbuthistoric':
+      let newIUDataall = simParams.IUData
+      return {
+        ...simParams,
+        ...action.payload,
+        IUData: newIUDataall,
+      }
+    case 'IUData':
       return {
         ...simParams,
         IUData: action.payload,
-      };
-    case "mdaObj":
-      let newIUDatamda = simParams.IUData;
-      newIUDatamda.mdaObj = action.payload;
+      }
+    case 'IUloaded':
+      let newIUDataiuloaded = simParams.IUData
+      newIUDataiuloaded.IUloaded = action.payload
       return {
         ...simParams,
-        IUData: newIUDatamda
-      };
-    case "params":
-        let newIUDataparams = simParams.IUData;
-        newIUDataparams.params = action.payload;
-        return {
-          ...simParams,
-          IUData: newIUDataparams
-        };
-    case "IUloaded":
-        let newIUDataiuloaded = simParams.IUData;
-        newIUDataiuloaded.IUloaded = action.payload;
-        return {
-          ...simParams,
-          IUData: newIUDataiuloaded
-        };
-    case "coverage":
+        IUData: newIUDataiuloaded,
+      }
+    case 'mdaObj':
+      let newIUDatamda = simParams.IUData
+      newIUDatamda.mdaObj = action.payload
+      return {
+        ...simParams,
+        IUData: newIUDatamda,
+      }
+    case 'mdaObjPrediciton':
+      let newIUDatamdaPred = simParams.IUData
+      newIUDatamdaPred.mdaObj = action.payload
+      return {
+        ...simParams,
+        IUData: newIUDatamdaPred,
+      }
+    case 'params':
+      let newIUDataparams = simParams.IUData
+      newIUDataparams.params = action.payload
+      return {
+        ...simParams,
+        IUData: newIUDataparams,
+      }
+    case 'coverage':
       return {
         ...simParams,
         coverage: action.payload,
-      };
-    case "mda":
+      }
+    case 'mda':
       return {
         ...simParams,
         mda: action.payload,
-      };
-    case "mdaSixMonths":
+      }
+    case 'mdaSixMonths':
       return {
         ...simParams,
         mdaSixMonths: action.payload,
-      };
-    case "endemicity":
+      }
+    case 'endemicity':
       return {
         ...simParams,
         endemicity: action.payload,
-      };
-    case "covN":
+      }
+    case 'covN':
       return {
         ...simParams,
         covN: action.payload,
-      };
-    case "v_to_hR":
+      }
+    case 'v_to_hR':
       return {
         ...simParams,
         v_to_hR: action.payload,
-      };
-    case "vecCap":
+      }
+    case 'vecCap':
       return {
         ...simParams,
         vecCap: action.payload,
-      };
-    case "vecComp":
+      }
+    case 'vecComp':
       return {
         ...simParams,
         vecComp: action.payload,
-      };
-    case "vecD":
+      }
+    case 'vecD':
       return {
         ...simParams,
         vecD: action.payload,
-      };
-    case "mdaRegimen":
+      }
+    case 'mdaRegimen':
       return {
         ...simParams,
         mdaRegimen: action.payload,
-      };
-    case "rho":
+      }
+    case 'rho':
       return {
         ...simParams,
         rho: action.payload,
-      };
-    case "rhoBComp":
+      }
+    case 'rhoBComp':
       return {
         ...simParams,
         rhoBComp: action.payload,
-      };
-    case "rhoCN":
+      }
+    case 'rhoCN':
       return {
         ...simParams,
         rhoCN: action.payload,
-      };
-    case "species":
+      }
+    case 'species':
       return {
         ...simParams,
         species: action.payload,
-      };
-    case "macrofilaricide":
+      }
+    case 'macrofilaricide':
       return {
         ...simParams,
         macrofilaricide: action.payload,
-      };
-    case "microfilaricide":
+      }
+    case 'microfilaricide':
       return {
         ...simParams,
         microfilaricide: action.payload,
-      };
-    case "runs":
+      }
+    case 'runs':
       return {
         ...simParams,
         runs: action.payload,
-      };
+      }
     default:
-      throw new Error(`Unhandled action type: ${action.type}`);
+      throw new Error(`Unhandled action type: ${action.type}`)
   }
-};
+}
 
 export const StoreProvider = ({ children }) => {
-  const [simParams, dispatchSimParams] = useReducer(reducer, initialState);
+  const [simParams, dispatchSimParams] = useReducer(reducer, initialState)
   return (
     <StoreContext.Provider value={{ simParams, dispatchSimParams }}>
       {children}
     </StoreContext.Provider>
-  );
-};
+  )
+}
 
-export const useStore = () => useContext(StoreContext);
+export const useStore = () => useContext(StoreContext)
