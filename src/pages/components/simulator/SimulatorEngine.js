@@ -20,6 +20,7 @@ export var SessionData = {
       label: scenLabel,
       mda: simControler.mdaObj,
       mda2015: simControler.mdaObj2015,
+      mdaFuture: simControler.mdaObjFuture,
     }
     var scenInd = ScenarioIndex.getIndex()
 

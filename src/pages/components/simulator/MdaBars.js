@@ -23,7 +23,7 @@ import {
 //import ClickAway from "../../../hooks/clickAway";
 
 const MdaBars = (props) => {
-  // console.log(props.history)
+  console.log(props.history)
   const history = props.history
   const { simParams, dispatchSimParams } = useStore()
   const classes = useStyles()
@@ -58,7 +58,7 @@ const MdaBars = (props) => {
     const numberOfYears = 11 * 2
     let MDAtime = []
     for (let i = 0; i < numberOfYears; i++) {
-      MDAtime.push(6 + 6 * i)
+      MDAtime.push(6 + 6 * i + 228)
     }
     setSimMDAtime([...MDAtime])
     let MDAcoverage = []
@@ -106,6 +106,10 @@ const MdaBars = (props) => {
       type: 'mdaObjDefaultPrediction',
       payload: newMDAs,
     })
+    dispatchSimParams({
+      type: 'mdaObjTweakedPrediction',
+      payload: newMDAs,
+    })
   }
   React.useEffect(() => {
     populatePredictionBars()
@@ -133,8 +137,8 @@ const MdaBars = (props) => {
       const needsRerun =
         JSON.stringify(defaultMDAs) !== JSON.stringify(tweakedMDAs)
       console.log('needsRerun', needsRerun)
-      console.log(defaultMDAs)
-      console.log(tweakedMDAs)
+      // console.log(defaultMDAs)
+      // console.log(tweakedMDAs)
       if (needsRerun) {
         dispatchSimParams({
           type: 'needsRerun',
@@ -151,7 +155,6 @@ const MdaBars = (props) => {
         })
       }
     }
-    //    dispatchSimParams({ type: "dddd", mdaObjPred });
   }, [defaultMDAs, tweakedMDAs])
 
   return (

@@ -175,6 +175,10 @@ const Simulator = (props) => {
           'JSON.parse(resultObject).mda2015.time,',
           JSON.parse(resultObject).mda2015.time
         )
+        /*         console.log(
+          'JSON.parse(resultObject).mdaFuture.time,',
+          JSON.parse(resultObject).mdaFuture.time
+        ) */
         setScenarioMDAs([...scenarioMDAs, JSON.parse(resultObject).mda2015])
       } else {
         let correctTabIndex = newScenario === true ? tabIndex + 1 : tabIndex
@@ -321,10 +325,23 @@ const Simulator = (props) => {
 
         // populate mdaObj // populateMDA();
         const mdaHistory = await loadMdaHistory()
-        const mdaPrediction = {}
-        const fullMDA = {
-          time: [...mdaHistory.time, ...mdaPrediction.time],
-        }
+        const mdaPrediction = simParams.mdaObjTweakedPrediction // mdaObjTweakedPrediction // mdaObjDefaultPrediction
+        console.log('mdaPrediction')
+        console.log(mdaPrediction)
+        const fullMDA =
+          mdaPrediction && mdaPrediction.time
+            ? {
+                time: [...mdaHistory.time, ...mdaPrediction.time],
+                coverage: [...mdaHistory.coverage, ...mdaPrediction.coverage],
+                adherence: [
+                  ...mdaHistory.adherence,
+                  ...mdaPrediction.adherence,
+                ],
+                bednets: [...mdaHistory.bednets, ...mdaPrediction.bednets],
+                regimen: [...mdaHistory.regimen, ...mdaPrediction.regimen],
+                active: [...mdaHistory.active, ...mdaPrediction.active],
+              }
+            : mdaHistory
         SimulatorEngine.simControler.mdaObj = fullMDA
 
         const yearsToLeaveOut = 14
