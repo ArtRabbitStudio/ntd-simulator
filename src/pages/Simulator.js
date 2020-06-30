@@ -27,6 +27,7 @@ import {
   loadParams,
   loadMdaHistory,
   generateMdaFuture,
+  loadAllIUhistoricData,
 } from './components/simulator/ParamMdaLoader'
 import * as SimulatorEngine from './components/simulator/SimulatorEngine'
 import useStyles from './components/simulator/styles'
@@ -87,7 +88,6 @@ const Simulator = (props) => {
   const { simParams, dispatchSimParams } = useStore()
   const { country, implementationUnit } = useUIState()
 
-  const doWeHaveData = simParams.IUData.IUloaded != null // simParams.IUData.IUloaded === implementationUnit; // TODO: THIS IS CORRECT ONCE WE HAVE ALL THE DATA
   /* MDA object */
   const [graphMetric, setGraphMetric] = useState('Ms')
 
@@ -237,9 +237,12 @@ const Simulator = (props) => {
     // but this should as well reset globa params, right?
   }
   const runCurrentScenario = async () => {
+    console.log(simParams)
+    const doWeHaveData = simParams.IUData.IUloaded != null // simParams.IUData.IUloaded === implementationUnit; // TODO: THIS IS CORRECT ONCE WE HAVE ALL THE DATA
     console.log('runCurrentScenario', !simInProgress, doWeHaveData)
     //console.log('simParams',simParams)
-    if (!simInProgress && doWeHaveData) {
+    if (!simInProgress) {
+      // if (doWeHaveData) {
       setSimInProgress(true)
       console.log(tabIndex, simParams)
       // populate mdaObj // populateMDA();
@@ -278,6 +281,7 @@ const Simulator = (props) => {
         tabIndex,
         simulatorCallback
       )
+      // }
     }
   }
 
@@ -423,13 +427,13 @@ const Simulator = (props) => {
       setScenarioInputs(paramsInputs)
       if (typeof paramsInputs[tabIndex] != 'undefined') {
         // set input params if you have them
-        dispatchSimParams({
+        /* dispatchSimParams({
           type: 'everythingbuthistoric',
           payload: paramsInputs[tabIndex],
-        })
+        }) */
         setScenarioMDAs(MDAs)
       }
-      const mdaPrediction = generateMdaFuture(simParams)
+      /*       const mdaPrediction = generateMdaFuture(simParams)
       dispatchSimParams({
         type: 'mdaObjDefaultPrediction',
         payload: mdaPrediction,
@@ -438,8 +442,25 @@ const Simulator = (props) => {
         type: 'mdaObjTweakedPrediction',
         payload: mdaPrediction,
       })
+    } */
+      console.log(simParams)
+      console.log('load simParams from LS')
+      loadAllIUhistoricData(simParams, dispatchSimParams, implementationUnit)
+      /*       const mdaPrediction = generateMdaFuture(simParams)
+      dispatchSimParams({
+        type: 'mdaObjDefaultPrediction',
+        payload: mdaPrediction,
+      })
+      dispatchSimParams({
+        type: 'mdaObjTweakedPrediction',
+        payload: mdaPrediction,
+      }) */
     }
   }, [])
+  useEffect(() => {
+    console.log(simParams.mdaObjDefaultPrediction)
+  }, [simParams.mdaObjDefaultPrediction, simParams.runs])
+
   return (
     <Layout>
       <HeadWithInputs title="prevalence simulator" />
@@ -635,9 +656,10 @@ const Simulator = (props) => {
                         simInProgress={simInProgress}
                       />
                     </div>
-                    {scenarioMDAs[tabIndex] && (
-                      <MdaBars history={scenarioMDAs[tabIndex]} />
-                    )}
+                    {scenarioMDAs[tabIndex] &&
+                      simParams.mdaObjDefaultPrediction && (
+                        <MdaBars history={scenarioMDAs[tabIndex]} />
+                      )}
                   </div>
                 </div>
               </TabPanel>

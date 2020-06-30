@@ -24,6 +24,7 @@ import {
 
 const MdaBars = (props) => {
   const history = props.history
+  console.log(history)
   const { simParams, dispatchSimParams } = useStore()
   const classes = useStyles()
   const removeMDARound = () => {
