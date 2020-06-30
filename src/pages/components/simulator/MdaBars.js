@@ -137,19 +137,14 @@ const MdaBars = (props) => {
     setSimMDAcoverage(newArray)
   }, [simParams.coverage])
   React.useEffect(() => {
-    if (simParams.adherence) {
-      console.log(
-        'MDA update - simParams.adherence changed',
-        simParams.adherence
-      )
+    if (simParams.rho) {
+      console.log('MDA update - simParams.rho changed', simParams.rho)
       // global adherence change
       const prediction = simParams.mdaObjDefaultPrediction
-      const newArray = [
-        ...prediction.adherence.map((item) => simParams.adherence),
-      ]
+      const newArray = [...prediction.adherence.map((item) => simParams.rho)]
       setSimMDAadherence(newArray)
     }
-  }, [simParams.adherence])
+  }, [simParams.rho])
   React.useEffect(() => {
     // global bednets change
     if (simParams.bednets) {

@@ -17,7 +17,7 @@ const SettingSystematicAdherence = ({
 
   const handleChange = (event, newValue) => {
     // this used to be a special occastion. If nothing changes we can use the handleSlerChanges handler instead.
-    dispatchSimParams({ type: 'adherence', payload: newValue })
+    dispatchSimParams({ type: 'rho', payload: newValue })
   }
   return (
     <FormControl fullWidth className={`${classes.formControl} ${classAdd}`}>
@@ -38,7 +38,7 @@ const SettingSystematicAdherence = ({
         </FormLabel>
       </Tooltip>
       <Slider
-        value={value ? value : simParams.adherence}
+        value={value ? value : simParams.rho}
         min={0}
         step={0.1}
         max={1}
