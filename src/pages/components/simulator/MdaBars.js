@@ -64,23 +64,9 @@ const MdaBars = (props) => {
 
   const numberOfYears = 22
   React.useEffect(() => {
-    // console.log(simParams.mdaObjDefaultPrediction)
+    console.log('simParams.mdaObjDefaultPrediction has changed')
     const prediction = simParams.mdaObjDefaultPrediction
     if (prediction && prediction.time) {
-      /*       setSimMDAtime([...prediction.time])
-      setSimMDAcoverage([...prediction.coverage])
-      setSimMDAadherence([...prediction.adherence])
-      setSimMDAbednets([...prediction.bednets])
-      setSimMDAregimen([...prediction.regimen]) */
-      /*       let MDAactive = []
-      for (let i = 0; i < numberOfYears; i++) {
-        if (simParams.mdaSixMonths === 12 && i % 2 === 1) {
-          MDAactive.push(false)
-        } else {
-          MDAactive.push(true) // alternate here
-        }
-      }
-      setSimMDAactive([...MDAactive]) */
       const newMDAs = {
         time: [...prediction.time],
         coverage: [...prediction.coverage],
@@ -91,31 +77,41 @@ const MdaBars = (props) => {
       }
       setDefaultMDAs(newMDAs)
     }
-  }, [simParams.mdaObjDefaultPrediction, simParams.mdaObjTweakedPrediction])
-
-  React.useEffect(() => {
-    // global coverage change
-    const prediction = simParams.mdaObjDefaultPrediction
-    const newArray = [...prediction.coverage.map((item) => simParams.coverage)]
-    setSimMDAcoverage(newArray)
-  }, [simParams.coverage])
-
-  React.useEffect(() => {
-    let MDAactive = []
-    for (let i = 0; i < numberOfYears; i++) {
-      if (simParams.mdaSixMonths === 12 && i % 2 === 1) {
-        MDAactive.push(false)
-      } else {
-        MDAactive.push(true) // alternate here
-      }
-    }
-    setSimMDAactive([...MDAactive])
-  }, [simParams.mdaSixMonths])
+  }, [simParams.mdaObjDefaultPrediction])
   /*   React.useEffect(() => {
     console.log('mdaObjTweakedPrediction')
     console.log(simParams.mdaObjTweakedPrediction)
   }, [simParams.mdaObjTweakedPrediction]) */
+
   React.useEffect(() => {
+    // dispatch change if default and tweaked differ
+    if (tweakedMDAs && tweakedMDAs.time && tweakedMDAs.time.length > 0) {
+      const needsRerun =
+        JSON.stringify(defaultMDAs) !== JSON.stringify(tweakedMDAs)
+      console.log('needsRerun', needsRerun)
+      console.log(defaultMDAs)
+      console.log(tweakedMDAs)
+      if (needsRerun) {
+        dispatchSimParams({
+          type: 'needsRerun',
+          payload: true,
+        })
+        console.log('dispatching tweaked prediction')
+        dispatchSimParams({
+          type: 'mdaObjTweakedPrediction',
+          payload: tweakedMDAs,
+        })
+      } else {
+        dispatchSimParams({
+          type: 'needsRerun',
+          payload: false,
+        })
+      }
+    }
+  }, [defaultMDAs, tweakedMDAs])
+
+  React.useEffect(() => {
+    // tweak the tweaked
     const newMDAs = {
       time: [...simMDAtime],
       coverage: [...simMDAcoverage],
@@ -133,30 +129,30 @@ const MdaBars = (props) => {
     simMDAregimen,
     simMDAactive,
   ])
+
   React.useEffect(() => {
-    if (tweakedMDAs && tweakedMDAs.time && tweakedMDAs.time.length > 0) {
-      const needsRerun =
-        JSON.stringify(defaultMDAs) !== JSON.stringify(tweakedMDAs)
-      console.log('needsRerun', needsRerun)
-      console.log(defaultMDAs)
-      console.log(tweakedMDAs)
-      if (needsRerun) {
-        dispatchSimParams({
-          type: 'needsRerun',
-          payload: true,
-        })
-        dispatchSimParams({
-          type: 'mdaObjTweakedPrediction',
-          payload: tweakedMDAs,
-        })
-      } else {
-        dispatchSimParams({
-          type: 'needsRerun',
-          payload: false,
-        })
+    // global coverage change
+    const prediction = simParams.mdaObjDefaultPrediction
+    const newArray = [...prediction.coverage.map((item) => simParams.coverage)]
+    setSimMDAcoverage(newArray)
+  }, [simParams.coverage])
+
+  React.useEffect(() => {
+    // global mdaSixMonths change
+    console.log(simParams.mdaSixMonths)
+    if (false) {
+      // this should only apply when mdaSixMonths has been deliberetaly changed
+      let MDAactive = []
+      for (let i = 0; i < numberOfYears; i++) {
+        if (simParams.mdaSixMonths === 12 && i % 2 === 1) {
+          MDAactive.push(false)
+        } else {
+          MDAactive.push(true) // alternate here
+        }
       }
+      setSimMDAactive([...MDAactive])
     }
-  }, [defaultMDAs, tweakedMDAs])
+  }, [simParams.mdaSixMonths])
 
   return (
     <>

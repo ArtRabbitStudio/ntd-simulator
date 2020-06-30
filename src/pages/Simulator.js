@@ -353,6 +353,7 @@ const Simulator = (props) => {
         const mdaHistory = await loadMdaHistory()
         const mdaPrediction = generateMdaFuture(simParams)
         dispatchSimParams({
+          // is this actually needed? Or is this setup on
           type: 'mdaObjDefaultPrediction',
           payload: mdaPrediction,
         })
@@ -430,9 +431,31 @@ const Simulator = (props) => {
       : null
     // console.log('scenariosArray', scenariosArray)
     if (scenariosArray) {
+      console.log('load simParams from LS')
       let paramsInputs = scenariosArray.map((item) => item.params.inputs)
+      let mdaFuture = scenariosArray.map((item) => item.mdaFuture)
       let MDAs = scenariosArray.map((item) => item.mda2015)
       setScenarioInputs(paramsInputs)
+      // make new default prediction from ex tweaked one.
+      console.log(mdaFuture[tabIndex].mdaFuture)
+      paramsInputs[tabIndex].mdaObjDefaultPrediction = {
+        time: [...mdaFuture[tabIndex].time],
+        coverage: [...mdaFuture[tabIndex].coverage],
+        adherence: [...mdaFuture[tabIndex].adherence],
+        bednets: [...mdaFuture[tabIndex].bednets],
+        regimen: [...mdaFuture[tabIndex].regimen],
+        active: [...mdaFuture[tabIndex].active],
+      }
+      paramsInputs[tabIndex].mdaObjTweakedPrediction = {
+        time: [...mdaFuture[tabIndex].time],
+        coverage: [...mdaFuture[tabIndex].coverage],
+        adherence: [...mdaFuture[tabIndex].adherence],
+        bednets: [...mdaFuture[tabIndex].bednets],
+        regimen: [...mdaFuture[tabIndex].regimen],
+        active: [...mdaFuture[tabIndex].active],
+      }
+      console.log(paramsInputs[tabIndex])
+
       if (typeof paramsInputs[tabIndex] != 'undefined') {
         // set input params if you have them
         /* dispatchSimParams({
@@ -440,14 +463,23 @@ const Simulator = (props) => {
           payload: paramsInputs[tabIndex],
         }) */
         setScenarioMDAs(MDAs)
+        console.log(paramsInputs[tabIndex])
+        dispatchSimParams({
+          type: 'everything',
+          payload: paramsInputs[tabIndex],
+        })
       }
-      console.log('load simParams from LS')
-      loadAllIUhistoricData(simParams, dispatchSimParams, implementationUnit)
+      // loadAllIUhistoricData(simParams, dispatchSimParams, implementationUnit)
     }
   }, [])
   useEffect(() => {
     console.log(simParams.mdaObjDefaultPrediction)
   }, [simParams.mdaObjDefaultPrediction])
+
+  useEffect(() => {
+    console.log('mdaObjTweakedPrediction')
+    console.log(simParams.mdaObjTweakedPrediction)
+  }, [simParams.mdaObjTweakedPrediction])
 
   return (
     <Layout>
