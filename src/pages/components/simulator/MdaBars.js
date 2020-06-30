@@ -64,7 +64,7 @@ const MdaBars = (props) => {
 
   const numberOfYears = 22
   React.useEffect(() => {
-    console.log('simParams.mdaObjDefaultPrediction has changed')
+    //    console.log('simParams.mdaObjDefaultPrediction has changed')
     const prediction = simParams.mdaObjDefaultPrediction
     if (prediction && prediction.time) {
       const newMDAs = {
@@ -88,9 +88,9 @@ const MdaBars = (props) => {
     if (tweakedMDAs && tweakedMDAs.time && tweakedMDAs.time.length > 0) {
       const needsRerun =
         JSON.stringify(defaultMDAs) !== JSON.stringify(tweakedMDAs)
-      /*       console.log('needsRerun', needsRerun)
+      console.log('needsRerun', needsRerun)
       console.log(defaultMDAs)
-      console.log(tweakedMDAs) */
+      console.log(tweakedMDAs)
       if (needsRerun) {
         dispatchSimParams({
           type: 'needsRerun',
@@ -166,7 +166,7 @@ const MdaBars = (props) => {
 
   React.useEffect(() => {
     // global mdaSixMonths change
-    console.log(simParams.mdaSixMonths)
+    //    console.log(simParams.mdaSixMonths)
     if (false) {
       // this should only apply when mdaSixMonths has been deliberetaly changed
       let MDAactive = []

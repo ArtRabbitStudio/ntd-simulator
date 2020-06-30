@@ -234,7 +234,7 @@ const Simulator = (props) => {
 
       const mdaHistory = await loadMdaHistory()
       console.log('prediction pulled from simParams.mdaObjTweakedPrediction')
-      console.log(simParams.mdaObjTweakedPrediction)
+      //      console.log(simParams.mdaObjTweakedPrediction)
       const mdaPrediction = simParams.mdaObjTweakedPrediction //generateMdaFuture(simParams)
 
       // SimulatorEngine.simControler.mdaObj = newMdaObj
@@ -432,7 +432,7 @@ const Simulator = (props) => {
       let MDAs = scenariosArray.map((item) => item.mda2015)
       setScenarioInputs(paramsInputs)
       // make new default prediction from ex tweaked one.
-      console.log(mdaFuture[tabIndex].mdaFuture)
+      // console.log(mdaFuture[tabIndex].mdaFuture)
       paramsInputs[tabIndex].mdaObjDefaultPrediction = {
         time: [...mdaFuture[tabIndex].time],
         coverage: [...mdaFuture[tabIndex].coverage],
@@ -449,16 +449,10 @@ const Simulator = (props) => {
         regimen: [...mdaFuture[tabIndex].regimen],
         active: [...mdaFuture[tabIndex].active],
       }
-      console.log(paramsInputs[tabIndex])
-
+      //      console.log(paramsInputs[tabIndex])
       if (typeof paramsInputs[tabIndex] != 'undefined') {
-        // set input params if you have them
-        /* dispatchSimParams({
-          type: 'everythingbuthistoric',
-          payload: paramsInputs[tabIndex],
-        }) */
         setScenarioMDAs(MDAs)
-        console.log(paramsInputs[tabIndex])
+        //        console.log(paramsInputs[tabIndex])
         dispatchSimParams({
           type: 'everything',
           payload: paramsInputs[tabIndex],
@@ -467,9 +461,9 @@ const Simulator = (props) => {
       // loadAllIUhistoricData(simParams, dispatchSimParams, implementationUnit)
     }
   }, [])
-  useEffect(() => {
+  /*   useEffect(() => {
     console.log(simParams.mdaObjDefaultPrediction)
-  }, [simParams.mdaObjDefaultPrediction])
+  }, [simParams.mdaObjDefaultPrediction]) */
 
   /*   useEffect(() => {
     console.log('mdaObjTweakedPrediction')
