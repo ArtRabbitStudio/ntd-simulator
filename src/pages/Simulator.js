@@ -481,7 +481,6 @@ const Simulator = (props) => {
       <HeadWithInputs title="prevalence simulator" />
       {/*       {props.location.search}
       {window.location.search} */}
-      {simParams.coverage}
 
       <SelectCountry selectIU={true} showConfirmation={true} />
 

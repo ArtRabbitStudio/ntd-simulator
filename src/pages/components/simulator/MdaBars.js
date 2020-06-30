@@ -374,11 +374,10 @@ const MdaBars = (props) => {
                 inModal={true}
                 label="Drug regimen"
                 classAdd="spaced"
-                // value={'xIA'} /* todo */
                 value={simMDAregimen[curMDARound]}
-                onChange={(event, newValue) => {
+                onChange={(event) => {
                   let newArray = [...simMDAregimen]
-                  newArray[curMDARound] = newValue
+                  newArray[curMDARound] = event.target.value
                   setSimMDAregimen([...newArray])
                 }}
               />
