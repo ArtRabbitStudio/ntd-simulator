@@ -44,9 +44,8 @@ const MdaBars = (props) => {
   const [defaultMDAs, setDefaultMDAs] = useState(null)
   const [tweakedMDAs, setTweakedMDAs] = useState(null)
 
-  const [simMDAtime, setSimMDAtime] = useState(
-    simParams.mdaObjDefaultPrediction.time
-  )
+  const simMDAtime = simParams.mdaObjDefaultPrediction.time
+
   const [simMDAcoverage, setSimMDAcoverage] = useState(
     simParams.mdaObjDefaultPrediction.coverage
   )

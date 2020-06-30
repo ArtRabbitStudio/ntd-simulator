@@ -236,18 +236,11 @@ const Simulator = (props) => {
       // if (doWeHaveData) {
       setSimInProgress(true)
       console.log(tabIndex, simParams)
-      const newMdaObj = simParams.IUData.mdaObj
 
       const mdaHistory = await loadMdaHistory()
-      const mdaPrediction = generateMdaFuture(simParams)
-      dispatchSimParams({
-        type: 'mdaObjDefaultPrediction',
-        payload: mdaPrediction,
-      })
-      dispatchSimParams({
-        type: 'mdaObjTweakedPrediction',
-        payload: mdaPrediction,
-      })
+      console.log('prediction pulled from simParams.mdaObjTweakedPrediction')
+      console.log(simParams.mdaObjTweakedPrediction)
+      const mdaPrediction = simParams.mdaObjTweakedPrediction //generateMdaFuture(simParams)
 
       // SimulatorEngine.simControler.mdaObj = newMdaObj
       const fullMDA =
@@ -450,14 +443,13 @@ const Simulator = (props) => {
         }) */
         setScenarioMDAs(MDAs)
       }
-      console.log(simParams)
       console.log('load simParams from LS')
       loadAllIUhistoricData(simParams, dispatchSimParams, implementationUnit)
     }
   }, [])
   useEffect(() => {
     console.log(simParams.mdaObjDefaultPrediction)
-  }, [simParams.mdaObjDefaultPrediction, simParams.runs])
+  }, [simParams.mdaObjDefaultPrediction])
 
   return (
     <Layout>

@@ -34,8 +34,8 @@ export const loadAllIUhistoricData = async (
       mdaObj: mdaData,
       params: params,
     },
-    mdaObjDefaultPrediction: generateMdaFuture(params),
-    mdaObjTweakedPrediction: generateMdaFuture(params),
+    mdaObjDefaultPrediction: generateMdaFuture(simParams),
+    mdaObjTweakedPrediction: generateMdaFuture(simParams),
     needsRerun: false,
   }
   const bednets = last(mdaData.bednets)
@@ -122,6 +122,8 @@ export const loadParams = async () => {
 }
 
 export const generateMdaFuture = (simParams) => {
+  console.log('generateMDAFuture')
+  console.log(simParams)
   const numberOfYears = 11 * 2
   let MDAtime = []
   for (let i = 0; i < numberOfYears; i++) {
