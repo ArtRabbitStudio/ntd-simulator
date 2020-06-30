@@ -134,6 +134,8 @@ const Simulator = (props) => {
     //    console.log(scenarioInputs[tabIndex])
     if (typeof scenarioInputs[tabIndex] != 'undefined') {
       // set input arams if you have them
+      console.log('scenarioInputs[tabIndex]')
+      console.log(scenarioInputs[tabIndex])
       dispatchSimParams({
         type: 'everythingbuthistoric',
         payload: scenarioInputs[tabIndex],
@@ -430,32 +432,36 @@ const Simulator = (props) => {
       let paramsInputs = scenariosArray.map((item) => item.params.inputs)
       let mdaFuture = scenariosArray.map((item) => item.mdaFuture)
       let MDAs = scenariosArray.map((item) => item.mda2015)
-      setScenarioInputs(paramsInputs)
-      // make new default prediction from ex tweaked one.
+      // make new default prediction from ex tweaked one - the one from "mdaFuture".
       // console.log(mdaFuture[tabIndex].mdaFuture)
-      paramsInputs[tabIndex].mdaObjDefaultPrediction = {
-        time: [...mdaFuture[tabIndex].time],
-        coverage: [...mdaFuture[tabIndex].coverage],
-        adherence: [...mdaFuture[tabIndex].adherence],
-        bednets: [...mdaFuture[tabIndex].bednets],
-        regimen: [...mdaFuture[tabIndex].regimen],
-        active: [...mdaFuture[tabIndex].active],
-      }
-      paramsInputs[tabIndex].mdaObjTweakedPrediction = {
-        time: [...mdaFuture[tabIndex].time],
-        coverage: [...mdaFuture[tabIndex].coverage],
-        adherence: [...mdaFuture[tabIndex].adherence],
-        bednets: [...mdaFuture[tabIndex].bednets],
-        regimen: [...mdaFuture[tabIndex].regimen],
-        active: [...mdaFuture[tabIndex].active],
-      }
-      //      console.log(paramsInputs[tabIndex])
-      if (typeof paramsInputs[tabIndex] != 'undefined') {
+
+      let paramsInputsWithPrediction = paramsInputs.map((item, index) => ({
+        ...item,
+        mdaObjDefaultPrediction: {
+          time: [...mdaFuture[index].time],
+          coverage: [...mdaFuture[index].coverage],
+          adherence: [...mdaFuture[index].adherence],
+          bednets: [...mdaFuture[index].bednets],
+          regimen: [...mdaFuture[index].regimen],
+          active: [...mdaFuture[index].active],
+        },
+        mdaObjTweakedPrediction: {
+          time: [...mdaFuture[index].time],
+          coverage: [...mdaFuture[index].coverage],
+          adherence: [...mdaFuture[index].adherence],
+          bednets: [...mdaFuture[index].bednets],
+          regimen: [...mdaFuture[index].regimen],
+          active: [...mdaFuture[index].active],
+        },
+      }))
+      setScenarioInputs(paramsInputsWithPrediction)
+      //      console.log(paramsInputsWithPrediction[tabIndex])
+      if (typeof paramsInputsWithPrediction[tabIndex] != 'undefined') {
         setScenarioMDAs(MDAs)
-        //        console.log(paramsInputs[tabIndex])
+        //        console.log(paramsInputsWithPrediction[tabIndex])
         dispatchSimParams({
           type: 'everything',
-          payload: paramsInputs[tabIndex],
+          payload: paramsInputsWithPrediction[tabIndex],
         })
       }
       // loadAllIUhistoricData(simParams, dispatchSimParams, implementationUnit)
