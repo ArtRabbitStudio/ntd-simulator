@@ -23,7 +23,7 @@ const useStyles = makeStyles(theme => ({
         },
         [theme.breakpoints.up('md')]: {
             float: 'left',
-            width: 320,
+            width: 520,
         },
     },
     inputs: {
@@ -40,24 +40,26 @@ const useStyles = makeStyles(theme => ({
             padding: theme.spacing(0),
             width: 'calc(100% - 320px)',
         },
-    },
+    }
 }))
 
 const HeadWithInputs = ({ title, disableInputs, disableClear, classAdd }) => {
     const classes = useStyles()
 
     return (
-        <Fragment >
-            <Grid item md={8} xs={12} className={classes.inputs}>
-                {disableInputs !== true && <Inputs />}
-            </Grid>
-            <Grid item md={4} xs={12} className={classes.head}>
+        <Fragment className={classes.headContainer}>
+            <div style={{marginBottom:80}}>
+            <Grid item md={6} xs={12} className={classes.head}>
                 <Head
                     title={title}
                     classAdd={classAdd}
                 />
             </Grid>
+            <Grid item md={6} xs={12} className={classes.inputs}>
+                {disableInputs !== true && <Inputs />}
+            </Grid>
             {disableClear !== true && <div className={classes.clear}></div>}
+            </div>
         </Fragment>
     )
 }

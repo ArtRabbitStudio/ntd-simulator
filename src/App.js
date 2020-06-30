@@ -8,6 +8,9 @@ import Page from "./pages/Page";
 import Country from "./pages/Country";
 import Setup from "./pages/Setup";
 import Simulator from "./pages/Simulator";
+import DataMethodolgy from "./pages/DataMethodology";
+import About from "./pages/About";
+import PrivacyCookies from "./pages/PrivacyCookies";
 
 // index.js
 import { StoreProvider } from "./store/simulatorStore";
@@ -233,6 +236,9 @@ function App() {
               <Route exact path="/" component={Home} />
               <Route exact path="/country/:country" component={Country} />
               <Route exact path="/setup/:country/:iu" component={Setup} />
+              <Route exact path="/data-and-methodolgy" component={DataMethodolgy} />
+              <Route exact path="/about" component={About} />
+              <Route exact path="/privacy-cookies" component={PrivacyCookies} />
               <Route
                 exact
                 path="/simulator/:country?/:iu?"

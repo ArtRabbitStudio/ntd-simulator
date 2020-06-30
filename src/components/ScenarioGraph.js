@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { zip, zipObject, map, flatten, flattenDeep, pick, values } from 'lodash'
+import { zip, zipObject, map, flatten, flattenDeep, pick, values,max,forEach } from 'lodash'
 import { scaleLinear, extent, line } from 'd3'
 import AutoSizer from 'react-virtualized-auto-sizer'
 
@@ -22,11 +22,16 @@ function ScenarioGraph({
   simInProgress,
 }) {
   //console.log('init',data);
-
+  const startYear = 15
   const dataSelection = showAllResults ? data.results : [data.results[0]]
-  const domainX = extent(flatten(map(dataSelection, 'ts')))
+
+  const isStartYear = (element) => element >= startYear;
+
+  const IndexToStartForOutput = (flatten(map(dataSelection, 'ts')).findIndex(isStartYear))
+  const domainX = [ startYear, max(flatten(map(dataSelection, 'ts'))) ]
+
   const domainY = extent(
-    flattenDeep(map(data.results, (x) => values(pick(x, metrics))))
+    flattenDeep(map( data.results , (x) => values(pick(x, metrics))))
   )
   const ShowActivePoint = ({ active, coord }) => {
     return (
@@ -110,7 +115,7 @@ function ScenarioGraph({
     return allPoints
   }
 
-  const [activeInfo, setActiveInfo] = useState()
+  const [activeInfo, setActiveInfo] = useState(null)
 
   const handleEnter = (id) => {
     if (fadeOutTimeout != null) {
@@ -131,27 +136,27 @@ function ScenarioGraph({
   const svgHeight = height + yPad * 2
   const svgWidth = width
 
-  const x = scaleLinear().domain(domainX).range([0, width]).nice()
+
+  const x = scaleLinear().domain(domainX).range([0, width])
 
   const y = scaleLinear().domain(domainY).range([height, 0]).nice()
 
-  const ticksX = x.ticks()
+  const ticksX = x.ticks(22)
   const ticksY = y.ticks()
 
   const renderResult = (d, main) => {
     if (simInProgress) return
     const { ts, Ms, Ws, Ls } = d
     const series = zip(ts, Ms, Ws, Ls)
-    const seriesObj = map(series, (x) => zipObject(['ts', 'Ms', 'Ws', 'Ls'], x))
+    let seriesObj = map(series, (x) => zipObject(['ts', 'Ms', 'Ws', 'Ls'], x))
+    seriesObj.splice(0,IndexToStartForOutput)
 
-    //console.log(series);
-    //console.log(seriesObj);
     const color = main ? '#D86422' : '#eeee'
     return (
       <>
-        {metrics.map((m) => (
+        {metrics.map((m,i) => (
           <Path
-            key={`${m}-l`}
+            key={`${i}-l`}
             data={seriesObj}
             prop={m}
             x={x}
@@ -161,9 +166,9 @@ function ScenarioGraph({
         ))}
 
         {main &&
-          metrics.map((m) => (
+          metrics.map((m,i) => (
             <InfoPoints
-              key={`${m}-ps`}
+              key={`${i}-ps`}
               data={seriesObj}
               prop={m}
               x={x}
@@ -184,6 +189,10 @@ function ScenarioGraph({
       <g transform={`translate(${lPad},${yPad})`}>
         {ticksX.map((t, i) => {
           const xt = x(t)
+          const yearLabel = 2000 + t
+          const yearOutput = '‘' + yearLabel.toString().substr(-2)
+          //console.log(yearLabel)
+
           return (
             <g key={xt}>
               <line
@@ -198,7 +207,7 @@ function ScenarioGraph({
                   : { strokeDasharray: '4 3' })}
               ></line>
               <text x={xt} y={height + yPad} fontSize={12} textAnchor="middle">
-                {t}
+                {yearLabel}
               </text>
             </g>
           )
@@ -226,7 +235,7 @@ function ScenarioGraph({
         })}
         {data.results &&
           data.results.map((result, i) => (
-            <g key={`results1-${i}`}>{renderResult(result, false)}</g>
+              <g key={`results1-${i}`}>{renderResult(result, false)}</g>
           ))}
         {data.stats &&
           [data.stats].map((result, i) => (

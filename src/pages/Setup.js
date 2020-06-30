@@ -144,7 +144,6 @@ const Setup = (props) => {
     selectedIUData
   } = useDataAPI();
 
-  console.log('selectedIUData',selectedIUData[0]);
 
   const doWeHaveData = simParams.IUData.IUloaded === implementationUnit;
   const loadData = async () =>{
@@ -318,15 +317,11 @@ const Setup = (props) => {
             </div>
           </div>
 
-          <div className={classes.formControlWrap}>
-            <div className={classes.setupFormControl}>
-              <SettingTargetCoverage inModal={false} label="Treatment target coverage" />
-            </div>
-          </div>
-
-          <div className={`${classes.formControlWrap}`}>
-              <div className={classes.setupFormControl}>
-                <SettingSystematicAdherence inModal={false} label="Systematic adherence" value={0} onChange={handleAdherenceChange} />
+          <div className={`${classes.formControlWrap} fullwidth`}>
+              <div className={classes.halfFormControl}>
+                <div className={classes.setupFormControl}>
+                  <SettingSystematicAdherence inModal={false} label="Systematic adherence" value={0} onChange={handleAdherenceChange} />
+                </div>
               </div>
           </div>
 

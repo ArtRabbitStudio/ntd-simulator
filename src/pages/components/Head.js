@@ -5,10 +5,11 @@ import Typography from '@material-ui/core/Typography';
 import { NavLink } from 'react-router-dom';
 
 import Logo from '../../images/ntd-logo.svg';
+import { stackOffsetNone } from 'd3';
 
 const useStyles = makeStyles(theme => ({
     card: {
-        maxWidth: 410,
+        maxWidth: 810,
         zIndex: 20,
         position: "relative",
         float: 'left',
@@ -32,6 +33,10 @@ const useStyles = makeStyles(theme => ({
         textTransform: 'uppercase',
         fontSize: 14,
         letterSpacing: 1
+    },
+    pageHeader: {
+        textDecoration: 'none',
+        color: theme.palette.text.primary
     }
 }));
 
@@ -43,11 +48,11 @@ const Head = ({ title, classAdd }) => {
     return (
         <Box className={`${classes.card}  ${classAdd}`}>
 
-            <NavLink to='/' className={classes.logo}>
-                <span>NTD Modelling Consortium</span>
+            <NavLink to='/' className={classes.pageHeader} >
+                <Typography variant="h1" component="h2">NTD Prevalence Simulator </Typography>
             </NavLink>
 
-            <Typography className={classes.title} variant="body1" component="h1">{title}</Typography>
+            
         </Box>
     )
 }
