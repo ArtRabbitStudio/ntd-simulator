@@ -28,7 +28,7 @@ function ScenarioGraph({
   const isStartYear = (element) => element >= startYear;
 
   const IndexToStartForOutput = (flatten(map(dataSelection, 'ts')).findIndex(isStartYear))
-  const domainX = [ startYear, max(flatten(map(dataSelection, 'ts'))) ]
+  const domainX = [ startYear, max(flatten(map(dataSelection, 'ts')))+1 ]
 
   const domainY = extent(
     flattenDeep(map( data.results , (x) => values(pick(x, metrics))))
@@ -137,7 +137,7 @@ function ScenarioGraph({
   const svgWidth = width
 
 
-  const x = scaleLinear().domain(domainX).range([0, width])
+  const x = scaleLinear().domain(domainX).range([0, width-rPad])
 
   const y = scaleLinear().domain(domainY).range([height, 0]).nice()
 
