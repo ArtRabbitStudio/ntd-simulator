@@ -37,6 +37,7 @@ export const loadAllIUhistoricData = async (
     mdaObjDefaultPrediction: generateMdaFuture(simParams),
     mdaObjTweakedPrediction: generateMdaFuture(simParams),
     needsRerun: false,
+    adherence: 0.2,
   }
   const bednets = last(mdaData.bednets)
   if (bednets) defaults.covN = bednets

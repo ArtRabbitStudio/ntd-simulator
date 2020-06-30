@@ -88,9 +88,9 @@ const MdaBars = (props) => {
     if (tweakedMDAs && tweakedMDAs.time && tweakedMDAs.time.length > 0) {
       const needsRerun =
         JSON.stringify(defaultMDAs) !== JSON.stringify(tweakedMDAs)
-      console.log('needsRerun', needsRerun)
+      /*       console.log('needsRerun', needsRerun)
       console.log(defaultMDAs)
-      console.log(tweakedMDAs)
+      console.log(tweakedMDAs) */
       if (needsRerun) {
         dispatchSimParams({
           type: 'needsRerun',
@@ -136,6 +136,38 @@ const MdaBars = (props) => {
     const newArray = [...prediction.coverage.map((item) => simParams.coverage)]
     setSimMDAcoverage(newArray)
   }, [simParams.coverage])
+  React.useEffect(() => {
+    if (simParams.adherence) {
+      console.log(
+        'MDA update - simParams.adherence changed',
+        simParams.adherence
+      )
+      // global adherence change
+      const prediction = simParams.mdaObjDefaultPrediction
+      const newArray = [
+        ...prediction.adherence.map((item) => simParams.adherence),
+      ]
+      setSimMDAadherence(newArray)
+    }
+  }, [simParams.adherence])
+  React.useEffect(() => {
+    // global bednets change
+    if (simParams.bednets) {
+      console.log('MDA update - simParams.bednets changed', simParams.bednets)
+      const prediction = simParams.mdaObjDefaultPrediction
+      const newArray = [...prediction.bednets.map((item) => simParams.bednets)]
+      setSimMDAbednets(newArray)
+    }
+  }, [simParams.bednets])
+  React.useEffect(() => {
+    // global regimen change
+    if (simParams.regimen) {
+      console.log('MDA update - simParams.regimen changed', simParams.regimen)
+      const prediction = simParams.mdaObjDefaultPrediction
+      const newArray = [...prediction.regimen.map((item) => simParams.regimen)]
+      setSimMDAregimen(newArray)
+    }
+  }, [simParams.regimen])
 
   React.useEffect(() => {
     // global mdaSixMonths change

@@ -142,11 +142,6 @@ const Simulator = (props) => {
     }
   }, [tabIndex])
 
-  const handleAdherenceChange = (event) => {
-    // todo
-    //alert('todo')
-  }
-
   const [simulationProgress, setSimulationProgress] = useState(0)
   const [scenarioInputs, setScenarioInputs] = useState([])
   const [scenarioResults, setScenarioResults] = useState(
@@ -476,10 +471,10 @@ const Simulator = (props) => {
     console.log(simParams.mdaObjDefaultPrediction)
   }, [simParams.mdaObjDefaultPrediction])
 
-  useEffect(() => {
+  /*   useEffect(() => {
     console.log('mdaObjTweakedPrediction')
     console.log(simParams.mdaObjTweakedPrediction)
-  }, [simParams.mdaObjTweakedPrediction])
+  }, [simParams.mdaObjTweakedPrediction]) */
 
   return (
     <Layout>
@@ -588,8 +583,6 @@ const Simulator = (props) => {
                             <SettingSystematicAdherence
                               inModal={true}
                               label="Systematic adherence"
-                              value={0}
-                              onChange={handleAdherenceChange}
                             />
                             {/* no longer in use <SettingBasePrevalence inModal={true} label="Base prevalence" /> */}
                             {/* no longer in use <SettingNumberOfRuns inModal={true} label="Number of runs" /> */}

@@ -1,20 +1,24 @@
-import React from 'react';
-import useStyles from "../styles";
+import React from 'react'
+import useStyles from '../styles'
 
-import { useStore } from "../../../../store/simulatorStore";
+import { useStore } from '../../../../store/simulatorStore'
 
-import {
-  FormControl,
-  Slider,
-  FormLabel,
-  Tooltip
-} from "@material-ui/core";
+import { FormControl, Slider, FormLabel, Tooltip } from '@material-ui/core'
 
-const SettingSystematicAdherence = ({ inModal, label, classAdd, value, onChange }) => {
+const SettingSystematicAdherence = ({
+  inModal,
+  label,
+  classAdd,
+  value,
+  onChange,
+}) => {
+  const classes = useStyles()
+  const { simParams, dispatchSimParams } = useStore()
 
-  const classes = useStyles();
-  const { simParams, dispatchSimParams } = useStore();
-
+  const handleChange = (event, newValue) => {
+    // this used to be a special occastion. If nothing changes we can use the handleSlerChanges handler instead.
+    dispatchSimParams({ type: 'adherence', payload: newValue })
+  }
   return (
     <FormControl fullWidth className={`${classes.formControl} ${classAdd}`}>
       <Tooltip
@@ -24,19 +28,23 @@ const SettingSystematicAdherence = ({ inModal, label, classAdd, value, onChange 
         <FormLabel
           component="legend"
           htmlFor="rho"
-          className={inModal ? classes.withHelp : `${classes.withSlider} ${classes.withHelp}`}
+          className={
+            inModal
+              ? classes.withHelp
+              : `${classes.withSlider} ${classes.withHelp}`
+          }
         >
           {label}
         </FormLabel>
       </Tooltip>
       <Slider
-        value={value}
+        value={value ? value : simParams.adherence}
         min={0}
         step={0.1}
         max={1}
-        onChange={onChange}
+        onChange={onChange ? onChange : handleChange}
         aria-labelledby="slider"
-        valueLabelDisplay={inModal ? "auto" : "on"}
+        valueLabelDisplay={inModal ? 'auto' : 'on'}
       />
       {inModal === false && <div className={classes.adherence}></div>}
       {/*             <p style={{ marginBottom: 0 }}>
@@ -46,4 +54,4 @@ const SettingSystematicAdherence = ({ inModal, label, classAdd, value, onChange 
     </FormControl>
   )
 }
-export default SettingSystematicAdherence;
+export default SettingSystematicAdherence

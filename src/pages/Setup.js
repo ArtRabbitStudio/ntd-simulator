@@ -1,51 +1,68 @@
-import { Button, FormControl, FormLabel, MenuItem, Select, Slider, Typography, } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
-import { observer } from "mobx-react";
-import React, { useEffect, useState, Fragment } from "react";
-import { useHistory } from "react-router-dom";
-import { orderBy,map } from 'lodash'
-import PrevalenceMiniGraph from "../components/PrevalenceMiniGraph";
-import { useDataAPI, useUIState } from "../hooks/stateHooks";
-import { Layout } from "../layout";
-import { useStore } from "./../store/simulatorStore";
-import HeadWithInputs from "./components/HeadWithInputs";
-import SelectCountry from "./components/SelectCountry";
-import TextContents from "./components/TextContents";
-import { loadAllIUhistoricData } from "./components/simulator/ParamMdaLoader";
-
+import {
+  Button,
+  FormControl,
+  FormLabel,
+  MenuItem,
+  Select,
+  Slider,
+  Typography,
+} from '@material-ui/core'
+import { makeStyles } from '@material-ui/core/styles'
+import { observer } from 'mobx-react'
+import React, { useEffect, useState, Fragment } from 'react'
+import { useHistory } from 'react-router-dom'
+import { orderBy, map } from 'lodash'
+import PrevalenceMiniGraph from '../components/PrevalenceMiniGraph'
+import { useDataAPI, useUIState } from '../hooks/stateHooks'
+import { Layout } from '../layout'
+import { useStore } from './../store/simulatorStore'
+import HeadWithInputs from './components/HeadWithInputs'
+import SelectCountry from './components/SelectCountry'
+import TextContents from './components/TextContents'
+import { loadAllIUhistoricData } from './components/simulator/ParamMdaLoader'
 
 // settings
 import {
-  SettingName, SettingFrequency, SettingTargetCoverage, SettingDrugRegimen, SettingBasePrevalence, SettingNumberOfRuns, SettingMosquitoType,
-  SettingBedNetCoverage, SettingInsecticideCoverage, SettingPrecision, SettingSystematicAdherence, SettingSpecificScenario
-} from "./components/simulator/settings";
+  SettingName,
+  SettingFrequency,
+  SettingTargetCoverage,
+  SettingDrugRegimen,
+  SettingBasePrevalence,
+  SettingNumberOfRuns,
+  SettingMosquitoType,
+  SettingBedNetCoverage,
+  SettingInsecticideCoverage,
+  SettingPrecision,
+  SettingSystematicAdherence,
+  SettingSpecificScenario,
+} from './components/simulator/settings'
 
 const useStyles = makeStyles((theme) => ({
   withSlider: {
     margin: theme.spacing(0, 0, 6, 0),
-    whiteSpace: "nowrap",
+    whiteSpace: 'nowrap',
   },
   settings: {
-    position: "relative",
+    position: 'relative',
     padding: theme.spacing(4, 0, 0, 0),
-    display: "flex",
-    flexDirection: "column",
+    display: 'flex',
+    flexDirection: 'column',
 
-    [theme.breakpoints.up("md")]: {
-      flexDirection: "row",
-      flexWrap: "wrap",
-      justifyContent: "space-between",
+    [theme.breakpoints.up('md')]: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      justifyContent: 'space-between',
     },
   },
   section: {
-    position: "relative",
+    position: 'relative',
     backgroundColor: theme.palette.secondary.light,
     width: `calc(100% + ${theme.spacing(12)}px)`,
     marginLeft: -theme.spacing(6),
     padding: theme.spacing(4, 6),
   },
   charts: {
-    position: "relative",
+    position: 'relative',
     backgroundColor: theme.palette.secondary.dark,
   },
   chart: {
@@ -54,160 +71,151 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: theme.spacing(6),
     paddingRight: theme.spacing(6),
     backgroundColor: theme.palette.secondary.dark,
-    [theme.breakpoints.up("md")]: {
-      textAlign: "left",
-      float: "left",
-      width: "calc(50% - 16px)",
-      "&.fullwidth": {
-        width: "100%",
-        textAlign: "left",
+    [theme.breakpoints.up('md')]: {
+      textAlign: 'left',
+      float: 'left',
+      width: 'calc(50% - 16px)',
+      '&.fullwidth': {
+        width: '100%',
+        textAlign: 'left',
       },
     },
   },
   legend: {
-    textTransform: "uppercase",
+    textTransform: 'uppercase',
     textTransform: 'uppercase',
     fontSize: 14,
     letterSpacing: 1,
-    fontSize:12,
-    width:30,
-    marginBottom:0,
-    marginLeft:-3
+    fontSize: 12,
+    width: 30,
+    marginBottom: 0,
+    marginLeft: -3,
   },
   scenariosWrap: {
     padding: theme.spacing(4),
     margin: theme.spacing(0, 0, 3, 0),
-    backgroundColor: "white",
+    backgroundColor: 'white',
   },
   headline: {
     color: theme.palette.text.primary,
     margin: theme.spacing(0, 0, 3, 0),
-
   },
   formControlWrap: {
     padding: theme.spacing(4),
     margin: theme.spacing(0, 0, 3, 0),
-    backgroundColor: "white",
+    backgroundColor: 'white',
 
-    [theme.breakpoints.up("md")]: {
-      textAlign: "center",
-      float: "left",
-      width: "calc(50% - 16px)",
-      "&.fullwidth": {
-        width: "100%",
-        textAlign: "left",
+    [theme.breakpoints.up('md')]: {
+      textAlign: 'center',
+      float: 'left',
+      width: 'calc(50% - 16px)',
+      '&.fullwidth': {
+        width: '100%',
+        textAlign: 'left',
       },
     },
   },
   buttonsControl: {
     margin: theme.spacing(0),
-    "& > button": {
+    '& > button': {
       margin: theme.spacing(0, 1, 1, 0),
     },
-    [theme.breakpoints.up("md")]: {
-      width: "60%",
+    [theme.breakpoints.up('md')]: {
+      width: '60%',
     },
   },
   setupFormControl: {
-    [theme.breakpoints.up("md")]: {
+    [theme.breakpoints.up('md')]: {
       padding: theme.spacing(0, 10, 0, 10),
     },
-    [theme.breakpoints.up("md")]: {
+    [theme.breakpoints.up('md')]: {
       maxWidth: 460,
-      margin: 'auto'
+      margin: 'auto',
       //display: "inline-block",
     },
   },
   halfFormControl: {
-    [theme.breakpoints.up("md")]: {
-      width: "calc(50% - 16px)",
+    [theme.breakpoints.up('md')]: {
+      width: 'calc(50% - 16px)',
     },
   },
-}));
-
-
+}))
 
 const Setup = (props) => {
   const [isLoading, setIsLoading] = useState(false)
 
-  const history = useHistory();
-  const classes = useStyles();
-  const { simParams, dispatchSimParams } = useStore();
+  const history = useHistory()
+  const classes = useStyles()
+  const { simParams, dispatchSimParams } = useStore()
   const {
     iuFeatures,
     //stateFeaturesCurrentCountry: stateFeatures,
     //stateDataCurrentCountry: stateData,
     stateScales,
-  } = useDataAPI();
-  const { country, implementationUnit } = useUIState();
-  const {
-    selectedIUData
-  } = useDataAPI();
+  } = useDataAPI()
+  const { country, implementationUnit } = useUIState()
+  const { selectedIUData } = useDataAPI()
 
-
-  const doWeHaveData = simParams.IUData.IUloaded === implementationUnit;
-  const loadData = async () =>{
-    await loadAllIUhistoricData(simParams,dispatchSimParams,implementationUnit);
-    setIsLoading(false);
+  const doWeHaveData = simParams.IUData.IUloaded === implementationUnit
+  const loadData = async () => {
+    await loadAllIUhistoricData(
+      simParams,
+      dispatchSimParams,
+      implementationUnit
+    )
+    setIsLoading(false)
   }
 
-  if ( !doWeHaveData ) {
-    if ( !isLoading ) {
-      loadData();
-      setIsLoading(true);
-    } 
+  if (!doWeHaveData) {
+    if (!isLoading) {
+      loadData()
+      setIsLoading(true)
+    }
   }
 
-  if ( isLoading ) {
+  if (isLoading) {
     return (
       <Layout>
         <HeadWithInputs title="prevalence simulator" />
         <section className={classes.section}>
           <Typography variant="h3" component="h6" className={classes.headline}>
             Loading setup
-            </Typography>
+          </Typography>
         </section>
       </Layout>
     )
   }
-  let mdaObjTimeFiltered = null;
-  if ( simParams.IUData.mdaObj ) {
+  let mdaObjTimeFiltered = null
+  if (simParams.IUData.mdaObj) {
     const startYear = 2010
     const endYear = 2019
     mdaObjTimeFiltered = {
       active: [],
-      time:   [],
+      time: [],
       adherence: [],
-      bednets:  [],
+      bednets: [],
       coverage: [],
-      regimen: []
+      regimen: [],
     }
-    map(simParams.IUData.mdaObj.time,(e,i) => {
-
-          const currentYear = (2000 + e/12)
-          if ( currentYear >= startYear && currentYear <= endYear ) {
-            mdaObjTimeFiltered.time.push(simParams.IUData.mdaObj.time[i])
-            mdaObjTimeFiltered.active.push(simParams.IUData.mdaObj.active[i])
-            mdaObjTimeFiltered.adherence.push(simParams.IUData.mdaObj.adherence[i])
-            mdaObjTimeFiltered.bednets.push(simParams.IUData.mdaObj.bednets[i])
-            mdaObjTimeFiltered.coverage.push(simParams.IUData.mdaObj.coverage[i])
-            mdaObjTimeFiltered.regimen.push(simParams.IUData.mdaObj.regimen[i])
-          }
+    map(simParams.IUData.mdaObj.time, (e, i) => {
+      const currentYear = 2000 + e / 12
+      if (currentYear >= startYear && currentYear <= endYear) {
+        mdaObjTimeFiltered.time.push(simParams.IUData.mdaObj.time[i])
+        mdaObjTimeFiltered.active.push(simParams.IUData.mdaObj.active[i])
+        mdaObjTimeFiltered.adherence.push(simParams.IUData.mdaObj.adherence[i])
+        mdaObjTimeFiltered.bednets.push(simParams.IUData.mdaObj.bednets[i])
+        mdaObjTimeFiltered.coverage.push(simParams.IUData.mdaObj.coverage[i])
+        mdaObjTimeFiltered.regimen.push(simParams.IUData.mdaObj.regimen[i])
+      }
     })
   }
 
-  const selecteIUName = selectedIUData[0] ? selectedIUData[0]['name'] : '';
-
-  const handleAdherenceChange = (event) => {
-    // TODO
-    //alert('todo')
-  };
+  const selecteIUName = selectedIUData[0] ? selectedIUData[0]['name'] : ''
 
   const submitSetup = (event) => {
     // pass params to simulator ..
-    history.push({ pathname: `/simulator/${country}/${implementationUnit}` });
-  };
-
+    history.push({ pathname: `/simulator/${country}/${implementationUnit}` })
+  }
 
   return (
     <Layout>
@@ -228,47 +236,66 @@ const Setup = (props) => {
 
         <div className={classes.charts}>
           <div className={classes.chart}>
-            <Typography variant="h6" component="h6" className={classes.headline} >Prevalence data ({selectedIUData[0] && selectedIUData[0].endemicity})</Typography>
+            <Typography
+              variant="h6"
+              component="h6"
+              className={classes.headline}
+            >
+              Prevalence data (
+              {selectedIUData[0] && selectedIUData[0].endemicity})
+            </Typography>
             <PrevalenceMiniGraph data={selectedIUData[0]} />
           </div>
           <div className={classes.chart}>
-            <Typography variant="h6" component="h6" className={classes.headline} >Espen intervention data</Typography>
+            <Typography
+              variant="h6"
+              component="h6"
+              className={classes.headline}
+            >
+              Espen intervention data
+            </Typography>
             <div className="bars setup">
-                {simParams.IUData.mdaObj && mdaObjTimeFiltered.time.map((e, i) => (
-                <div
-                  key={`bar-setup-${i}`}
-                  className={`bar setup c${simParams.IUData.mdaObj.coverage[i]}`}
-                  title={
-                    simParams.IUData.mdaObj.time[i] +
-                    ", " +
-                    simParams.IUData.mdaObj.coverage[i] +
-                    ", " +
-                    simParams.IUData.mdaObj.adherence[i] +
-                    ", " +
-                    simParams.IUData.mdaObj.bednets[i] +
-                    ", " +
-                    simParams.IUData.mdaObj.regimen[i] +
-                    " "
-                  }
-                >
-                  <span
-                    style={{
-                      height: simParams.IUData.mdaObj.coverage[i],
-                    }}
-                  ></span>
-                </div>
-                
-              ))}
-            </div>
-                <div className="bars setup">
-                {simParams.IUData.mdaObj && mdaObjTimeFiltered.time.map((e, i) => (
-                  <Typography key={`bar-legend=${i}`} className={classes.legend} component="p">{ '‘' +(2000+(simParams.IUData.mdaObj.time[i]/12)).toString().substr(-2) }</Typography>
+              {simParams.IUData.mdaObj &&
+                mdaObjTimeFiltered.time.map((e, i) => (
+                  <div
+                    key={`bar-setup-${i}`}
+                    className={`bar setup c${simParams.IUData.mdaObj.coverage[i]}`}
+                    title={
+                      simParams.IUData.mdaObj.time[i] +
+                      ', ' +
+                      simParams.IUData.mdaObj.coverage[i] +
+                      ', ' +
+                      simParams.IUData.mdaObj.adherence[i] +
+                      ', ' +
+                      simParams.IUData.mdaObj.bednets[i] +
+                      ', ' +
+                      simParams.IUData.mdaObj.regimen[i] +
+                      ' '
+                    }
+                  >
+                    <span
+                      style={{
+                        height: simParams.IUData.mdaObj.coverage[i],
+                      }}
+                    ></span>
+                  </div>
                 ))}
-                  
-                  
-                    
-                </div>
-
+            </div>
+            <div className="bars setup">
+              {simParams.IUData.mdaObj &&
+                mdaObjTimeFiltered.time.map((e, i) => (
+                  <Typography
+                    key={`bar-legend=${i}`}
+                    className={classes.legend}
+                    component="p"
+                  >
+                    {'‘' +
+                      (2000 + simParams.IUData.mdaObj.time[i] / 12)
+                        .toString()
+                        .substr(-2)}
+                  </Typography>
+                ))}
+            </div>
           </div>
         </div>
 
@@ -283,25 +310,38 @@ const Setup = (props) => {
         <div className={classes.settings}>
           <div className={classes.formControlWrap}>
             <div className={classes.setupFormControl}>
-              <SettingBedNetCoverage inModal={false} label="Bed Net Coverage" value={50} />
+              <SettingBedNetCoverage
+                inModal={false}
+                label="Bed Net Coverage"
+                value={50}
+              />
             </div>
           </div>
 
           <div className={classes.formControlWrap}>
             <div className={classes.setupFormControl}>
-              <SettingTargetCoverage inModal={false} label="Intervention target coverage" />
+              <SettingTargetCoverage
+                inModal={false}
+                label="Intervention target coverage"
+              />
             </div>
           </div>
 
           <div className={classes.formControlWrap}>
             <div className={classes.setupFormControl}>
-              <SettingFrequency inModal={false} label="Intervention Frequency" />
+              <SettingFrequency
+                inModal={false}
+                label="Intervention Frequency"
+              />
             </div>
           </div>
 
           <div className={classes.formControlWrap}>
             <div className={classes.setupFormControl}>
-              <SettingDrugRegimen inModal={false} label="Intervention drug regimen" />
+              <SettingDrugRegimen
+                inModal={false}
+                label="Intervention drug regimen"
+              />
             </div>
           </div>
 
@@ -313,18 +353,23 @@ const Setup = (props) => {
 
           <div className={classes.formControlWrap}>
             <div className={classes.setupFormControl}>
-              <SettingInsecticideCoverage inModal={false} label="Vector: Insecticide Coverage" />
+              <SettingInsecticideCoverage
+                inModal={false}
+                label="Vector: Insecticide Coverage"
+              />
             </div>
           </div>
 
           <div className={`${classes.formControlWrap} fullwidth`}>
-              <div className={classes.halfFormControl}>
-                <div className={classes.setupFormControl}>
-                  <SettingSystematicAdherence inModal={false} label="Systematic adherence" value={0} onChange={handleAdherenceChange} />
-                </div>
+            <div className={classes.halfFormControl}>
+              <div className={classes.setupFormControl}>
+                <SettingSystematicAdherence
+                  inModal={false}
+                  label="Systematic adherence"
+                />
               </div>
+            </div>
           </div>
-
         </div>
 
         <TextContents>
@@ -345,6 +390,6 @@ const Setup = (props) => {
         </Button>
       </section>
     </Layout>
-  );
-};
-export default observer(Setup);
+  )
+}
+export default observer(Setup)

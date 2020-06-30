@@ -103,6 +103,11 @@ const reducer = (simParams, action) => {
         ...simParams,
         coverage: action.payload,
       }
+    case 'adherence':
+      return {
+        ...simParams,
+        adherence: action.payload,
+      }
     case 'mda':
       return {
         ...simParams,
