@@ -138,15 +138,6 @@ const Simulator = (props) => {
         type: 'everythingbuthistoric',
         payload: scenarioInputs[tabIndex],
       })
-      /* const mdaPrediction = generateMdaFuture(simParams)
-      dispatchSimParams({
-        type: 'mdaObjDefaultPrediction',
-        payload: mdaPrediction,
-      })
-      dispatchSimParams({
-        type: 'mdaObjTweakedPrediction',
-        payload: mdaPrediction,
-      }) */
       SimulatorEngine.ScenarioIndex.setIndex(tabIndex)
     }
   }, [tabIndex])
@@ -245,31 +236,56 @@ const Simulator = (props) => {
       // if (doWeHaveData) {
       setSimInProgress(true)
       console.log(tabIndex, simParams)
-      // populate mdaObj // populateMDA();
       const newMdaObj = simParams.IUData.mdaObj
-      SimulatorEngine.simControler.mdaObj = newMdaObj
+
+      const mdaHistory = await loadMdaHistory()
+      const mdaPrediction = generateMdaFuture(simParams)
+      dispatchSimParams({
+        type: 'mdaObjDefaultPrediction',
+        payload: mdaPrediction,
+      })
+      dispatchSimParams({
+        type: 'mdaObjTweakedPrediction',
+        payload: mdaPrediction,
+      })
+
+      // SimulatorEngine.simControler.mdaObj = newMdaObj
+      const fullMDA =
+        mdaPrediction && mdaPrediction.time
+          ? {
+              time: [...mdaHistory.time, ...mdaPrediction.time],
+              coverage: [...mdaHistory.coverage, ...mdaPrediction.coverage],
+              adherence: [...mdaHistory.adherence, ...mdaPrediction.adherence],
+              bednets: [...mdaHistory.bednets, ...mdaPrediction.bednets],
+              regimen: [...mdaHistory.regimen, ...mdaPrediction.regimen],
+              active: [...mdaHistory.active, ...mdaPrediction.active],
+            }
+          : mdaHistory
+      SimulatorEngine.simControler.mdaObj = fullMDA
+
       const yearsToLeaveOut = 14
       let newMdaObj2015 = {
-        time: newMdaObj.time.filter(function (value, index, arr) {
+        time: mdaHistory.time.filter(function (value, index, arr) {
           return index > yearsToLeaveOut
         }),
-        coverage: newMdaObj.coverage.filter(function (value, index, arr) {
+        coverage: mdaHistory.coverage.filter(function (value, index, arr) {
           return index > yearsToLeaveOut
         }),
-        adherence: newMdaObj.adherence.filter(function (value, index, arr) {
+        adherence: mdaHistory.adherence.filter(function (value, index, arr) {
           return index > yearsToLeaveOut
         }),
-        bednets: newMdaObj.bednets.filter(function (value, index, arr) {
+        bednets: mdaHistory.bednets.filter(function (value, index, arr) {
           return index > yearsToLeaveOut
         }),
-        regimen: newMdaObj.regimen.filter(function (value, index, arr) {
+        regimen: mdaHistory.regimen.filter(function (value, index, arr) {
           return index > yearsToLeaveOut
         }),
-        active: newMdaObj.active.filter(function (value, index, arr) {
+        active: mdaHistory.active.filter(function (value, index, arr) {
           return index > yearsToLeaveOut
         }),
       }
       SimulatorEngine.simControler.mdaObj2015 = newMdaObj2015
+      SimulatorEngine.simControler.mdaObjFuture = mdaPrediction
 
       const newParams = simParams.IUData.params
       SimulatorEngine.simControler.parametersJSON = newParams
@@ -342,6 +358,7 @@ const Simulator = (props) => {
         SimulatorEngine.simControler.parametersJSON = newParams
 
         // populate mdaObj // populateMDA();
+        loadAllIUhistoricData(simParams, dispatchSimParams, implementationUnit)
         const mdaHistory = await loadMdaHistory()
         const mdaPrediction = generateMdaFuture(simParams)
         dispatchSimParams({
@@ -433,28 +450,9 @@ const Simulator = (props) => {
         }) */
         setScenarioMDAs(MDAs)
       }
-      /*       const mdaPrediction = generateMdaFuture(simParams)
-      dispatchSimParams({
-        type: 'mdaObjDefaultPrediction',
-        payload: mdaPrediction,
-      })
-      dispatchSimParams({
-        type: 'mdaObjTweakedPrediction',
-        payload: mdaPrediction,
-      })
-    } */
       console.log(simParams)
       console.log('load simParams from LS')
       loadAllIUhistoricData(simParams, dispatchSimParams, implementationUnit)
-      /*       const mdaPrediction = generateMdaFuture(simParams)
-      dispatchSimParams({
-        type: 'mdaObjDefaultPrediction',
-        payload: mdaPrediction,
-      })
-      dispatchSimParams({
-        type: 'mdaObjTweakedPrediction',
-        payload: mdaPrediction,
-      }) */
     }
   }, [])
   useEffect(() => {

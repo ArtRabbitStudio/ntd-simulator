@@ -28,7 +28,7 @@ export const loadAllIUhistoricData = async (
     species: 0, // $("input[name=speciesRadios]:checked").val(),
     macrofilaricide: 65, // $("#Macrofilaricide").val(),
     microfilaricide: 65,
-    runs: 50,
+    runs: 10,
     IUData: {
       IUloaded: implementationUnit,
       mdaObj: mdaData,

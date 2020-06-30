@@ -24,7 +24,6 @@ import {
 
 const MdaBars = (props) => {
   const history = props.history
-  console.log(history)
   const { simParams, dispatchSimParams } = useStore()
   const classes = useStyles()
   const removeMDARound = () => {
@@ -140,8 +139,8 @@ const MdaBars = (props) => {
       const needsRerun =
         JSON.stringify(defaultMDAs) !== JSON.stringify(tweakedMDAs)
       console.log('needsRerun', needsRerun)
-      // console.log(defaultMDAs)
-      // console.log(tweakedMDAs)
+      console.log(defaultMDAs)
+      console.log(tweakedMDAs)
       if (needsRerun) {
         dispatchSimParams({
           type: 'needsRerun',
