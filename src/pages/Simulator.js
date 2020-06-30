@@ -24,7 +24,7 @@ import HeadWithInputs from './components/HeadWithInputs'
 import SelectCountry from './components/SelectCountry'
 import MdaBars from './components/simulator/MdaBars'
 import {
-  loadParams,
+  loadIUParams,
   loadMdaHistory,
   generateMdaFuture,
   loadAllIUhistoricData,
@@ -347,11 +347,9 @@ const Simulator = (props) => {
         // console.log('settingTabLength', tabLength + 1)
         //console.log(tabIndex, simParams)
 
-        const newParams = await loadParams()
-        SimulatorEngine.simControler.parametersJSON = newParams
+        const iuParams = await loadIUParams()
+        SimulatorEngine.simControler.parametersJSON = iuParams
 
-        // populate mdaObj // populateMDA();
-        loadAllIUhistoricData(simParams, dispatchSimParams, implementationUnit)
         const mdaHistory = await loadMdaHistory()
         const mdaPrediction = generateMdaFuture(simParams)
         dispatchSimParams({

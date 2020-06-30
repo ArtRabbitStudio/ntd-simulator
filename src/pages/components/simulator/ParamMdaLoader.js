@@ -9,7 +9,7 @@ export const loadAllIUhistoricData = async (
   const doWeHaveData = simParams.IUData.IUloaded === implementationUnit
   // if (!doWeHaveData) {
   const mdaData = await loadMdaHistory()
-  const params = await loadParams()
+  const params = await loadIUParams()
   // set default values
   const defaults = {
     coverage: 90, // $("#MDACoverage").val(),
@@ -82,7 +82,7 @@ export const loadMdaHistory = async () => {
   return newMdaObj
 }
 
-export const loadParams = async () => {
+export const loadIUParams = async () => {
   // populate parametersJSON
   const IUParamsResponse = await fetch('/data/simulator/MLI30034-params.csv')
   let reader = IUParamsResponse.body.getReader()
