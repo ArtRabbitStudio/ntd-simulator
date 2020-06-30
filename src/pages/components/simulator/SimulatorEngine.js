@@ -613,7 +613,7 @@ export var params = {
   lbdaR: 1.0, //use of bed-net leading to reduction in bite rate
   v_to_hR: 1.0, //use of residual-spraying leading to reduction in v_to_h
   nMDA: 5, //number of rounds of MDA
-  mdaFreq: 12, //frequency of MDA (months)
+  mdaFreq: 6, //frequency of MDA (months)
   covMDA: 0.65, //coverage of MDA
   s2: 0.00275, //probability of L3 developing into adult worm.
   mfPropMDA: 0.05, //proportion of mf removed for a single MDA round.
@@ -909,7 +909,7 @@ export var statFunctions = {
     params.inputs = ps
     params.runs = Number(ps.runs)
     params.nMDA = dict && dict.nMDA ? dict.nMDA : Number(ps.mda)
-    params.mdaFreq = ps.mdaSixMonths === 'True' ? 6.0 : 12.0
+    params.mdaFreq = ps.mdaSixMonths // === 'True' ? 6.0 : 12.0
     var end =
       dict && dict.endemicity ? dict.endemicity / 100 : ps.endemicity / 100
     //    console.log(end)
