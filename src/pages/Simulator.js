@@ -404,6 +404,7 @@ const Simulator = (props) => {
         SimulatorEngine.simControler.mdaObjFuture = mdaPrediction
 
         console.log('runningScenario')
+        console.log('SimulatorEngine.simControler.parametersJSON',SimulatorEngine.simControler.parametersJSON)
 
         SimulatorEngine.simControler.newScenario = true
         SimulatorEngine.simControler.runScenario(

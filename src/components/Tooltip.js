@@ -3,10 +3,10 @@ import { Tooltip as MuiTooltip } from '@material-ui/core'
 import { NO_DATA } from '../constants'
 
 export default function Tooltip({ feature, year, position }) {
-  const { name, performance, [`prev-${year}`]: prevalence } = feature.properties
+  const { endemicity,name, performance, [`prev-${year}`]: prevalence } = feature.properties
   const [x, y] = position
 
-  const title =
+  let title =
     prevalence !== 'null'
       ? `${name} ${prevalence}% ${
           performance <= 0
@@ -14,6 +14,10 @@ export default function Tooltip({ feature, year, position }) {
             : '⬆' + performance + '%'
         }`
       : `${name} ${NO_DATA}`
+
+  if ( endemicity === 'Non-endemic' ) {
+    title = `${name} [${endemicity}]`
+  }
 
   return (
     <MuiTooltip title={title} open placement="top">

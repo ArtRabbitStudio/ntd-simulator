@@ -26,6 +26,7 @@ function Map({
     trendMode,
     colorScale,
     forwardRef,
+    showNotAvailable,
 }) {
     const [
         { year, viewport, feature, featureHover, popup, tooltip, playing, ready },
@@ -87,42 +88,24 @@ function Map({
                 //console.log('country click',feature.properties.ADMIN0ISO3)
                 history.push(`/country/${feature.properties.ADMIN0ISO3}`)
             }
+
             if (feature.properties.IU_ID) {
-                history.push(`/setup/${country}/${feature.properties.IU_ID}`)
-                //console.log('iu click',feature.properties.IU_ID)
+                if ( feature.properties.endemicity === 'Non-endemic' ) {
+                    showNotAvailable('Non-endemic')
+                    dispatch({ type: 'HOVEROUT' })
+                } else if ( feature.properties['prev-2019'] === null  ) {
+                    showNotAvailable('Not enough data available')
+                    dispatch({ type: 'HOVEROUT' })
+                } else {
+                    history.push(`/setup/${country}/${feature.properties.IU_ID}`)
+                }
+
             }
         }
 
-        //if (feature) {
-        //    dispatch({ type: 'SELECT', payload: { feature, event } })
-        //}
-
-        //TODO: select IU and go there
     }
 
-    //   const selectCountryClickHotspots = countryId => {
-    //     if (match) {
-    //       if (match.params.section != 'trends') {
-    //         match.params.section = 'hotspots'
-    //       }
-
-    //       history.push(`/${match.params.section}/${countryId}`)
-    //     } else {
-    //       history.push(`/hotspots/${countryId}`)
-    //     }
-    //   }
-
-    //   const selectCountryClickTrends = countryId => {
-    //     if (match) {
-    //       if (match.params.section != 'trends') {
-    //         match.params.section = 'trends'
-    //       }
-
-    //       history.push(`/${match.params.section}/${countryId}`)
-    //     } else {
-    //       history.push(`/trends/${countryId}`)
-    //     }
-    //   }
+ 
 
     const handleHover = event => {
         if (event.features) {
@@ -182,7 +165,6 @@ function Map({
                             filter={['has', colorProp]}
                             layout={{ 'line-join': 'bevel' }}
                             paint={{
-                                'fill-color': '#CCE8F4',
                                 'line-color': 'rgba(0,0,0,0)',
                                 'line-width': 1,
                             }}

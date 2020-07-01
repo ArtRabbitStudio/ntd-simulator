@@ -1,8 +1,9 @@
-import React, { Fragment } from 'react'
+import React, { Fragment,useState } from 'react'
 import { observer } from 'mobx-react'
 import { Box, Typography, Grid } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { abbrNum } from '../utils'
+import SimpleDialog from './components/SimpleDialog'
 
 import { useDataAPI, useUIState } from '../hooks/stateHooks'
 import { Layout } from '../layout'
@@ -40,6 +41,9 @@ const useStyles = makeStyles(theme => ({
 
 
 const Country = props => {
+    const [notAvaliableAlert, setnotAvaliableAlert] = useState(false)
+    const [alertText, setAlertText] = useState('')
+
     const classes = useStyles()
     const {
         iuFeatures,
@@ -73,11 +77,27 @@ const Country = props => {
                         height={720}
                         disableZoom={true}
                         country={country}
+                        showNotAvailable={(value)=>{
+                            setAlertText(value)
+                            setnotAvaliableAlert(true)
+                        }}
                     />
                 </div>
             </section>
+            
+            {notAvaliableAlert &&
+                <SimpleDialog
+                title={alertText}
+                onClose={() => {
+                    setnotAvaliableAlert(false)
+                }}
+                open={notAvaliableAlert}
+                />
+            }
+
 
         </Layout>
+        
     )
 }
 export default observer(Country)
