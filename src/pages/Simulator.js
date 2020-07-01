@@ -277,9 +277,10 @@ const Simulator = (props) => {
       SimulatorEngine.simControler.mdaObjUI = fullMDA
       SimulatorEngine.simControler.mdaObj2015 = newMdaObj2015
       SimulatorEngine.simControler.mdaObjFuture = mdaPrediction
-
-      const newParams = simParams.IUData.params
-      SimulatorEngine.simControler.parametersJSON = newParams
+      /*       const newParams = simParams.IUData.params
+      SimulatorEngine.simControler.parametersJSON = newParams */
+      const iuParams = await loadIUParams()
+      SimulatorEngine.simControler.parametersJSON = iuParams
       console.log('runningScenario')
 
       SimulatorEngine.simControler.newScenario = false
@@ -404,7 +405,10 @@ const Simulator = (props) => {
         SimulatorEngine.simControler.mdaObjFuture = mdaPrediction
 
         console.log('runningScenario')
-        console.log('SimulatorEngine.simControler.parametersJSON',SimulatorEngine.simControler.parametersJSON)
+        console.log(
+          'SimulatorEngine.simControler.parametersJSON',
+          SimulatorEngine.simControler.parametersJSON
+        )
 
         SimulatorEngine.simControler.newScenario = true
         SimulatorEngine.simControler.runScenario(
@@ -666,8 +670,12 @@ const Simulator = (props) => {
                         </div>
                       )}
                       <div className={classes.scenarioGraphLegend}>
-                        <Typography variant="h6" component="h6">Historic</Typography>
-                        <Typography variant="h6" component="h6">Prediction</Typography>
+                        <Typography variant="h6" component="h6">
+                          Historic
+                        </Typography>
+                        <Typography variant="h6" component="h6">
+                          Prediction
+                        </Typography>
                       </div>
                       <ScenarioGraph
                         data={result}
