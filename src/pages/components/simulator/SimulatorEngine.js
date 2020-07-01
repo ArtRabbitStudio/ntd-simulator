@@ -19,6 +19,7 @@ export var SessionData = {
       results: results,
       label: scenLabel,
       mda: simControler.mdaObj,
+      mdaUI: simControler.mdaObjUI,
       mda2015: simControler.mdaObj2015,
       mdaFuture: simControler.mdaObjFuture,
     }
@@ -1207,6 +1208,16 @@ export var simControler = {
     runs: 5, // $("#runs").val() */
   },
   mdaObj: {
+    // this is the ONE processed by simulator
+    time: [], // 60, 96, 120, 144, 180
+    coverage: [], // 0.9, 0.9, 0.9, 0.9, 0.9
+    adherence: [], // 1, 1, 1, 1, 1
+    bednets: [], // 60, 96, 120, 144, 180
+    regimen: [], // "xiA" / "xDA" ...
+    active: [], // true, false, true, ...
+  },
+  mdaObjUI: {
+    // this one contains inactive MDA rounds as well (for UI)
     time: [], // 60, 96, 120, 144, 180
     coverage: [], // 0.9, 0.9, 0.9, 0.9, 0.9
     adherence: [], // 1, 1, 1, 1, 1

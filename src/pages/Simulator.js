@@ -23,6 +23,7 @@ import ConfirmationDialog from './components/ConfirmationDialog'
 import HeadWithInputs from './components/HeadWithInputs'
 import SelectCountry from './components/SelectCountry'
 import MdaBars from './components/simulator/MdaBars'
+import { removeInactiveMDArounds } from './components/simulator/helpers/Mda'
 import {
   loadIUParams,
   loadMdaHistory,
@@ -239,7 +240,6 @@ const Simulator = (props) => {
       //      console.log(simParams.mdaObjTweakedPrediction)
       const mdaPrediction = simParams.mdaObjTweakedPrediction //generateMdaFuture(simParams)
 
-      // SimulatorEngine.simControler.mdaObj = newMdaObj
       const fullMDA =
         mdaPrediction && mdaPrediction.time
           ? {
@@ -251,7 +251,7 @@ const Simulator = (props) => {
               active: [...mdaHistory.active, ...mdaPrediction.active],
             }
           : mdaHistory
-      SimulatorEngine.simControler.mdaObj = fullMDA
+      SimulatorEngine.simControler.mdaObj = removeInactiveMDArounds(fullMDA)
 
       const yearsToLeaveOut = 14
       let newMdaObj2015 = {
@@ -274,6 +274,7 @@ const Simulator = (props) => {
           return index > yearsToLeaveOut
         }),
       }
+      SimulatorEngine.simControler.mdaObjUI = fullMDA
       SimulatorEngine.simControler.mdaObj2015 = newMdaObj2015
       SimulatorEngine.simControler.mdaObjFuture = mdaPrediction
 
@@ -375,7 +376,7 @@ const Simulator = (props) => {
                 active: [...mdaHistory.active, ...mdaPrediction.active],
               }
             : mdaHistory
-        SimulatorEngine.simControler.mdaObj = fullMDA
+        SimulatorEngine.simControler.mdaObj = removeInactiveMDArounds(fullMDA)
 
         const yearsToLeaveOut = 14
         let mdaHistory2015 = {
@@ -398,6 +399,7 @@ const Simulator = (props) => {
             return index > yearsToLeaveOut
           }),
         }
+        SimulatorEngine.simControler.mdaObjUI = fullMDA
         SimulatorEngine.simControler.mdaObj2015 = mdaHistory2015
         SimulatorEngine.simControler.mdaObjFuture = mdaPrediction
 

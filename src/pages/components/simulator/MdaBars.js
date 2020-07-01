@@ -88,9 +88,9 @@ const MdaBars = (props) => {
     if (tweakedMDAs && tweakedMDAs.time && tweakedMDAs.time.length > 0) {
       const needsRerun =
         JSON.stringify(defaultMDAs) !== JSON.stringify(tweakedMDAs)
-      console.log('needsRerun', needsRerun)
+      /*       console.log('needsRerun', needsRerun)
       console.log(defaultMDAs)
-      console.log(tweakedMDAs)
+      console.log(tweakedMDAs) */
       if (needsRerun) {
         dispatchSimParams({
           type: 'needsRerun',
