@@ -51,7 +51,7 @@ tspan {
   height: 100px;
   justify-content: space-around;
   // margin: 30px 20px 20px 55px;
-  margin: 30px 75px 20px 30px;
+  margin: 5px 50px 20px 50px;
   &.setup {
     margin-left: 0;
     margin-top: 60px;
@@ -62,22 +62,22 @@ tspan {
   .bar {
     //background: #b09aff;
     position: relative;
-    height: 100px;
+    height: 110px;
     min-width: 1px;
     border: 1px solid white;
     cursor: pointer;
     background-image: linear-gradient(
       to bottom,
-      rgba(0, 141, 201, 0.4) 1%,
+      rgba(204,232,244, 1) 1%,
       transparent
     );
     &.history {
       cursor: default;
       background-image: linear-gradient(
-        to bottom,
-        rgba(0, 0, 0, 0.4) 1%,
-        transparent
-      );
+          to bottom,
+          rgba(220, 225, 227, 1) 1%,
+          transparent
+        );
     }
     &:before {
       content: '';
@@ -110,9 +110,14 @@ tspan {
 
     &.removed {
       > span {
-        opacity: 0.1;
+        background-image: linear-gradient(
+          to bottom,
+          rgba(204,232,244, 1) 1%,
+          transparent
+        );
       }
     }
+
 
     > span {
       display: block;
@@ -120,7 +125,7 @@ tspan {
       min-width: 10px;
       opacity: 1;
       //transition: opacity 0.2s ease-in;
-
+      //background: rgba(0, 141, 201, 1);
       background-image: linear-gradient(
         to bottom,
         rgba(0, 141, 201, 1) 1%,
@@ -131,6 +136,27 @@ tspan {
         //background: #d01c8b;
 
         background-image: linear-gradient(to bottom, #d01c8b 1%, transparent);
+      }
+    }
+    &.history {
+      > span {
+        display: block;
+        //background: #6236ff;
+        min-width: 10px;
+        opacity: 1;
+        //transition: opacity 0.2s ease-in;
+        //background: rgba(0, 141, 201, 1);
+        background-image: linear-gradient(
+          to bottom,
+          rgba(88, 110, 120, 1) 1%,
+          transparent
+        );
+
+        &.current {
+          //background: #d01c8b;
+
+          background-image: linear-gradient(to bottom, #d01c8b 1%, transparent);
+        }
       }
     }
   }
