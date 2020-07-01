@@ -545,7 +545,9 @@ const Simulator = (props) => {
                             }
                             className={classes.removeIcon}
                             onClick={confirmRemoveCurrentScenario}
-                          ></Fab>
+                          >
+                            &nbsp;
+                          </Fab>
 
                           <ChartSettings
                             title="Edit scenario"
