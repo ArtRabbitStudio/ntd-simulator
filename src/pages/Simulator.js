@@ -665,7 +665,10 @@ const Simulator = (props) => {
                           </Button>
                         </div>
                       )}
-
+                      <div className={classes.scenarioGraphLegend}>
+                        <Typography variant="h6" component="h6">Historic</Typography>
+                        <Typography variant="h6" component="h6">Prediction</Typography>
+                      </div>
                       <ScenarioGraph
                         data={result}
                         showAllResults={false}

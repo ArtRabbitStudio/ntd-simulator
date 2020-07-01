@@ -44,8 +44,10 @@ function ScenarioGraph({
     flattenDeep(map( data.results , (x) => values(pick(x, metrics))))
   )
   const ShowActivePoint = ({ active, coord, mode }) => {
-    const highColour = mode === 'f' ? '#D86422' : '#A3A3A3'
+    const highColour = mode === 'f' ? '#FAEAE1' : '#cccccc'
     const lowColour =  mode === 'f' ? '#03D386' : '#A8CFC0'
+    const textHigh = mode === 'f' ? '#D86422' : '#222222'
+    const textLow = mode === 'f' ? '#077A50' : '#077A50'
 
     return (
       <g
@@ -68,7 +70,6 @@ function ScenarioGraph({
           cy={-18}
         ></circle>
         <text
-          fill="white"
           fontSize="12px"
           fontFamily="Roboto"
           pointerEvents="none"
@@ -76,6 +77,15 @@ function ScenarioGraph({
           y={-18}
           textAnchor="middle"
           dominantBaseline="central"
+          fill={
+            coord[2] <= 1
+              ? textLow
+              : coord[2] >= 6 && coord[2] <= 10
+              ? textHigh
+              : coord[2] > 10
+              ? textHigh
+              : textHigh
+          }
         >
           {`${coord[2].toFixed(1)}%`}
         </text>
@@ -293,6 +303,15 @@ function ScenarioGraph({
             </g>
           )
         })}
+        <line
+          key={`WHO target`}
+          x1={0}
+          x2={width - lPad - rPad}
+          y1={y(1)}
+          y2={y(1)}
+          stroke="#03D386"
+          strokeDasharray='10 2'
+        ></line>
         {data.results &&
           data.results.map((result, i) => (
               <g key={`results1-${i}`}>{renderResult(result, false)}</g>

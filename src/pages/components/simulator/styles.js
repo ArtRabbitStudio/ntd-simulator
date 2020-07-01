@@ -252,6 +252,12 @@ const useStyles = makeStyles((theme) => ({
   scenarioGraph: {
     position: "relative",
   },
+  scenarioGraphLegend: {
+    "& .MuiTypography-h6": {
+        width: 300,
+    }
+    
+  },
 }));
 
 export default useStyles;
