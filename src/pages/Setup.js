@@ -64,6 +64,17 @@ const useStyles = makeStyles((theme) => ({
   charts: {
     position: 'relative',
     backgroundColor: theme.palette.secondary.dark,
+    margin: theme.spacing(0, 0, 4, 0),
+    '&:after': {
+      content: `''`,
+      display: 'table',
+      clear: 'both',
+    },
+  },
+  heading: {
+    color: '#000',
+    fontWeight: 18,
+    fontWeight: 500,
   },
   chart: {
     paddingBottom: theme.spacing(4),
@@ -347,74 +358,51 @@ const Setup = (props) => {
 
           <div className={classes.formControlWrap}>
             <div className={classes.setupFormControl}>
-              <SettingMosquitoType inModal={false} label="Mosquito type" />
+              <Typography gutterBottom variant="h4" component="h3">
+                Mosquito settings
+              </Typography>
+
+              <Accordion>
+                <AccordionSummary
+                  expandIcon={<ExpandMoreIcon />}
+                  aria-controls="panel1a-content"
+                  id="panel1a-header"
+                >
+                  <Typography className={classes.heading}>Mosquito type</Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <SettingMosquitoType inModal={false} label="" />
+                </AccordionDetails>
+              </Accordion>
+              <Accordion>
+                <AccordionSummary
+                  expandIcon={<ExpandMoreIcon />}
+                  aria-controls="panel2a-content"
+                  id="panel2a-header"
+                >
+                  <Typography className={classes.heading}>Vector: Insecticide Coverage</Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <SettingInsecticideCoverage
+                    inModal={false}
+                    label=""
+                  />
+                </AccordionDetails>
+              </Accordion>
+
             </div>
           </div>
 
-          <div className={classes.formControlWrap}>
+
+          <div className={`${classes.formControlWrap}`}>
             <div className={classes.setupFormControl}>
-              <SettingInsecticideCoverage
+              <SettingSystematicAdherence
                 inModal={false}
-                label="Vector: Insecticide Coverage"
+                label="Systematic adherence"
               />
             </div>
           </div>
 
-          <div className={`${classes.formControlWrap} fullwidth`}>
-            <div className={classes.halfFormControl}>
-              <div className={classes.setupFormControl}>
-                <SettingSystematicAdherence
-                  inModal={false}
-                  label="Systematic adherence"
-                />
-              </div>
-            </div>
-          </div>
-
-          <div className={`${classes.formControlWrap} fullwidth`}>
-            <div className={classes.halfFormControl}>
-              <div className={classes.setupFormControl}>
-
-                <Typography variant="h4" component="h3">
-                  Headline
-                </Typography>
-
-
-                <Accordion>
-                  <AccordionSummary
-                    expandIcon={<ExpandMoreIcon />}
-                    aria-controls="panel1a-content"
-                    id="panel1a-header"
-                  >
-                    <Typography className={classes.heading}>Accordion 1</Typography>
-                  </AccordionSummary>
-                  <AccordionDetails>
-                    <SettingSystematicAdherence
-                      inModal={false}
-                      label="Systematic adherence"
-                    />
-                  </AccordionDetails>
-                </Accordion>
-                <Accordion>
-                  <AccordionSummary
-                    expandIcon={<ExpandMoreIcon />}
-                    aria-controls="panel2a-content"
-                    id="panel2a-header"
-                  >
-                    <Typography className={classes.heading}>Accordion 2</Typography>
-                  </AccordionSummary>
-                  <AccordionDetails>
-                    <Typography>
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex,
-                      sit amet blandit leo lobortis eget.
-                    </Typography>
-                  </AccordionDetails>
-                </Accordion>
-
-
-              </div>
-            </div>
-          </div>
         </div>
 
         <TextContents>
