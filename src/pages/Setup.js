@@ -276,23 +276,23 @@ const Setup = (props) => {
                 mdaObjTimeFiltered.time.map((e, i) => (
                   <div
                     key={`bar-setup-${i}`}
-                    className={`bar setup c${simParams.IUData.mdaObj.coverage[i]}`}
+                    className={`bar setup c${mdaObjTimeFiltered.coverage[i]}`}
                     title={
-                      simParams.IUData.mdaObj.time[i] +
+                      mdaObjTimeFiltered.time[i] +
                       ', ' +
-                      simParams.IUData.mdaObj.coverage[i] +
+                      mdaObjTimeFiltered.coverage[i] +
                       ', ' +
-                      simParams.IUData.mdaObj.adherence[i] +
+                      mdaObjTimeFiltered.adherence[i] +
                       ', ' +
-                      simParams.IUData.mdaObj.bednets[i] +
+                      mdaObjTimeFiltered.bednets[i] +
                       ', ' +
-                      simParams.IUData.mdaObj.regimen[i] +
+                      mdaObjTimeFiltered.regimen[i] +
                       ' '
                     }
                   >
                     <span
                       style={{
-                        height: simParams.IUData.mdaObj.coverage[i],
+                        height: mdaObjTimeFiltered.coverage[i],
                       }}
                     ></span>
                   </div>

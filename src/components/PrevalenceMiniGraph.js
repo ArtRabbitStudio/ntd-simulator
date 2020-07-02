@@ -52,6 +52,7 @@ function PrevalenceMiniGraph({
   const seriesObj = filter(cleanedPrevalence,(value,index)=>{
       return ( (2000 + index) >= start && (2000+index) <= end )
   })
+
   
   return (
     <svg
