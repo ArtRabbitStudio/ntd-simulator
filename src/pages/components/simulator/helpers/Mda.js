@@ -57,6 +57,6 @@ export const removeInactiveMDArounds = (fullMDA) => {
       (item, index) => indexesToBeRemoved.indexOf(index) === -1
     ),
   }
-  console.log(cleanMDA)
+  //console.log(cleanMDA)
   return cleanMDA
 }

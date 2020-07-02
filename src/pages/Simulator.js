@@ -130,8 +130,8 @@ const Simulator = (props) => {
     //    console.log(scenarioInputs[tabIndex])
     if (typeof scenarioInputs[tabIndex] != 'undefined') {
       // set input arams if you have them
-      console.log('scenarioInputs[tabIndex]')
-      console.log(scenarioInputs[tabIndex])
+      //console.log('scenarioInputs[tabIndex]')
+     // console.log(scenarioInputs[tabIndex])
       dispatchSimParams({
         type: 'everythingbuthistoric',
         payload: scenarioInputs[tabIndex],
@@ -221,15 +221,15 @@ const Simulator = (props) => {
     // but this should as well reset globa params, right?
   }
   const runCurrentScenario = async () => {
-    console.log(simParams)
+    //console.log(simParams)
     console.log('runCurrentScenario', !simInProgress)
     //console.log('simParams',simParams)
     if (!simInProgress) {
       setSimInProgress(true)
-      console.log(tabIndex, simParams)
+      //console.log(tabIndex, simParams)
       const IUData = obtainIUData(simParams, dispatchSimParams)
       const mdaHistory = IUData.mdaObj
-      console.log('prediction pulled from simParams.mdaObjTweakedPrediction')
+      //console.log('prediction pulled from simParams.mdaObjTweakedPrediction')
       //      console.log(simParams.mdaObjTweakedPrediction)
       const mdaPrediction = simParams.mdaObjTweakedPrediction
 
@@ -348,8 +348,6 @@ const Simulator = (props) => {
           payload: mdaPrediction,
         })
         //        simParams.mdaObjTweakedPrediction // mdaObjTweakedPrediction // mdaObjDefaultPrediction
-        console.log('mdaPrediction')
-        console.log(mdaPrediction)
         const fullMDA =
           mdaPrediction && mdaPrediction.time
             ? {
@@ -391,12 +389,6 @@ const Simulator = (props) => {
         SimulatorEngine.simControler.mdaObj2015 = mdaHistory2015
         SimulatorEngine.simControler.mdaObjFuture = mdaPrediction
 
-        console.log('runningScenario')
-        console.log(
-          'SimulatorEngine.simControler.parametersJSON',
-          SimulatorEngine.simControler.parametersJSON
-        )
-
         SimulatorEngine.simControler.newScenario = true
         SimulatorEngine.simControler.runScenario(
           simParams,
@@ -422,7 +414,6 @@ const Simulator = (props) => {
       : null
     // console.log('scenariosArray', scenariosArray)
     if (scenariosArray) {
-      console.log('load simParams from LS')
       let paramsInputs = scenariosArray.map((item) => item.params.inputs)
       let mdaFuture = scenariosArray.map((item) => item.mdaFuture)
       let MDAs = scenariosArray.map((item) => item.mda2015)
@@ -452,8 +443,6 @@ const Simulator = (props) => {
       //      console.log(paramsInputsWithPrediction[tabIndex])
       if (typeof paramsInputsWithPrediction[tabIndex] != 'undefined') {
         setScenarioMDAs(MDAs)
-        //        console.log(paramsInputsWithPrediction[tabIndex])
-        console.log(simParams)
         dispatchSimParams({
           type: 'everythingbuthistoric',
           payload: paramsInputsWithPrediction[tabIndex],

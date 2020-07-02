@@ -12,7 +12,7 @@ export const loadAllIUhistoricData = async (
   window.localStorage.removeItem('sessionData')
 
   const doWeHaveData = simParams.IUData.IUloaded === implementationUnit
-  console.log('doWeHaveData ? ', doWeHaveData)
+  //console.log('doWeHaveData ? ', doWeHaveData)
   // if (!doWeHaveData) {
   const mdaData = await loadMdaHistory(implementationUnit)
   const params = await loadIUParams(implementationUnit)
@@ -52,7 +52,7 @@ export const loadAllIUhistoricData = async (
   if (adherence) defaults.rho = adherence
   const coverage = last(filter(mdaData.coverage, (x) => x != 0))
   if (coverage) defaults.coverage = coverage
-  console.log(defaults)
+  //console.log(defaults)
   dispatchSimParams({
     type: 'everything',
     payload: defaults,
