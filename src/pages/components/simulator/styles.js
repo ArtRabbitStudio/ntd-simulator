@@ -175,6 +175,10 @@ const useStyles = makeStyles((theme) => ({
     paddingRight: 30,
     padding: theme.spacing(1, 0),
   },
+  centered: {
+    marginLeft: 'auto',
+    marginRight: 'auto',
+  },
   modalButton: {
     width: "50%",
     //borderTopLeftRadius: 0,

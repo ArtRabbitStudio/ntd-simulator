@@ -31,7 +31,7 @@ const SettingSystematicAdherence = ({
           className={
             inModal
               ? classes.withHelp
-              : `${classes.withSlider} ${classes.withHelp}`
+              : `${classes.withSlider} ${classes.centered} ${classes.withHelp}`
           }
         >
           {label}
