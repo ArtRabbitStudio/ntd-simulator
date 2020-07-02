@@ -15,40 +15,32 @@ import { useTheme } from '@material-ui/styles'
 import PropTypes from 'prop-types'
 import React, { useEffect, useState } from 'react'
 import ScenarioGraph from '../components/ScenarioGraph'
+import { useUIState } from '../hooks/stateHooks'
 import { Layout } from '../layout'
 import { useStore } from './../store/simulatorStore'
-import { useUIState } from '../hooks/stateHooks'
 import ChartSettings from './components/ChartSettings'
 import ConfirmationDialog from './components/ConfirmationDialog'
 import HeadWithInputs from './components/HeadWithInputs'
 import SelectCountry from './components/SelectCountry'
-import MdaBars from './components/simulator/MdaBars'
 import { removeInactiveMDArounds } from './components/simulator/helpers/Mda'
+import MdaBars from './components/simulator/MdaBars'
+import { generateMdaFuture } from './components/simulator/ParamMdaLoader'
+// settings
 import {
-  loadIUParams,
-  loadMdaHistory,
-  generateMdaFuture,
-  loadAllIUhistoricData,
-} from './components/simulator/ParamMdaLoader'
+  SettingBedNetCoverage,
+  SettingDrugRegimen,
+  SettingFrequency,
+  SettingInsecticideCoverage,
+  SettingMosquitoType,
+  SettingName,
+  SettingPrecision,
+  SettingSpecificScenario,
+  SettingSystematicAdherence,
+  SettingTargetCoverage,
+} from './components/simulator/settings'
 import * as SimulatorEngine from './components/simulator/SimulatorEngine'
 import useStyles from './components/simulator/styles'
 import TextContents from './components/TextContents'
-
-// settings
-import {
-  SettingName,
-  SettingFrequency,
-  SettingTargetCoverage,
-  SettingDrugRegimen,
-  SettingBasePrevalence,
-  SettingNumberOfRuns,
-  SettingMosquitoType,
-  SettingBedNetCoverage,
-  SettingInsecticideCoverage,
-  SettingPrecision,
-  SettingSystematicAdherence,
-  SettingSpecificScenario,
-} from './components/simulator/settings'
 
 SimulatorEngine.simControler.documentReady()
 
@@ -236,8 +228,8 @@ const Simulator = (props) => {
       // if (doWeHaveData) {
       setSimInProgress(true)
       console.log(tabIndex, simParams)
-
-      const mdaHistory = await loadMdaHistory()
+      const IUData = obtainIUData()
+      const mdaHistory = IUData.mdaObj
       console.log('prediction pulled from simParams.mdaObjTweakedPrediction')
       //      console.log(simParams.mdaObjTweakedPrediction)
       const mdaPrediction = simParams.mdaObjTweakedPrediction
@@ -279,8 +271,7 @@ const Simulator = (props) => {
       SimulatorEngine.simControler.mdaObjUI = fullMDA
       SimulatorEngine.simControler.mdaObj2015 = newMdaObj2015
       SimulatorEngine.simControler.mdaObjFuture = mdaPrediction
-      const iuParams = obtainIUParams()
-      SimulatorEngine.simControler.parametersJSON = iuParams
+      SimulatorEngine.simControler.parametersJSON = IUData
       console.log('runningScenario')
 
       SimulatorEngine.simControler.newScenario = false
@@ -337,19 +328,18 @@ const Simulator = (props) => {
       removeCurrentScenario()
     }
   }
-  const obtainIUParams = () => {
+  const obtainIUData = () => {
     // Store? Storage? Redirect.
-    let iuParams = simParams.IUData.params
-    if (!iuParams) {
+    let IUData = simParams.IUData
+    if (!IUData) {
       let simParamsFromLC = window.localStorage.getItem('simParams')
       simParamsFromLC = JSON.parse(simParamsFromLC)
       const IUDataFromLC =
         simParamsFromLC && simParamsFromLC.IUData
           ? simParamsFromLC.IUData
           : null
-      iuParams =
-        IUDataFromLC && IUDataFromLC.params ? IUDataFromLC.params : null
-      if (iuParams) {
+      IUData = IUDataFromLC && IUDataFromLC ? IUDataFromLC : null
+      if (IUData) {
         dispatchSimParams({
           type: 'IUData',
           payload: IUDataFromLC,
@@ -357,9 +347,9 @@ const Simulator = (props) => {
       } else {
         window.location.href = '/'
       }
-      console.log(iuParams)
+      console.log(IUData)
     }
-    return iuParams
+    return IUData
   }
   const runNewScenario = async () => {
     if (!simInProgress) {
@@ -369,10 +359,9 @@ const Simulator = (props) => {
         // console.log('settingTabLength', tabLength + 1)
         //console.log(tabIndex, simParams)
 
-        const iuParams = obtainIUParams()
-        SimulatorEngine.simControler.parametersJSON = iuParams
-
-        const mdaHistory = await loadMdaHistory()
+        const IUData = obtainIUData()
+        SimulatorEngine.simControler.parametersJSON = IUData.params
+        const mdaHistory = IUData.mdaObj
         const mdaPrediction = generateMdaFuture(simParams)
         dispatchSimParams({
           // is this actually needed? Or is this setup on
