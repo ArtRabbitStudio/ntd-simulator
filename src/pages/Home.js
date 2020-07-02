@@ -50,6 +50,7 @@ const Home = (props) => {
     const history = useHistory();
 
 
+
     return (
         <Layout /* classAdd="full-height"*/ >
             <HeadWithInputs
