@@ -8,12 +8,12 @@ function getAllIndexes(arr, val) {
 }
 
 export const removeInactiveMDArounds = (fullMDA) => {
-  console.log('cleaning MDA')
-  console.log(fullMDA)
+  // console.log('cleaning MDA')
+  // console.log(fullMDA)
   const indexesToBeRemoved = getAllIndexes(fullMDA.active, false)
   //   console.log(indexesToBeRemoved)
 
-  // setting coverage to 0 
+  // setting coverage to 0
   /*const cleanMDA = {
     time: [...fullMDA.time],
     coverage:
@@ -38,30 +38,24 @@ export const removeInactiveMDArounds = (fullMDA) => {
 
   // actually removing treatment rounds
   const cleanMDA = {
-    time: 
-      fullMDA.time.filter(
-        (item, index) => indexesToBeRemoved.indexOf(index) === -1
-      ),
-    coverage: 
-      fullMDA.coverage.filter(
-        (item, index) => indexesToBeRemoved.indexOf(index) === -1
-      ),
-    adherence: 
-      fullMDA.adherence.filter(
-        (item, index) => indexesToBeRemoved.indexOf(index) === -1
-      ),
-    bednets: 
-      fullMDA.bednets.filter(
-        (item, index) => indexesToBeRemoved.indexOf(index) === -1
-      ),
-    regimen: 
-      fullMDA.regimen.filter(
-        (item, index) => indexesToBeRemoved.indexOf(index) === -1
-      ),
-    active: 
-      fullMDA.active.filter(
-        (item, index) => indexesToBeRemoved.indexOf(index) === -1
-      ),
+    time: fullMDA.time.filter(
+      (item, index) => indexesToBeRemoved.indexOf(index) === -1
+    ),
+    coverage: fullMDA.coverage.filter(
+      (item, index) => indexesToBeRemoved.indexOf(index) === -1
+    ),
+    adherence: fullMDA.adherence.filter(
+      (item, index) => indexesToBeRemoved.indexOf(index) === -1
+    ),
+    bednets: fullMDA.bednets.filter(
+      (item, index) => indexesToBeRemoved.indexOf(index) === -1
+    ),
+    regimen: fullMDA.regimen.filter(
+      (item, index) => indexesToBeRemoved.indexOf(index) === -1
+    ),
+    active: fullMDA.active.filter(
+      (item, index) => indexesToBeRemoved.indexOf(index) === -1
+    ),
   }
   console.log(cleanMDA)
   return cleanMDA
