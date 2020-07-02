@@ -81,8 +81,8 @@ const Simulator = (props) => {
   const { simParams, dispatchSimParams } = useStore()
   const { country, implementationUnit } = useUIState()
 
-  console.log('simParams')
-  console.log(simParams)
+  // console.log('simParams')
+  // console.log(simParams)
   /* MDA object */
   const [graphMetric, setGraphMetric] = useState('Ms')
 
@@ -331,7 +331,8 @@ const Simulator = (props) => {
   const obtainIUData = () => {
     // Store? Storage? Redirect.
     let IUData = simParams.IUData
-    if (!IUData) {
+    console.log(IUData)
+    if (!IUData.IUloaded) {
       let simParamsFromLC = window.localStorage.getItem('simParams')
       simParamsFromLC = JSON.parse(simParamsFromLC)
       const IUDataFromLC =
