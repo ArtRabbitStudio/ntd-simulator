@@ -243,13 +243,13 @@ const Simulator = (props) => {
       const fullMDA =
         mdaPrediction && mdaPrediction.time
           ? {
-              time: [...mdaHistory.time, ...mdaPrediction.time],
-              coverage: [...mdaHistory.coverage, ...mdaPrediction.coverage],
-              adherence: [...mdaHistory.adherence, ...mdaPrediction.adherence],
-              bednets: [...mdaHistory.bednets, ...mdaPrediction.bednets],
-              regimen: [...mdaHistory.regimen, ...mdaPrediction.regimen],
-              active: [...mdaHistory.active, ...mdaPrediction.active],
-            }
+            time: [...mdaHistory.time, ...mdaPrediction.time],
+            coverage: [...mdaHistory.coverage, ...mdaPrediction.coverage],
+            adherence: [...mdaHistory.adherence, ...mdaPrediction.adherence],
+            bednets: [...mdaHistory.bednets, ...mdaPrediction.bednets],
+            regimen: [...mdaHistory.regimen, ...mdaPrediction.regimen],
+            active: [...mdaHistory.active, ...mdaPrediction.active],
+          }
           : mdaHistory
       SimulatorEngine.simControler.mdaObj = removeInactiveMDArounds(fullMDA)
 
@@ -366,16 +366,16 @@ const Simulator = (props) => {
         const fullMDA =
           mdaPrediction && mdaPrediction.time
             ? {
-                time: [...mdaHistory.time, ...mdaPrediction.time],
-                coverage: [...mdaHistory.coverage, ...mdaPrediction.coverage],
-                adherence: [
-                  ...mdaHistory.adherence,
-                  ...mdaPrediction.adherence,
-                ],
-                bednets: [...mdaHistory.bednets, ...mdaPrediction.bednets],
-                regimen: [...mdaHistory.regimen, ...mdaPrediction.regimen],
-                active: [...mdaHistory.active, ...mdaPrediction.active],
-              }
+              time: [...mdaHistory.time, ...mdaPrediction.time],
+              coverage: [...mdaHistory.coverage, ...mdaPrediction.coverage],
+              adherence: [
+                ...mdaHistory.adherence,
+                ...mdaPrediction.adherence,
+              ],
+              bednets: [...mdaHistory.bednets, ...mdaPrediction.bednets],
+              regimen: [...mdaHistory.regimen, ...mdaPrediction.regimen],
+              active: [...mdaHistory.active, ...mdaPrediction.active],
+            }
             : mdaHistory
         SimulatorEngine.simControler.mdaObj = removeInactiveMDArounds(fullMDA)
 
@@ -669,25 +669,21 @@ const Simulator = (props) => {
                           </Button>
                         </div>
                       )}
-                      <div className={classes.scenarioGraphLegend}>
-                        <Typography variant="h6" component="h6">
-                          Historic
-                        </Typography>
-                        <Typography variant="h6" component="h6">
-                          Prediction
-                        </Typography>
-                      </div>
                       <ScenarioGraph
                         data={result}
                         showAllResults={false}
                         metrics={[graphMetric]}
                         simInProgress={simInProgress}
+                        classes={classes}
                       />
                     </div>
                     {scenarioMDAs[tabIndex] &&
                       simParams.mdaObjDefaultPrediction && (
                         <MdaBars history={scenarioMDAs[tabIndex]} />
                       )}
+                    <Typography className={classes.scenarioGraphLegendInterventions} variant="h6" component="h6">
+                      Interventions
+                    </Typography>
                   </div>
                 </div>
               </TabPanel>
