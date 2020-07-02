@@ -23,6 +23,7 @@ import ConfirmationDialog from './components/ConfirmationDialog'
 import HeadWithInputs from './components/HeadWithInputs'
 import SelectCountry from './components/SelectCountry'
 import { removeInactiveMDArounds } from './components/simulator/helpers/Mda'
+import { obtainIUData } from './components/simulator/helpers/obtainIUData'
 import MdaBars from './components/simulator/MdaBars'
 import { generateMdaFuture } from './components/simulator/ParamMdaLoader'
 // settings
@@ -221,14 +222,12 @@ const Simulator = (props) => {
   }
   const runCurrentScenario = async () => {
     console.log(simParams)
-    const doWeHaveData = simParams.IUData.IUloaded != null // simParams.IUData.IUloaded === implementationUnit; // TODO: THIS IS CORRECT ONCE WE HAVE ALL THE DATA
-    console.log('runCurrentScenario', !simInProgress, doWeHaveData)
+    console.log('runCurrentScenario', !simInProgress)
     //console.log('simParams',simParams)
     if (!simInProgress) {
-      // if (doWeHaveData) {
       setSimInProgress(true)
       console.log(tabIndex, simParams)
-      const IUData = obtainIUData()
+      const IUData = obtainIUData(simParams, dispatchSimParams)
       const mdaHistory = IUData.mdaObj
       console.log('prediction pulled from simParams.mdaObjTweakedPrediction')
       //      console.log(simParams.mdaObjTweakedPrediction)
@@ -271,7 +270,7 @@ const Simulator = (props) => {
       SimulatorEngine.simControler.mdaObjUI = fullMDA
       SimulatorEngine.simControler.mdaObj2015 = newMdaObj2015
       SimulatorEngine.simControler.mdaObjFuture = mdaPrediction
-      SimulatorEngine.simControler.parametersJSON = IUData
+      SimulatorEngine.simControler.parametersJSON = IUData.params
       console.log('runningScenario')
 
       SimulatorEngine.simControler.newScenario = false
@@ -280,7 +279,6 @@ const Simulator = (props) => {
         tabIndex,
         simulatorCallback
       )
-      // }
     }
   }
 
@@ -328,30 +326,6 @@ const Simulator = (props) => {
       removeCurrentScenario()
     }
   }
-  const obtainIUData = () => {
-    // Store? Storage? Redirect.
-    let IUData = simParams.IUData
-    console.log(IUData)
-    if (!IUData.IUloaded) {
-      let simParamsFromLC = window.localStorage.getItem('simParams')
-      simParamsFromLC = JSON.parse(simParamsFromLC)
-      const IUDataFromLC =
-        simParamsFromLC && simParamsFromLC.IUData
-          ? simParamsFromLC.IUData
-          : null
-      IUData = IUDataFromLC && IUDataFromLC ? IUDataFromLC : null
-      if (IUData) {
-        dispatchSimParams({
-          type: 'IUData',
-          payload: IUDataFromLC,
-        })
-      } else {
-        window.location.href = '/'
-      }
-      console.log(IUData)
-    }
-    return IUData
-  }
   const runNewScenario = async () => {
     if (!simInProgress) {
       if (tabLength < 5) {
@@ -360,7 +334,7 @@ const Simulator = (props) => {
         // console.log('settingTabLength', tabLength + 1)
         //console.log(tabIndex, simParams)
 
-        const IUData = obtainIUData()
+        const IUData = obtainIUData(simParams, dispatchSimParams)
         SimulatorEngine.simControler.parametersJSON = IUData.params
         const mdaHistory = IUData.mdaObj
         const mdaPrediction = generateMdaFuture(simParams)
@@ -485,17 +459,8 @@ const Simulator = (props) => {
           payload: paramsInputsWithPrediction[tabIndex],
         })
       }
-      // loadAllIUhistoricData(simParams, dispatchSimParams, implementationUnit)
     }
   }, [])
-  /*   useEffect(() => {
-    console.log(simParams.mdaObjDefaultPrediction)
-  }, [simParams.mdaObjDefaultPrediction]) */
-
-  /*   useEffect(() => {
-    console.log('mdaObjTweakedPrediction')
-    console.log(simParams.mdaObjTweakedPrediction)
-  }, [simParams.mdaObjTweakedPrediction]) */
 
   return (
     <Layout>
