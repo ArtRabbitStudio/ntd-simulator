@@ -653,11 +653,9 @@ class DataAPI {
   get iusByCountrySuggestions() {
     const { country } = this.uiState;
     const ius = this.iuByCoutryData;
-    // console.log('ius',ius);
-
     if (ius) {
       const result = flow(
-        map(({ id, name }) => ({ id, name })),
+        map(({ id, name, endemicity, prevalence }) => ({ id, name, endemicity, prevalence:prevalence['2020'] })),
         sortByFP("name")
       )(ius);
       return result;

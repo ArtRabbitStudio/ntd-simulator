@@ -131,9 +131,8 @@ const SelectCountry = ({ selectIU, showConfirmation }) => {
   };
 
   const selected = countrySuggestions.find(x => x.id === country)
-  const selectedIU = iusByCountrySuggestions.find(x => x.id === implementationUnit)
-
-
+  const activeIUs = iusByCountrySuggestions.filter(x => (x.prevalence != null && x.endemicity != "Non-endemic") )
+  const selectedIU = activeIUs.find(x => x.id === implementationUnit)
   return (
     <React.Fragment>
       <Box className={classes.box}>
@@ -155,7 +154,7 @@ const SelectCountry = ({ selectIU, showConfirmation }) => {
           <FormControl className={`${classes.formControl}`}>
             <Autocomplete
               id="iu"
-              options={iusByCountrySuggestions}
+              options={activeIUs}
               getOptionLabel={option => option.name}
               value={selectedIU ?? { name: 'Select IU' }}
               renderInput={params => (
