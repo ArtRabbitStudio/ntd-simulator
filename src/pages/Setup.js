@@ -1,11 +1,8 @@
-import {
-  Button,
-  Typography,
-} from '@material-ui/core'
-import Accordion from '@material-ui/core/Accordion';
-import AccordionSummary from '@material-ui/core/AccordionSummary';
-import AccordionDetails from '@material-ui/core/AccordionDetails';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import { Button, Typography } from '@material-ui/core'
+import Accordion from '@material-ui/core/Accordion'
+import AccordionSummary from '@material-ui/core/AccordionSummary'
+import AccordionDetails from '@material-ui/core/AccordionDetails'
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 
 import { makeStyles } from '@material-ui/core/styles'
 import { observer } from 'mobx-react'
@@ -215,7 +212,7 @@ const Setup = (props) => {
       regimen: [],
     }
     map(simParams.IUData.mdaObj.time, (e, i) => {
-      const currentYear = 2000 + (e / 12)
+      const currentYear = 2000 + e / 12
       if (currentYear >= startYear && currentYear <= endYear) {
         mdaObjTimeFiltered.time.push(simParams.IUData.mdaObj.time[i])
         mdaObjTimeFiltered.active.push(simParams.IUData.mdaObj.active[i])
@@ -230,6 +227,10 @@ const Setup = (props) => {
   const selecteIUName = selectedIUData[0] ? selectedIUData[0]['name'] : ''
 
   const submitSetup = (event) => {
+    dispatchSimParams({
+      type: 'specificPrediction',
+      payload: null,
+    })
     // pass params to simulator ..
     history.push({ pathname: `/simulator/${country}/${implementationUnit}` })
   }
@@ -364,7 +365,11 @@ const Setup = (props) => {
 
           <div className={classes.formControlWrap}>
             <div className={classes.setupFormControl}>
-              <Typography className={classes.accordionTitle} variant="h4" component="h3">
+              <Typography
+                className={classes.accordionTitle}
+                variant="h4"
+                component="h3"
+              >
                 Mosquito settings
               </Typography>
 
@@ -374,7 +379,9 @@ const Setup = (props) => {
                   aria-controls="panel1a-content"
                   id="panel1a-header"
                 >
-                  <Typography className={classes.heading}>Mosquito type</Typography>
+                  <Typography className={classes.heading}>
+                    Mosquito type
+                  </Typography>
                 </AccordionSummary>
                 <AccordionDetails>
                   <SettingMosquitoType inModal={false} label="" />
@@ -386,19 +393,16 @@ const Setup = (props) => {
                   aria-controls="panel2a-content"
                   id="panel2a-header"
                 >
-                  <Typography className={classes.heading}>Vector: Insecticide Coverage</Typography>
+                  <Typography className={classes.heading}>
+                    Vector: Insecticide Coverage
+                  </Typography>
                 </AccordionSummary>
                 <AccordionDetails>
-                  <SettingInsecticideCoverage
-                    inModal={false}
-                    label=""
-                  />
+                  <SettingInsecticideCoverage inModal={false} label="" />
                 </AccordionDetails>
               </Accordion>
-
             </div>
           </div>
-
 
           <div className={`${classes.formControlWrap}`}>
             <div className={classes.setupFormControl}>
@@ -408,7 +412,6 @@ const Setup = (props) => {
               />
             </div>
           </div>
-
         </div>
 
         <TextContents>
@@ -419,7 +422,7 @@ const Setup = (props) => {
           </Typography>
         </TextContents>
         <div className={classes.scenariosWrap}>
-          <div className={`${classes.buttonsControl}`}>
+          <div className={`${classes.buttonsControoooooooooooool}`}>
             <SettingSpecificScenario inModal={false} />
           </div>
         </div>
