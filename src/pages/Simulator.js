@@ -279,7 +279,28 @@ const Simulator = (props) => {
       SimulatorEngine.simControler.mdaObjUI = fullMDA
       SimulatorEngine.simControler.mdaObj2015 = newMdaObj2015
       SimulatorEngine.simControler.mdaObjFuture = mdaPrediction
-      const iuParams = simParams.IUData.params
+      // Store? Storage? Redirect.
+      let iuParams = simParams.IUData.params
+      if (!iuParams) {
+        let simParamsFromLC = window.localStorage.getItem('simParams')
+        simParamsFromLC = JSON.parse(simParamsFromLC)
+        const IUDataFromLC =
+          simParamsFromLC && simParamsFromLC.IUData
+            ? simParamsFromLC.IUData
+            : null
+        iuParams =
+          IUDataFromLC && IUDataFromLC.params ? IUDataFromLC.params : null
+        if (iuParams) {
+          dispatchSimParams({
+            type: 'IUData',
+            payload: IUDataFromLC,
+          })
+        } else {
+          window.location.href = '/'
+        }
+        console.log(iuParams)
+      }
+
       SimulatorEngine.simControler.parametersJSON = iuParams
       console.log('runningScenario')
 

@@ -51,6 +51,7 @@ export const loadAllIUhistoricData = async (
     type: 'everything',
     payload: defaults,
   })
+  window.localStorage.setItem('simParams', JSON.stringify(defaults))
   // }
 }
 
@@ -70,10 +71,10 @@ export const loadMdaHistory = async () => {
     bednets: mdaJSON.data.map((item) => Number(item.bednets)),
     adherence: mdaJSON.data.map((item) => Number(item.adherence)),
     active: mdaJSON.data.map((item) => {
-      if ( item.regimen === 'xxx' ) {
-        return false;
+      if (item.regimen === 'xxx') {
+        return false
       }
-      return true;
+      return true
     }),
   }
   // returns one more line than it's ought to?
