@@ -253,10 +253,21 @@ const useStyles = makeStyles((theme) => ({
     position: "relative",
   },
   scenarioGraphLegend: {
-    "& .MuiTypography-h6": {
-        width: 300,
+    whiteSpace: "nowrap",
+    marginBottom: -40,
+    marginTop: 10,
+    '& h6': {
+      display: 'inline-block'
     }
-    
+  },
+  scenarioGraphLegendHistoric: {
+    marginLeft: 50,
+  },
+  scenarioGraphLegendPrediction: {
+    width: 150
+  },
+  scenarioGraphLegendInterventions: {
+    marginLeft: 50,
   },
 }));
 

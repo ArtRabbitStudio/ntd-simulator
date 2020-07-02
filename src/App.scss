@@ -62,22 +62,23 @@ tspan {
   .bar {
     //background: #b09aff;
     position: relative;
+    z-index: 9;
     height: 110px;
     min-width: 1px;
     border: 1px solid white;
     cursor: pointer;
     background-image: linear-gradient(
       to bottom,
-      rgba(204,232,244, 1) 1%,
+      rgba(204, 232, 244, 1) 1%,
       transparent
     );
     &.history {
       cursor: default;
       background-image: linear-gradient(
-          to bottom,
-          rgba(220, 225, 227, 1) 1%,
-          transparent
-        );
+        to bottom,
+        rgba(220, 225, 227, 1) 1%,
+        transparent
+      );
     }
     &:before {
       content: '';
@@ -108,16 +109,19 @@ tspan {
       background-repeat: no-repeat;
     }
 
+    &.current {
+      z-index: 10;
+    }
+
     &.removed {
       > span {
         background-image: linear-gradient(
           to bottom,
-          rgba(204,232,244, 1) 1%,
+          rgba(204, 232, 244, 1) 1%,
           transparent
         );
       }
     }
-
 
     > span {
       display: block;
