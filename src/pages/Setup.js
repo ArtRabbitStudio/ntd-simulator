@@ -73,7 +73,13 @@ const useStyles = makeStyles((theme) => ({
   },
   heading: {
     color: '#000',
-    fontWeight: 18,
+    fontSize: 18,
+    fontWeight: 500,
+  },
+  accordionTitle: {
+    padding: theme.spacing(1, 0, 1, 0),
+    color: '#000',
+    fontSize: 18,
     fontWeight: 500,
   },
   chart: {
@@ -358,7 +364,7 @@ const Setup = (props) => {
 
           <div className={classes.formControlWrap}>
             <div className={classes.setupFormControl}>
-              <Typography gutterBottom variant="h4" component="h3">
+              <Typography className={classes.accordionTitle} variant="h4" component="h3">
                 Mosquito settings
               </Typography>
 
