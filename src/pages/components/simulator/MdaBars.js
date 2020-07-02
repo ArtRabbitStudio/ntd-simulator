@@ -37,6 +37,9 @@ const MdaBars = (props) => {
     setDoseSettingsOpen(false)
     setCurMDARound(-1)
   }
+  const closeRoundTooltip = (event) => {
+    setCurMDARound(-1)
+  }
 
   const [curMDARound, setCurMDARound] = useState(-1)
   const [doseSettingsOpen, setDoseSettingsOpen] = useState(false)
@@ -243,7 +246,7 @@ const MdaBars = (props) => {
             onClick={(a) => {
               setCurMDARound(i)
             }}
-            className={`bar ${simMDAactive[i] === false ? 'removed' : ''}`}
+            className={`bar ${simMDAactive[i] === false ? 'removed' : ''} ${i === curMDARound ? 'current' : ''}`}
             title={
               simMDAtime[i] +
               ', ' +
@@ -267,39 +270,41 @@ const MdaBars = (props) => {
             ></span>
 
             {i === curMDARound && (
-              <div className="bar-tooltip">
-                {simMDAactive[curMDARound] !== false && (
-                  <span className="t">{simMDAcoverage[i]}%</span>
-                )}
-                {simMDAactive[curMDARound] === false && (
-                  <span className="t">No MDA</span>
-                )}
-                {simMDAactive[curMDARound] === false && (
-                  <span
-                    className="i plus"
-                    onClick={(a) => {
-                      setDoseSettingsOpen(true)
-                    }}
-                  ></span>
-                )}
-                {simMDAactive[curMDARound] !== false && (
-                  <span
-                    className="i edit"
-                    onClick={(a) => {
-                      setDoseSettingsOpen(true)
-                    }}
-                  ></span>
-                )}
-                {simMDAactive[curMDARound] !== false && (
-                  <span
-                    className="i remove"
-                    onClick={(a) => {
-                      removeMDARound()
-                      a.stopPropagation()
-                    }}
-                  ></span>
-                )}
-              </div>
+              <ClickAwayListener onClickAway={closeRoundTooltip}>
+                <div className="bar-tooltip">
+                  {simMDAactive[curMDARound] !== false && (
+                    <span className="t">{simMDAcoverage[i]}%</span>
+                  )}
+                  {simMDAactive[curMDARound] === false && (
+                    <span className="t">No MDA</span>
+                  )}
+                  {simMDAactive[curMDARound] === false && (
+                    <span
+                      className="i plus"
+                      onClick={(a) => {
+                        setDoseSettingsOpen(true)
+                      }}
+                    ></span>
+                  )}
+                  {simMDAactive[curMDARound] !== false && (
+                    <span
+                      className="i edit"
+                      onClick={(a) => {
+                        setDoseSettingsOpen(true)
+                      }}
+                    ></span>
+                  )}
+                  {simMDAactive[curMDARound] !== false && (
+                    <span
+                      className="i remove"
+                      onClick={(a) => {
+                        removeMDARound()
+                        a.stopPropagation()
+                      }}
+                    ></span>
+                  )}
+                </div>
+              </ClickAwayListener>
             )}
           </div>
         ))}
