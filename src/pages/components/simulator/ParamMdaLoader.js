@@ -6,10 +6,16 @@ export const loadAllIUhistoricData = async (
   dispatchSimParams,
   implementationUnit
 ) => {
+  // clear LS
+  window.localStorage.removeItem('simParams')
+  window.localStorage.removeItem('scenarioIndex')
+  window.localStorage.removeItem('sessionData')
+
   const doWeHaveData = simParams.IUData.IUloaded === implementationUnit
+  console.log('doWeHaveData ? ', doWeHaveData)
   // if (!doWeHaveData) {
-  const mdaData = await loadMdaHistory()
-  const params = await loadIUParams()
+  const mdaData = await loadMdaHistory(implementationUnit)
+  const params = await loadIUParams(implementationUnit)
   // set default values
   const defaults = {
     coverage: 90, // $("#MDACoverage").val(),
@@ -55,8 +61,9 @@ export const loadAllIUhistoricData = async (
   // }
 }
 
-export const loadMdaHistory = async () => {
-  const mdaResponse = await fetch('/data/mda-history/AGO02107.csv')
+export const loadMdaHistory = async (implementationUnit) => {
+  const IUid = implementationUnit ? implementationUnit : 'AGO02107'
+  const mdaResponse = await fetch(`/data/mda-history/${IUid}.csv`)
   let reader = mdaResponse.body.getReader()
   let decoder = new TextDecoder('utf-8')
   const mdaResult = await reader.read()
@@ -88,9 +95,11 @@ export const loadMdaHistory = async () => {
   return newMdaObj
 }
 
-export const loadIUParams = async () => {
+export const loadIUParams = async (implementationUnit) => {
+  const IUid = implementationUnit ? implementationUnit : 'AGO02107'
+  const IUParamsResponse = await fetch(`/data/iu-params/${IUid}.csv`)
   // populate parametersJSON
-  const IUParamsResponse = await fetch('/data/iu-params/AGO02107.csv')
+  // const IUParamsResponse = await fetch('/data/iu-params/AGO02107.csv')
   let reader = IUParamsResponse.body.getReader()
   let decoder = new TextDecoder('utf-8')
   const IUParamsResult = await reader.read()
