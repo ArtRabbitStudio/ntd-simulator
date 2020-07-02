@@ -89,6 +89,8 @@ const Simulator = (props) => {
   const { simParams, dispatchSimParams } = useStore()
   const { country, implementationUnit } = useUIState()
 
+  console.log('simParams')
+  console.log(simParams)
   /* MDA object */
   const [graphMetric, setGraphMetric] = useState('Ms')
 
@@ -238,18 +240,18 @@ const Simulator = (props) => {
       const mdaHistory = await loadMdaHistory()
       console.log('prediction pulled from simParams.mdaObjTweakedPrediction')
       //      console.log(simParams.mdaObjTweakedPrediction)
-      const mdaPrediction = simParams.mdaObjTweakedPrediction //generateMdaFuture(simParams)
+      const mdaPrediction = simParams.mdaObjTweakedPrediction
 
       const fullMDA =
         mdaPrediction && mdaPrediction.time
           ? {
-            time: [...mdaHistory.time, ...mdaPrediction.time],
-            coverage: [...mdaHistory.coverage, ...mdaPrediction.coverage],
-            adherence: [...mdaHistory.adherence, ...mdaPrediction.adherence],
-            bednets: [...mdaHistory.bednets, ...mdaPrediction.bednets],
-            regimen: [...mdaHistory.regimen, ...mdaPrediction.regimen],
-            active: [...mdaHistory.active, ...mdaPrediction.active],
-          }
+              time: [...mdaHistory.time, ...mdaPrediction.time],
+              coverage: [...mdaHistory.coverage, ...mdaPrediction.coverage],
+              adherence: [...mdaHistory.adherence, ...mdaPrediction.adherence],
+              bednets: [...mdaHistory.bednets, ...mdaPrediction.bednets],
+              regimen: [...mdaHistory.regimen, ...mdaPrediction.regimen],
+              active: [...mdaHistory.active, ...mdaPrediction.active],
+            }
           : mdaHistory
       SimulatorEngine.simControler.mdaObj = removeInactiveMDArounds(fullMDA)
 
@@ -277,9 +279,7 @@ const Simulator = (props) => {
       SimulatorEngine.simControler.mdaObjUI = fullMDA
       SimulatorEngine.simControler.mdaObj2015 = newMdaObj2015
       SimulatorEngine.simControler.mdaObjFuture = mdaPrediction
-      /*       const newParams = simParams.IUData.params
-      SimulatorEngine.simControler.parametersJSON = newParams */
-      const iuParams = await loadIUParams()
+      const iuParams = simParams.IUData.params
       SimulatorEngine.simControler.parametersJSON = iuParams
       console.log('runningScenario')
 
@@ -366,16 +366,16 @@ const Simulator = (props) => {
         const fullMDA =
           mdaPrediction && mdaPrediction.time
             ? {
-              time: [...mdaHistory.time, ...mdaPrediction.time],
-              coverage: [...mdaHistory.coverage, ...mdaPrediction.coverage],
-              adherence: [
-                ...mdaHistory.adherence,
-                ...mdaPrediction.adherence,
-              ],
-              bednets: [...mdaHistory.bednets, ...mdaPrediction.bednets],
-              regimen: [...mdaHistory.regimen, ...mdaPrediction.regimen],
-              active: [...mdaHistory.active, ...mdaPrediction.active],
-            }
+                time: [...mdaHistory.time, ...mdaPrediction.time],
+                coverage: [...mdaHistory.coverage, ...mdaPrediction.coverage],
+                adherence: [
+                  ...mdaHistory.adherence,
+                  ...mdaPrediction.adherence,
+                ],
+                bednets: [...mdaHistory.bednets, ...mdaPrediction.bednets],
+                regimen: [...mdaHistory.regimen, ...mdaPrediction.regimen],
+                active: [...mdaHistory.active, ...mdaPrediction.active],
+              }
             : mdaHistory
         SimulatorEngine.simControler.mdaObj = removeInactiveMDArounds(fullMDA)
 
@@ -466,8 +466,9 @@ const Simulator = (props) => {
       if (typeof paramsInputsWithPrediction[tabIndex] != 'undefined') {
         setScenarioMDAs(MDAs)
         //        console.log(paramsInputsWithPrediction[tabIndex])
+        console.log(simParams)
         dispatchSimParams({
-          type: 'everything',
+          type: 'everythingbuthistoric',
           payload: paramsInputsWithPrediction[tabIndex],
         })
       }
@@ -681,7 +682,11 @@ const Simulator = (props) => {
                       simParams.mdaObjDefaultPrediction && (
                         <MdaBars history={scenarioMDAs[tabIndex]} />
                       )}
-                    <Typography className={classes.scenarioGraphLegendInterventions} variant="h6" component="h6">
+                    <Typography
+                      className={classes.scenarioGraphLegendInterventions}
+                      variant="h6"
+                      component="h6"
+                    >
                       Interventions
                     </Typography>
                   </div>

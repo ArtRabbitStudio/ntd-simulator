@@ -42,7 +42,7 @@ const SettingDrugRegimen = ({ inModal, label, value, onChange, classAdd }) => {
       >
         <MenuItem value={'xIA'}>albendazole + ivermectin</MenuItem>
         <MenuItem value={'xDA'}>albendazole + diethylcarbamazine</MenuItem>
-        <MenuItem value={'xxI'}>ivermectin</MenuItem>
+        <MenuItem value={'xxA'}>albendazole</MenuItem>
         <MenuItem value={'IDA'}>
           ivermectin + albendazole + diethylcarbamazine
         </MenuItem>

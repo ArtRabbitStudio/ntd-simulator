@@ -69,7 +69,12 @@ export const loadMdaHistory = async () => {
     regimen: mdaJSON.data.map((item) => item.regimen),
     bednets: mdaJSON.data.map((item) => Number(item.bednets)),
     adherence: mdaJSON.data.map((item) => Number(item.adherence)),
-    active: mdaJSON.data.map((item) => true),
+    active: mdaJSON.data.map((item) => {
+      if ( item.regimen === 'xxx' ) {
+        return false;
+      }
+      return true;
+    }),
   }
   // returns one more line than it's ought to?
   newMdaObj.time.length = 20
@@ -127,7 +132,9 @@ export const generateMdaFuture = (simParams) => {
   const numberOfYears = 11 * 2
   let MDAtime = []
   for (let i = 0; i < numberOfYears; i++) {
-    MDAtime.push(6 + 6 * i + 228)
+    // 246/12 = 2020
+    // 228/12 = 2019
+    MDAtime.push(6 * i + 246)
   }
   let MDAcoverage = []
   for (let i = 0; i < numberOfYears; i++) {
