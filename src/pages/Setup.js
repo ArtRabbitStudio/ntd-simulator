@@ -328,11 +328,7 @@ const Setup = (props) => {
         <div className={classes.settings}>
           <div className={classes.formControlWrap}>
             <div className={classes.setupFormControl}>
-              <SettingBedNetCoverage
-                inModal={false}
-                label="Bed Net Coverage"
-                value={50}
-              />
+              <SettingBedNetCoverage inModal={false} label="Bed Net Coverage" />
             </div>
           </div>
 
