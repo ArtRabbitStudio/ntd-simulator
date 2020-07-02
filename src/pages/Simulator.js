@@ -279,28 +279,7 @@ const Simulator = (props) => {
       SimulatorEngine.simControler.mdaObjUI = fullMDA
       SimulatorEngine.simControler.mdaObj2015 = newMdaObj2015
       SimulatorEngine.simControler.mdaObjFuture = mdaPrediction
-      // Store? Storage? Redirect.
-      let iuParams = simParams.IUData.params
-      if (!iuParams) {
-        let simParamsFromLC = window.localStorage.getItem('simParams')
-        simParamsFromLC = JSON.parse(simParamsFromLC)
-        const IUDataFromLC =
-          simParamsFromLC && simParamsFromLC.IUData
-            ? simParamsFromLC.IUData
-            : null
-        iuParams =
-          IUDataFromLC && IUDataFromLC.params ? IUDataFromLC.params : null
-        if (iuParams) {
-          dispatchSimParams({
-            type: 'IUData',
-            payload: IUDataFromLC,
-          })
-        } else {
-          window.location.href = '/'
-        }
-        console.log(iuParams)
-      }
-
+      const iuParams = obtainIUParams()
       SimulatorEngine.simControler.parametersJSON = iuParams
       console.log('runningScenario')
 
@@ -358,7 +337,30 @@ const Simulator = (props) => {
       removeCurrentScenario()
     }
   }
-
+  const obtainIUParams = () => {
+    // Store? Storage? Redirect.
+    let iuParams = simParams.IUData.params
+    if (!iuParams) {
+      let simParamsFromLC = window.localStorage.getItem('simParams')
+      simParamsFromLC = JSON.parse(simParamsFromLC)
+      const IUDataFromLC =
+        simParamsFromLC && simParamsFromLC.IUData
+          ? simParamsFromLC.IUData
+          : null
+      iuParams =
+        IUDataFromLC && IUDataFromLC.params ? IUDataFromLC.params : null
+      if (iuParams) {
+        dispatchSimParams({
+          type: 'IUData',
+          payload: IUDataFromLC,
+        })
+      } else {
+        window.location.href = '/'
+      }
+      console.log(iuParams)
+    }
+    return iuParams
+  }
   const runNewScenario = async () => {
     if (!simInProgress) {
       if (tabLength < 5) {
@@ -367,7 +369,7 @@ const Simulator = (props) => {
         // console.log('settingTabLength', tabLength + 1)
         //console.log(tabIndex, simParams)
 
-        const iuParams = await loadIUParams()
+        const iuParams = obtainIUParams()
         SimulatorEngine.simControler.parametersJSON = iuParams
 
         const mdaHistory = await loadMdaHistory()
