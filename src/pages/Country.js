@@ -4,7 +4,7 @@ import { Box, Typography, Grid } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { abbrNum } from '../utils'
 import SimpleDialog from './components/SimpleDialog'
-
+import { forEach } from 'lodash'
 import { useDataAPI, useUIState } from '../hooks/stateHooks'
 import { Layout } from '../layout'
 import Map from '../components/Map'
@@ -51,12 +51,35 @@ const Country = props => {
         //stateFeaturesCurrentCountry: stateFeatures,
         //stateDataCurrentCountry: stateData,
         stateScales,
+        //iuData,
     } = useDataAPI()
-
+    //console.log(iuData);
 
     const { country } = useUIState()
+    
+    // output csv with included and excluded data
+    /*
+    if ( iuData != undefined ) {
+        let csv = [['IU','IUstatus']]
+        forEach(iuData['data'],(iu,i)=>{
+            //console.log(iu);
+            if ( iu.endemicity == 'Non-endemic' || iu.prevalence['2000'] == null ) {
+                csv.push([iu.id,'Excluded'])
+            } else {
+                csv.push([iu.id,'Included'])
+            }
+            
+        })
+        let csvContent = "data:text/csv;charset=utf-8," 
+            + csv.map(e => e.join(",")).join("\n");
+        var encodedUri = encodeURI(csvContent);
+        var link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", "my_data.csv");
+        document.body.appendChild(link); // Required for FF
+        link.click();
 
-    //console.log(country);
+    }*/
 
     return (
         <Layout>
