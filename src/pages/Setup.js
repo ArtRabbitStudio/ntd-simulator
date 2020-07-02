@@ -204,7 +204,7 @@ const Setup = (props) => {
   }
   let mdaObjTimeFiltered = null
   if (simParams.IUData.mdaObj) {
-    const startYear = 2010
+    const startYear = 2008
     const endYear = 2019
     mdaObjTimeFiltered = {
       active: [],

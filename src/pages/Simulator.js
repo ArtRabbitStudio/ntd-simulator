@@ -609,7 +609,7 @@ const Simulator = (props) => {
                             {/* no longer in use <SettingNumberOfRuns inModal={true} label="Number of runs" /> */}
                             <SettingInsecticideCoverage
                               inModal={true}
-                              label="Vector: Insecticide Coverage"
+                              label="Insecticide Coverage"
                             />
                             <SettingMosquitoType
                               inModal={true}
