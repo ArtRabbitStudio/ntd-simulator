@@ -40,6 +40,12 @@ body {
   background-size: contain;
 }
 
+.MuiAccordionSummary-expandIcon .MuiSvgIcon-root {
+  fill: transparent !important;
+  background: url(./images/expand-more-24-px.svg) no-repeat center center;
+  background-size: contain;
+}
+
 /** charts **/
 tspan {
   user-select: none;
