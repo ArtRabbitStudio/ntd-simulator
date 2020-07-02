@@ -869,7 +869,7 @@ export var statFunctions = {
 
   updateSimParams: function (aImpYear, paramsNumber) {
     // the aImpHistoric has a year entry, starting at 2000, and also a number to signify which simulation has been run
-    // params.aImp = simControler.parametersJSON.aImpHistoric[aImpYear][paramsNumber];
+    //params.aImp = simControler.parametersJSON.aImpHistoric[aImpYear][paramsNumber];
     // params.aImp = simControler.parametersJSON.aImp[paramsNumber];
     params.aImp = simControler.parametersJSON['aImp_' + aImpYear][paramsNumber]
   },
@@ -1035,6 +1035,7 @@ export var simControler = {
     //max number of mda rounds even if doing it six monthly.
 
     var mdaJSON = simControler.mdaObj //generateMDAFromForm()
+    console.log(mdaJSON);
     var maxN = simControler.params.runs // Number($("#runs").val());
 
     //####//####//####//####//####//####//####
@@ -1042,6 +1043,7 @@ export var simControler = {
     // file containing the parameters set to be accessible in some way here
     // var simControler.parametersJSON = simControler.ParametersJSONFileFromTom;
 
+    
     // numberParamSets should tell us how many sets of parameters we have input
     // however that is done for a JSON file should go here. This will then be used for randomly choosing parameters
     var numberParamSets = simControler.parametersJSON.Population.length //number_rows(simControler.parametersJSON);

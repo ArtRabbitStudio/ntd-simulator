@@ -12,7 +12,32 @@ export const removeInactiveMDArounds = (fullMDA) => {
   //   console.log(fullMDA)
   const indexesToBeRemoved = getAllIndexes(fullMDA.active, false)
   //   console.log(indexesToBeRemoved)
+
+  // setting coverage to 0 
   const cleanMDA = {
+    time: [...fullMDA.time],
+    coverage:
+      fullMDA.coverage.map(
+        (item, index) => {
+          if ( indexesToBeRemoved.indexOf(index) !== -1 ) {
+          return 0
+        }
+        return item
+        }),
+    adherence: [...fullMDA.adherence],
+    bednets: [...fullMDA.bednets],
+    regimen: fullMDA.regimen.map(
+      (item, index) => {
+        if ( indexesToBeRemoved.indexOf(index) !== -1 ) {
+        return 'xxx'
+      }
+      return item
+      }),
+    active: [...fullMDA.active],
+  }
+
+  // actually removing treatment rounds
+  /*const cleanMDA = {
     time: [
       fullMDA.time.filter(
         (item, index) => indexesToBeRemoved.indexOf(index) === -1
@@ -43,7 +68,7 @@ export const removeInactiveMDArounds = (fullMDA) => {
         (item, index) => indexesToBeRemoved.indexOf(index) === -1
       ),
     ],
-  }
-  //   console.log(cleanMDA)
+  }*/
+  console.log(cleanMDA)
   return cleanMDA
 }

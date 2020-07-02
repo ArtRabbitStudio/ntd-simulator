@@ -55,7 +55,7 @@ export const loadAllIUhistoricData = async (
 }
 
 export const loadMdaHistory = async () => {
-  const mdaResponse = await fetch('/data/simulator/MLI30034-mda.csv')
+  const mdaResponse = await fetch('/data/mda-history/MLI30034.csv')
   let reader = mdaResponse.body.getReader()
   let decoder = new TextDecoder('utf-8')
   const mdaResult = await reader.read()
@@ -84,7 +84,7 @@ export const loadMdaHistory = async () => {
 
 export const loadIUParams = async () => {
   // populate parametersJSON
-  const IUParamsResponse = await fetch('/data/simulator/MLI30034-params.csv')
+  const IUParamsResponse = await fetch('/data/iu-params/MLI30034.csv')
   let reader = IUParamsResponse.body.getReader()
   let decoder = new TextDecoder('utf-8')
   const IUParamsResult = await reader.read()
