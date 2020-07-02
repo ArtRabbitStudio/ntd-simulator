@@ -198,7 +198,7 @@ const Setup = (props) => {
       regimen: [],
     }
     map(simParams.IUData.mdaObj.time, (e, i) => {
-      const currentYear = 2000 + e / 12
+      const currentYear = 2000 + (e / 12)
       if (currentYear >= startYear && currentYear <= endYear) {
         mdaObjTimeFiltered.time.push(simParams.IUData.mdaObj.time[i])
         mdaObjTimeFiltered.active.push(simParams.IUData.mdaObj.active[i])
@@ -290,7 +290,7 @@ const Setup = (props) => {
                     component="p"
                   >
                     {'‘' +
-                      (2000 + simParams.IUData.mdaObj.time[i] / 12)
+                      (2000 + mdaObjTimeFiltered.time[i] / 12)
                         .toString()
                         .substr(-2)}
                   </Typography>

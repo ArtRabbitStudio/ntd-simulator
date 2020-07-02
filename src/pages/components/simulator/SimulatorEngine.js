@@ -880,7 +880,7 @@ export var statFunctions = {
     params.rho = simControler.mdaObj.adherence[mdaRound]
 
     let regimen = simControler.mdaObj.regimen[mdaRound]
-
+    //console.log('regimen',regimen)
     if (regimen === 'xIA') {
       params.wPropMDA = 0.65
       params.mfPropMDA = 0.01
@@ -1035,7 +1035,6 @@ export var simControler = {
     //max number of mda rounds even if doing it six monthly.
 
     var mdaJSON = simControler.mdaObj //generateMDAFromForm()
-    console.log(mdaJSON);
     var maxN = simControler.params.runs // Number($("#runs").val());
 
     //####//####//####//####//####//####//####

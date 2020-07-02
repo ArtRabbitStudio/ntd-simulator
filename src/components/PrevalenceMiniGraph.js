@@ -20,7 +20,7 @@ function PrevalenceMiniGraph({
   height = 150
 
 }) {
-  if ( data == undefined ) return
+  if ( data == undefined ) return null
   const lPad = 30
   const rPad = 10
   const tPad = 0
