@@ -18,7 +18,7 @@ export const loadAllIUhistoricData = async (
   const mdaData = await loadMdaHistory(implementationUnit)
   const params = await loadIUParams(implementationUnit)
   // set default values
-  const defaults = {
+  const defaultSimParams = {
     scenarioLabels: [],
     coverage: 90, // $("#MDACoverage").val(),
     mda: 1, // $("#inputMDARounds").val(), TODO: what do we do here?
@@ -37,6 +37,10 @@ export const loadAllIUhistoricData = async (
     macrofilaricide: 65, // $("#Macrofilaricide").val(),
     microfilaricide: 65,
     runs: 10,
+  }
+  const defaults = {
+    ...defaultSimParams,
+    defaultParams: { ...defaultSimParams },
     IUData: {
       id: implementationUnit,
       mdaObj: mdaData,

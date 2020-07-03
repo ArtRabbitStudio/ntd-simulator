@@ -21,6 +21,7 @@ const initialState = {
   macrofilaricide: 65, // $("#Macrofilaricide").val(),
   microfilaricide: 65, // $("#Microfilaricide").val(),
   runs: 5, // $("#runs").val()
+  defaultParams: null,
   IUData: {
     id: null, //which IU is loaded if any
     mdaObj: null, // historic mdaObj for IU
