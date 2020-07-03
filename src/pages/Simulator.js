@@ -213,10 +213,11 @@ const Simulator = (props) => {
         SimulatorEngine.simControler.iuParams = IUData.params
         const mdaHistory = IUData.mdaObj
         console.log(simParams)
+        const generatedMda = generateMdaFuture(simParams)
         const mdaPrediction =
           simParams.specificPrediction !== null
-            ? simParams.specificPrediction
-            : generateMdaFuture(simParams)
+            ? { ...generatedMda, ...simParams.specificPrediction }
+            : generatedMda
         const fullMDA = combineFullMda(mdaHistory, mdaPrediction)
         if (
           simParams.specificPrediction &&
@@ -226,9 +227,15 @@ const Simulator = (props) => {
             type: 'scenarioLabel',
             payload: simParams.specificPrediction.label,
           })
+          dispatchSimParams({
+            type: 'defaultPrediction',
+            payload: mdaPrediction,
+          })
+          dispatchSimParams({
+            type: 'tweakedPrediction',
+            payload: mdaPrediction,
+          })
         }
-        console.log('mdaPrediction')
-        console.log(mdaPrediction)
         SimulatorEngine.simControler.mdaObj = removeInactiveMDArounds(fullMDA)
         SimulatorEngine.simControler.mdaObjUI = fullMDA
         SimulatorEngine.simControler.mdaObj2015 = trimMdaHistory(mdaHistory)
@@ -257,8 +264,26 @@ const Simulator = (props) => {
       const IUData = obtainIUData(simParams, dispatchSimParams)
       const mdaHistory = IUData.mdaObj
       console.log('prediction pulled from simParams.tweakedPrediction')
-      const mdaPrediction = simParams.tweakedPrediction
+      const generatedMda = generateMdaFuture(simParams)
+      const mdaPrediction =
+        simParams.specificPrediction !== null
+          ? { ...generatedMda, ...simParams.specificPrediction }
+          : generatedMda
       const fullMDA = combineFullMda(mdaHistory, mdaPrediction)
+      if (simParams.specificPrediction && simParams.specificPrediction.label) {
+        dispatchSimParams({
+          type: 'scenarioLabel',
+          payload: simParams.specificPrediction.label,
+        })
+        dispatchSimParams({
+          type: 'defaultPrediction',
+          payload: mdaPrediction,
+        })
+        dispatchSimParams({
+          type: 'tweakedPrediction',
+          payload: mdaPrediction,
+        })
+      }
       SimulatorEngine.simControler.mdaObj = removeInactiveMDArounds(fullMDA)
       SimulatorEngine.simControler.mdaObjUI = fullMDA
       SimulatorEngine.simControler.mdaObj2015 = trimMdaHistory(mdaHistory)

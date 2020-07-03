@@ -30,6 +30,7 @@ const initialState = {
   defaultPrediction: null, // future mdaObjPrediction for IU - user sets on setup page
   tweakedPrediction: null, // future mdaObjPrediction for IU
   specificPrediction: null, // null or {}
+  specificPredictionIndex: -1, // null or {}
   needsRerun: false,
 }
 
@@ -57,6 +58,11 @@ const reducer = (simParams, action) => {
       return {
         ...simParams,
         specificPrediction: action.payload,
+      }
+    case 'specificPredictionIndex':
+      return {
+        ...simParams,
+        specificPredictionIndex: action.payload,
       }
     case 'defaultPrediction':
       return {

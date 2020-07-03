@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import useStyles from '../styles'
 
 import { useStore } from '../../../../store/simulatorStore'
@@ -20,8 +20,19 @@ const SettingSpecificScenario = ({ inModal, label, classAdd }) => {
   const { simParams, dispatchSimParams } = useStore()
   const { country, implementationUnit } = useUIState()
   const handleChange = (event) => {
-    // todo
-    alert('todo')
+    const par = event.target.value
+    console.log(par)
+    dispatchSimParams({
+      type: 'specificPredictionIndex',
+      payload: par,
+    })
+    if (par > -1 && specificScenarios.length > par) {
+      console.log('updating specificPrediction')
+      dispatchSimParams({
+        type: 'specificPrediction',
+        payload: specificScenarios[par],
+      })
+    }
   }
   const setSpecScen = (par) => {
     if (specificScenarios.length > par) {
@@ -82,13 +93,14 @@ const SettingSpecificScenario = ({ inModal, label, classAdd }) => {
         labelId="demo-simple-select-helper-label"
         id="demo-simple-select-helper"
         MenuProps={{ disablePortal: true }}
-        value={0}
+        value={simParams.specificPredictionIndex}
         onChange={handleChange}
       >
-        <MenuItem value={0}>No</MenuItem>
-        <MenuItem value={2}>2 year COVID Interruption</MenuItem>
-        <MenuItem value={3}>Scenario three</MenuItem>
-        <MenuItem value={4}>Treatment stop</MenuItem>
+        <MenuItem value={-1}>No</MenuItem>
+        <MenuItem value={0}>6 months COVID Interruption</MenuItem>
+        <MenuItem value={1}>1 year COVID Interruption</MenuItem>
+        <MenuItem value={2}>18 months COVID Interruption</MenuItem>
+        <MenuItem value={3}>2 years COVID Interruption</MenuItem>
       </Select>
     </FormControl>
   )
