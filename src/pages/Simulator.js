@@ -216,7 +216,7 @@ const Simulator = (props) => {
     }, [scenarioInputs]) */
   const resetCurrentScenario = () => {
     dispatchSimParams({
-      type: 'resetTweakedPrediction',
+      type: 'resetScenario',
     })
     // but this should as well reset globa params, right?
   }
