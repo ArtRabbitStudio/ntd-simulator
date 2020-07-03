@@ -269,7 +269,7 @@ const Simulator = (props) => {
       SimulatorEngine.simControler.mdaObjUI = fullMDA
       SimulatorEngine.simControler.mdaObj2015 = newMdaObj2015
       SimulatorEngine.simControler.mdaObjFuture = mdaPrediction
-      SimulatorEngine.simControler.parametersJSON = IUData.params
+      SimulatorEngine.simControler.iuParams = IUData.params
       console.log('runningScenario')
 
       SimulatorEngine.simControler.newScenario = false
@@ -334,7 +334,7 @@ const Simulator = (props) => {
         //console.log(tabIndex, simParams)
 
         const IUData = obtainIUData(simParams, dispatchSimParams)
-        SimulatorEngine.simControler.parametersJSON = IUData.params
+        SimulatorEngine.simControler.iuParams = IUData.params
         const mdaHistory = IUData.mdaObj
         console.log(simParams)
         const mdaPrediction =
@@ -386,8 +386,8 @@ const Simulator = (props) => {
 
         console.log('runningScenario')
         console.log(
-          'SimulatorEngine.simControler.parametersJSON',
-          SimulatorEngine.simControler.parametersJSON
+          'SimulatorEngine.simControler.iuParams',
+          SimulatorEngine.simControler.iuParams
         )
 
         SimulatorEngine.simControler.newScenario = true

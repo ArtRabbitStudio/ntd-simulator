@@ -99,7 +99,7 @@ export const loadMdaHistory = async (implementationUnit) => {
 export const loadIUParams = async (implementationUnit) => {
   const IUid = implementationUnit ? implementationUnit : 'AGO02107'
   const IUParamsResponse = await fetch(`/data/iu-params/${IUid}.csv`)
-  // populate parametersJSON
+  // populate iuParams
   // const IUParamsResponse = await fetch('/data/iu-params/AGO02107.csv')
   let reader = IUParamsResponse.body.getReader()
   let decoder = new TextDecoder('utf-8')

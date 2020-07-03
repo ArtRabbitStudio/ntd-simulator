@@ -374,14 +374,14 @@ export var Model = function (n) {
     }
   }
 
-
   this.bedNetEvent = function () {
     params.sig = params.sig + params.lbda * params.dN * params.covN
     var bedNetInc = (params.covN - params.covNOld) * this.n
-    if (bedNetInc > 0){
-      var bednetProb = (params.covN - params.covNOld) * this.n/ (params.covN * this.n)
+    if (bedNetInc > 0) {
+      var bednetProb =
+        ((params.covN - params.covNOld) * this.n) / (params.covN * this.n)
       for (var i = 0; i < this.n; i++) {
-        if (this.people[i].bedNet = 0){
+        if ((this.people[i].bedNet = 0)) {
           if (s.random() < bednetProb) {
             //param->uniform_dist()<param->covMDA
             this.people[i].bedNet = 1 //using bed-net
@@ -389,10 +389,11 @@ export var Model = function (n) {
         }
       }
     }
-    if (bedNetInc < 0){
-      var bednetProb = (params.covNOld - params.covN ) * this.n/ (params.covNOld * this.n)
+    if (bedNetInc < 0) {
+      var bednetProb =
+        ((params.covNOld - params.covN) * this.n) / (params.covNOld * this.n)
       for (var i = 0; i < this.n; i++) {
-        if (this.people[i].bedNet = 1){
+        if ((this.people[i].bedNet = 1)) {
           if (s.random() < bednetProb) {
             //param->uniform_dist()<param->covMDA
             this.people[i].bedNet = 0 //using bed-net
@@ -401,7 +402,6 @@ export var Model = function (n) {
       }
     }
   }
-
 
   this.bedNetEventInit = function () {
     params.sig = params.sig + params.lbda * params.dN * params.covN
@@ -414,8 +414,6 @@ export var Model = function (n) {
       }
     }
   }
-
-
 
   this.nRounds = function () {
     var inds = []
@@ -900,9 +898,9 @@ export var statFunctions = {
 
   updateSimParams: function (aImpYear, paramsNumber) {
     // the aImpHistoric has a year entry, starting at 2000, and also a number to signify which simulation has been run
-    //params.aImp = simControler.parametersJSON.aImpHistoric[aImpYear][paramsNumber];
-    // params.aImp = simControler.parametersJSON.aImp[paramsNumber];
-    params.aImp = simControler.parametersJSON['aImp_' + aImpYear][paramsNumber]
+    //params.aImp = simControler.iuParams.aImpHistoric[aImpYear][paramsNumber];
+    // params.aImp = simControler.iuParams.aImp[paramsNumber];
+    params.aImp = simControler.iuParams['aImp_' + aImpYear][paramsNumber]
   },
 
   updateInterventionParams: function (mdaRound) {
@@ -971,9 +969,9 @@ export var statFunctions = {
       params.shapeRisk = 0.08
     }
     // the part where we get parameters from the JSON for the initial longtime simulation to equilibrium
-    params.v_to_h = simControler.parametersJSON.v_to_h[i]
-    params.shapeRisk = simControler.parametersJSON.shapeRisk[i]
-    params.aImp = simControler.parametersJSON.aImp[i]
+    params.v_to_h = simControler.iuParams.v_to_h[i]
+    params.shapeRisk = simControler.iuParams.shapeRisk[i]
+    params.aImp = simControler.iuParams.aImp[i]
 
     params.lbda_original = params.lbda
     params.v_to_h_original = params.v_to_h
@@ -1065,14 +1063,13 @@ export var simControler = {
     //fixInput(false);
   },
 
-
   maximum: (values) => {
     values.sort(function (a, b) {
       return a - b
     })
     var x = values.length
-    var y = Math.round(values.length - 0.975*values.length)
-    return (values[y])
+    var y = Math.round(values.length - 0.975 * values.length)
+    return values[y]
 
     // var half = Math.floor(values.length / 2)
     //
@@ -1080,13 +1077,12 @@ export var simControler = {
     // else return (values[half - 1] + values[half]) / 2.0
   },
 
-
   minimum: (values) => {
     values.sort(function (a, b) {
       return a - b
     })
-    var x = Math.round(0.975*values.length)
-    return(values[x-1])
+    var x = Math.round(0.975 * values.length)
+    return values[x - 1]
     // var half = Math.floor(values.length / 2)
     //
     // if (values.length % 2) return values[half]
@@ -1114,12 +1110,11 @@ export var simControler = {
     //####//####//####//####//####//####//####
     // I don't know how this will be implemented, but we need the input parameters
     // file containing the parameters set to be accessible in some way here
-    // var simControler.parametersJSON = simControler.ParametersJSONFileFromTom;
-
+    // var simControler.iuParams = simControler.iuParamsFileFromTom;
 
     // numberParamSets should tell us how many sets of parameters we have input
     // however that is done for a JSON file should go here. This will then be used for randomly choosing parameters
-    var numberParamSets = simControler.parametersJSON.Population.length //number_rows(simControler.parametersJSON);
+    var numberParamSets = simControler.iuParams.Population.length //number_rows(simControler.iuParams);
 
     //####//####//####//####//####//####
 
@@ -1130,7 +1125,7 @@ export var simControler = {
     //
     // // paramsNumber will tell us which row from the parameters file we want to take parameters from
     // // this will be increased by paramStep for each simulation.
-    // // Initialise at 0 so we begin on the first line of the simControler.parametersJSON file
+    // // Initialise at 0 so we begin on the first line of the simControler.iuParams file
     // var paramsNumber = 0
 
     var runs = []
@@ -1144,8 +1139,8 @@ export var simControler = {
       // change the parameters for every simulation here
       statFunctions.setInputParams({ nMDA: 60 }, paramsNumber)
 
-      // get the population size from the simControler.parametersJSON file
-      var population = simControler.parametersJSON.Population[paramsNumber]
+      // get the population size from the simControler.iuParams file
+      var population = simControler.iuParams.Population[paramsNumber]
       var m = new Model(population)
 
       //change time to 131 below, as we potentially have 31 years simulation after running to equilibrium
@@ -1337,5 +1332,5 @@ export var simControler = {
     active: [], // true, false, true, ...
   },
   newScenario: true,
-  parametersJSON: {}, // ParametersJSONFileFromTom
+  iuParams: {}, // iuParamsFileFromTom
 }
