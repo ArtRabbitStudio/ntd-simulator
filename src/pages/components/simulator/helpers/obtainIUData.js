@@ -2,7 +2,7 @@ export const obtainIUData = (simParams, dispatchSimParams) => {
   // Store? Storage? Redirect.
   let IUData = simParams.IUData
   //IUData)
-  if (!IUData.IUloaded) {
+  if (!IUData.id) {
     let simParamsFromLC = window.localStorage.getItem('simParams')
     simParamsFromLC = JSON.parse(simParamsFromLC)
     const IUDataFromLC =
@@ -16,7 +16,7 @@ export const obtainIUData = (simParams, dispatchSimParams) => {
     } else {
       window.location.href = '/'
     }
-   // console.log(IUData)
+    // console.log(IUData)
   }
   return IUData
 }

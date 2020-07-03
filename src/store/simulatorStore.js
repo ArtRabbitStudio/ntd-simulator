@@ -22,7 +22,7 @@ const initialState = {
   microfilaricide: 65, // $("#Microfilaricide").val(),
   runs: 5, // $("#runs").val()
   IUData: {
-    IUloaded: null, //which IU is loaded if any
+    id: null, //which IU is loaded if any
     mdaObj: null, // historic mdaObj for IU
     params: null, // parms object for IU
   },
@@ -95,13 +95,13 @@ const reducer = (simParams, action) => {
         ...simParams,
         IUData: action.payload,
       }
-    case 'IUloaded':
-      let newIUDataiuloaded = { ...simParams.IUData }
-      newIUDataiuloaded.IUloaded = action.payload
+    /*     case 'IUid':
+      let newIUData = { ...simParams.IUData }
+      newIUData.id = action.payload
       return {
         ...simParams,
-        IUData: newIUDataiuloaded,
-      }
+        IUData: newIUData,
+      } */
     case 'mdaObj':
       let newIUDatamda = { ...simParams.IUData }
       newIUDatamda.mdaObj = action.payload

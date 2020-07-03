@@ -1,24 +1,15 @@
-import {
-  Button,
-  ClickAwayListener,
-  FormControl,
-  FormLabel,
-  Paper,
-  Slider,
-  Tooltip,
-  Typography,
-} from '@material-ui/core'
+import { Button, ClickAwayListener, Paper, Typography } from '@material-ui/core'
 import React, { useState } from 'react'
 import { useStore } from '../../../store/simulatorStore'
-import CloseButton from './../CloseButton'
-import useStyles from './styles'
+import CloseButton from '../CloseButton'
 //setting
 import {
-  SettingSystematicAdherence,
-  SettingTargetCoverage,
   SettingBedNetCoverage,
   SettingDrugRegimen,
+  SettingSystematicAdherence,
+  SettingTargetCoverage,
 } from './settings'
+import useStyles from './styles'
 
 //import ClickAway from "../../../hooks/clickAway";
 

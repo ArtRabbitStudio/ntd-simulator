@@ -11,7 +11,7 @@ export const loadAllIUhistoricData = async (
   window.localStorage.removeItem('scenarioIndex')
   window.localStorage.removeItem('sessionData')
 
-  const doWeHaveData = simParams.IUData.IUloaded === implementationUnit
+  const doWeHaveData = simParams.IUData.id === implementationUnit
   console.log('doWeHaveData ? ', doWeHaveData)
   console.log('implementationUnit ? ', implementationUnit)
   // if (!doWeHaveData) {
@@ -37,7 +37,7 @@ export const loadAllIUhistoricData = async (
     microfilaricide: 65,
     runs: 10,
     IUData: {
-      IUloaded: implementationUnit,
+      id: implementationUnit,
       mdaObj: mdaData,
       params: params,
     },

@@ -170,7 +170,7 @@ const Setup = (props) => {
   const { country, implementationUnit } = useUIState()
   const { selectedIUData } = useDataAPI()
 
-  const doWeHaveData = simParams.IUData.IUloaded === implementationUnit
+  const doWeHaveData = simParams.IUData.id === implementationUnit
   const loadData = async () => {
     await loadAllIUhistoricData(
       simParams,
