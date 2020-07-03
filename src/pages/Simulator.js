@@ -478,7 +478,11 @@ const Simulator = (props) => {
               {scenarioResults.map((result, i) => (
                 <Tab
                   key={`tab-element-${i}`}
-                  label={`Scenario ${i + 1}`}
+                  label={
+                    simParams.scenarioLabels[i]
+                      ? simParams.scenarioLabels[i]
+                      : `Scenario ${i + 1}`
+                  }
                   {...a11yProps(i)}
                 />
               ))}

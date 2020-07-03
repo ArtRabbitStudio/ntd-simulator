@@ -3,6 +3,7 @@ import React, { createContext, useContext, useReducer, useState } from 'react'
 
 const StoreContext = createContext()
 const initialState = {
+  scenarioLabels: ['Ideal scenario', '1 year interruption'],
   coverage: 90, // $("#MDACoverage").val(),
   mda: 2, // $("#inputMDARounds").val(),
   mdaSixMonths: 6, // $("input:radio[name=mdaSixMonths]:checked").val(),
@@ -42,6 +43,17 @@ const reducer = (simParams, action) => {
       return {
         ...simParams,
         needsRerun: action.payload,
+      }
+    case 'scenarioLabel':
+      let newLabels = [...simParams.scenarioLabels]
+      newLabels[JSON.parse(window.localStorage.getItem('scenarioIndex')) || 0] =
+        action.payload
+      console.log(JSON.parse(window.localStorage.getItem('scenarioIndex')))
+      console.log(action.payload)
+      console.log(newLabels)
+      return {
+        ...simParams,
+        scenarioLabels: newLabels,
       }
     case 'specificPrediction':
       return {

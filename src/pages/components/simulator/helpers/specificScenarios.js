@@ -1,5 +1,6 @@
 export const specificScenarios = [
   {
+    label: '6 months interruption',
     time: [
       246,
       252,
@@ -146,6 +147,7 @@ export const specificScenarios = [
     ],
   },
   {
+    label: '12 months interruption',
     time: [
       246,
       252,
@@ -292,6 +294,7 @@ export const specificScenarios = [
     ],
   },
   {
+    label: '18 months interruption',
     time: [
       246,
       252,
@@ -438,6 +441,7 @@ export const specificScenarios = [
     ],
   },
   {
+    label: '24 months interruption',
     time: [
       246,
       252,
