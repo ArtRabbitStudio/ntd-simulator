@@ -19,7 +19,7 @@ export const loadAllIUhistoricData = async (
   const params = await loadIUParams(implementationUnit)
   // set default values
   const defaults = {
-    scenarioLabels: ['Ideal scenario'],
+    scenarioLabels: [],
     coverage: 90, // $("#MDACoverage").val(),
     mda: 1, // $("#inputMDARounds").val(), TODO: what do we do here?
     mdaSixMonths: 6, // TODO; what do we do here

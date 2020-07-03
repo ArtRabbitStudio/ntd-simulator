@@ -1154,7 +1154,12 @@ export var simControler = {
 
       if (progression === maxN) {
         clearInterval(progress)
-        SessionData.storeResults(runs, 'Scenario #' + (tabIndex + 1))
+        SessionData.storeResults(
+          runs,
+          simControler.scenarioLabel
+            ? simControler.scenarioLabel
+            : 'Scenario #' + (tabIndex + 1)
+        )
         simControler.scenarioRunStats(simulatorCallback)
       } else {
         progression += 1
@@ -1295,6 +1300,7 @@ export var simControler = {
     microfilaricide: 65, // $("#Microfilaricide").val(),
     runs: 5, // $("#runs").val() */
   },
+  scenarioLabel: null,
   mdaObj: {
     // this is the ONE processed by simulator
     time: [], // 60, 96, 120, 144, 180

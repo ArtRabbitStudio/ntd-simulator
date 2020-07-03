@@ -3,7 +3,7 @@ import React, { createContext, useContext, useReducer, useState } from 'react'
 
 const StoreContext = createContext()
 const initialState = {
-  scenarioLabels: ['Ideal scenario'],
+  scenarioLabels: [],
   coverage: 90, // $("#MDACoverage").val(),
   mda: 2, // $("#inputMDARounds").val(),
   mdaSixMonths: 6, // $("input:radio[name=mdaSixMonths]:checked").val(),
