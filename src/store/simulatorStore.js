@@ -27,7 +27,7 @@ const initialState = {
     mdaObj: null, // historic mdaObj for IU
     params: null, // parms object for IU
   },
-  defaultPrediction: null, // future mdaObjPrediction for IU
+  defaultPrediction: null, // future mdaObjPrediction for IU - user sets on setup page
   tweakedPrediction: null, // future mdaObjPrediction for IU
   specificPrediction: null, // null or {}
   needsRerun: false,
@@ -49,9 +49,6 @@ const reducer = (simParams, action) => {
       let newLabels = [...simParams.scenarioLabels]
       newLabels[JSON.parse(window.localStorage.getItem('scenarioIndex')) || 0] =
         action.payload
-      console.log(JSON.parse(window.localStorage.getItem('scenarioIndex')))
-      console.log(action.payload)
-      console.log(newLabels)
       return {
         ...simParams,
         scenarioLabels: newLabels,
@@ -162,11 +159,16 @@ const reducer = (simParams, action) => {
       return {
         ...simParams,
         coverage: action.payload,
+        defaultParams: { ...simParams.defaultParams, coverage: action.payload },
       }
     case 'adherence':
       return {
         ...simParams,
         adherence: action.payload,
+        defaultParams: {
+          ...simParams.defaultParams,
+          adherence: action.payload,
+        },
       }
     case 'mda':
       return {
@@ -177,6 +179,10 @@ const reducer = (simParams, action) => {
       return {
         ...simParams,
         mdaSixMonths: action.payload,
+        defaultParams: {
+          ...simParams.defaultParams,
+          mdaSixMonths: action.payload,
+        },
       }
     case 'endemicity':
       return {
@@ -187,6 +193,7 @@ const reducer = (simParams, action) => {
       return {
         ...simParams,
         covN: action.payload,
+        defaultParams: { ...simParams.defaultParams, covN: action.payload },
       }
     case 'v_to_hR':
       return {
@@ -212,11 +219,16 @@ const reducer = (simParams, action) => {
       return {
         ...simParams,
         mdaRegimen: action.payload,
+        defaultParams: {
+          ...simParams.defaultParams,
+          mdaRegimen: action.payload,
+        },
       }
     case 'rho':
       return {
         ...simParams,
         rho: action.payload,
+        defaultParams: { ...simParams.defaultParams, rho: action.payload },
       }
     case 'rhoBComp':
       return {
@@ -232,6 +244,7 @@ const reducer = (simParams, action) => {
       return {
         ...simParams,
         species: action.payload,
+        defaultParams: { ...simParams.defaultParams, species: action.payload },
       }
     case 'macrofilaricide':
       return {
