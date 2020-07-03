@@ -227,15 +227,15 @@ const Simulator = (props) => {
             type: 'scenarioLabel',
             payload: simParams.specificPrediction.label,
           })
-          dispatchSimParams({
-            type: 'defaultPrediction',
-            payload: mdaPrediction,
-          })
-          dispatchSimParams({
-            type: 'tweakedPrediction',
-            payload: mdaPrediction,
-          })
         }
+        dispatchSimParams({
+          type: 'defaultPrediction',
+          payload: mdaPrediction,
+        })
+        dispatchSimParams({
+          type: 'tweakedPrediction',
+          payload: mdaPrediction,
+        })
         SimulatorEngine.simControler.mdaObj = removeInactiveMDArounds(fullMDA)
         SimulatorEngine.simControler.mdaObjUI = fullMDA
         SimulatorEngine.simControler.mdaObj2015 = trimMdaHistory(mdaHistory)
@@ -275,15 +275,15 @@ const Simulator = (props) => {
           type: 'scenarioLabel',
           payload: simParams.specificPrediction.label,
         })
-        dispatchSimParams({
-          type: 'defaultPrediction',
-          payload: mdaPrediction,
-        })
-        dispatchSimParams({
-          type: 'tweakedPrediction',
-          payload: mdaPrediction,
-        })
       }
+      dispatchSimParams({
+        type: 'defaultPrediction',
+        payload: mdaPrediction,
+      })
+      dispatchSimParams({
+        type: 'tweakedPrediction',
+        payload: mdaPrediction,
+      })
       SimulatorEngine.simControler.mdaObj = removeInactiveMDArounds(fullMDA)
       SimulatorEngine.simControler.mdaObjUI = fullMDA
       SimulatorEngine.simControler.mdaObj2015 = trimMdaHistory(mdaHistory)
