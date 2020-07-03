@@ -168,27 +168,57 @@ export const generateMdaFuture = (simParams) => {
   }
   let MDAcoverage = []
   for (let i = 0; i < numberOfYears; i++) {
-    MDAcoverage.push(simParams.coverage)
+    MDAcoverage.push(
+      simParams.tweakedPrediction.beenFiddledWith[i] === true
+        ? simParams.tweakedPrediction.coverage[i]
+        : simParams.coverage
+    )
   }
   let MDAadherence = []
   for (let i = 0; i < numberOfYears; i++) {
-    MDAadherence.push(simParams.rho)
+    MDAadherence.push(
+      simParams.tweakedPrediction.beenFiddledWith[i] === true
+        ? simParams.tweakedPrediction.adherence[i]
+        : simParams.rho
+    )
   }
   let MDAbednets = []
   for (let i = 0; i < numberOfYears; i++) {
-    MDAbednets.push(simParams.covN)
+    MDAbednets.push(
+      simParams.tweakedPrediction.beenFiddledWith[i] === true
+        ? simParams.tweakedPrediction.bednets[i]
+        : simParams.covN
+    )
   }
   let MDAregimen = []
   for (let i = 0; i < numberOfYears; i++) {
-    MDAregimen.push(simParams.mdaRegimen)
+    MDAregimen.push(
+      simParams.tweakedPrediction.beenFiddledWith[i] === true
+        ? simParams.tweakedPrediction.regimen[i]
+        : simParams.mdaRegimen
+    )
   }
   let MDAactive = []
   for (let i = 0; i < numberOfYears; i++) {
     if (simParams.mdaSixMonths === 12 && i % 2 === 1) {
-      MDAactive.push(false)
+      MDAactive.push(
+        simParams.tweakedPrediction.beenFiddledWith[i] === true
+          ? simParams.tweakedPrediction.active[i]
+          : false
+      )
     } else {
-      MDAactive.push(true) // alternate here
+      MDAactive.push(
+        simParams.tweakedPrediction.beenFiddledWith[i] === true
+          ? simParams.tweakedPrediction.active[i]
+          : true
+      ) // alternate here
     }
+  }
+  let MDAbeenFiddledWith = []
+  for (let i = 0; i < numberOfYears; i++) {
+    MDAbeenFiddledWith.push(
+      simParams.tweakedPrediction.beenFiddledWith[i] === true ? true : false
+    )
   }
   const newMDAs = {
     time: [...MDAtime],
@@ -197,6 +227,7 @@ export const generateMdaFuture = (simParams) => {
     bednets: [...MDAbednets],
     regimen: [...MDAregimen],
     active: [...MDAactive],
+    beenFiddledWith: [...MDAbeenFiddledWith],
   }
   //  console.log('newMDAs')
   //  console.log(JSON.stringify(newMDAs))

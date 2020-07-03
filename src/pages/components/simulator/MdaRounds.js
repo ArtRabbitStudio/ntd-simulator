@@ -36,25 +36,25 @@ const MdaRounds = (props) => {
   const [curMDARound, setCurMDARound] = useState(-1)
   const [doseSettingsOpen, setDoseSettingsOpen] = useState(false)
 
-  const [manualChange, setManualChange] = useState(false)
-  const [manualMDAs, setManualMDAs] = useState(null)
-  const [tweakedMDAs, setTweakedMDAs] = useState(null)
-
-  // const simParams.tweakedPrediction.time = [...simParams.tweakedPrediction.time]
-
   const setSimMDAcoverage = (array) => {
+    console.log('curMDARound', curMDARound)
+    dispatchSimParams({ type: 'tweakedBeenFiddledWith', payload: curMDARound })
     dispatchSimParams({ type: 'tweakedCoverage', payload: array })
   }
   const setSimMDAadherence = (array) => {
+    dispatchSimParams({ type: 'tweakedBeenFiddledWith', payload: curMDARound })
     dispatchSimParams({ type: 'tweakedAdherence', payload: array })
   }
   const setSimMDAbednets = (array) => {
+    dispatchSimParams({ type: 'tweakedBeenFiddledWith', payload: curMDARound })
     dispatchSimParams({ type: 'tweakedBednets', payload: array })
   }
   const setSimMDAregimen = (array) => {
+    dispatchSimParams({ type: 'tweakedBeenFiddledWith', payload: curMDARound })
     dispatchSimParams({ type: 'tweakedRegimen', payload: array })
   }
   const setSimMDAactive = (array) => {
+    dispatchSimParams({ type: 'tweakedBeenFiddledWith', payload: curMDARound })
     dispatchSimParams({ type: 'tweakedActive', payload: array })
   }
 
@@ -263,7 +263,6 @@ const MdaRounds = (props) => {
                 classAdd="spaced"
                 value={simParams.tweakedPrediction.coverage[curMDARound]}
                 onChange={(event, newValue) => {
-                  setManualChange(true)
                   let newArray = [...simParams.tweakedPrediction.coverage]
                   newArray[curMDARound] = newValue
                   setSimMDAcoverage([...newArray])
@@ -276,7 +275,6 @@ const MdaRounds = (props) => {
                 classAdd="spaced"
                 value={simParams.tweakedPrediction.bednets[curMDARound]}
                 onChange={(event, newValue) => {
-                  setManualChange(true)
                   let newArray = [...simParams.tweakedPrediction.bednets]
                   newArray[curMDARound] = newValue
                   setSimMDAbednets([...newArray])
@@ -289,7 +287,6 @@ const MdaRounds = (props) => {
                 classAdd="spaced"
                 value={simParams.tweakedPrediction.regimen[curMDARound]}
                 onChange={(event) => {
-                  setManualChange(true)
                   let newArray = [...simParams.tweakedPrediction.regimen]
                   newArray[curMDARound] = event.target.value
                   setSimMDAregimen([...newArray])
@@ -302,7 +299,6 @@ const MdaRounds = (props) => {
                 classAdd="spaced"
                 value={simParams.tweakedPrediction.adherence[curMDARound]}
                 onChange={(event, newValue) => {
-                  setManualChange(true)
                   let newArray = [...simParams.tweakedPrediction.adherence]
                   newArray[curMDARound] = newValue
                   setSimMDAadherence([...newArray])
@@ -314,7 +310,6 @@ const MdaRounds = (props) => {
                   className={`${classes.modalButton} light`}
                   variant="contained"
                   onClick={() => {
-                    setManualChange(true)
                     removeMDARound()
                   }}
                 >

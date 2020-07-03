@@ -276,6 +276,7 @@ const Simulator = (props) => {
           payload: simParams.specificPrediction.label,
         })
       }
+
       dispatchSimParams({
         type: 'defaultPrediction',
         payload: mdaPrediction,
@@ -366,6 +367,7 @@ const Simulator = (props) => {
           bednets: [...mdaFuture[index].bednets],
           regimen: [...mdaFuture[index].regimen],
           active: [...mdaFuture[index].active],
+          beenFiddledWith: [...mdaFuture[index].beenFiddledWith],
         },
         tweakedPrediction: {
           time: [...mdaFuture[index].time],
@@ -374,6 +376,7 @@ const Simulator = (props) => {
           bednets: [...mdaFuture[index].bednets],
           regimen: [...mdaFuture[index].regimen],
           active: [...mdaFuture[index].active],
+          beenFiddledWith: [...mdaFuture[index].beenFiddledWith],
         },
       }))
       setScenarioInputs(paramsInputsWithPrediction)

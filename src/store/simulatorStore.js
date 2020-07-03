@@ -114,6 +114,17 @@ const reducer = (simParams, action) => {
           active: action.payload,
         },
       }
+    case 'tweakedBeenFiddledWith':
+      console.log(action.payload)
+      let newBeenFiddledWith = [...simParams.tweakedPrediction.beenFiddledWith]
+      newBeenFiddledWith[action.payload] = true
+      return {
+        ...simParams,
+        tweakedPrediction: {
+          ...simParams.tweakedPrediction,
+          beenFiddledWith: [...newBeenFiddledWith],
+        },
+      }
     case 'resetScenario':
       return {
         ...simParams,
