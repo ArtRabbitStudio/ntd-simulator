@@ -81,10 +81,6 @@ const MdaBars = (props) => {
       setDefaultMDAs(newMDAs)
     }
   }, [simParams.mdaObjDefaultPrediction])
-  /*   React.useEffect(() => {
-    console.log('mdaObjTweakedPrediction')
-    console.log(simParams.mdaObjTweakedPrediction)
-  }, [simParams.mdaObjTweakedPrediction]) */
 
   React.useEffect(() => {
     // dispatch change if default and tweaked differ
@@ -96,10 +92,6 @@ const MdaBars = (props) => {
           type: 'needsRerun',
           payload: true,
         })
-        dispatchSimParams({
-          type: 'mdaObjTweakedPrediction',
-          payload: tweakedMDAs,
-        })
       } else {
         dispatchSimParams({
           type: 'needsRerun',
@@ -108,9 +100,18 @@ const MdaBars = (props) => {
       }
     }
   }, [defaultMDAs, tweakedMDAs])
+  React.useEffect(() => {
+    // dispatch change if tweakedMDA has been updated
+    if (tweakedMDAs && tweakedMDAs.time && tweakedMDAs.time.length > 0) {
+      dispatchSimParams({
+        type: 'mdaObjTweakedPrediction',
+        payload: tweakedMDAs,
+      })
+    }
+  }, [tweakedMDAs])
 
   React.useEffect(() => {
-    // tweak the tweaked
+    // tweak the tweakedMDA
     const newMDAs = {
       time: [...simMDAtime],
       coverage: [...simMDAcoverage],
@@ -242,7 +243,9 @@ const MdaBars = (props) => {
             onClick={(a) => {
               setCurMDARound(i)
             }}
-            className={`bar ${simMDAactive[i] === false ? 'removed' : ''} ${i === curMDARound ? 'current' : ''}`}
+            className={`bar ${simMDAactive[i] === false ? 'removed' : ''} ${
+              i === curMDARound ? 'current' : ''
+            }`}
             title={
               simMDAtime[i] +
               ', ' +

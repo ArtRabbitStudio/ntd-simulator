@@ -230,7 +230,6 @@ const Simulator = (props) => {
       const IUData = obtainIUData(simParams, dispatchSimParams)
       const mdaHistory = IUData.mdaObj
       console.log('prediction pulled from simParams.mdaObjTweakedPrediction')
-      //      console.log(simParams.mdaObjTweakedPrediction)
       const mdaPrediction = simParams.mdaObjTweakedPrediction
 
       const fullMDA =
@@ -342,16 +341,6 @@ const Simulator = (props) => {
           simParams.specificPrediction !== null
             ? simParams.specificPrediction
             : generateMdaFuture(simParams)
-        dispatchSimParams({
-          // is this actually needed? Or is this setup on
-          type: 'mdaObjDefaultPrediction',
-          payload: mdaPrediction,
-        })
-        dispatchSimParams({
-          type: 'mdaObjTweakedPrediction',
-          payload: mdaPrediction,
-        })
-        //        simParams.mdaObjTweakedPrediction // mdaObjTweakedPrediction // mdaObjDefaultPrediction
         console.log('mdaPrediction')
         console.log(mdaPrediction)
         const fullMDA =
