@@ -374,7 +374,36 @@ export var Model = function (n) {
     }
   }
 
+
   this.bedNetEvent = function () {
+    params.sig = params.sig + params.lbda * params.dN * params.covN
+    var bedNetInc = (params.covN - params.covNOld) * this.n
+    if (bedNetInc > 0){
+      var bednetProb = (params.covN - params.covNOld) * this.n/ (params.covN * this.n)
+      for (var i = 0; i < this.n; i++) {
+        if (this.people[i].bedNet = 0){
+          if (s.random() < bednetProb) {
+            //param->uniform_dist()<param->covMDA
+            this.people[i].bedNet = 1 //using bed-net
+          }
+        }
+      }
+    }
+    if (bedNetInc < 0){
+      var bednetProb = (params.covNOld - params.covN ) * this.n/ (params.covNOld * this.n)
+      for (var i = 0; i < this.n; i++) {
+        if (this.people[i].bedNet = 1){
+          if (s.random() < bednetProb) {
+            //param->uniform_dist()<param->covMDA
+            this.people[i].bedNet = 0 //using bed-net
+          }
+        }
+      }
+    }
+  }
+
+
+  this.bedNetEventInit = function () {
     params.sig = params.sig + params.lbda * params.dN * params.covN
     for (var i = 0; i < this.n; i++) {
       if (s.random() < params.covN) {
@@ -385,6 +414,8 @@ export var Model = function (n) {
       }
     }
   }
+
+
 
   this.nRounds = function () {
     var inds = []
@@ -510,7 +541,7 @@ export var Model = function (n) {
       ) {
       }
       if (t >= 1200.0 && t < 1200.0 + params.dt) {
-        this.bedNetEvent()
+        this.bedNetEventInit()
         this.bedNetInt = 1
       }
 
@@ -901,6 +932,7 @@ export var statFunctions = {
 
     // // similarly for the bednet data. This would just treat it as a vector that we can get the bed net coverage from.
     // // covN is the parameter for how much bed net coverage there is
+    params.covNOld = params.covN
     params.covN = simControler.mdaObj.bednets[mdaRound]
   },
 
@@ -921,6 +953,7 @@ export var statFunctions = {
     //    console.log(params.v_to_h)
     params.covMDA = Number(ps.coverage / 100.0)
     params.covN = Number(ps.covN / 100)
+    params.covNOld = Number(ps.covN / 100)
     params.v_to_hR = 1 - Number(ps.v_to_hR / 100)
     params.vecCap = Number(ps.vecCap)
     params.vecComp = Number(ps.vecComp)
@@ -1001,6 +1034,12 @@ export var simControler = {
       Ws: stats.medW,
       Ms: stats.medM,
       Ls: stats.medL,
+      WsMax: stats.maxW,
+      MsMax: stats.maxM,
+      LsMax: stats.maxL,
+      WsMin: stats.minW,
+      MsMin: stats.minM,
+      LsMin: stats.minL,
     })
 
     // simControler.dump(scenario);
@@ -1013,12 +1052,47 @@ export var simControler = {
       Ws: stats.medW,
       Ms: stats.medM,
       Ls: stats.medL,
+      WsMax: stats.maxW,
+      MsMax: stats.maxM,
+      LsMax: stats.maxL,
+      WsMin: stats.minW,
+      MsMin: stats.minM,
+      LsMin: stats.minL,
     }
     simulatorCallback(JSON.stringify(scenario), simControler.newScenario)
     // console.log(JSON.stringify(scenario));
     // return JSON.stringify(scenario);
     //fixInput(false);
   },
+
+
+  maximum: (values) => {
+    values.sort(function (a, b) {
+      return a - b
+    })
+    var x = values.length
+    var y = Math.round(values.length - 0.975*values.length)
+    return (values[y])
+
+    // var half = Math.floor(values.length / 2)
+    //
+    // if (values.length % 2) return values[half]
+    // else return (values[half - 1] + values[half]) / 2.0
+  },
+
+
+  minimum: (values) => {
+    values.sort(function (a, b) {
+      return a - b
+    })
+    var x = Math.round(0.975*values.length)
+    return(values[x-1])
+    // var half = Math.floor(values.length / 2)
+    //
+    // if (values.length % 2) return values[half]
+    // else return (values[half - 1] + values[half]) / 2.0
+  },
+
   median: (values) => {
     values.sort(function (a, b) {
       return a - b
@@ -1042,7 +1116,7 @@ export var simControler = {
     // file containing the parameters set to be accessible in some way here
     // var simControler.parametersJSON = simControler.ParametersJSONFileFromTom;
 
-    
+
     // numberParamSets should tell us how many sets of parameters we have input
     // however that is done for a JSON file should go here. This will then be used for randomly choosing parameters
     var numberParamSets = simControler.parametersJSON.Population.length //number_rows(simControler.parametersJSON);
@@ -1108,6 +1182,12 @@ export var simControler = {
     var medM = new Array(T)
     var medW = new Array(T)
     var medL = new Array(T)
+    var minM = new Array(T)
+    var minW = new Array(T)
+    var minL = new Array(T)
+    var maxM = new Array(T)
+    var maxW = new Array(T)
+    var maxL = new Array(T)
     var doses_year = params.mdaFreq === 6 ? 2 : 1
     for (var t = 0; t < T; t++) {
       totR[t] = 0
@@ -1132,6 +1212,12 @@ export var simControler = {
       medM[t] = simControler.median(mM)
       medW[t] = simControler.median(mW)
       medL[t] = simControler.median(mL)
+      maxM[t] = simControler.maximum(mM)
+      maxW[t] = simControler.maximum(mW)
+      maxL[t] = simControler.maximum(mL)
+      minM[t] = simControler.minimum(mM)
+      minW[t] = simControler.minimum(mW)
+      minL[t] = simControler.minimum(mL)
     }
 
     return {
@@ -1140,6 +1226,12 @@ export var simControler = {
       medM: medM,
       medW: medW,
       medL: medL,
+      maxM: maxM,
+      maxW: maxW,
+      maxL: maxL,
+      minM: minM,
+      minW: minW,
+      minL: minL,
     }
   },
   runScenario: function (paramsFromUI, tabIndex, simulatorCallback) {
