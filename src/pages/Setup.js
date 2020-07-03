@@ -405,6 +405,12 @@ const Setup = (props) => {
               <SettingSystematicAdherence
                 inModal={false}
                 label="Systematic adherence"
+                onChange={(event, newValue) => {
+                  // this needs to change defaultParams as well, right?
+                  // dispatchSimParams({ type: 'defaultsrho', payload: newValue })
+                  console.log('RHO', newValue)
+                  dispatchSimParams({ type: 'rho', payload: newValue })
+                }}
               />
             </div>
           </div>
