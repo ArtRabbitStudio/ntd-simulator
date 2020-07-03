@@ -114,8 +114,7 @@ const reducer = (simParams, action) => {
     case 'resetScenario':
       return {
         ...simParams,
-        ...simParams.defaultParams /* 
-
+        ...simParams.defaultParams,
         tweakedPrediction: {
           time: [...simParams.defaultPrediction.time],
           coverage: [...simParams.defaultPrediction.coverage],
@@ -123,7 +122,7 @@ const reducer = (simParams, action) => {
           bednets: [...simParams.defaultPrediction.bednets],
           regimen: [...simParams.defaultPrediction.regimen],
           active: [...simParams.defaultPrediction.active],
-        }, */,
+        },
         needsRerun: false,
       }
     case 'everythingbuthistoric':

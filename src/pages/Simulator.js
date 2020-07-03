@@ -23,6 +23,7 @@ import ConfirmationDialog from './components/ConfirmationDialog'
 import HeadWithInputs from './components/HeadWithInputs'
 import SelectCountry from './components/SelectCountry'
 import { removeInactiveMDArounds } from './components/simulator/helpers/Mda'
+import { detectChange } from './components/simulator/helpers/detectChange'
 import { obtainIUData } from './components/simulator/helpers/obtainIUData'
 import MdaRounds from './components/simulator/MdaRounds'
 import { generateMdaFuture } from './components/simulator/ParamMdaLoader'
@@ -465,43 +466,7 @@ const Simulator = (props) => {
   }, [])
 
   useEffect(() => {
-    console.log('compare params')
-    const observedSimParams = {
-      coverage: simParams.coverage,
-      mda: simParams.mda,
-      mdaSixMonths: simParams.mdaSixMonths,
-      endemicity: simParams.endemicity,
-      covN: simParams.covN,
-      v_to_hR: simParams.v_to_hR,
-      vecCap: simParams.vecCap,
-      vecComp: simParams.vecComp,
-      vecD: simParams.vecD,
-      mdaRegimen: simParams.mdaRegimen,
-      rho: simParams.rho,
-      rhoBComp: simParams.rhoBComp,
-      rhoCN: simParams.rhoCN,
-      species: simParams.species,
-      runs: simParams.runs,
-    }
-    const changeDetected =
-      JSON.stringify(observedSimParams) !==
-      JSON.stringify(simParams.defaultParams)
-    if (changeDetected) {
-      console.log(
-        '%c Param change detected! ',
-        'background: #222; color: #bada55'
-      )
-      dispatchSimParams({
-        type: 'needsRerun',
-        payload: true,
-      })
-    } else {
-      console.log('%c No Param changes. ', 'background: #222; color: #cc9900')
-      dispatchSimParams({
-        type: 'needsRerun',
-        payload: false,
-      })
-    }
+    detectChange(simParams, dispatchSimParams)
   }, [
     simParams.coverage, // $("#MDACoverage").val(),
     // simParams.mda, // $("#inputMDARounds").val(),
@@ -516,6 +481,8 @@ const Simulator = (props) => {
     simParams.rho, // $("#sysAdherence").val(),
     simParams.species, // $("input[name=speciesRadios]:checked").val(),
     simParams.runs, // $("#runs").val()
+    simParams.tweakedPrediction,
+    simParams.defaultPrediction,
   ])
 
   return (
