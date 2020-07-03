@@ -1,6 +1,6 @@
 //import { Random } from './sim'
 //import { Random } from './sim-0.26'
-import { Random } from './sim'
+import { Random } from './helpers/sim'
 import { subtract } from 'mathjs'
 export var s = new Random()
 export var SessionData = {

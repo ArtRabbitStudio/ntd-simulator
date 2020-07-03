@@ -16,7 +16,7 @@ import { useStore } from './../store/simulatorStore'
 import HeadWithInputs from './components/HeadWithInputs'
 import SelectCountry from './components/SelectCountry'
 import TextContents from './components/TextContents'
-import { loadAllIUhistoricData } from './components/simulator/ParamMdaLoader'
+import { loadAllIUhistoricData } from './components/simulator/helpers/iuLoader'
 
 // settings
 import {

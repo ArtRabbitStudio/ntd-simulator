@@ -26,7 +26,7 @@ import { removeInactiveMDArounds } from './components/simulator/helpers/removeIn
 import { detectChange } from './components/simulator/helpers/detectChange'
 import { obtainIUData } from './components/simulator/helpers/obtainIUData'
 import MdaRounds from './components/simulator/MdaRounds'
-import { generateMdaFuture } from './components/simulator/ParamMdaLoader'
+import { generateMdaFuture } from './components/simulator/helpers/iuLoader'
 // settings
 import {
   SettingBedNetCoverage,
