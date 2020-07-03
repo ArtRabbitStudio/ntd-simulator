@@ -44,9 +44,22 @@ function ScenarioGraph({
   const IndexForPrediction = (flatten(map(dataSelection, 'ts')).findIndex(isPrediction))
   const domainX = [startYear, max(flatten(map(dataSelection, 'ts'))) + 1]
 
-  const domainY = extent(
-    flattenDeep(map(data.results, (x) => values(pick(x, metrics))))
+  let dataToOutput = [];
+  forEach(data.results,(r)=>{
+    dataToOutput.push({
+      Ls: r.Ls.slice(IndexToStartForOutput),
+      Ms: r.Ms.slice(IndexToStartForOutput),
+      Ws: r.Ws.slice(IndexToStartForOutput),
+      nRounds: r.nRounds,
+      ts: r.ts.slice(IndexToStartForOutput)
+    })
+  })
+
+  let domainY = extent(
+    flattenDeep(map(dataToOutput, (x) => values(pick(x, metrics))))
   )
+  domainY[0] = 0;
+
   const ShowActivePoint = ({ active, coord, mode }) => {
     const highColour = mode === 'f' ? '#FAEAE1' : '#cccccc'
     const lowColour = mode === 'f' ? '#03D386' : '#A8CFC0'
