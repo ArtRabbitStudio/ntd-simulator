@@ -3,7 +3,7 @@ import React, { createContext, useContext, useReducer, useState } from 'react'
 
 const StoreContext = createContext()
 const initialState = {
-  scenarioLabels: ['Ideal scenario', '1 year interruption'],
+  scenarioLabels: ['Ideal scenario'],
   coverage: 90, // $("#MDACoverage").val(),
   mda: 2, // $("#inputMDARounds").val(),
   mdaSixMonths: 6, // $("input:radio[name=mdaSixMonths]:checked").val(),
@@ -26,8 +26,8 @@ const initialState = {
     mdaObj: null, // historic mdaObj for IU
     params: null, // parms object for IU
   },
-  mdaObjDefaultPrediction: null, // future mdaObjPrediction for IU
-  mdaObjTweakedPrediction: null, // future mdaObjPrediction for IU
+  defaultPrediction: null, // future mdaObjPrediction for IU
+  tweakedPrediction: null, // future mdaObjPrediction for IU
   specificPrediction: null, // null or {}
   needsRerun: false,
 }
@@ -60,26 +60,26 @@ const reducer = (simParams, action) => {
         ...simParams,
         specificPrediction: action.payload,
       }
-    case 'mdaObjDefaultPrediction':
+    case 'defaultPrediction':
       return {
         ...simParams,
-        mdaObjDefaultPrediction: action.payload,
+        defaultPrediction: action.payload,
       }
-    case 'mdaObjTweakedPrediction':
+    case 'tweakedPrediction':
       return {
         ...simParams,
-        mdaObjTweakedPrediction: action.payload,
+        tweakedPrediction: action.payload,
       }
     case 'resetTweakedPrediction':
       return {
         ...simParams,
-        mdaObjTweakedPrediction: {
-          time: [...simParams.mdaObjDefaultPrediction.time],
-          coverage: [...simParams.mdaObjDefaultPrediction.coverage],
-          adherence: [...simParams.mdaObjDefaultPrediction.adherence],
-          bednets: [...simParams.mdaObjDefaultPrediction.bednets],
-          regimen: [...simParams.mdaObjDefaultPrediction.regimen],
-          active: [...simParams.mdaObjDefaultPrediction.active],
+        tweakedPrediction: {
+          time: [...simParams.defaultPrediction.time],
+          coverage: [...simParams.defaultPrediction.coverage],
+          adherence: [...simParams.defaultPrediction.adherence],
+          bednets: [...simParams.defaultPrediction.bednets],
+          regimen: [...simParams.defaultPrediction.regimen],
+          active: [...simParams.defaultPrediction.active],
         },
         needsRerun: false,
       }

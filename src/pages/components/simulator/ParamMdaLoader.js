@@ -19,6 +19,7 @@ export const loadAllIUhistoricData = async (
   const params = await loadIUParams(implementationUnit)
   // set default values
   const defaults = {
+    scenarioLabels: ['Ideal scenario'],
     coverage: 90, // $("#MDACoverage").val(),
     mda: 1, // $("#inputMDARounds").val(), TODO: what do we do here?
     mdaSixMonths: 6, // TODO; what do we do here
@@ -41,8 +42,9 @@ export const loadAllIUhistoricData = async (
       mdaObj: mdaData,
       params: params,
     },
-    mdaObjDefaultPrediction: generateMdaFuture(simParams),
-    mdaObjTweakedPrediction: generateMdaFuture(simParams),
+    defaultPrediction: generateMdaFuture(simParams),
+    tweakedPrediction: generateMdaFuture(simParams),
+    specificPrediction: null, // null or {}
     needsRerun: false,
   }
   const bednets = last(mdaData.bednets)

@@ -38,28 +38,28 @@ const MdaRounds = (props) => {
   const [defaultMDAs, setDefaultMDAs] = useState(null)
   const [tweakedMDAs, setTweakedMDAs] = useState(null)
 
-  const simMDAtime = simParams.mdaObjDefaultPrediction.time
+  const simMDAtime = simParams.defaultPrediction.time
 
   const [simMDAcoverage, setSimMDAcoverage] = useState(
-    simParams.mdaObjDefaultPrediction.coverage
+    simParams.defaultPrediction.coverage
   )
   const [simMDAadherence, setSimMDAadherence] = useState(
-    simParams.mdaObjDefaultPrediction.adherence
+    simParams.defaultPrediction.adherence
   )
   const [simMDAbednets, setSimMDAbednets] = useState(
-    simParams.mdaObjDefaultPrediction.bednets
+    simParams.defaultPrediction.bednets
   )
   const [simMDAregimen, setSimMDAregimen] = useState(
-    simParams.mdaObjDefaultPrediction.regimen
+    simParams.defaultPrediction.regimen
   )
   const [simMDAactive, setSimMDAactive] = useState(
-    simParams.mdaObjDefaultPrediction.active
+    simParams.defaultPrediction.active
   )
 
   const numberOfYears = 22
   React.useEffect(() => {
-    //    console.log('simParams.mdaObjDefaultPrediction has changed')
-    const prediction = simParams.mdaObjDefaultPrediction
+    //    console.log('simParams.defaultPrediction has changed')
+    const prediction = simParams.defaultPrediction
     if (prediction && prediction.time) {
       const newMDAs = {
         time: [...prediction.time],
@@ -71,7 +71,7 @@ const MdaRounds = (props) => {
       }
       setDefaultMDAs(newMDAs)
     }
-  }, [simParams.mdaObjDefaultPrediction])
+  }, [simParams.defaultPrediction])
 
   React.useEffect(() => {
     // dispatch change if default and tweaked differ
@@ -95,7 +95,7 @@ const MdaRounds = (props) => {
     // dispatch change if tweakedMDA has been updated
     if (tweakedMDAs && tweakedMDAs.time && tweakedMDAs.time.length > 0) {
       dispatchSimParams({
-        type: 'mdaObjTweakedPrediction',
+        type: 'tweakedPrediction',
         payload: tweakedMDAs,
       })
     }
@@ -123,7 +123,7 @@ const MdaRounds = (props) => {
 
   React.useEffect(() => {
     // global coverage change
-    const prediction = simParams.mdaObjDefaultPrediction
+    const prediction = simParams.defaultPrediction
     const newArray = [...prediction.coverage.map((item) => simParams.coverage)]
     setSimMDAcoverage(newArray)
   }, [simParams.coverage])
@@ -131,7 +131,7 @@ const MdaRounds = (props) => {
     if (simParams.rho) {
       //console.log('MDA update - simParams.rho changed', simParams.rho)
       // global adherence change
-      const prediction = simParams.mdaObjDefaultPrediction
+      const prediction = simParams.defaultPrediction
       const newArray = [...prediction.adherence.map((item) => simParams.rho)]
       setSimMDAadherence(newArray)
     }
@@ -140,7 +140,7 @@ const MdaRounds = (props) => {
     // global bednets change
     if (simParams.bednets) {
       //console.log('MDA update - simParams.bednets changed', simParams.bednets)
-      const prediction = simParams.mdaObjDefaultPrediction
+      const prediction = simParams.defaultPrediction
       const newArray = [...prediction.bednets.map((item) => simParams.bednets)]
       setSimMDAbednets(newArray)
     }
@@ -149,7 +149,7 @@ const MdaRounds = (props) => {
     // global regimen change
     if (simParams.regimen) {
       //console.log('MDA update - simParams.regimen changed', simParams.regimen)
-      const prediction = simParams.mdaObjDefaultPrediction
+      const prediction = simParams.defaultPrediction
       const newArray = [...prediction.regimen.map((item) => simParams.regimen)]
       setSimMDAregimen(newArray)
     }

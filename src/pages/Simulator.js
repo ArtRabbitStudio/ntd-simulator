@@ -229,8 +229,8 @@ const Simulator = (props) => {
       console.log(tabIndex, simParams)
       const IUData = obtainIUData(simParams, dispatchSimParams)
       const mdaHistory = IUData.mdaObj
-      console.log('prediction pulled from simParams.mdaObjTweakedPrediction')
-      const mdaPrediction = simParams.mdaObjTweakedPrediction
+      console.log('prediction pulled from simParams.tweakedPrediction')
+      const mdaPrediction = simParams.tweakedPrediction
 
       const fullMDA =
         mdaPrediction && mdaPrediction.time
@@ -424,7 +424,7 @@ const Simulator = (props) => {
 
       let paramsInputsWithPrediction = paramsInputs.map((item, index) => ({
         ...item,
-        mdaObjDefaultPrediction: {
+        defaultPrediction: {
           time: [...mdaFuture[index].time],
           coverage: [...mdaFuture[index].coverage],
           adherence: [...mdaFuture[index].adherence],
@@ -432,7 +432,7 @@ const Simulator = (props) => {
           regimen: [...mdaFuture[index].regimen],
           active: [...mdaFuture[index].active],
         },
-        mdaObjTweakedPrediction: {
+        tweakedPrediction: {
           time: [...mdaFuture[index].time],
           coverage: [...mdaFuture[index].coverage],
           adherence: [...mdaFuture[index].adherence],
@@ -653,10 +653,9 @@ const Simulator = (props) => {
                         classes={classes}
                       />
                     </div>
-                    {scenarioMDAs[tabIndex] &&
-                      simParams.mdaObjDefaultPrediction && (
-                        <MdaRounds history={scenarioMDAs[tabIndex]} />
-                      )}
+                    {scenarioMDAs[tabIndex] && simParams.defaultPrediction && (
+                      <MdaRounds history={scenarioMDAs[tabIndex]} />
+                    )}
                     <Typography
                       className={classes.scenarioGraphLegendInterventions}
                       variant="h6"
