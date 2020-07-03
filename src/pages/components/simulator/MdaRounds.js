@@ -18,7 +18,7 @@ const MdaRounds = (props) => {
   const { simParams, dispatchSimParams } = useStore()
   const classes = useStyles()
   const removeMDARound = () => {
-    let newArray = [...simMDAactive]
+    let newArray = [...simParams.tweakedPrediction.active]
     newArray[curMDARound] = false
     setSimMDAactive([...newArray])
     setCurMDARound(-1)
@@ -29,147 +29,36 @@ const MdaRounds = (props) => {
     setCurMDARound(-1)
   }
   const closeRoundTooltip = (event) => {
-    setCurMDARound(-1)
+    // this breaks things
+    // setCurMDARound(-1)
   }
 
   const [curMDARound, setCurMDARound] = useState(-1)
   const [doseSettingsOpen, setDoseSettingsOpen] = useState(false)
 
-  const [defaultMDAs, setDefaultMDAs] = useState(null)
+  const [manualChange, setManualChange] = useState(false)
+  const [manualMDAs, setManualMDAs] = useState(null)
   const [tweakedMDAs, setTweakedMDAs] = useState(null)
 
-  const simMDAtime = simParams.defaultPrediction.time
+  // const simParams.tweakedPrediction.time = [...simParams.tweakedPrediction.time]
 
-  const [simMDAcoverage, setSimMDAcoverage] = useState(
-    simParams.defaultPrediction.coverage
-  )
-  const [simMDAadherence, setSimMDAadherence] = useState(
-    simParams.defaultPrediction.adherence
-  )
-  const [simMDAbednets, setSimMDAbednets] = useState(
-    simParams.defaultPrediction.bednets
-  )
-  const [simMDAregimen, setSimMDAregimen] = useState(
-    simParams.defaultPrediction.regimen
-  )
-  const [simMDAactive, setSimMDAactive] = useState(
-    simParams.defaultPrediction.active
-  )
+  const setSimMDAcoverage = (array) => {
+    dispatchSimParams({ type: 'tweakedCoverage', payload: array })
+  }
+  const setSimMDAadherence = (array) => {
+    dispatchSimParams({ type: 'tweakedAdherence', payload: array })
+  }
+  const setSimMDAbednets = (array) => {
+    dispatchSimParams({ type: 'tweakedBednets', payload: array })
+  }
+  const setSimMDAregimen = (array) => {
+    dispatchSimParams({ type: 'tweakedRegimen', payload: array })
+  }
+  const setSimMDAactive = (array) => {
+    dispatchSimParams({ type: 'tweakedActive', payload: array })
+  }
 
   const numberOfYears = 22
-  React.useEffect(() => {
-    //    console.log('simParams.defaultPrediction has changed')
-    const prediction = simParams.defaultPrediction
-    if (prediction && prediction.time) {
-      const newMDAs = {
-        time: [...prediction.time],
-        coverage: [...prediction.coverage],
-        adherence: [...prediction.adherence],
-        bednets: [...prediction.bednets],
-        regimen: [...prediction.regimen],
-        active: [...prediction.active],
-      }
-      setDefaultMDAs(newMDAs)
-    }
-  }, [simParams.defaultPrediction])
-  React.useEffect(() => {
-    //    console.log('simParams.tweakedPrediction has changed')
-    const prediction = simParams.tweakedPrediction
-    if (prediction && prediction.time) {
-      const newMDAs = {
-        time: [...prediction.time],
-        coverage: [...prediction.coverage],
-        adherence: [...prediction.adherence],
-        bednets: [...prediction.bednets],
-        regimen: [...prediction.regimen],
-        active: [...prediction.active],
-      }
-      setTweakedMDAs(newMDAs)
-    }
-  }, [simParams.tweakedPrediction])
-
-  /*   React.useEffect(() => {
-    // dispatch change if default and tweaked differ
-    if (tweakedMDAs && tweakedMDAs.time && tweakedMDAs.time.length > 0) {
-      const needsRerun =
-        JSON.stringify(defaultMDAs) !== JSON.stringify(tweakedMDAs)
-      if (needsRerun) {
-        dispatchSimParams({
-          type: 'needsRerun',
-          payload: true,
-        })
-      } else {
-        dispatchSimParams({
-          type: 'needsRerun',
-          payload: false,
-        })
-      }
-    }
-  }, [defaultMDAs, tweakedMDAs]) */
-  /*   React.useEffect(() => {
-    // dispatch change if tweakedMDA has been updated
-    if (tweakedMDAs && tweakedMDAs.time && tweakedMDAs.time.length > 0) {
-      dispatchSimParams({
-        type: 'tweakedPrediction',
-        payload: tweakedMDAs,
-      })
-    }
-  }, [tweakedMDAs]) */
-
-  React.useEffect(() => {
-    // tweak the tweakedMDA
-    const newMDAs = {
-      time: [...simMDAtime],
-      coverage: [...simMDAcoverage],
-      adherence: [...simMDAadherence],
-      bednets: [...simMDAbednets],
-      regimen: [...simMDAregimen],
-      active: [...simMDAactive],
-    }
-    setTweakedMDAs(newMDAs)
-  }, [
-    simMDAtime,
-    simMDAcoverage,
-    simMDAadherence,
-    simMDAbednets,
-    simMDAregimen,
-    simMDAactive,
-  ])
-
-  React.useEffect(() => {
-    // global coverage change
-    const prediction = simParams.defaultPrediction
-    const newArray = [...prediction.coverage.map((item) => simParams.coverage)]
-    setSimMDAcoverage(newArray)
-  }, [simParams.coverage])
-  React.useEffect(() => {
-    if (simParams.rho) {
-      //console.log('MDA update - simParams.rho changed', simParams.rho)
-      // global adherence change
-      const prediction = simParams.defaultPrediction
-      const newArray = [...prediction.adherence.map((item) => simParams.rho)]
-      setSimMDAadherence(newArray)
-    }
-  }, [simParams.rho])
-  React.useEffect(() => {
-    // global bednets change
-    if (simParams.bednets) {
-      //console.log('MDA update - simParams.bednets changed', simParams.bednets)
-      const prediction = simParams.defaultPrediction
-      const newArray = [...prediction.bednets.map((item) => simParams.bednets)]
-      setSimMDAbednets(newArray)
-    }
-  }, [simParams.bednets])
-  React.useEffect(() => {
-    // global regimen change
-    if (simParams.regimen) {
-      //console.log('MDA update - simParams.regimen changed', simParams.regimen)
-      const prediction = simParams.defaultPrediction
-      const newArray = [...prediction.regimen.map((item) => simParams.regimen)]
-      setSimMDAregimen(newArray)
-    }
-  }, [simParams.regimen])
-
   React.useEffect(() => {
     // global mdaSixMonths change
     //    console.log(simParams.mdaSixMonths)
@@ -243,47 +132,50 @@ const MdaRounds = (props) => {
           |
         </div> */}
         {/* prediction */}
-        {simMDAtime.map((e, i) => (
+        {simParams.tweakedPrediction.time.map((e, i) => (
           <div
             key={`bar-${i}`}
             onClick={(a) => {
               setCurMDARound(i)
             }}
-            className={`bar ${simMDAactive[i] === false ? 'removed' : ''} ${
-              i === curMDARound ? 'current' : ''
-            }`}
+            className={`bar ${
+              simParams.tweakedPrediction.active[i] === false ? 'removed' : ''
+            } ${i === curMDARound ? 'current' : ''}`}
             title={
-              simMDAtime[i] +
+              simParams.tweakedPrediction.time[i] +
               ', ' +
-              simMDAcoverage[i] +
+              simParams.tweakedPrediction.coverage[i] +
               ', ' +
-              simMDAadherence[i] +
+              simParams.tweakedPrediction.adherence[i] +
               ', ' +
-              simMDAbednets[i] +
+              simParams.tweakedPrediction.bednets[i] +
               ', ' +
-              simMDAregimen[i] +
+              simParams.tweakedPrediction.regimen[i] +
               ', ' +
-              simMDAactive[i] +
+              simParams.tweakedPrediction.active[i] +
               ' '
             }
           >
             <span
               className={i === curMDARound ? 'current' : ''}
               style={{
-                height: simMDAcoverage[i],
+                height: simParams.tweakedPrediction.coverage[i],
               }}
             ></span>
 
             {i === curMDARound && (
               <ClickAwayListener onClickAway={closeRoundTooltip}>
                 <div className="bar-tooltip">
-                  {simMDAactive[curMDARound] !== false && (
-                    <span className="t">{simMDAcoverage[i]}%</span>
+                  {simParams.tweakedPrediction.active[curMDARound] !==
+                    false && (
+                    <span className="t">
+                      {simParams.tweakedPrediction.coverage[i]}%
+                    </span>
                   )}
-                  {simMDAactive[curMDARound] === false && (
-                    <span className="t">No MDA</span>
-                  )}
-                  {simMDAactive[curMDARound] === false && (
+                  {simParams.tweakedPrediction.active[curMDARound] ===
+                    false && <span className="t">No MDA</span>}
+                  {simParams.tweakedPrediction.active[curMDARound] ===
+                    false && (
                     <span
                       className="i plus"
                       onClick={(a) => {
@@ -291,7 +183,8 @@ const MdaRounds = (props) => {
                       }}
                     ></span>
                   )}
-                  {simMDAactive[curMDARound] !== false && (
+                  {simParams.tweakedPrediction.active[curMDARound] !==
+                    false && (
                     <span
                       className="i edit"
                       onClick={(a) => {
@@ -299,7 +192,8 @@ const MdaRounds = (props) => {
                       }}
                     ></span>
                   )}
-                  {simMDAactive[curMDARound] !== false && (
+                  {simParams.tweakedPrediction.active[curMDARound] !==
+                    false && (
                     <span
                       className="i remove"
                       onClick={(a) => {
@@ -317,9 +211,13 @@ const MdaRounds = (props) => {
 
       {doseSettingsOpen && (
         <ClickAwayListener onClickAway={closeRoundModal}>
-          <Paper elevation={3} className={classes.roundModal}>
+          <Paper
+            elevation={3}
+            className={classes.roundModal}
+            style={{ zIndex: 999 }}
+          >
             <CloseButton action={closeRoundModal} />
-            {simMDAactive[curMDARound] === false && (
+            {simParams.tweakedPrediction.active[curMDARound] === false && (
               <Button
                 className={classes.modalButton}
                 variant="contained"
@@ -331,10 +229,10 @@ const MdaRounds = (props) => {
                   marginTop: '13rem',
                 }}
                 onClick={() => {
-                  let newArray = [...simMDAactive]
+                  let newArray = [...simParams.tweakedPrediction.active]
                   newArray[curMDARound] = true
                   setSimMDAactive([...newArray])
-                  // setCurMDARound(-1);
+                  setCurMDARound(-1)
                   // setDoseSettingsOpen(false);
                 }}
               >
@@ -343,7 +241,10 @@ const MdaRounds = (props) => {
             )}
             <div
               style={{
-                opacity: simMDAactive[curMDARound] === false ? 0.2 : 1,
+                opacity:
+                  simParams.tweakedPrediction.active[curMDARound] === false
+                    ? 0.2
+                    : 1,
               }}
             >
               <Typography className={classes.title} variant="h4" component="h4">
@@ -360,9 +261,10 @@ const MdaRounds = (props) => {
                 inModal={true}
                 label="Treatment target coverage"
                 classAdd="spaced"
-                value={simMDAcoverage[curMDARound]}
+                value={simParams.tweakedPrediction.coverage[curMDARound]}
                 onChange={(event, newValue) => {
-                  let newArray = [...simMDAcoverage]
+                  setManualChange(true)
+                  let newArray = [...simParams.tweakedPrediction.coverage]
                   newArray[curMDARound] = newValue
                   setSimMDAcoverage([...newArray])
                 }}
@@ -372,9 +274,10 @@ const MdaRounds = (props) => {
                 inModal={true}
                 label="Bed Net Coverage"
                 classAdd="spaced"
-                value={simMDAbednets[curMDARound]}
+                value={simParams.tweakedPrediction.bednets[curMDARound]}
                 onChange={(event, newValue) => {
-                  let newArray = [...simMDAbednets]
+                  setManualChange(true)
+                  let newArray = [...simParams.tweakedPrediction.bednets]
                   newArray[curMDARound] = newValue
                   setSimMDAbednets([...newArray])
                 }}
@@ -384,9 +287,10 @@ const MdaRounds = (props) => {
                 inModal={true}
                 label="Drug regimen"
                 classAdd="spaced"
-                value={simMDAregimen[curMDARound]}
+                value={simParams.tweakedPrediction.regimen[curMDARound]}
                 onChange={(event) => {
-                  let newArray = [...simMDAregimen]
+                  setManualChange(true)
+                  let newArray = [...simParams.tweakedPrediction.regimen]
                   newArray[curMDARound] = event.target.value
                   setSimMDAregimen([...newArray])
                 }}
@@ -396,9 +300,10 @@ const MdaRounds = (props) => {
                 inModal={true}
                 label="Systematic adherence"
                 classAdd="spaced"
-                value={simMDAadherence[curMDARound]}
+                value={simParams.tweakedPrediction.adherence[curMDARound]}
                 onChange={(event, newValue) => {
-                  let newArray = [...simMDAadherence]
+                  setManualChange(true)
+                  let newArray = [...simParams.tweakedPrediction.adherence]
                   newArray[curMDARound] = newValue
                   setSimMDAadherence([...newArray])
                 }}
@@ -409,6 +314,7 @@ const MdaRounds = (props) => {
                   className={`${classes.modalButton} light`}
                   variant="contained"
                   onClick={() => {
+                    setManualChange(true)
                     removeMDARound()
                   }}
                 >

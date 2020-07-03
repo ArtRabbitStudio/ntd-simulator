@@ -71,6 +71,46 @@ const reducer = (simParams, action) => {
         ...simParams,
         tweakedPrediction: action.payload,
       }
+    case 'tweakedCoverage':
+      return {
+        ...simParams,
+        tweakedPrediction: {
+          ...simParams.tweakedPrediction,
+          coverage: action.payload,
+        },
+      }
+    case 'tweakedAdherence':
+      return {
+        ...simParams,
+        tweakedPrediction: {
+          ...simParams.tweakedPrediction,
+          adherence: action.payload,
+        },
+      }
+    case 'tweakedBednets':
+      return {
+        ...simParams,
+        tweakedPrediction: {
+          ...simParams.tweakedPrediction,
+          bednets: action.payload,
+        },
+      }
+    case 'tweakedRegimen':
+      return {
+        ...simParams,
+        tweakedPrediction: {
+          ...simParams.tweakedPrediction,
+          regimen: action.payload,
+        },
+      }
+    case 'tweakedActive':
+      return {
+        ...simParams,
+        tweakedPrediction: {
+          ...simParams.tweakedPrediction,
+          active: action.payload,
+        },
+      }
     case 'resetScenario':
       return {
         ...simParams,

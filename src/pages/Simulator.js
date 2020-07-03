@@ -496,10 +496,7 @@ const Simulator = (props) => {
         payload: true,
       })
     } else {
-      console.log(
-        '%c No Param change detected! ',
-        'background: #222; color: #cc9900'
-      )
+      console.log('%c No Param changes. ', 'background: #222; color: #cc9900')
       dispatchSimParams({
         type: 'needsRerun',
         payload: false,
@@ -719,8 +716,11 @@ const Simulator = (props) => {
                         classes={classes}
                       />
                     </div>
-                    {scenarioMDAs[tabIndex] && simParams.defaultPrediction && (
-                      <MdaRounds history={scenarioMDAs[tabIndex]} />
+                    {scenarioMDAs[tabIndex] && simParams.tweakedPrediction && (
+                      <MdaRounds
+                        history={scenarioMDAs[tabIndex]}
+                        future={simParams.tweakedPrediction}
+                      />
                     )}
                     <Typography
                       className={classes.scenarioGraphLegendInterventions}
