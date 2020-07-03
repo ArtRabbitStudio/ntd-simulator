@@ -24,7 +24,7 @@ import HeadWithInputs from './components/HeadWithInputs'
 import SelectCountry from './components/SelectCountry'
 import { removeInactiveMDArounds } from './components/simulator/helpers/Mda'
 import { obtainIUData } from './components/simulator/helpers/obtainIUData'
-import MdaBars from './components/simulator/MdaBars'
+import MdaRounds from './components/simulator/MdaRounds'
 import { generateMdaFuture } from './components/simulator/ParamMdaLoader'
 // settings
 import {
@@ -655,7 +655,7 @@ const Simulator = (props) => {
                     </div>
                     {scenarioMDAs[tabIndex] &&
                       simParams.mdaObjDefaultPrediction && (
-                        <MdaBars history={scenarioMDAs[tabIndex]} />
+                        <MdaRounds history={scenarioMDAs[tabIndex]} />
                       )}
                     <Typography
                       className={classes.scenarioGraphLegendInterventions}

@@ -22,7 +22,7 @@ import {
 
 //import ClickAway from "../../../hooks/clickAway";
 
-const MdaBars = (props) => {
+const MdaRounds = (props) => {
   const history = props.history
   const { simParams, dispatchSimParams } = useStore()
   const classes = useStyles()
@@ -427,4 +427,4 @@ const MdaBars = (props) => {
     </>
   )
 }
-export default MdaBars
+export default MdaRounds
