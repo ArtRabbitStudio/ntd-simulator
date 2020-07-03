@@ -1070,7 +1070,10 @@ export var simControler = {
     values.sort(function (a, b) {
       return a - b
     })
-    return (values[0])
+    var x = values.length
+    var y = Math.round(values.length - 0.975*values.length)
+    return (values[y])
+
     // var half = Math.floor(values.length / 2)
     //
     // if (values.length % 2) return values[half]
@@ -1082,8 +1085,8 @@ export var simControler = {
     values.sort(function (a, b) {
       return a - b
     })
-
-    return(values[values.length])
+    var x = Math.round(0.975*values.length)
+    return(values[x-1])
     // var half = Math.floor(values.length / 2)
     //
     // if (values.length % 2) return values[half]
