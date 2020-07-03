@@ -19,7 +19,6 @@ export const loadAllIUhistoricData = async (
   const params = await loadIUParams(implementationUnit)
   // set default values
   const defaultSimParams = {
-    scenarioLabels: [],
     coverage: 90, // $("#MDACoverage").val(),
     mda: 1, // $("#inputMDARounds").val(), TODO: what do we do here?
     mdaSixMonths: 6, // TODO; what do we do here
@@ -34,12 +33,13 @@ export const loadAllIUhistoricData = async (
     rhoBComp: 0, // $("#brMda").val(),
     rhoCN: 0, // $("#bedNetMda").val(),
     species: 0, // $("input[name=speciesRadios]:checked").val(),
-    macrofilaricide: 65, // $("#Macrofilaricide").val(),
-    microfilaricide: 65,
     runs: 10,
   }
   const defaults = {
-    ...defaultSimParams,
+    ...defaultSimParams, // these ones are observed
+    scenarioLabels: [],
+    macrofilaricide: 65, // $("#Macrofilaricide").val(), - NOT CHANGED ANYWHERE
+    microfilaricide: 65, // - NOT CHANGED ANYWHERE
     defaultParams: { ...defaultSimParams },
     IUData: {
       id: implementationUnit,
@@ -52,13 +52,26 @@ export const loadAllIUhistoricData = async (
     needsRerun: false,
   }
   const bednets = last(mdaData.bednets)
-  if (bednets) defaults.covN = bednets
+  if (bednets) {
+    defaults.covN = bednets
+    defaults.defaultParams.covN = bednets
+  }
   const mdaRegimen = last(filter(mdaData.regimen, (x) => x != 'xxx'))
-  if (mdaRegimen) defaults.mdaRegimen = mdaRegimen
+  if (mdaRegimen) {
+    defaults.mdaRegimen = mdaRegimen
+    defaults.defaultParams.mdaRegimen = mdaRegimen
+  }
   const adherence = last(mdaData.adherence)
-  if (adherence) defaults.rho = adherence
+  if (adherence) {
+    console.log('adherence', adherence)
+    defaults.rho = adherence
+    defaults.defaultParams.rho = adherence
+  }
   const coverage = last(filter(mdaData.coverage, (x) => x != 0))
-  if (coverage) defaults.coverage = coverage
+  if (coverage) {
+    defaults.coverage = coverage
+    defaults.defaultParams.coverage = coverage
+  }
   console.log(defaults)
   dispatchSimParams({
     type: 'everything',

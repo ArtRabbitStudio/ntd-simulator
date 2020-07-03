@@ -72,8 +72,23 @@ const MdaRounds = (props) => {
       setDefaultMDAs(newMDAs)
     }
   }, [simParams.defaultPrediction])
-
   React.useEffect(() => {
+    //    console.log('simParams.tweakedPrediction has changed')
+    const prediction = simParams.tweakedPrediction
+    if (prediction && prediction.time) {
+      const newMDAs = {
+        time: [...prediction.time],
+        coverage: [...prediction.coverage],
+        adherence: [...prediction.adherence],
+        bednets: [...prediction.bednets],
+        regimen: [...prediction.regimen],
+        active: [...prediction.active],
+      }
+      setTweakedMDAs(newMDAs)
+    }
+  }, [simParams.tweakedPrediction])
+
+  /*   React.useEffect(() => {
     // dispatch change if default and tweaked differ
     if (tweakedMDAs && tweakedMDAs.time && tweakedMDAs.time.length > 0) {
       const needsRerun =
@@ -90,8 +105,8 @@ const MdaRounds = (props) => {
         })
       }
     }
-  }, [defaultMDAs, tweakedMDAs])
-  React.useEffect(() => {
+  }, [defaultMDAs, tweakedMDAs]) */
+  /*   React.useEffect(() => {
     // dispatch change if tweakedMDA has been updated
     if (tweakedMDAs && tweakedMDAs.time && tweakedMDAs.time.length > 0) {
       dispatchSimParams({
@@ -99,7 +114,7 @@ const MdaRounds = (props) => {
         payload: tweakedMDAs,
       })
     }
-  }, [tweakedMDAs])
+  }, [tweakedMDAs]) */
 
   React.useEffect(() => {
     // tweak the tweakedMDA

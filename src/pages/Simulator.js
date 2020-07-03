@@ -464,6 +464,63 @@ const Simulator = (props) => {
     }
   }, [])
 
+  useEffect(() => {
+    console.log('compare params')
+    const observedSimParams = {
+      coverage: simParams.coverage,
+      mda: simParams.mda,
+      mdaSixMonths: simParams.mdaSixMonths,
+      endemicity: simParams.endemicity,
+      covN: simParams.covN,
+      v_to_hR: simParams.v_to_hR,
+      vecCap: simParams.vecCap,
+      vecComp: simParams.vecComp,
+      vecD: simParams.vecD,
+      mdaRegimen: simParams.mdaRegimen,
+      rho: simParams.rho,
+      rhoBComp: simParams.rhoBComp,
+      rhoCN: simParams.rhoCN,
+      species: simParams.species,
+      runs: simParams.runs,
+    }
+    const changeDetected =
+      JSON.stringify(observedSimParams) !==
+      JSON.stringify(simParams.defaultParams)
+    if (changeDetected) {
+      console.log(
+        '%c Param change detected! ',
+        'background: #222; color: #bada55'
+      )
+      dispatchSimParams({
+        type: 'needsRerun',
+        payload: true,
+      })
+    } else {
+      console.log(
+        '%c No Param change detected! ',
+        'background: #222; color: #cc9900'
+      )
+      dispatchSimParams({
+        type: 'needsRerun',
+        payload: false,
+      })
+    }
+  }, [
+    simParams.coverage, // $("#MDACoverage").val(),
+    // simParams.mda, // $("#inputMDARounds").val(),
+    simParams.mdaSixMonths, // $("input:radio[name=mdaSixMonths]:checked").val(),
+    // simParams.endemicity: 10, // $("#endemicity").val(),
+    simParams.covN, // $("#bedNetCoverage").val(),
+    // v_to_hR: 0, // $("#insecticideCoverage").val(),
+    // vecCap: 0, // $("#vectorialCapacity").val(),
+    // vecComp: 0, //$("#vectorialCompetence").val(),
+    // vecD: 0, //$("#vectorialDeathRate").val(),
+    simParams.mdaRegimen, // $("input[name=mdaRegimenRadios]:checked").val(),
+    simParams.rho, // $("#sysAdherence").val(),
+    simParams.species, // $("input[name=speciesRadios]:checked").val(),
+    simParams.runs, // $("#runs").val()
+  ])
+
   return (
     <Layout>
       <HeadWithInputs title="prevalence simulator" />

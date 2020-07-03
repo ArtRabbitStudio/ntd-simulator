@@ -18,8 +18,8 @@ const initialState = {
   rhoBComp: 0, // $("#brMda").val(),
   rhoCN: 0, // $("#bedNetMda").val(),
   species: 0, // $("input[name=speciesRadios]:checked").val(),
-  macrofilaricide: 65, // $("#Macrofilaricide").val(),
-  microfilaricide: 65, // $("#Microfilaricide").val(),
+  /* macrofilaricide: 65, // $("#Macrofilaricide").val(),
+  microfilaricide: 65, // $("#Microfilaricide").val(), */
   runs: 5, // $("#runs").val()
   defaultParams: null,
   IUData: {
