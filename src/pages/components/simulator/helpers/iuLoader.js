@@ -169,7 +169,8 @@ export const generateMdaFuture = (simParams) => {
   let MDAcoverage = []
   for (let i = 0; i < numberOfYears; i++) {
     MDAcoverage.push(
-      simParams.tweakedPrediction.beenFiddledWith[i] === true
+      simParams.tweakedPrediction &&
+        simParams.tweakedPrediction.beenFiddledWith[i] === true
         ? simParams.tweakedPrediction.coverage[i]
         : simParams.coverage
     )
@@ -177,7 +178,8 @@ export const generateMdaFuture = (simParams) => {
   let MDAadherence = []
   for (let i = 0; i < numberOfYears; i++) {
     MDAadherence.push(
-      simParams.tweakedPrediction.beenFiddledWith[i] === true
+      simParams.tweakedPrediction &&
+        simParams.tweakedPrediction.beenFiddledWith[i] === true
         ? simParams.tweakedPrediction.adherence[i]
         : simParams.rho
     )
@@ -185,7 +187,8 @@ export const generateMdaFuture = (simParams) => {
   let MDAbednets = []
   for (let i = 0; i < numberOfYears; i++) {
     MDAbednets.push(
-      simParams.tweakedPrediction.beenFiddledWith[i] === true
+      simParams.tweakedPrediction &&
+        simParams.tweakedPrediction.beenFiddledWith[i] === true
         ? simParams.tweakedPrediction.bednets[i]
         : simParams.covN
     )
@@ -193,7 +196,8 @@ export const generateMdaFuture = (simParams) => {
   let MDAregimen = []
   for (let i = 0; i < numberOfYears; i++) {
     MDAregimen.push(
-      simParams.tweakedPrediction.beenFiddledWith[i] === true
+      simParams.tweakedPrediction &&
+        simParams.tweakedPrediction.beenFiddledWith[i] === true
         ? simParams.tweakedPrediction.regimen[i]
         : simParams.mdaRegimen
     )
@@ -202,13 +206,15 @@ export const generateMdaFuture = (simParams) => {
   for (let i = 0; i < numberOfYears; i++) {
     if (simParams.mdaSixMonths === 12 && i % 2 === 1) {
       MDAactive.push(
-        simParams.tweakedPrediction.beenFiddledWith[i] === true
+        simParams.tweakedPrediction &&
+          simParams.tweakedPrediction.beenFiddledWith[i] === true
           ? simParams.tweakedPrediction.active[i]
           : false
       )
     } else {
       MDAactive.push(
-        simParams.tweakedPrediction.beenFiddledWith[i] === true
+        simParams.tweakedPrediction &&
+          simParams.tweakedPrediction.beenFiddledWith[i] === true
           ? simParams.tweakedPrediction.active[i]
           : true
       ) // alternate here
@@ -217,7 +223,10 @@ export const generateMdaFuture = (simParams) => {
   let MDAbeenFiddledWith = []
   for (let i = 0; i < numberOfYears; i++) {
     MDAbeenFiddledWith.push(
-      simParams.tweakedPrediction.beenFiddledWith[i] === true ? true : false
+      simParams.tweakedPrediction &&
+        simParams.tweakedPrediction.beenFiddledWith[i] === true
+        ? true
+        : false
     )
   }
   const newMDAs = {
