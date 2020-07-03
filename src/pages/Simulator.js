@@ -25,6 +25,8 @@ import SelectCountry from './components/SelectCountry'
 import { removeInactiveMDArounds } from './components/simulator/helpers/removeInactiveMDArounds'
 import { detectChange } from './components/simulator/helpers/detectChange'
 import { obtainIUData } from './components/simulator/helpers/obtainIUData'
+import { trimMdaHistory } from './components/simulator/helpers/trimMdaHistory'
+import { combineFullMda } from './components/simulator/helpers/combineFullMda'
 import MdaRounds from './components/simulator/MdaRounds'
 import { generateMdaFuture } from './components/simulator/helpers/iuLoader'
 // settings
@@ -166,14 +168,6 @@ const Simulator = (props) => {
           ...scenarioInputs,
           JSON.parse(resultObject).params.inputs,
         ])
-        /*         console.log(
-          'JSON.parse(resultObject).mda2015.time,',
-          JSON.parse(resultObject).mda2015.time
-        ) */
-        /*         console.log(
-          'JSON.parse(resultObject).mdaFuture.time,',
-          JSON.parse(resultObject).mdaFuture.time
-        ) */
         setScenarioMDAs([...scenarioMDAs, JSON.parse(resultObject).mda2015])
       } else {
         let correctTabIndex = newScenario === true ? tabIndex + 1 : tabIndex
@@ -201,7 +195,6 @@ const Simulator = (props) => {
           regimen: [...returnedmda2015.mda2015.regimen],
         }
         scenarioMDAsNew[correctTabIndex] = MDAsItem
-        // console.log('ccc', correctTabIndex, scenarioMDAsNew)
         setScenarioMDAs(scenarioMDAsNew)
       }
       setSimInProgress(false)
@@ -212,14 +205,47 @@ const Simulator = (props) => {
       }
     }
   }
-  /*   useEffect(() => {
-      console.log('scenarioInputs', scenarioInputs)
-    }, [scenarioInputs]) */
-  const resetCurrentScenario = () => {
-    dispatchSimParams({
-      type: 'resetScenario',
-    })
-    // but this should as well reset globa params, right?
+  const runNewScenario = async () => {
+    if (!simInProgress) {
+      if (tabLength < 5) {
+        setSimInProgress(true)
+        const IUData = obtainIUData(simParams, dispatchSimParams)
+        SimulatorEngine.simControler.iuParams = IUData.params
+        const mdaHistory = IUData.mdaObj
+        console.log(simParams)
+        const mdaPrediction =
+          simParams.specificPrediction !== null
+            ? simParams.specificPrediction
+            : generateMdaFuture(simParams)
+        const fullMDA = combineFullMda(mdaHistory, mdaPrediction)
+        if (
+          simParams.specificPrediction &&
+          simParams.specificPrediction.label
+        ) {
+          dispatchSimParams({
+            type: 'scenarioLabel',
+            payload: simParams.specificPrediction.label,
+          })
+        }
+        console.log('mdaPrediction')
+        console.log(mdaPrediction)
+        SimulatorEngine.simControler.mdaObj = removeInactiveMDArounds(fullMDA)
+        SimulatorEngine.simControler.mdaObjUI = fullMDA
+        SimulatorEngine.simControler.mdaObj2015 = trimMdaHistory(mdaHistory)
+        SimulatorEngine.simControler.mdaObjFuture = mdaPrediction
+        SimulatorEngine.simControler.iuParams = IUData.params
+        console.log('runningScenario')
+
+        SimulatorEngine.simControler.newScenario = true
+        SimulatorEngine.simControler.runScenario(
+          simParams,
+          tabLength,
+          simulatorCallback
+        )
+      } else {
+        alert('Sorry maximum number of Scenarios is 5.')
+      }
+    }
   }
   const runCurrentScenario = async () => {
     console.log(simParams)
@@ -232,43 +258,10 @@ const Simulator = (props) => {
       const mdaHistory = IUData.mdaObj
       console.log('prediction pulled from simParams.tweakedPrediction')
       const mdaPrediction = simParams.tweakedPrediction
-
-      const fullMDA =
-        mdaPrediction && mdaPrediction.time
-          ? {
-              time: [...mdaHistory.time, ...mdaPrediction.time],
-              coverage: [...mdaHistory.coverage, ...mdaPrediction.coverage],
-              adherence: [...mdaHistory.adherence, ...mdaPrediction.adherence],
-              bednets: [...mdaHistory.bednets, ...mdaPrediction.bednets],
-              regimen: [...mdaHistory.regimen, ...mdaPrediction.regimen],
-              active: [...mdaHistory.active, ...mdaPrediction.active],
-            }
-          : mdaHistory
+      const fullMDA = combineFullMda(mdaHistory, mdaPrediction)
       SimulatorEngine.simControler.mdaObj = removeInactiveMDArounds(fullMDA)
-
-      const yearsToLeaveOut = 14
-      let newMdaObj2015 = {
-        time: mdaHistory.time.filter(function (value, index, arr) {
-          return index > yearsToLeaveOut
-        }),
-        coverage: mdaHistory.coverage.filter(function (value, index, arr) {
-          return index > yearsToLeaveOut
-        }),
-        adherence: mdaHistory.adherence.filter(function (value, index, arr) {
-          return index > yearsToLeaveOut
-        }),
-        bednets: mdaHistory.bednets.filter(function (value, index, arr) {
-          return index > yearsToLeaveOut
-        }),
-        regimen: mdaHistory.regimen.filter(function (value, index, arr) {
-          return index > yearsToLeaveOut
-        }),
-        active: mdaHistory.active.filter(function (value, index, arr) {
-          return index > yearsToLeaveOut
-        }),
-      }
       SimulatorEngine.simControler.mdaObjUI = fullMDA
-      SimulatorEngine.simControler.mdaObj2015 = newMdaObj2015
+      SimulatorEngine.simControler.mdaObj2015 = trimMdaHistory(mdaHistory)
       SimulatorEngine.simControler.mdaObjFuture = mdaPrediction
       SimulatorEngine.simControler.iuParams = IUData.params
       console.log('runningScenario')
@@ -281,14 +274,14 @@ const Simulator = (props) => {
       )
     }
   }
-
+  const resetCurrentScenario = () => {
+    dispatchSimParams({
+      type: 'resetScenario',
+    })
+  }
   const removeCurrentScenario = () => {
     if (!simInProgress) {
-      // alert('todo')
-
       SimulatorEngine.SessionData.deleteScenario(tabIndex)
-      //console.log(scenarioResults)
-      //console.log(scenarioResults[tabIndex])
 
       let newScenarios = [...scenarioResults]
       newScenarios = newScenarios.filter(
@@ -312,8 +305,6 @@ const Simulator = (props) => {
       setTabIndex(tabIndex >= 1 ? tabIndex - 1 : 0)
     }
   }
-
-  // confirmation for remove scenario
   const [confirmatonOpen, setConfirmatonOpen] = useState(false)
   const confirmRemoveCurrentScenario = () => {
     if (!simInProgress) {
@@ -326,112 +317,21 @@ const Simulator = (props) => {
       removeCurrentScenario()
     }
   }
-  const runNewScenario = async () => {
-    if (!simInProgress) {
-      if (tabLength < 5) {
-        // populateMDA();
-        setSimInProgress(true)
-        // console.log('settingTabLength', tabLength + 1)
-        //console.log(tabIndex, simParams)
-
-        const IUData = obtainIUData(simParams, dispatchSimParams)
-        SimulatorEngine.simControler.iuParams = IUData.params
-        const mdaHistory = IUData.mdaObj
-        console.log(simParams)
-        const mdaPrediction =
-          simParams.specificPrediction !== null
-            ? simParams.specificPrediction
-            : generateMdaFuture(simParams)
-        if (
-          simParams.specificPrediction &&
-          simParams.specificPrediction.label
-        ) {
-          dispatchSimParams({
-            type: 'scenarioLabel',
-            payload: simParams.specificPrediction.label,
-          })
-        }
-        console.log('mdaPrediction')
-        console.log(mdaPrediction)
-        const fullMDA =
-          mdaPrediction && mdaPrediction.time
-            ? {
-                time: [...mdaHistory.time, ...mdaPrediction.time],
-                coverage: [...mdaHistory.coverage, ...mdaPrediction.coverage],
-                adherence: [
-                  ...mdaHistory.adherence,
-                  ...mdaPrediction.adherence,
-                ],
-                bednets: [...mdaHistory.bednets, ...mdaPrediction.bednets],
-                regimen: [...mdaHistory.regimen, ...mdaPrediction.regimen],
-                active: [...mdaHistory.active, ...mdaPrediction.active],
-              }
-            : mdaHistory
-        SimulatorEngine.simControler.mdaObj = removeInactiveMDArounds(fullMDA)
-
-        const yearsToLeaveOut = 14
-        let mdaHistory2015 = {
-          time: mdaHistory.time.filter(function (value, index, arr) {
-            return index > yearsToLeaveOut
-          }),
-          coverage: mdaHistory.coverage.filter(function (value, index, arr) {
-            return index > yearsToLeaveOut
-          }),
-          adherence: mdaHistory.adherence.filter(function (value, index, arr) {
-            return index > yearsToLeaveOut
-          }),
-          bednets: mdaHistory.bednets.filter(function (value, index, arr) {
-            return index > yearsToLeaveOut
-          }),
-          regimen: mdaHistory.regimen.filter(function (value, index, arr) {
-            return index > yearsToLeaveOut
-          }),
-          active: mdaHistory.active.filter(function (value, index, arr) {
-            return index > yearsToLeaveOut
-          }),
-        }
-        SimulatorEngine.simControler.mdaObjUI = fullMDA
-        SimulatorEngine.simControler.mdaObj2015 = mdaHistory2015
-        SimulatorEngine.simControler.mdaObjFuture = mdaPrediction
-
-        console.log('runningScenario')
-        console.log(
-          'SimulatorEngine.simControler.iuParams',
-          SimulatorEngine.simControler.iuParams
-        )
-
-        SimulatorEngine.simControler.newScenario = true
-        SimulatorEngine.simControler.runScenario(
-          simParams,
-          tabLength,
-          simulatorCallback
-        )
-        //        console.log(tabLength)
-      } else {
-        alert('Sorry maximum number of Scenarios is 5.')
-      }
-    }
-  }
 
   useEffect(() => {
     if (typeof scenarioResults[tabIndex] === 'undefined') {
       console.log('No scenarios? Running a new one...')
       runNewScenario()
     }
-    /* let sessionDataJson =
-          JSON.parse(window.localStorage.getItem('scenarios')) || [] */
     let scenariosArray = JSON.parse(window.localStorage.getItem('sessionData'))
       ? JSON.parse(window.localStorage.getItem('sessionData')).scenarios
       : null
-    // console.log('scenariosArray', scenariosArray)
     if (scenariosArray) {
       console.log('load simParams from LS')
       let paramsInputs = scenariosArray.map((item) => item.params.inputs)
       let mdaFuture = scenariosArray.map((item) => item.mdaFuture)
       let MDAs = scenariosArray.map((item) => item.mda2015)
       // make new default prediction from ex tweaked one - the one from "mdaFuture".
-      // console.log(mdaFuture[tabIndex].mdaFuture)
-
       let paramsInputsWithPrediction = paramsInputs.map((item, index) => ({
         ...item,
         defaultPrediction: {
@@ -452,10 +352,8 @@ const Simulator = (props) => {
         },
       }))
       setScenarioInputs(paramsInputsWithPrediction)
-      //      console.log(paramsInputsWithPrediction[tabIndex])
       if (typeof paramsInputsWithPrediction[tabIndex] != 'undefined') {
         setScenarioMDAs(MDAs)
-        //        console.log(paramsInputsWithPrediction[tabIndex])
         console.log(simParams)
         dispatchSimParams({
           type: 'everythingbuthistoric',
@@ -468,19 +366,19 @@ const Simulator = (props) => {
   useEffect(() => {
     detectChange(simParams, dispatchSimParams)
   }, [
-    simParams.coverage, // $("#MDACoverage").val(),
-    // simParams.mda, // $("#inputMDARounds").val(),
-    simParams.mdaSixMonths, // $("input:radio[name=mdaSixMonths]:checked").val(),
-    // simParams.endemicity: 10, // $("#endemicity").val(),
-    simParams.covN, // $("#bedNetCoverage").val(),
-    // v_to_hR: 0, // $("#insecticideCoverage").val(),
-    // vecCap: 0, // $("#vectorialCapacity").val(),
-    // vecComp: 0, //$("#vectorialCompetence").val(),
-    // vecD: 0, //$("#vectorialDeathRate").val(),
-    simParams.mdaRegimen, // $("input[name=mdaRegimenRadios]:checked").val(),
-    simParams.rho, // $("#sysAdherence").val(),
-    simParams.species, // $("input[name=speciesRadios]:checked").val(),
-    simParams.runs, // $("#runs").val()
+    simParams.coverage,
+    // simParams.mda,
+    simParams.mdaSixMonths,
+    // simParams.endemicity: 10,
+    simParams.covN,
+    // v_to_hR: 0,
+    // vecCap: 0,
+    // vecComp: 0,
+    // vecD: 0,
+    simParams.mdaRegimen,
+    simParams.rho,
+    simParams.species,
+    simParams.runs,
     simParams.tweakedPrediction,
     simParams.defaultPrediction,
   ])
