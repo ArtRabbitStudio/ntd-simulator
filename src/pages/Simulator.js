@@ -341,6 +341,15 @@ const Simulator = (props) => {
           simParams.specificPrediction !== null
             ? simParams.specificPrediction
             : generateMdaFuture(simParams)
+        if (
+          simParams.specificPrediction &&
+          simParams.specificPrediction.label
+        ) {
+          dispatchSimParams({
+            type: 'scenarioLabel',
+            payload: simParams.specificPrediction.label,
+          })
+        }
         console.log('mdaPrediction')
         console.log(mdaPrediction)
         const fullMDA =
