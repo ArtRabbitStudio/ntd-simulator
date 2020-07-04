@@ -7,6 +7,7 @@ import {
   FormControl,
   Slider,
   FormLabel,
+  Tooltip
 } from "@material-ui/core";
 
 const SettingBedNetCoverage = ({ inModal, label, value, onChange, classAdd }) => {
@@ -20,13 +21,22 @@ const SettingBedNetCoverage = ({ inModal, label, value, onChange, classAdd }) =>
 
   return (
     <FormControl fullWidth className={`${classes.formControl} ${classAdd}`}>
+      <Tooltip
+        title="Proportion of the population covered by a bed net shared with one other person."
+        aria-label="info"
+      >
       <FormLabel
         component="legend"
         htmlFor="covN"
-        className={inModal ? '' : classes.withSlider}
+        className={
+          inModal
+            ? classes.withHelp
+            : `${classes.withSlider} ${classes.centered} ${classes.withHelp}`
+        }
       >
         {label}
       </FormLabel>
+      </Tooltip>
       <Slider
         value={value ? value : simParams.covN}
         min={0}

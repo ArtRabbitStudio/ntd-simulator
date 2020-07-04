@@ -7,7 +7,8 @@ import {
   FormControl,
   Select,
   FormLabel,
-  MenuItem
+  MenuItem,
+  Tooltip
 } from "@material-ui/core";
 
 const SettingFrequency = ({ inModal, label, classAdd }) => {
@@ -25,7 +26,18 @@ const SettingFrequency = ({ inModal, label, classAdd }) => {
       variant="outlined"
       className={`${classes.formControl} ${classAdd}`}
     >
-      <FormLabel component="legend">{label}</FormLabel>
+      <Tooltip
+        title="What proportion of the eligible population will be treated."
+        aria-label="info"
+      >
+      <FormLabel 
+      component="legend" 
+      className={
+          inModal
+            ? classes.withHelp
+            : `${classes.centered} ${classes.withHelp}`
+        }>{label}</FormLabel>
+      </Tooltip>
       <Select
 
         /* MenuProps={{ disablePortal: true, classes: { paper: classes.selectPaper }, }} */

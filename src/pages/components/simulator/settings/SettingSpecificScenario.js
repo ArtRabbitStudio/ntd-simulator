@@ -57,7 +57,7 @@ const SettingSpecificScenario = ({ inModal, label, classAdd }) => {
           setSpecScen(0)
         }}
       >
-        6 months COVID Interruption
+        6 months COVID disruption
       </Button>{' '}
       &nbsp;
       <Button
@@ -67,7 +67,7 @@ const SettingSpecificScenario = ({ inModal, label, classAdd }) => {
           setSpecScen(1)
         }}
       >
-        1 year Interruption
+        1 year COVID disruption
       </Button>{' '}
       &nbsp;
       <Button
@@ -77,7 +77,7 @@ const SettingSpecificScenario = ({ inModal, label, classAdd }) => {
           setSpecScen(2)
         }}
       >
-        18 months Interruption
+        18 months COVID disruption
       </Button>{' '}
       &nbsp;
       <Button
@@ -87,7 +87,7 @@ const SettingSpecificScenario = ({ inModal, label, classAdd }) => {
           setSpecScen(3)
         }}
       >
-        2 year Interruption
+        2 year COVID disruption
       </Button>
     </React.Fragment>
   ) : (
@@ -101,10 +101,10 @@ const SettingSpecificScenario = ({ inModal, label, classAdd }) => {
         onChange={handleChange}
       >
         <MenuItem value={-1}>No</MenuItem>
-        <MenuItem value={0}>6 months COVID Interruption</MenuItem>
-        <MenuItem value={1}>1 year COVID Interruption</MenuItem>
-        <MenuItem value={2}>18 months COVID Interruption</MenuItem>
-        <MenuItem value={3}>2 years COVID Interruption</MenuItem>
+        <MenuItem value={0}>6 months COVID disruption</MenuItem>
+        <MenuItem value={1}>1 year COVID disruption</MenuItem>
+        <MenuItem value={2}>18 months COVID disruption</MenuItem>
+        <MenuItem value={3}>2 years COVID disruption</MenuItem>
       </Select>
     </FormControl>
   )

@@ -3,7 +3,7 @@ import useStyles from '../styles'
 
 import { useStore } from '../../../../store/simulatorStore'
 
-import { FormControl, Select, FormLabel, MenuItem } from '@material-ui/core'
+import { FormControl, Select, FormLabel, MenuItem,Tooltip } from '@material-ui/core'
 
 const SettingDrugRegimen = ({ inModal, label, value, onChange, classAdd }) => {
   const classes = useStyles()
@@ -30,9 +30,22 @@ const SettingDrugRegimen = ({ inModal, label, value, onChange, classAdd }) => {
       variant="outlined"
       className={`${classes.formControl} ${classAdd}`}
     >
-      <FormLabel component="legend" htmlFor="demo-simple-select-helper-label">
+      <Tooltip
+        title="Will the MDAs be every 6 months or every year."
+        aria-label="info"
+      >
+      <FormLabel 
+        component="legend" 
+        htmlFor="demo-simple-select-helper-label"
+        className={
+          inModal
+            ? classes.withHelp
+            : `${classes.centered} ${classes.withHelp}`
+        }
+      >
         {label}
       </FormLabel>
+      </Tooltip>
       <Select
         labelId="demo-simple-select-helper-label"
         id="demo-simple-select-helper"

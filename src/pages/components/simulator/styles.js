@@ -157,9 +157,12 @@ const useStyles = makeStyles((theme) => ({
   },
   updateScenario: {
     position: "absolute",
-    top: 0,
+    top: 10,
     left: "50%",
     transform: "translate(-50%, 0%)",
+  },
+  buttonBG: {
+    backgroundColor: "#fff"
   },
   withSlider: {
     margin: theme.spacing(0, 0, 6, 0),

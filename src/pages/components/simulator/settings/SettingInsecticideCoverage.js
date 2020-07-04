@@ -7,6 +7,7 @@ import {
   FormControl,
   Slider,
   FormLabel,
+  Tooltip
 } from "@material-ui/core";
 
 const SettingInsecticideCoverage = ({ inModal, label, classAdd }) => {
@@ -16,13 +17,22 @@ const SettingInsecticideCoverage = ({ inModal, label, classAdd }) => {
 
   return (
     <FormControl fullWidth className={`${classes.formControl} ${classAdd}`}>
+      <Tooltip
+        title="What proportion of the popiulation are covered by regular indoor residual spraying."
+        aria-label="info"
+      >
       <FormLabel
         component="legend"
         htmlFor="v_to_hR"
-        className={inModal ? '' : classes.withSlider}
+        className={
+          inModal
+            ? classes.withHelp
+            : `${classes.withSlider} ${classes.centered} ${classes.withHelp}`
+        }
       >
         {label}
       </FormLabel>
+      </Tooltip>
       <Slider
         value={simParams.v_to_hR}
         id="v_to_hR"

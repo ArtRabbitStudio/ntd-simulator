@@ -3,14 +3,14 @@ import useStyles from '../styles'
 
 import { useStore } from '../../../../store/simulatorStore'
 
-import { FormControl, Slider, FormLabel } from '@material-ui/core'
+import { FormControl, Slider, FormLabel, Tooltip } from '@material-ui/core'
 
 const SettingTargetCoverage = ({
   inModal,
   label,
   classAdd,
   value,
-  onChange,
+  onChange
 }) => {
   const classes = useStyles()
   const { simParams, dispatchSimParams } = useStore()
@@ -22,13 +22,22 @@ const SettingTargetCoverage = ({
 
   return (
     <FormControl fullWidth className={`${classes.formControl} ${classAdd}`}>
+       <Tooltip
+        title="What proportion of the eligible population will be treated."
+        aria-label="info"
+      >
       <FormLabel
         component="legend"
         htmlFor="coverage"
-        className={inModal ? '' : classes.withSlider}
+        className={
+          inModal
+            ? classes.withHelp
+            : `${classes.withSlider} ${classes.centered} ${classes.withHelp}`
+        }
       >
         {label}
       </FormLabel>
+      </Tooltip>
       <Slider
         value={value ? value : simParams.coverage}
         min={0}

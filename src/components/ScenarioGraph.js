@@ -24,6 +24,7 @@ function ScenarioGraph({
   inputs,
   classes,
   simInProgress,
+  simNeedsRerun,
   IU,
   IUData
 }) {
@@ -310,6 +311,7 @@ function ScenarioGraph({
         viewBox={`0 0 ${svgWidth} ${svgHeight}`}
       >
         <g transform={`translate(${lPad},${yPad})`}>
+          
           <rect x={x(ticksX[0])} width={x(ticksX[futureYear - 15])} height={svgHeight - yPad - 32 - tPad} fill="#f9f9f9" />
           {ticksX.map((t, i) => {
             const xt = x(t)
@@ -384,7 +386,8 @@ function ScenarioGraph({
             [data.stats].map((result, i) => (
               <g key={`results-${i}`}>{renderResult(result, true, x, y)}</g>
             ))}
-            
+            {simNeedsRerun && <rect x={0} width={svgWidth} height={svgHeight} fill="rgba(233,241,247,.4)" />}
+            {simInProgress && <rect x={0} width={svgWidth} height={svgHeight} fill="rgba(220,233,240,.4)" />}
         </g>
       </svg>
     </React.Fragment>

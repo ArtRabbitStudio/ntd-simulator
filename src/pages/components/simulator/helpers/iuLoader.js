@@ -19,9 +19,9 @@ export const loadAllIUhistoricData = async (
   const params = await loadIUParams(implementationUnit)
   // set default values
   const defaultSimParams = {
-    coverage: 90, // $("#MDACoverage").val(),
+    coverage: 60, // $("#MDACoverage").val(),
     mda: 1, // $("#inputMDARounds").val(), TODO: what do we do here?
-    mdaSixMonths: 6, // TODO; what do we do here
+    mdaSixMonths: 12, // TODO; what do we do here
     endemicity: 10, // $("#endemicity").val(),
     covN: 0, // $("#bedNetCoverage").val(),
     v_to_hR: 0, // $("#insecticideCoverage").val(),
@@ -63,7 +63,6 @@ export const loadAllIUhistoricData = async (
   }
   const adherence = last(mdaData.adherence)
   if (adherence) {
-    console.log('adherence', adherence)
     defaults.rho = adherence
     defaults.defaultParams.rho = adherence
   }
@@ -72,7 +71,8 @@ export const loadAllIUhistoricData = async (
     defaults.coverage = coverage
     defaults.defaultParams.coverage = coverage
   }
-  console.log(defaults)
+  console.log('mdaData',mdaData)
+  console.log('defaults',defaults)
   dispatchSimParams({
     type: 'everything',
     payload: defaults,

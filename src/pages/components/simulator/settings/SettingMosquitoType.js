@@ -8,7 +8,8 @@ import {
   RadioGroup,
   Radio,
   FormLabel,
-  FormControlLabel
+  FormControlLabel,
+  Tooltip
 } from "@material-ui/core";
 
 const SettingMosquitoType = ({ inModal, label }) => {
@@ -20,7 +21,20 @@ const SettingMosquitoType = ({ inModal, label }) => {
 
   return (
     <FormControl fullWidth className={classes.formControlSelect}>
-      <FormLabel component="legend">{label}</FormLabel>
+       <Tooltip
+        title="Which mosquito is the primary transmitter of lymphatic filariasis in this area."
+        aria-label="info"
+      >
+      <FormLabel 
+      component="legend"
+      className={
+        inModal
+          ? classes.withHelp
+          : `${classes.centered} ${classes.withHelp}`
+      }
+      >{label}
+      </FormLabel>
+      </Tooltip>
       <RadioGroup
         className={inModal ? '' : classes.imageOptions}
         row

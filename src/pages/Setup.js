@@ -327,7 +327,25 @@ const Setup = (props) => {
           </Typography>
         </TextContents>
 
+
+
         <div className={classes.settings}>
+          <div className={classes.formControlWrap}>
+            <div className={classes.setupFormControl}>
+                <Typography paragraph variant="body1" component="p">
+                  Environmental factors
+                </Typography>
+            </div>
+          </div>
+          <div className={classes.formControlWrap}>
+            <div className={classes.setupFormControl}>
+                <Typography paragraph variant="body1" component="p">
+                MDA settings
+                </Typography>
+            </div>
+          </div>
+
+
           <div className={classes.formControlWrap}>
             <div className={classes.setupFormControl}>
               <SettingBedNetCoverage inModal={false} label="Bed Net Coverage" />
@@ -336,74 +354,50 @@ const Setup = (props) => {
 
           <div className={classes.formControlWrap}>
             <div className={classes.setupFormControl}>
-              <SettingTargetCoverage
+              <SettingFrequency
                 inModal={false}
-                label="Intervention target coverage"
+                label="MDA Frequency"
               />
             </div>
           </div>
 
           <div className={classes.formControlWrap}>
             <div className={classes.setupFormControl}>
-              <SettingFrequency
+              <SettingMosquitoType inModal={false} label="Type of Mosquito" />
+            </div>
+          </div>
+
+          <div className={classes.formControlWrap}>
+            <div className={classes.setupFormControl}>
+              <SettingTargetCoverage
                 inModal={false}
-                label="Intervention Frequency"
+                label="MDA Target Coverage"
               />
             </div>
           </div>
+
+          <div className={classes.formControlWrap}>
+            <div className={classes.setupFormControl}>
+            <SettingInsecticideCoverage inModal={false} label="Inseticide Coverage (Vector)" />
+            </div>
+          </div>
+          
+          
+
 
           <div className={classes.formControlWrap}>
             <div className={classes.setupFormControl}>
               <SettingDrugRegimen
                 inModal={false}
-                label="Intervention drug regimen"
+                label="MDA Drug Regimen"
               />
             </div>
           </div>
 
-          <div className={classes.formControlWrap}>
-            <div className={classes.setupFormControl}>
-              <Typography
-                className={classes.accordionTitle}
-                variant="h4"
-                component="h3"
-              >
-                Mosquito settings
-              </Typography>
+          
 
-              <Accordion>
-                <AccordionSummary
-                  expandIcon={<ExpandMoreIcon />}
-                  aria-controls="panel1a-content"
-                  id="panel1a-header"
-                >
-                  <Typography className={classes.heading}>
-                    Mosquito type
-                  </Typography>
-                </AccordionSummary>
-                <AccordionDetails>
-                  <SettingMosquitoType inModal={false} label="" />
-                </AccordionDetails>
-              </Accordion>
-              <Accordion>
-                <AccordionSummary
-                  expandIcon={<ExpandMoreIcon />}
-                  aria-controls="panel2a-content"
-                  id="panel2a-header"
-                >
-                  <Typography className={classes.heading}>
-                    Vector: Insecticide Coverage
-                  </Typography>
-                </AccordionSummary>
-                <AccordionDetails>
-                  <SettingInsecticideCoverage inModal={false} label="" />
-                </AccordionDetails>
-              </Accordion>
-            </div>
-          </div>
-
-          <div className={`${classes.formControlWrap}`}>
-            <div className={classes.setupFormControl}>
+          <div className={`${classes.formControlWrap} fullwidth`}>
+            <div className={classes.halfFormControl}>
               <SettingSystematicAdherence
                 inModal={false}
                 label="Systematic adherence"

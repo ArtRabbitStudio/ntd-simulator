@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  IconButton,
   CircularProgress,
   Fab,
   FormControl,
@@ -11,6 +12,8 @@ import {
   Tabs,
   Typography,
 } from '@material-ui/core'
+import RotateLeftIcon from '@material-ui/icons/RotateLeft';
+
 import { useTheme } from '@material-ui/styles'
 import PropTypes from 'prop-types'
 import React, { useEffect, useState } from 'react'
@@ -593,16 +596,19 @@ const Simulator = (props) => {
                             UPDATE SCENARIO
                           </Button>{' '}
                           &nbsp;
-                          <Button
+                          <IconButton
+                            className={classes.buttonBG}
                             variant="contained"
-                            color="secondary"
+                            color="primary"
+                            aria-label="reset scenario"
+                            component="span"
                             disabled={
                               simInProgress || scenarioResults.length === 0
                             } /*  || scenarioInputs.length === 0 */
                             onClick={resetCurrentScenario}
                           >
-                            Reset
-                          </Button>
+                            <RotateLeftIcon />
+                          </IconButton>
                         </div>
                       )}
                       <ScenarioGraph
@@ -610,6 +616,7 @@ const Simulator = (props) => {
                         showAllResults={false}
                         metrics={[graphMetric]}
                         simInProgress={simInProgress}
+                        simNeedsRerun={simParams.needsRerun}
                         simParams={simParams}
                         classes={classes}
                         IU={implementationUnit}
@@ -648,9 +655,8 @@ const Simulator = (props) => {
                 <CircularProgress
                   variant="determinate"
                   value={simulationProgress}
-                  color="secondary"
+                  color="primary"
                 />
-                <span>{simulationProgress}%</span>
               </div>
             )}
           </Grid>

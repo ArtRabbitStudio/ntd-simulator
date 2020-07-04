@@ -1,6 +1,6 @@
 export const specificScenarios = [
   {
-    label: '6 months interruption',
+    label: '6 months disruption',
     active: [
       false,
       true,
@@ -27,7 +27,7 @@ export const specificScenarios = [
     ],
   },
   {
-    label: '1 year interruption',
+    label: '1 year disruption',
     active: [
       false,
       false,
@@ -54,7 +54,7 @@ export const specificScenarios = [
     ],
   },
   {
-    label: '18 months interruption',
+    label: '18 months disruption',
     active: [
       false,
       false,
@@ -81,7 +81,7 @@ export const specificScenarios = [
     ],
   },
   {
-    label: '2 years interruption',
+    label: '2 years disruption',
     active: [
       false,
       false,
