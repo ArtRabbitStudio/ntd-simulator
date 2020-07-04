@@ -11,9 +11,9 @@ export const loadAllIUhistoricData = async (
   window.localStorage.removeItem('scenarioIndex')
   window.localStorage.removeItem('sessionData')
 
-  const doWeHaveData = simParams.IUData.id === implementationUnit
-  console.log('doWeHaveData ? ', doWeHaveData)
-  console.log('implementationUnit ? ', implementationUnit)
+  //const doWeHaveData = simParams.IUData.id === implementationUnit
+  //console.log('doWeHaveData ? ', doWeHaveData)
+  //console.log('implementationUnit ? ', implementationUnit)
   // if (!doWeHaveData) {
   const mdaData = await loadMdaHistory(implementationUnit)
   const params = await loadIUParams(implementationUnit)

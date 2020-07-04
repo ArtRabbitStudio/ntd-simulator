@@ -161,14 +161,16 @@ const Setup = (props) => {
   const history = useHistory()
   const classes = useStyles()
   const { simParams, dispatchSimParams } = useStore()
+  const { country, implementationUnit } = useUIState()
   const {
     iuFeatures,
     //stateFeaturesCurrentCountry: stateFeatures,
     //stateDataCurrentCountry: stateData,
     stateScales,
+    selectedIUData
   } = useDataAPI()
-  const { country, implementationUnit } = useUIState()
-  const { selectedIUData } = useDataAPI()
+  console.log('selectedIUData',selectedIUData)
+  
 
   const doWeHaveData = simParams.IUData.id === implementationUnit
   const loadData = async () => {

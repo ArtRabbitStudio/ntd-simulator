@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { zip, zipObject, map, flatten, flattenDeep, pick, values, max, forEach } from 'lodash'
+import { zip, zipObject, map, flatten, flattenDeep, pick, values, max, forEach,filter } from 'lodash'
 import { scaleLinear, extent, line } from 'd3'
 import AutoSizer from 'react-virtualized-auto-sizer'
 import {
@@ -24,8 +24,9 @@ function ScenarioGraph({
   inputs,
   classes,
   simInProgress,
+  IU,
+  IUData
 }) {
-  //console.log('init',data);
   const startYear = 15
   const futureYear = 20
   const lPad = 50
@@ -62,9 +63,9 @@ function ScenarioGraph({
 
   const ShowActivePoint = ({ active, coord, mode }) => {
     const highColour = mode === 'f' ? '#FAEAE1' : '#cccccc'
-    const lowColour = mode === 'f' ? '#03D386' : '#A8CFC0'
-    const textHigh = mode === 'f' ? '#D86422' : '#222222'
-    const textLow = mode === 'f' ? '#077A50' : '#077A50'
+    const lowColour = mode === 'f' ? '#ffc914' : '#ffc914'
+    const textHigh = mode === 'f' ? '#252525' : '#252525'
+    const textLow = mode === 'f' ? '#252525' : '#252525'
 
     return (
       <g
@@ -183,6 +184,40 @@ function ScenarioGraph({
     // historic path
     const historicSeries = seriesObj.slice(IndexToStartForOutput, IndexForPrediction + 1)
     const futureSeries = seriesObj.slice(IndexForPrediction)
+    let historicReferenceUpper = null
+    let historicReferencUpperLine = null
+    let historicReferenceLower = null
+    let historicReferencLowerLine = null
+    let historicReferncePrevalence = null
+    let historicReferncePrevalenceLine = null
+    if ( IUData[0] ) {
+      historicReferncePrevalence = filter(map(IUData[0].prevalence,(value,i)=>{
+        if ( i >= (2000 + startYear) && i <= (2000 + futureYear) ) {
+          return [x((i-2000)), y(value)]
+          //return {ts:(i-2000),Upper:}
+        } 
+        return null
+      }),value => value != null)
+      historicReferncePrevalenceLine = line()(historicReferncePrevalence)
+      historicReferenceUpper = filter(map(IUData[0].upper,(value,i)=>{
+        if ( i >= (2000 + startYear) && i <= (2000 + futureYear) ) {
+          return [x((i-2000)), y(value*100)]
+          //return {ts:(i-2000),Upper:}
+        } 
+        return null
+      }),value => value != null)
+      historicReferencUpperLine = line()(historicReferenceUpper)
+      historicReferenceLower = filter(map(IUData[0].lower,(value,i)=>{
+        if ( i >= (2000 + startYear) && i <= (2000 + futureYear) ) {
+          return [x((i-2000)), y(value*100)]
+          //return {ts:(i-2000),Upper:}
+        } 
+        return null
+      }),value => value != null)
+      historicReferencLowerLine = line()(historicReferenceLower)
+      
+    }
+    
     // future path
 
     const color = main ? '#D86422' : '#eeee'
@@ -204,6 +239,9 @@ function ScenarioGraph({
 
     return (
       <>
+        {historicReferencUpperLine && <path d={historicReferencUpperLine} stroke="#64BADE" fill="none" strokeWidth="1" />}
+        {historicReferencLowerLine && <path d={historicReferencLowerLine} stroke="#64BADE" fill="none" strokeWidth="1" />}
+        {historicReferncePrevalenceLine && <path d={historicReferncePrevalenceLine} stroke="#1998CE" fill="none" strokeWidth="1" />}
         {metrics.map((m, i) => (
           <g key={`${i}-l`}>
             <Path
@@ -272,7 +310,7 @@ function ScenarioGraph({
         viewBox={`0 0 ${svgWidth} ${svgHeight}`}
       >
         <g transform={`translate(${lPad},${yPad})`}>
-          <rect x={x(ticksX[0])} width={x(ticksX[futureYear - 15])} height={svgHeight - yPad - 32 - tPad} fill="#F5F5F5" />
+          <rect x={x(ticksX[0])} width={x(ticksX[futureYear - 15])} height={svgHeight - yPad - 32 - tPad} fill="#f9f9f9" />
           {ticksX.map((t, i) => {
             const xt = x(t)
             const yearLabel = 2000 + t
@@ -289,7 +327,7 @@ function ScenarioGraph({
                     ? {}
                     : { strokeDasharray: '10 2' })}
                   {...(15 + i === futureYear ? { strokeWidth: "2" } : {})}
-                  {...(15 + i === futureYear ? { stroke: "#E0E0E0" } : { stroke: "#D8D8D8" })}
+                  {...(15 + i === futureYear ? { stroke: "#ccc" } : { stroke: "#ccc" })}
                 ></line>
                 <text x={xt} y={height + yPad - 20} fontSize={12} textAnchor="middle">
                   {yearLabel}
@@ -317,7 +355,7 @@ function ScenarioGraph({
                   x2={width - lPad - rPad}
                   y1={yt}
                   y2={yt}
-                  stroke="#D8D8D8"
+                  stroke="#ccc"
                   {...(i === 0 || i === ticksY.length - 1
                     ? {}
                     : { strokeDasharray: '10 2' })}
@@ -335,17 +373,18 @@ function ScenarioGraph({
             x2={width - lPad - rPad}
             y1={y(1)}
             y2={y(1)}
-            stroke="#03D386"
+            stroke="#ffc914"
             strokeDasharray='10 2'
           ></line>
           {data.results &&
             data.results.map((result, i) => (
-              <g key={`results1-${i}`}>{renderResult(result, false)}</g>
+              <g key={`results1-${i}`}>{renderResult(result, false, x, y)}</g>
             ))}
           {data.stats &&
             [data.stats].map((result, i) => (
-              <g key={`results-${i}`}>{renderResult(result, true)}</g>
+              <g key={`results-${i}`}>{renderResult(result, true, x, y)}</g>
             ))}
+            
         </g>
       </svg>
     </React.Fragment>

@@ -212,8 +212,8 @@ function createEntries({ data, relations, key }) {
 
       //    const probability = groupProps(row, 'elimination')
       //   could be enabled if needed
-      //   const lower = groupProps(row, 'Lower')
-      //   const upper = groupProps(row, 'Upper')
+         const lower = groupProps(row, 'Lower')
+         const upper = groupProps(row, 'Upper')
 
       const related = groupRelByKey[id];
       const relatedCountries = flow(groupBy("Country"), keys)(related);
@@ -228,8 +228,8 @@ function createEntries({ data, relations, key }) {
         prevalence,
         performance,
         // probability,
-        // lower,
-        // upper,
+         lower,
+         upper,
         relatedCountries,
         relatedStates,
         relatedIU,

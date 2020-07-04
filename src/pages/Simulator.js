@@ -15,7 +15,7 @@ import { useTheme } from '@material-ui/styles'
 import PropTypes from 'prop-types'
 import React, { useEffect, useState } from 'react'
 import ScenarioGraph from '../components/ScenarioGraph'
-import { useUIState } from '../hooks/stateHooks'
+import { useUIState,useDataAPI } from '../hooks/stateHooks'
 import { Layout } from '../layout'
 import { useStore } from './../store/simulatorStore'
 import ChartSettings from './components/ChartSettings'
@@ -84,7 +84,10 @@ const Simulator = (props) => {
   const theme = useTheme()
   const { simParams, dispatchSimParams } = useStore()
   const { country, implementationUnit } = useUIState()
-
+  const {
+    selectedIUData,
+  } = useDataAPI()
+  
   // console.log('simParams')
   // console.log(simParams)
   /* MDA object */
@@ -345,6 +348,7 @@ const Simulator = (props) => {
   }
 
   useEffect(() => {
+
     if (typeof scenarioResults[tabIndex] === 'undefined') {
       console.log('No scenarios? Running a new one...')
       runNewScenario()
@@ -606,7 +610,10 @@ const Simulator = (props) => {
                         showAllResults={false}
                         metrics={[graphMetric]}
                         simInProgress={simInProgress}
+                        simParams={simParams}
                         classes={classes}
+                        IU={implementationUnit}
+                        IUData={selectedIUData}
                       />
                     </div>
                     {scenarioMDAs[tabIndex] && simParams.tweakedPrediction && (

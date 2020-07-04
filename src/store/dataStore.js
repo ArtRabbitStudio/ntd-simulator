@@ -41,7 +41,7 @@ class DataStore {
     relationsLoader = DataStore.loadCSV('/data/relations.csv')
     countryLevelLoader = DataStore.loadCSV('/data/country-level-simple.csv')
     stateLevelLoader = DataStore.loadCSV('/data/state-level-simple.csv')
-    iuLevelLoader = DataStore.loadCSV('/data/iu-level-simple.csv')
+    iuLevelLoader = DataStore.loadCSV('/data/iu-level-mf0.csv')
 
     level0Loader = DataStore.loadGeojson('/geo/africa_country_ms_0.1.json')
     level1Loader = DataStore.loadGeojson('/geo/africa_state_ms_0.1.json')
