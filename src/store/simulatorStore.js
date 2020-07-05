@@ -136,6 +136,7 @@ const reducer = (simParams, action) => {
           bednets: [...simParams.defaultPrediction.bednets],
           regimen: [...simParams.defaultPrediction.regimen],
           active: [...simParams.defaultPrediction.active],
+          beenFiddledWith: [...simParams.defaultPrediction.beenFiddledWith],
         },
         needsRerun: false,
       }
