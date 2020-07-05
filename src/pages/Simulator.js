@@ -12,13 +12,13 @@ import {
   Tabs,
   Typography,
 } from '@material-ui/core'
-import RotateLeftIcon from '@material-ui/icons/RotateLeft';
+import RotateLeftIcon from '@material-ui/icons/RotateLeft'
 
 import { useTheme } from '@material-ui/styles'
 import PropTypes from 'prop-types'
 import React, { useEffect, useState } from 'react'
 import ScenarioGraph from '../components/ScenarioGraph'
-import { useUIState,useDataAPI } from '../hooks/stateHooks'
+import { useUIState, useDataAPI } from '../hooks/stateHooks'
 import { Layout } from '../layout'
 import { useStore } from './../store/simulatorStore'
 import ChartSettings from './components/ChartSettings'
@@ -30,6 +30,7 @@ import { detectChange } from './components/simulator/helpers/detectChange'
 import { obtainIUData } from './components/simulator/helpers/obtainIUData'
 import { trimMdaHistory } from './components/simulator/helpers/trimMdaHistory'
 import { combineFullMda } from './components/simulator/helpers/combineFullMda'
+import { shallIupdateTabLabel } from './components/simulator/helpers/shallIupdateTabLabel'
 import MdaRounds from './components/simulator/MdaRounds'
 import { generateMdaFuture } from './components/simulator/helpers/iuLoader'
 // settings
@@ -87,10 +88,8 @@ const Simulator = (props) => {
   const theme = useTheme()
   const { simParams, dispatchSimParams } = useStore()
   const { country, implementationUnit } = useUIState()
-  const {
-    selectedIUData,
-  } = useDataAPI()
-  
+  const { selectedIUData } = useDataAPI()
+
   // console.log('simParams')
   // console.log(simParams)
   /* MDA object */
@@ -135,15 +134,13 @@ const Simulator = (props) => {
     setTabIndex(newValue)
   }
   useEffect(() => {
-    //    console.log('tab updated', tabIndex)
-    //    console.log(scenarioInputs[tabIndex])
     if (typeof scenarioInputs[tabIndex] != 'undefined') {
-      // set input arams if you have them
-      console.log('scenarioInputs[tabIndex]')
-      console.log(scenarioInputs[tabIndex])
       dispatchSimParams({
         type: 'everythingbuthistoric',
-        payload: scenarioInputs[tabIndex],
+        payload: {
+          ...scenarioInputs[tabIndex],
+          scenarioLabels: simParams.scenarioLabels,
+        },
       })
       SimulatorEngine.ScenarioIndex.setIndex(tabIndex)
     }
@@ -226,14 +223,17 @@ const Simulator = (props) => {
             : generatedMda
         const fullMDA = combineFullMda(mdaHistory, mdaPrediction)
         if (
-          simParams.specificPrediction &&
-          simParams.specificPrediction.label
+          shallIupdateTabLabel(
+            simParams.specificPrediction,
+            simParams.scenarioLabels[tabIndex]
+          )
         ) {
           dispatchSimParams({
             type: 'scenarioLabel',
             payload: simParams.specificPrediction.label,
           })
         }
+
         dispatchSimParams({
           type: 'defaultPrediction',
           payload: mdaPrediction,
@@ -276,7 +276,12 @@ const Simulator = (props) => {
           ? { ...generatedMda, ...simParams.specificPrediction }
           : generatedMda
       const fullMDA = combineFullMda(mdaHistory, mdaPrediction)
-      if (simParams.specificPrediction && simParams.specificPrediction.label) {
+      if (
+        shallIupdateTabLabel(
+          simParams.specificPrediction,
+          simParams.scenarioLabels[tabIndex]
+        )
+      ) {
         dispatchSimParams({
           type: 'scenarioLabel',
           payload: simParams.specificPrediction.label,
@@ -351,7 +356,6 @@ const Simulator = (props) => {
   }
 
   useEffect(() => {
-
     if (typeof scenarioResults[tabIndex] === 'undefined') {
       console.log('No scenarios? Running a new one...')
       runNewScenario()
