@@ -302,6 +302,7 @@ const Simulator = (props) => {
       SimulatorEngine.simControler.mdaObjFuture = mdaPrediction
       SimulatorEngine.simControler.iuParams = IUData.params
       console.log('runningScenario')
+      console.log(IUData.params)
 
       SimulatorEngine.simControler.newScenario = false
       SimulatorEngine.simControler.runScenario(

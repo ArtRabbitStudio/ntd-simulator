@@ -106,7 +106,7 @@ const Home = (props) => {
                 <div className={classes.textBlocks}>
                     <div className={classes.textBlock}>
                         <TextContents>
-                            <Typography variant="h3" component="h6" className={classes.headline}>
+                            <Typography variant="h6" component="h6" className={classes.headline} >
                                 Partners
                             </Typography>
                             <Typography paragraph variant="body1" component="p">

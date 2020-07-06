@@ -1,5 +1,5 @@
 import Papa from 'papaparse'
-import { last, filter } from 'lodash'
+import { last, filter,forEach } from 'lodash'
 
 export const loadAllIUhistoricData = async (
   simParams,
@@ -118,15 +118,55 @@ export const loadMdaHistory = async (implementationUnit) => {
 export const loadIUParams = async (implementationUnit) => {
   const IUid = implementationUnit ? implementationUnit : 'AGO02107'
   const IUParamsResponse = await fetch(`/data/iu-params/${IUid}.csv`)
+  console.log(`/data/iu-params/${IUid}.csv`);
+  console.log(IUParamsResponse);
   // populate iuParams
   // const IUParamsResponse = await fetch('/data/iu-params/AGO02107.csv')
   let reader = IUParamsResponse.body.getReader()
   let decoder = new TextDecoder('utf-8')
+  
   const IUParamsResult = await reader.read()
+  console.log('IUParamsResult',IUParamsResult)
   const IUParamsCSV = decoder.decode(IUParamsResult.value)
+  console.log('IUParamsCSV',IUParamsCSV)
   const IUParamsJSON = Papa.parse(IUParamsCSV, { header: true })
-  //   console.log(IUParamsJSON.data);
-  let newParams = {
+  console.log('IUParamsJSON.data',IUParamsJSON.data);
+
+  let newParams = {Population:[],shapeRisk:[],v_to_h:[],aImp:[],aImp_2000:[],aImp_2001:[],aImp_2002:[],aImp_2003:[],aImp_2004:[],aImp_2005:[],aImp_2006:[],aImp_2007:[],aImp_2008:[],aImp_2009:[],aImp_2010:[],aImp_2011:[],aImp_2012:[],aImp_2013:[],aImp_2014:[],aImp_2015:[],aImp_2016:[],aImp_2017:[],aImp_2018:[],aImp_2019:[]}
+  forEach(IUParamsJSON.data,(row,i)=>{
+    console.log('rownumber',i)
+    //console.log('row',row)
+    if ( row.Population == "" ) return
+    newParams.Population.push(Number(row.Population));
+    newParams.shapeRisk.push(Number(row.shapeRisk));
+    newParams.v_to_h.push(Number(row.v_to_h));
+    newParams.aImp.push(Number(row.aImp));
+    newParams.aImp_2000.push(Number(row.aImp_2000));
+    newParams.aImp_2001.push(Number(row.aImp_2001));
+    newParams.aImp_2002.push(Number(row.aImp_2002));
+    newParams.aImp_2003.push(Number(row.aImp_2003));
+    newParams.aImp_2004.push(Number(row.aImp_2004));
+    newParams.aImp_2005.push(Number(row.aImp_2005));
+    newParams.aImp_2006.push(Number(row.aImp_2006));
+    newParams.aImp_2007.push(Number(row.aImp_2007));
+    newParams.aImp_2008.push(Number(row.aImp_2008));
+    newParams.aImp_2009.push(Number(row.aImp_2009));
+    newParams.aImp_2010.push(Number(row.aImp_2010));
+    newParams.aImp_2011.push(Number(row.aImp_2011));
+    newParams.aImp_2012.push(Number(row.aImp_2012));
+    newParams.aImp_2013.push(Number(row.aImp_2013));
+    newParams.aImp_2014.push(Number(row.aImp_2014));
+    newParams.aImp_2015.push(Number(row.aImp_2015));
+    newParams.aImp_2016.push(Number(row.aImp_2016));
+    newParams.aImp_2017.push(Number(row.aImp_2017));
+    newParams.aImp_2018.push(Number(row.aImp_2018));
+    newParams.aImp_2019.push(Number(row.aImp_2019));
+  })
+
+  console.log('newParams',newParams)
+  return newParams
+
+  newParams = {
     Population: IUParamsJSON.data.map((item) => Number(item.Population)),
     shapeRisk: IUParamsJSON.data.map((item) => Number(item.shapeRisk)),
     v_to_h: IUParamsJSON.data.map((item) => Number(item.v_to_h)),
@@ -151,7 +191,6 @@ export const loadIUParams = async (implementationUnit) => {
     aImp_2017: IUParamsJSON.data.map((item) => Number(item.aImp_2017)),
     aImp_2018: IUParamsJSON.data.map((item) => Number(item.aImp_2018)),
     aImp_2019: IUParamsJSON.data.map((item) => Number(item.aImp_2019)),
-    aImp_2020: IUParamsJSON.data.map((item) => Number(item.aImp_2020)),
   }
   return newParams
 }
