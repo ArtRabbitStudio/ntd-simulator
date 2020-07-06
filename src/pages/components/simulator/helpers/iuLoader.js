@@ -85,9 +85,33 @@ export const loadMdaHistory = async (implementationUnit) => {
   const IUid = implementationUnit ? implementationUnit : 'AGO02107'
   const mdaResponse = await fetch(`/data/mda-history/${IUid}.csv`)
   let reader = mdaResponse.body.getReader()
+
+  // Step 3: read the data
+  let receivedLength = 0; // received that many bytes at the moment
+  let chunks = []; // array of received binary chunks (comprises the body)
+  while(true) {
+    const {done, value} = await reader.read();
+
+    if (done) {
+      break;
+    }
+
+    chunks.push(value);
+    receivedLength += value.length;
+
+    //console.log(`Received ${receivedLength}`)
+  }
+
+  // Step 4: concatenate chunks into single Uint8Array
+  let chunksAll = new Uint8Array(receivedLength); // (4.1)
+  let position = 0;
+  for(let chunk of chunks) {
+    chunksAll.set(chunk, position); // (4.2)
+    position += chunk.length;
+  }
+
   let decoder = new TextDecoder('utf-8')
-  const mdaResult = await reader.read()
-  const mdaCSV = decoder.decode(mdaResult.value)
+  const mdaCSV = decoder.decode(chunksAll);
   // console.log(mdaCSV);
   const mdaJSON = Papa.parse(mdaCSV, { header: true })
   // console.log(mdaJSON.data);
@@ -104,6 +128,7 @@ export const loadMdaHistory = async (implementationUnit) => {
       return true
     }),
   }
+
   // returns one more line than it's ought to?
   newMdaObj.time.length = 20
   newMdaObj.coverage.length = 20
@@ -111,30 +136,55 @@ export const loadMdaHistory = async (implementationUnit) => {
   newMdaObj.bednets.length = 20
   newMdaObj.adherence.length = 20
   newMdaObj.active.length = 20
-
+  
   return newMdaObj
 }
+
+
 
 export const loadIUParams = async (implementationUnit) => {
   const IUid = implementationUnit ? implementationUnit : 'AGO02107'
   const IUParamsResponse = await fetch(`/data/iu-params/${IUid}.csv`)
-  console.log(`/data/iu-params/${IUid}.csv`);
-  console.log(IUParamsResponse);
+  //console.log(`/data/iu-params/${IUid}.csv`);
+  //console.log(IUParamsResponse);
   // populate iuParams
   // const IUParamsResponse = await fetch('/data/iu-params/AGO02107.csv')
   let reader = IUParamsResponse.body.getReader()
+
+  // Step 3: read the data
+  let receivedLength = 0; // received that many bytes at the moment
+  let chunks = []; // array of received binary chunks (comprises the body)
+  while(true) {
+    const {done, value} = await reader.read();
+
+    if (done) {
+      break;
+    }
+
+    chunks.push(value);
+    receivedLength += value.length;
+
+    //console.log(`Received ${receivedLength}`)
+  }
+
+  // Step 4: concatenate chunks into single Uint8Array
+  let chunksAll = new Uint8Array(receivedLength); // (4.1)
+  let position = 0;
+  for(let chunk of chunks) {
+    chunksAll.set(chunk, position); // (4.2)
+    position += chunk.length;
+  }
+
   let decoder = new TextDecoder('utf-8')
   
-  const IUParamsResult = await reader.read()
-  console.log('IUParamsResult',IUParamsResult)
-  const IUParamsCSV = decoder.decode(IUParamsResult.value)
-  console.log('IUParamsCSV',IUParamsCSV)
+  const IUParamsCSV = decoder.decode(chunksAll)
+  //console.log('IUParamsCSV',IUParamsCSV)
   const IUParamsJSON = Papa.parse(IUParamsCSV, { header: true })
-  console.log('IUParamsJSON.data',IUParamsJSON.data);
+  //console.log('IUParamsJSON.data',IUParamsJSON.data);
 
   let newParams = {Population:[],shapeRisk:[],v_to_h:[],aImp:[],aImp_2000:[],aImp_2001:[],aImp_2002:[],aImp_2003:[],aImp_2004:[],aImp_2005:[],aImp_2006:[],aImp_2007:[],aImp_2008:[],aImp_2009:[],aImp_2010:[],aImp_2011:[],aImp_2012:[],aImp_2013:[],aImp_2014:[],aImp_2015:[],aImp_2016:[],aImp_2017:[],aImp_2018:[],aImp_2019:[]}
   forEach(IUParamsJSON.data,(row,i)=>{
-    console.log('rownumber',i)
+    //console.log('rownumber',i)
     //console.log('row',row)
     if ( row.Population == "" ) return
     newParams.Population.push(Number(row.Population));
@@ -163,7 +213,7 @@ export const loadIUParams = async (implementationUnit) => {
     newParams.aImp_2019.push(Number(row.aImp_2019));
   })
 
-  console.log('newParams',newParams)
+  //console.log('newParams',newParams)
   return newParams
 
   newParams = {
@@ -196,8 +246,8 @@ export const loadIUParams = async (implementationUnit) => {
 }
 
 export const generateMdaFuture = (simParams) => {
-  console.log('generateMDAFuture')
-  console.log(simParams)
+  //console.log('generateMDAFuture')
+  //console.log(simParams)
   const numberOfYears = 11 * 2
   let MDAtime = []
   for (let i = 0; i < numberOfYears; i++) {

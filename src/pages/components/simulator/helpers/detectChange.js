@@ -1,5 +1,5 @@
 export const detectChange = (simParams, dispatchSimParams) => {
-  console.log('compare params')
+  //console.log('compare params')
   const observedSimParams = {
     coverage: simParams.coverage,
     mda: simParams.mda,
@@ -21,17 +21,17 @@ export const detectChange = (simParams, dispatchSimParams) => {
     JSON.stringify(observedSimParams) !==
     JSON.stringify(simParams.defaultParams)
   if (changeDetected) {
-    console.log(
+    /*console.log(
       '%c Param change detected! ',
       'background: #222; color: #bada55'
-    )
+    )*/
     dispatchSimParams({
       type: 'needsRerun',
       payload: true,
     })
     return
   } else {
-    console.log('%c No Param changes. ', 'background: #222; color: #cc9900')
+    //console.log('%c No Param changes. ', 'background: #222; color: #cc9900')
     dispatchSimParams({
       type: 'needsRerun',
       payload: false,
@@ -41,13 +41,13 @@ export const detectChange = (simParams, dispatchSimParams) => {
     JSON.stringify(simParams.tweakedPrediction) !==
     JSON.stringify(simParams.defaultPrediction)
   if (MDAchangeDetected) {
-    console.log('%c MDA change detected! ', 'background: #222; color: #bada55')
+    //console.log('%c MDA change detected! ', 'background: #222; color: #bada55')
     dispatchSimParams({
       type: 'needsRerun',
       payload: true,
     })
   } else {
-    console.log('%c No MDA changes. ', 'background: #222; color: #cc9900')
+    //console.log('%c No MDA changes. ', 'background: #222; color: #cc9900')
     dispatchSimParams({
       type: 'needsRerun',
       payload: false,

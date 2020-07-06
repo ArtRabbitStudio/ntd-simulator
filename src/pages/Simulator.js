@@ -113,7 +113,7 @@ const Simulator = (props) => {
     // clear LS and relaod if stale project is found
     window.localStorage.removeItem('sessionData')
     window.localStorage.removeItem('scenarioIndex')
-    console.log('reloading')
+    //console.log('reloading')
     window.location.reload()
   }
 
@@ -159,7 +159,7 @@ const Simulator = (props) => {
     if (typeof resultObject == 'number') {
       setSimulationProgress(resultObject)
     } else {
-      console.log('Simulation returned results!')
+      //console.log('Simulation returned results!')
       dispatchSimParams({
         type: 'needsRerun',
         payload: false,
@@ -248,6 +248,8 @@ const Simulator = (props) => {
         SimulatorEngine.simControler.mdaObjFuture = mdaPrediction
         SimulatorEngine.simControler.iuParams = IUData.params
         console.log('runningScenario')
+        console.log('mdaObj',SimulatorEngine.simControler.mdaObj)
+        console.log('iuParams',SimulatorEngine.simControler.iuParams)
 
         SimulatorEngine.simControler.newScenario = true
         SimulatorEngine.simControler.runScenario(
@@ -261,15 +263,15 @@ const Simulator = (props) => {
     }
   }
   const runCurrentScenario = async () => {
-    console.log(simParams)
-    console.log('runCurrentScenario', !simInProgress)
+    //console.log(simParams)
+    //console.log('runCurrentScenario', !simInProgress)
     //console.log('simParams',simParams)
     if (!simInProgress) {
       setSimInProgress(true)
-      console.log(tabIndex, simParams)
+      //console.log(tabIndex, simParams)
       const IUData = obtainIUData(simParams, dispatchSimParams)
       const mdaHistory = IUData.mdaObj
-      console.log('prediction pulled from simParams.tweakedPrediction')
+      //console.log('prediction pulled from simParams.tweakedPrediction')
       const generatedMda = generateMdaFuture(simParams)
       const mdaPrediction =
         simParams.specificPrediction !== null
@@ -302,7 +304,8 @@ const Simulator = (props) => {
       SimulatorEngine.simControler.mdaObjFuture = mdaPrediction
       SimulatorEngine.simControler.iuParams = IUData.params
       console.log('runningScenario')
-      console.log(IUData.params)
+      console.log('mdaObj',SimulatorEngine.simControler.mdaObj)
+      console.log('iuParams',SimulatorEngine.simControler.iuParams)
 
       SimulatorEngine.simControler.newScenario = false
       SimulatorEngine.simControler.runScenario(
@@ -358,14 +361,14 @@ const Simulator = (props) => {
 
   useEffect(() => {
     if (typeof scenarioResults[tabIndex] === 'undefined') {
-      console.log('No scenarios? Running a new one...')
+      //console.log('No scenarios? Running a new one...')
       runNewScenario()
     }
     let scenariosArray = JSON.parse(window.localStorage.getItem('sessionData'))
       ? JSON.parse(window.localStorage.getItem('sessionData')).scenarios
       : null
     if (scenariosArray) {
-      console.log('load simParams from LS')
+      //console.log('load simParams from LS')
       let paramsInputs = scenariosArray.map((item) => item.params.inputs)
       let mdaFuture = scenariosArray.map((item) => item.mdaFuture)
       let MDAs = scenariosArray.map((item) => item.mda2015)
@@ -394,7 +397,7 @@ const Simulator = (props) => {
       setScenarioInputs(paramsInputsWithPrediction)
       if (typeof paramsInputsWithPrediction[tabIndex] != 'undefined') {
         setScenarioMDAs(MDAs)
-        console.log(simParams)
+        //console.log(simParams)
         dispatchSimParams({
           type: 'everythingbuthistoric',
           payload: paramsInputsWithPrediction[tabIndex],
