@@ -135,7 +135,7 @@ const useStyles = makeStyles((theme) => ({
       margin: theme.spacing(0, 1, 1, 0),
     },
     [theme.breakpoints.up('md')]: {
-      width: '60%',
+      width: '100%',
     },
   },
   setupFormControl: {
@@ -169,8 +169,8 @@ const Setup = (props) => {
     stateScales,
     selectedIUData
   } = useDataAPI()
-  console.log('selectedIUData',selectedIUData)
-  
+  console.log('selectedIUData', selectedIUData)
+
 
   const doWeHaveData = simParams.IUData.id === implementationUnit
   const loadData = async () => {
@@ -332,14 +332,14 @@ const Setup = (props) => {
         <div className={classes.settings}>
           <div className={classes.formControlWrap}>
             <div className={classes.setupFormControl}>
-                <Typography paragraph variant="body1" component="p">
-                  Environmental factors
+              <Typography paragraph variant="body1" component="p">
+                Environmental factors
                 </Typography>
             </div>
           </div>
           <div className={classes.formControlWrap}>
             <div className={classes.setupFormControl}>
-                <Typography paragraph variant="body1" component="p">
+              <Typography paragraph variant="body1" component="p">
                 MDA settings
                 </Typography>
             </div>
@@ -378,11 +378,11 @@ const Setup = (props) => {
 
           <div className={classes.formControlWrap}>
             <div className={classes.setupFormControl}>
-            <SettingInsecticideCoverage inModal={false} label="Inseticide Coverage (Vector)" />
+              <SettingInsecticideCoverage inModal={false} label="Inseticide Coverage (Vector)" />
             </div>
           </div>
-          
-          
+
+
 
 
           <div className={classes.formControlWrap}>
@@ -394,7 +394,7 @@ const Setup = (props) => {
             </div>
           </div>
 
-          
+
 
           <div className={`${classes.formControlWrap} fullwidth`}>
             <div className={classes.halfFormControl}>
@@ -420,7 +420,7 @@ const Setup = (props) => {
           </Typography>
         </TextContents>
         <div className={classes.scenariosWrap}>
-          <div className={`${classes.buttonsControoooooooooooool}`}>
+          <div className={`${classes.buttonsControl}`}>
             <SettingSpecificScenario inModal={false} />
           </div>
         </div>
