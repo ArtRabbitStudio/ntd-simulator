@@ -443,11 +443,15 @@ export var Model = function (n) {
   }
 
   this.evolveAndSaves = function (tot_t, mdaJSON, paramsNumber) {
+    console.log("mdaObj = ", simControler.mdaObj)
+    console.log("v_to_h = ", params.v_to_h)
+    console.log("shapeRisk = ", params.shapeRisk)
+    console.log("params.aImp = ", params.aImp)
     var t = 0
     var icount = 0
     var maxMDAt = 1200.0
     var maxoldMDAt //used in triple drug treatment.
-
+    
     // location to take in the json from the file
     // var myJSON = '{"time":[60, 96, 120,144, 180], "coverage":[0.9, 0.9,0.9,0.9,0.9], "adherence" : [1, 1, 1, 1, 1]}';
     // var mdaJSON = JSON.parse(myJSON);
@@ -611,6 +615,10 @@ export var Model = function (n) {
 
       icount++
     }
+    console.log("end v_to_h = ", params.v_to_h)
+    console.log("end shapeRisk = ", params.shapeRisk)
+    console.log("end params.aImp = ", params.aImp)
+    
     this.Ws = this.Ws.slice(200, this.Ws.length)
     this.Ms = this.Ms.slice(200, this.Ms.length)
     this.Ls = this.Ls.slice(200, this.Ls.length)
