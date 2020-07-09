@@ -443,10 +443,10 @@ export var Model = function (n) {
   }
 
   this.evolveAndSaves = function (tot_t, mdaJSON, paramsNumber) {
-    // console.log("mdaObj = ", simControler.mdaObj)
-    // console.log("v_to_h = ", params.v_to_h)
-    // console.log("shapeRisk = ", params.shapeRisk)
-    // console.log("params.aImp = ", params.aImp)
+    console.log("mdaObj = ", simControler.mdaObj)
+    console.log("v_to_h = ", params.v_to_h)
+    console.log("shapeRisk = ", params.shapeRisk)
+    console.log("params.aImp = ", params.aImp)
 
     // params.v_to_h = 42.7197
     // params.v_to_h_original = params.v_to_h_original
@@ -556,15 +556,15 @@ export var Model = function (n) {
       }
       if (t >= 1200.0 && t < 1200.0 + params.dt) {
 
-        // console.log("v_to_h222 = ", params.v_to_h)
-        // console.log("shapeRisk222 = ", params.shapeRisk)
-        // console.log("params.aImp222 = ", params.aImp)
-        // console.log("Initial bednet coverage = ", params.covN)
+        console.log("v_to_h222 = ", params.v_to_h)
+        console.log("shapeRisk222 = ", params.shapeRisk)
+        console.log("params.aImp222 = ", params.aImp)
+        console.log("Initial bednet coverage = ", params.covN)
         this.bedNetEventInit()
         this.bedNetInt = 1
       }
       if(t>=1200){
-        // console.log("t = " ,t, ", v_to_h222 = ", params.v_to_h)
+        console.log("t = " ,t, ", v_to_h222 = ", params.v_to_h)
       }
       //  adding in the use of the fecRed parameter.
       //if ((Math.round(t) % 12 > params.fecRed)){
@@ -1165,7 +1165,7 @@ export var simControler = {
     var progress = setInterval(() => {
       // randomly choose a set of parameters
       var paramsNumber = Math.floor(Math.random() * numberParamSets)
-
+       // paramsNumber = 12
       // change the parameters for every simulation here
       statFunctions.setInputParams({ nMDA: 60 }, paramsNumber)
 
