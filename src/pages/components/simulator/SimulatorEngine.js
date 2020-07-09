@@ -971,11 +971,11 @@ export var statFunctions = {
     params.species = Number(ps.species)
     params.mosquitoSpecies = params.species
     //calculate other parameters for params
-    if (params.species == 0) {
-      params.shapeRisk = 0.065
-    } else {
-      params.shapeRisk = 0.08
-    }
+    //if (params.species == 0) {
+    // params.shapeRisk = 0.065
+    //} else {
+    //  params.shapeRisk = 0.08
+    //}
     // the part where we get parameters from the JSON for the initial longtime simulation to equilibrium
     params.v_to_h = simControler.iuParams.v_to_h[i]
     params.shapeRisk = simControler.iuParams.shapeRisk[i]
