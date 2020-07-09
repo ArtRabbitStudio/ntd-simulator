@@ -392,11 +392,11 @@ export var Model = function (n) {
     if (bedNetInc < 0) {
       var bednetProb =
         ((params.covNOld - params.covN) * this.n) / (params.covNOld * this.n)
-      for (var i = 0; i < this.n; i++) {
-        if ((this.people[i].bedNet = 1)) {
+      for (var j = 0; j < this.n; j++) {
+        if ((this.people[j].bedNet = 1)) {
           if (s.random() < bednetProb) {
             //param->uniform_dist()<param->covMDA
-            this.people[i].bedNet = 0 //using bed-net
+            this.people[j].bedNet = 0 //using bed-net
           }
         }
       }
@@ -443,15 +443,27 @@ export var Model = function (n) {
   }
 
   this.evolveAndSaves = function (tot_t, mdaJSON, paramsNumber) {
-    console.log("mdaObj = ", simControler.mdaObj)
-    console.log("v_to_h = ", params.v_to_h)
-    console.log("shapeRisk = ", params.shapeRisk)
-    console.log("params.aImp = ", params.aImp)
+    // console.log("mdaObj = ", simControler.mdaObj)
+    // console.log("v_to_h = ", params.v_to_h)
+    // console.log("shapeRisk = ", params.shapeRisk)
+    // console.log("params.aImp = ", params.aImp)
+
+    // params.v_to_h = 42.7197
+    // params.v_to_h_original = params.v_to_h_original
+    // params.shapeRisk = 0.208
+    // params.aImp = 0.000048
+    // console.log("v_to_h = ", params.v_to_h)
+    // console.log("shapeRisk = ", params.shapeRisk)
+    // console.log("params.aImp = ", params.aImp)
+
+
+    // console.log("shapeRisk = ", params.shapeRisk)
+    // console.log("params.aImp = ", params.aImp)
     var t = 0
     var icount = 0
     var maxMDAt = 1200.0
     var maxoldMDAt //used in triple drug treatment.
-    
+
     // location to take in the json from the file
     // var myJSON = '{"time":[60, 96, 120,144, 180], "coverage":[0.9, 0.9,0.9,0.9,0.9], "adherence" : [1, 1, 1, 1, 1]}';
     // var mdaJSON = JSON.parse(myJSON);
@@ -491,11 +503,11 @@ export var Model = function (n) {
     // add a parameter to access the aImp historic entry
     var aImpYear = 2000
 
-    for (var i = 0; i < this.n; i++) {
+    for (var j = 0; j < this.n; j++) {
       //infect everyone initially.
       //this.people[i].WM = 1;
       //this.people[i].WF = 1;
-      this.people[i].M = 1.0
+      this.people[j].M = 1.0
     }
 
     if (params.IDAControl === 1) {
@@ -517,8 +529,8 @@ export var Model = function (n) {
       } else {
         params.dt = 1.0
       }
-      for (var i = 0; i < this.n; i++) {
-        this.people[i].react()
+      for (var j = 0; j < this.n; j++) {
+        this.people[j].react()
       }
 
       //update
@@ -543,10 +555,17 @@ export var Model = function (n) {
       ) {
       }
       if (t >= 1200.0 && t < 1200.0 + params.dt) {
+
+        // console.log("v_to_h222 = ", params.v_to_h)
+        // console.log("shapeRisk222 = ", params.shapeRisk)
+        // console.log("params.aImp222 = ", params.aImp)
+        // console.log("Initial bednet coverage = ", params.covN)
         this.bedNetEventInit()
         this.bedNetInt = 1
       }
-
+      if(t>=1200){
+        // console.log("t = " ,t, ", v_to_h222 = ", params.v_to_h)
+      }
       //  adding in the use of the fecRed parameter.
       //if ((Math.round(t) % 12 > params.fecRed)){
       //After effects of MDA wear off reset to 0.
@@ -582,7 +601,6 @@ export var Model = function (n) {
           // update the mda round and the time for the next one
           mdaRound += 1
           nextMDA = 1200 + simControler.mdaObj.time[mdaRound]
-
           //update the Intervention parameters, covMDA, rho, mfPropMDA, wPropMDA and covN
           statFunctions.updateInterventionParams(mdaRound)
           // params.covMDA = simControler.mdaObj.coverage[mdaRound] / 100
@@ -615,10 +633,13 @@ export var Model = function (n) {
 
       icount++
     }
+
     console.log("end v_to_h = ", params.v_to_h)
     console.log("end shapeRisk = ", params.shapeRisk)
     console.log("end params.aImp = ", params.aImp)
-    
+
+    console.log(simControler.iuParams)
+    console.log("params number = ", paramsNumber)
     this.Ws = this.Ws.slice(200, this.Ws.length)
     this.Ms = this.Ms.slice(200, this.Ms.length)
     this.Ls = this.Ls.slice(200, this.Ls.length)
@@ -945,6 +966,9 @@ export var statFunctions = {
   setInputParams: function (dict, i) {
     // var ps = simControler.modelParams();
     var ps = simControler.params
+    params.v_to_h = simControler.iuParams.v_to_h[i]
+    params.shapeRisk = simControler.iuParams.shapeRisk[i]
+    params.aImp = simControler.iuParams.aImp[i]
     params.inputs = ps
     params.runs = Number(ps.runs)
     params.nMDA = dict && dict.nMDA ? dict.nMDA : Number(ps.mda)
@@ -971,15 +995,13 @@ export var statFunctions = {
     params.species = Number(ps.species)
     params.mosquitoSpecies = params.species
     //calculate other parameters for params
-    //if (params.species == 0) {
-    // params.shapeRisk = 0.065
-    //} else {
-    //  params.shapeRisk = 0.08
-    //}
+    // if (params.species == 0) {
+    //   params.shapeRisk = 0.065
+    // } else {
+    //   params.shapeRisk = 0.08
+    // }
     // the part where we get parameters from the JSON for the initial longtime simulation to equilibrium
-    params.v_to_h = simControler.iuParams.v_to_h[i]
-    params.shapeRisk = simControler.iuParams.shapeRisk[i]
-    params.aImp = simControler.iuParams.aImp[i]
+
 
     params.lbda_original = params.lbda
     params.v_to_h_original = params.v_to_h
@@ -1114,7 +1136,7 @@ export var simControler = {
 
     var mdaJSON = simControler.mdaObj //generateMDAFromForm()
     var maxN = simControler.params.runs // Number($("#runs").val());
-
+    // maxN = 50
     //####//####//####//####//####//####//####
     // I don't know how this will be implemented, but we need the input parameters
     // file containing the parameters set to be accessible in some way here
