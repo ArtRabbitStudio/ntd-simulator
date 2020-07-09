@@ -443,10 +443,10 @@ export var Model = function (n) {
   }
 
   this.evolveAndSaves = function (tot_t, mdaJSON, paramsNumber) {
-    console.log("mdaObj = ", simControler.mdaObj)
-    console.log("v_to_h = ", params.v_to_h)
-    console.log("shapeRisk = ", params.shapeRisk)
-    console.log("params.aImp = ", params.aImp)
+ //   console.log("mdaObj = ", simControler.mdaObj)
+    //console.log("v_to_h = ", params.v_to_h)
+    //console.log("shapeRisk = ", params.shapeRisk)
+    //console.log("params.aImp = ", params.aImp)
 
     // params.v_to_h = 42.7197
     // params.v_to_h_original = params.v_to_h_original
@@ -634,12 +634,12 @@ export var Model = function (n) {
       icount++
     }
 
-    console.log("end v_to_h = ", params.v_to_h)
-    console.log("end shapeRisk = ", params.shapeRisk)
-    console.log("end params.aImp = ", params.aImp)
+   // console.log("end v_to_h = ", params.v_to_h)
+    //console.log("end shapeRisk = ", params.shapeRisk)
+    //console.log("end params.aImp = ", params.aImp)
 
-    console.log(simControler.iuParams)
-    console.log("params number = ", paramsNumber)
+    //console.log(simControler.iuParams)
+    //console.log("params number = ", paramsNumber)
     this.Ws = this.Ws.slice(200, this.Ws.length)
     this.Ms = this.Ms.slice(200, this.Ms.length)
     this.Ls = this.Ls.slice(200, this.Ls.length)
