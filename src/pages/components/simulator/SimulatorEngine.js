@@ -442,12 +442,12 @@ export var Model = function (n) {
     return ryrs
   }
 
-  this.evolveAndSaves = function (tot_t, mdaJSON, paramsNumber) {
- //   console.log("mdaObj = ", simControler.mdaObj)
-    //console.log("v_to_h = ", params.v_to_h)
-    //console.log("shapeRisk = ", params.shapeRisk)
-    //console.log("params.aImp = ", params.aImp)
-
+  this.evolveAndSaves = function (tot_t, mdaJSON, paramsNumber, parDict) {
+  //  console.log("mdaObj = ", simControler.mdaObj)
+    // console.log("v_to_h = ", params.v_to_h)
+    // console.log("shapeRisk = ", params.shapeRisk)
+    // console.log("params.aImp = ", params.aImp)
+    var aImp_old = params.aImp
     // params.v_to_h = 42.7197
     // params.v_to_h_original = params.v_to_h_original
     // params.shapeRisk = 0.208
@@ -556,15 +556,12 @@ export var Model = function (n) {
       }
       if (t >= 1200.0 && t < 1200.0 + params.dt) {
 
-        console.log("v_to_h222 = ", params.v_to_h)
-        console.log("shapeRisk222 = ", params.shapeRisk)
-        console.log("params.aImp222 = ", params.aImp)
-        console.log("Initial bednet coverage = ", params.covN)
+    //    console.log("v_to_h222 = ", params.v_to_h)
+    //    console.log("shapeRisk222 = ", params.shapeRisk)
+    //    console.log("params.aImp222 = ", params.aImp)
+    //    console.log("Initial bednet coverage = ", params.covN)
         this.bedNetEventInit()
         this.bedNetInt = 1
-      }
-      if(t>=1200){
-        console.log("t = " ,t, ", v_to_h222 = ", params.v_to_h)
       }
       //  adding in the use of the fecRed parameter.
       //if ((Math.round(t) % 12 > params.fecRed)){
@@ -620,6 +617,11 @@ export var Model = function (n) {
         }
       }
 
+      if(aImp_old != params.aImp){
+        parDict.push({aImp:params.aImp,
+        t:t})
+      }
+      aImp_old = params.aImp
       //
       // if (t >= nextMDA) {
       //   this.MDAEvent()
@@ -634,12 +636,12 @@ export var Model = function (n) {
       icount++
     }
 
-   // console.log("end v_to_h = ", params.v_to_h)
-    //console.log("end shapeRisk = ", params.shapeRisk)
-    //console.log("end params.aImp = ", params.aImp)
+  //  console.log("end v_to_h = ", params.v_to_h)
+  //  console.log("end shapeRisk = ", params.shapeRisk)
+  //  console.log("end params.aImp = ", params.aImp)
 
-    //console.log(simControler.iuParams)
-    //console.log("params number = ", paramsNumber)
+    console.log(simControler.iuParams)
+  //  console.log("params number = ", paramsNumber)
     this.Ws = this.Ws.slice(200, this.Ws.length)
     this.Ms = this.Ms.slice(200, this.Ms.length)
     this.Ls = this.Ls.slice(200, this.Ls.length)
@@ -1134,8 +1136,12 @@ export var simControler = {
     //statFunctions.setInputParams({ nMDA: 60 })
     //max number of mda rounds even if doing it six monthly.
 
+
     var mdaJSON = simControler.mdaObj //generateMDAFromForm()
     var maxN = simControler.params.runs // Number($("#runs").val());
+    var parDict = []; // create an empty array
+
+
     // maxN = 50
     //####//####//####//####//####//####//####
     // I don't know how this will be implemented, but we need the input parameters
@@ -1165,17 +1171,27 @@ export var simControler = {
     var progress = setInterval(() => {
       // randomly choose a set of parameters
       var paramsNumber = Math.floor(Math.random() * numberParamSets)
-       // paramsNumber = 12
+ // paramsNumber = 46
+      // console.log("params number  =", paramsNumber)
+
       // change the parameters for every simulation here
       statFunctions.setInputParams({ nMDA: 60 }, paramsNumber)
 
       // get the population size from the simControler.iuParams file
       var population = simControler.iuParams.Population[paramsNumber]
+      // console.log("population = ", population)
       var m = new Model(population)
+      parDict.push({
+        ParamSet: paramsNumber,
+        Population:   population,
+        v_to_h: params.v_to_h,
+        aImp:params.aImp,
+        shapeRisk: params.shapeRisk
+      });
 
       //change time to 131 below, as we potentially have 31 years simulation after running to equilibrium
       // the historic 2000-2019 and then to 2030
-      m.evolveAndSaves(131.0, mdaJSON, paramsNumber)
+      m.evolveAndSaves(131.0, mdaJSON, paramsNumber,parDict)
       runs.push(SessionData.convertRun(m))
       simulatorCallback(parseInt((progression * 100) / maxN))
 
@@ -1183,6 +1199,7 @@ export var simControler = {
       // paramsNumber += paramsStep
 
       if (progression === maxN) {
+        console.log(parDict)
         clearInterval(progress)
         SessionData.storeResults(
           runs,
@@ -1195,6 +1212,7 @@ export var simControler = {
         progression += 1
       }
     }, 10)
+
   },
   reductionStatsCalc: (scenario, coverage) => {
     var n = scenario['results'].length
