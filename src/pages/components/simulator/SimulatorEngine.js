@@ -640,7 +640,7 @@ export var Model = function (n) {
   //  console.log("end shapeRisk = ", params.shapeRisk)
   //  console.log("end params.aImp = ", params.aImp)
 
-    console.log(simControler.iuParams)
+  //  console.log(simControler.iuParams)
   //  console.log("params number = ", paramsNumber)
     this.Ws = this.Ws.slice(200, this.Ws.length)
     this.Ms = this.Ms.slice(200, this.Ms.length)
