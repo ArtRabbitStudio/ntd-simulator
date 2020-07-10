@@ -169,13 +169,8 @@ const Setup = (props) => {
     stateScales,
     selectedIUData
   } = useDataAPI()
-<<<<<<< Updated upstream
-  console.log('selectedIUData', selectedIUData)
-
-=======
   //console.log('selectedIUData',selectedIUData)
   
->>>>>>> Stashed changes
 
   const doWeHaveData = simParams.IUData.id === implementationUnit
   const loadData = async () => {
