@@ -279,6 +279,7 @@ export var Person = function (a, b) {
       // based on the value of aImp. Is this what you want?
       this.WM = (0.5 * params.xi * this.biteRate() * 10.0) / params.mu
       this.WF = (0.5 * params.xi * this.biteRate() * 10.0) / params.mu
+      
     }
 
     //simulate event where host dies and is replaced by a new host.

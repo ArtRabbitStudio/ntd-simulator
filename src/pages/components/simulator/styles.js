@@ -73,6 +73,7 @@ const useStyles = makeStyles((theme) => ({
       backgroundRepeat: 'no-repeat',
     },
     '&:hover': {
+      backgroundColor: "rgb(204, 232, 244)",
       '& .MuiTouchRipple-root': {
         //backgroundImage: `url(${IconHover})`,
 
@@ -92,6 +93,7 @@ const useStyles = makeStyles((theme) => ({
       backgroundRepeat: "no-repeat",
     },
     "&:hover": {
+      backgroundColor: "rgb(204, 232, 244)",
       "& .MuiTouchRipple-root": {
         //backgroundImage: `url(${IconHover})`,
       },

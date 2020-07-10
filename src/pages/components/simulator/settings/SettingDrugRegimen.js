@@ -31,7 +31,7 @@ const SettingDrugRegimen = ({ inModal, label, value, onChange, classAdd }) => {
       className={`${classes.formControl} ${classAdd}`}
     >
       <Tooltip
-        title="Will the MDAs be every 6 months or every year."
+        title="Choose the appropriate drug regimen."
         aria-label="info"
       >
       <FormLabel 

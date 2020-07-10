@@ -169,8 +169,13 @@ const Setup = (props) => {
     stateScales,
     selectedIUData
   } = useDataAPI()
+<<<<<<< Updated upstream
   console.log('selectedIUData', selectedIUData)
 
+=======
+  //console.log('selectedIUData',selectedIUData)
+  
+>>>>>>> Stashed changes
 
   const doWeHaveData = simParams.IUData.id === implementationUnit
   const loadData = async () => {
@@ -250,7 +255,6 @@ const Setup = (props) => {
           <Typography paragraph variant="body1" component="p">
             {`We hold the following information for ${selecteIUName}.`}
             <br />
-            This data will be used to initialise the simulation.
           </Typography>
         </TextContents>
 
@@ -321,9 +325,7 @@ const Setup = (props) => {
 
         <TextContents>
           <Typography paragraph variant="body1" component="p">
-            Based on the data we hold we are assuming that in the future…
-            <br />
-            You will be able to change this later.
+           Set up your simulation scenario by selecting environmental factors and MDA settings. <br></br>then click "Predictions" or one of the disruption buttons to simulate potential outcomes. <br></br>You can edit your setup at any time or create a new scenario.
           </Typography>
         </TextContents>
 
@@ -378,12 +380,10 @@ const Setup = (props) => {
 
           <div className={classes.formControlWrap}>
             <div className={classes.setupFormControl}>
-              <SettingInsecticideCoverage inModal={false} label="Inseticide Coverage (Vector)" />
+            <SettingInsecticideCoverage inModal={false} label="Inseticide Coverage" />
             </div>
           </div>
-
-
-
+          
 
           <div className={classes.formControlWrap}>
             <div className={classes.setupFormControl}>
@@ -404,7 +404,7 @@ const Setup = (props) => {
                 onChange={(event, newValue) => {
                   // this needs to change defaultParams as well, right?
                   // dispatchSimParams({ type: 'defaultsrho', payload: newValue })
-                  console.log('RHO', newValue)
+                  //console.log('RHO', newValue)
                   dispatchSimParams({ type: 'rho', payload: newValue })
                 }}
               />
@@ -413,8 +413,11 @@ const Setup = (props) => {
         </div>
 
         <TextContents>
+          <Typography variant="h3" component="h6" className={classes.headline}>
+            Disruption
+          </Typography>
           <Typography paragraph variant="body1" component="p">
-            Are you interested in a specific scenario?
+            Are you interested in a specific disruption scenario?
             <br />
             You will be able to change this later.
           </Typography>

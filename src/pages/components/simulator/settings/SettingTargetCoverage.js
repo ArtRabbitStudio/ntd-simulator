@@ -23,7 +23,7 @@ const SettingTargetCoverage = ({
   return (
     <FormControl fullWidth className={`${classes.formControl} ${classAdd}`}>
        <Tooltip
-        title="What proportion of the eligible population will be treated."
+        title="Proportion of the eligible population that will be treated."
         aria-label="info"
       >
       <FormLabel

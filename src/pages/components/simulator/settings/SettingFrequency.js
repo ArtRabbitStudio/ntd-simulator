@@ -27,7 +27,7 @@ const SettingFrequency = ({ inModal, label, classAdd }) => {
       className={`${classes.formControl} ${classAdd}`}
     >
       <Tooltip
-        title="What proportion of the eligible population will be treated."
+        title="Will the MDAs be every 6 months or every year?"
         aria-label="info"
       >
       <FormLabel 

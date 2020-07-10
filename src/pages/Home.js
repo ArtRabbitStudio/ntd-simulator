@@ -115,12 +115,12 @@ const Home = (props) => {
               <Typography variant="h6" component="h6" className={classes.headline} >
                 Partners
                             </Typography>
-              <Typography paragraph variant="body1" component="p">
-                The NTD Simulator was designed and built in collaboration with the <Link underline="always" color="inherit" href="http://www.ntdmodeling.org">NTD Modelling Consortium</Link>, an international network of infectious disease modellers focussing on neglected tropical diseases.
+                            <Typography paragraph variant="body1" component="p">
+                                The NTD Simulator was designed and built in collaboration with the <Link underline="always" color="inherit" href="https://www.ntdmodelling.org/">NTD Modelling Consortium</Link>, an international network of infectious disease modellers focussing on neglected tropical diseases.
                             </Typography>
-              <a href="http://www.ntdmodeling.org"><img src={Logo} border="0" alt="NTD Modelling Consortium" /></a>
-              <Typography paragraph variant="body1" component="p">
-                The work of the NTD modelling consortium is supported by the Bill and Melinda Gates Foundation.
+                            <a href="https://www.ntdmodelling.org/"><img src={Logo} border="0" alt="NTD Modelling Consortium" /></a>
+                            <Typography paragraph variant="body1" component="p">
+                                The work of the NTD Modelling Consortium is supported by the Bill and Melinda Gates Foundation.
                             </Typography>
 
             </TextContents>

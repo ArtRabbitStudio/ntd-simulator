@@ -46,7 +46,9 @@ const Inputs = props => {
   const history = useHistory()
 
   const handleDiseaseChange = (event, value) => {
-    setDisease(event);
+    if ( value.props.value != 'other' ) {
+      setDisease(event);
+    }
   }
 
   return (
@@ -66,6 +68,9 @@ const Inputs = props => {
               {DISEASE_LABELS[r]}
             </MenuItem>
           ))}
+          <MenuItem key="other" value="other">
+              Other diseases coming soon...
+          </MenuItem>
         </Select>
       </FormControl>
     </Box>

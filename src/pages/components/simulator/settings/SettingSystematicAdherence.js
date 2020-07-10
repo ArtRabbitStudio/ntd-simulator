@@ -22,7 +22,7 @@ const SettingSystematicAdherence = ({
   return (
     <FormControl fullWidth className={`${classes.formControl} ${classAdd}`}>
       <Tooltip
-        title="Controls how randomly coverage is applied. For 0, coverage is completely random. For 1, the same individuals are always treated."
+        title="Controls how randomly coverage is applied. At 0, coverage is completely random and there is no correlation in individuals who are treated. At 1, the same individuals are treated each round. The systematic adherence parameter can scale between these two extremes."
         aria-label="info"
       >
         <FormLabel

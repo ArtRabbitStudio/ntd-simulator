@@ -45,6 +45,7 @@ const useStyles = makeStyles(theme => ({
   icon: {
     backgroundColor: "transparent",
     boxShadow: 'none',
+    marginRight: 10,
     float: "right",
     '& .MuiTouchRipple-root': {
       backgroundImage: `url(${Icon})`,
@@ -53,6 +54,7 @@ const useStyles = makeStyles(theme => ({
       backgroundRepeat: 'no-repeat',
     },
     '&:hover': {
+      backgroundColor: "rgb(204, 232, 244)",
       '& .MuiTouchRipple-root': {
         //backgroundImage: `url(${IconHover})`,
 
