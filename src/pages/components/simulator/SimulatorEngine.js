@@ -279,7 +279,7 @@ export var Person = function (a, b) {
       // based on the value of aImp. Is this what you want?
       this.WM = (0.5 * params.xi * this.biteRate() * 10.0) / params.mu
       this.WF = (0.5 * params.xi * this.biteRate() * 10.0) / params.mu
-      
+
     }
 
     //simulate event where host dies and is replaced by a new host.
@@ -1152,7 +1152,16 @@ export var simControler = {
     // numberParamSets should tell us how many sets of parameters we have input
     // however that is done for a JSON file should go here. This will then be used for randomly choosing parameters
     var numberParamSets = simControler.iuParams.Population.length //number_rows(simControler.iuParams);
+    var bucket = [];
 
+    for (var i=0;i<numberParamSets;i++) {
+      bucket.push(i);
+    }
+
+    function getRandomFromBucket() {
+      var randomIndex = Math.floor(Math.random()*bucket.length);
+      return bucket.splice(randomIndex, 1)[0];
+    }
     //####//####//####//####//####//####
 
     // // paramsStep will make a variable which tells us how far to step in the parameters file for the next simulation.
@@ -1172,6 +1181,10 @@ export var simControler = {
     var progress = setInterval(() => {
       // randomly choose a set of parameters
       var paramsNumber = Math.floor(Math.random() * numberParamSets)
+      if(bucket.length>0){
+        paramsNumber = getRandomFromBucket()
+      }
+
  // paramsNumber = 46
       // console.log("params number  =", paramsNumber)
 
@@ -1201,7 +1214,7 @@ export var simControler = {
 
       if (progression === maxN) {
         console.log("number of parameter sets", numberParamSets)
-  console.log(simControler.iuParams)
+        console.log(simControler.iuParams)
         console.log(parDict)
 
         clearInterval(progress)
