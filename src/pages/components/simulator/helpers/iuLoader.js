@@ -1,11 +1,27 @@
 import Papa from 'papaparse'
-import { last, filter,forEach } from 'lodash'
+import { last, filter, forEach } from 'lodash'
+import {
+  DISEASE_LIMF, DISEASE_TRACHOMA
+} from '../../../../constants'
 
 export const loadAllIUhistoricData = async (
   simParams,
   dispatchSimParams,
-  implementationUnit
+  implementationUnit,
+  disease
 ) => {
+
+  // TODO new param diesase 
+  switch (disease) {
+    default:
+    case DISEASE_LIMF:
+
+      break;
+    case DISEASE_TRACHOMA:
+
+      break;
+  }
+
   // clear LS
   window.localStorage.removeItem('simParams')
   window.localStorage.removeItem('scenarioIndex')
@@ -71,8 +87,8 @@ export const loadAllIUhistoricData = async (
     defaults.coverage = coverage
     defaults.defaultParams.coverage = coverage
   }
-  console.log('mdaData',mdaData)
-  console.log('defaults',defaults)
+  console.log('mdaData', mdaData)
+  console.log('defaults', defaults)
   dispatchSimParams({
     type: 'everything',
     payload: defaults,
@@ -89,8 +105,8 @@ export const loadMdaHistory = async (implementationUnit) => {
   // Step 3: read the data
   let receivedLength = 0; // received that many bytes at the moment
   let chunks = []; // array of received binary chunks (comprises the body)
-  while(true) {
-    const {done, value} = await reader.read();
+  while (true) {
+    const { done, value } = await reader.read();
 
     if (done) {
       break;
@@ -105,7 +121,7 @@ export const loadMdaHistory = async (implementationUnit) => {
   // Step 4: concatenate chunks into single Uint8Array
   let chunksAll = new Uint8Array(receivedLength); // (4.1)
   let position = 0;
-  for(let chunk of chunks) {
+  for (let chunk of chunks) {
     chunksAll.set(chunk, position); // (4.2)
     position += chunk.length;
   }
@@ -136,7 +152,7 @@ export const loadMdaHistory = async (implementationUnit) => {
   newMdaObj.bednets.length = 20
   newMdaObj.adherence.length = 20
   newMdaObj.active.length = 20
-  
+
   return newMdaObj
 }
 
@@ -154,8 +170,8 @@ export const loadIUParams = async (implementationUnit) => {
   // Step 3: read the data
   let receivedLength = 0; // received that many bytes at the moment
   let chunks = []; // array of received binary chunks (comprises the body)
-  while(true) {
-    const {done, value} = await reader.read();
+  while (true) {
+    const { done, value } = await reader.read();
 
     if (done) {
       break;
@@ -170,23 +186,23 @@ export const loadIUParams = async (implementationUnit) => {
   // Step 4: concatenate chunks into single Uint8Array
   let chunksAll = new Uint8Array(receivedLength); // (4.1)
   let position = 0;
-  for(let chunk of chunks) {
+  for (let chunk of chunks) {
     chunksAll.set(chunk, position); // (4.2)
     position += chunk.length;
   }
 
   let decoder = new TextDecoder('utf-8')
-  
+
   const IUParamsCSV = decoder.decode(chunksAll)
   //console.log('IUParamsCSV',IUParamsCSV)
   const IUParamsJSON = Papa.parse(IUParamsCSV, { header: true })
   //console.log('IUParamsJSON.data',IUParamsJSON.data);
 
-  let newParams = {Population:[],shapeRisk:[],v_to_h:[],aImp:[],aImp_2000:[],aImp_2001:[],aImp_2002:[],aImp_2003:[],aImp_2004:[],aImp_2005:[],aImp_2006:[],aImp_2007:[],aImp_2008:[],aImp_2009:[],aImp_2010:[],aImp_2011:[],aImp_2012:[],aImp_2013:[],aImp_2014:[],aImp_2015:[],aImp_2016:[],aImp_2017:[],aImp_2018:[],aImp_2019:[]}
-  forEach(IUParamsJSON.data,(row,i)=>{
+  let newParams = { Population: [], shapeRisk: [], v_to_h: [], aImp: [], aImp_2000: [], aImp_2001: [], aImp_2002: [], aImp_2003: [], aImp_2004: [], aImp_2005: [], aImp_2006: [], aImp_2007: [], aImp_2008: [], aImp_2009: [], aImp_2010: [], aImp_2011: [], aImp_2012: [], aImp_2013: [], aImp_2014: [], aImp_2015: [], aImp_2016: [], aImp_2017: [], aImp_2018: [], aImp_2019: [] }
+  forEach(IUParamsJSON.data, (row, i) => {
     //console.log('rownumber',i)
     //console.log('row',row)
-    if ( row.Population == "" ) return
+    if (row.Population == "") return
     newParams.Population.push(Number(row.Population));
     newParams.shapeRisk.push(Number(row.shapeRisk));
     newParams.v_to_h.push(Number(row.v_to_h));

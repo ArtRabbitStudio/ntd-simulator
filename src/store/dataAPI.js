@@ -32,7 +32,7 @@ import {
 } from "lodash";
 import { color, extent, scaleSymlog, scaleLinear, interpolateHcl } from "d3";
 
-import { DISEASE_LIMF } from "../constants";
+import { DISEASE_LIMF, DISEASE_TRACHOMA } from "../constants";
 
 const seq5 = ["#BA455E", "#CB7386", "#DDA2AF", "#EED0D7", "#ffffff"];
 const seq5b = ["#A91636", "#BA455E", "#CB7386", "#DDA2AF", "#FFFFFF"];
@@ -203,8 +203,8 @@ function createEntries({ data, relations, key }) {
         key === "Country"
           ? meta.CountryName
           : key === "StateCode"
-          ? meta.StateName
-          : meta.IUName;
+            ? meta.StateName
+            : meta.IUName;
 
       const prevalence = mapValuesFP(roundPrevalence)(groupProps(row, "Prev_"));
       const prevValues = values(prevalence);
@@ -212,8 +212,8 @@ function createEntries({ data, relations, key }) {
 
       //    const probability = groupProps(row, 'elimination')
       //   could be enabled if needed
-         const lower = groupProps(row, 'Lower')
-         const upper = groupProps(row, 'Upper')
+      const lower = groupProps(row, 'Lower')
+      const upper = groupProps(row, 'Upper')
 
       const related = groupRelByKey[id];
       const relatedCountries = flow(groupBy("Country"), keys)(related);
@@ -228,8 +228,8 @@ function createEntries({ data, relations, key }) {
         prevalence,
         performance,
         // probability,
-         lower,
-         upper,
+        lower,
+        upper,
         relatedCountries,
         relatedStates,
         relatedIU,
@@ -484,7 +484,7 @@ class DataAPI {
 
   get selectedIUData() {
     const ius = this.IUsCurrentRegime;
-    if ( this.uiState.implementationUnit ) {
+    if (this.uiState.implementationUnit) {
       return flow(filter((x) => x.id === this.uiState.implementationUnit))(ius);
     }
     return 'nada';
@@ -655,7 +655,7 @@ class DataAPI {
     const ius = this.iuByCoutryData;
     if (ius) {
       const result = flow(
-        map(({ id, name, endemicity, prevalence }) => ({ id, name, endemicity, prevalence:prevalence['2020'] })),
+        map(({ id, name, endemicity, prevalence }) => ({ id, name, endemicity, prevalence: prevalence['2020'] })),
         sortByFP("name")
       )(ius);
       return result;
@@ -676,7 +676,7 @@ class DataAPI {
     return null;
   }
   get diseases() {
-    return [DISEASE_LIMF];
+    return [DISEASE_LIMF, DISEASE_TRACHOMA];
   }
 
   get regimes() {

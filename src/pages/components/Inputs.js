@@ -46,7 +46,7 @@ const Inputs = props => {
   const history = useHistory()
 
   const handleDiseaseChange = (event, value) => {
-    if ( value.props.value != 'other' ) {
+    if (value.props.value != 'other') {
       setDisease(event);
     }
   }
@@ -69,7 +69,7 @@ const Inputs = props => {
             </MenuItem>
           ))}
           <MenuItem key="other" value="other">
-              Other diseases coming soon...
+            Other diseases coming soon...
           </MenuItem>
         </Select>
       </FormControl>

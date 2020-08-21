@@ -161,7 +161,7 @@ const Setup = (props) => {
   const history = useHistory()
   const classes = useStyles()
   const { simParams, dispatchSimParams } = useStore()
-  const { country, implementationUnit } = useUIState()
+  const { country, implementationUnit, disease } = useUIState()
   const {
     iuFeatures,
     //stateFeaturesCurrentCountry: stateFeatures,
@@ -170,14 +170,15 @@ const Setup = (props) => {
     selectedIUData
   } = useDataAPI()
   //console.log('selectedIUData',selectedIUData)
-  
+
 
   const doWeHaveData = simParams.IUData.id === implementationUnit
   const loadData = async () => {
     await loadAllIUhistoricData(
       simParams,
       dispatchSimParams,
-      implementationUnit
+      implementationUnit,
+      disease
     )
     setIsLoading(false)
   }
@@ -320,7 +321,7 @@ const Setup = (props) => {
 
         <TextContents>
           <Typography paragraph variant="body1" component="p">
-           Set up your simulation scenario by selecting environmental factors and MDA settings. <br></br>then click "Predictions" or one of the disruption buttons to simulate potential outcomes. <br></br>You can edit your setup at any time or create a new scenario.
+            Set up your simulation scenario by selecting environmental factors and MDA settings. <br></br>then click "Predictions" or one of the disruption buttons to simulate potential outcomes. <br></br>You can edit your setup at any time or create a new scenario.
           </Typography>
         </TextContents>
 
@@ -375,10 +376,10 @@ const Setup = (props) => {
 
           <div className={classes.formControlWrap}>
             <div className={classes.setupFormControl}>
-            <SettingInsecticideCoverage inModal={false} label="Inseticide Coverage" />
+              <SettingInsecticideCoverage inModal={false} label="Inseticide Coverage" />
             </div>
           </div>
-          
+
 
           <div className={classes.formControlWrap}>
             <div className={classes.setupFormControl}>
