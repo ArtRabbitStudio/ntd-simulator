@@ -576,7 +576,7 @@ const Simulator = (props) => {
                               }}
                             >
                               <MenuItem value={'Ms'}>
-                                Prevalence mirofilerima
+                                Prevalence microfilariae
                               </MenuItem>
                               <MenuItem value={'Ls'}>
                                 Prevalence in the mosquito population

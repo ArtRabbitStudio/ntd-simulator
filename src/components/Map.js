@@ -90,10 +90,11 @@ function Map({
             }
 
             if (feature.properties.IU_ID) {
+        
                 if ( feature.properties.endemicity === 'Non-endemic' ) {
                     showNotAvailable('Non-endemic')
                     dispatch({ type: 'HOVEROUT' })
-                } else if ( feature.properties['prev-2019'] === null  ) {
+                } else if ( feature.properties['prev-2019'] === "null"  ) {
                     showNotAvailable('Not enough data available')
                     dispatch({ type: 'HOVEROUT' })
                 } else {
@@ -184,13 +185,13 @@ function Map({
                                     'coalesce',
                                     ['get', colorProp],
                                     // grey shapes if no data available
-                                    '#FAEAE1',
+                                    '#fff',
                                 ],
                                 'fill-outline-color': [
                                     'case',
                                     ['==', ['get', 'id'], feature?.properties.id || null],
-                                    '#bcbcbc',
-                                    '#bcbcbc',
+                                    '#dfdfdf',
+                                    '#dfdfdf',
                                 ],
                             }}
                         />

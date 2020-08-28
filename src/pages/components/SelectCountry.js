@@ -74,8 +74,9 @@ const SelectCountry = ({ selectIU, showConfirmation }) => {
   const history = useHistory()
   const matchSection = useRouteMatch('/:section')
 
-  const { countrySuggestions, iuFeatures, iusByCountrySuggestions } = useDataAPI()
+  const { countrySuggestions, iuFeatures, iusByCountrySuggestions,  } = useDataAPI()
   const { country, implementationUnit } = useUIState()
+
 
   const [goTo, setGoTo] = useState(false);
 
@@ -155,7 +156,7 @@ const SelectCountry = ({ selectIU, showConfirmation }) => {
             <Autocomplete
               id="iu"
               options={activeIUs}
-              getOptionLabel={option => option.name}
+              getOptionLabel={option => ( option.relatedStateName ? `${option.name} (${option.relatedStateName})` : `${option.name}` ) }
               value={selectedIU ?? { name: 'Select IU' }}
               renderInput={params => (
                 <TextField {...params}/* InputProps={{ ...params.InputProps, disableUnderline: true }}*/ />

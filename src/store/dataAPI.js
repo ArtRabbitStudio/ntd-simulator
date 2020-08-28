@@ -65,8 +65,8 @@ const buildScales = (stats, data) => {
   //     .nice(5)
 
   const prev = scaleSymlog()
-    .domain([0, stats.prevalence.max])
-    .range(["#fff", "#D86422"])
+    .domain([0,1, stats.prevalence.max])
+    .range(["#fff","#FAEAE1", "#D86422"])
     .nice();
 
   const mp = max(stats.performance.map((x) => Math.abs(x)));
@@ -208,7 +208,10 @@ function createEntries({ data, relations, key }) {
 
       const prevalence = mapValuesFP(roundPrevalence)(groupProps(row, "Prev_"));
       const prevValues = values(prevalence);
-      const performance = last(prevValues) - first(prevValues);
+      // take specific value depending on data we're assuming it's supplied from 2010 - 2019
+      const performance = last(prevValues) - prevValues[9];
+      // this looks at the entire range from 2000 - 2019 or first and last
+      //const performance = last(prevValues) - first(prevValues);
 
       //    const probability = groupProps(row, 'elimination')
       //   could be enabled if needed
@@ -218,6 +221,7 @@ function createEntries({ data, relations, key }) {
       const related = groupRelByKey[id];
       const relatedCountries = flow(groupBy("Country"), keys)(related);
       const relatedStates = flow(groupBy("StateCode"), keys)(related);
+      const relatedStateNames = flow(groupBy("StateName"), keys)(related);
       const relatedIU = flow(groupBy("IUID"), keys)(related);
 
       const enhanced = {
@@ -232,6 +236,7 @@ function createEntries({ data, relations, key }) {
         upper,
         relatedCountries,
         relatedStates,
+        relatedStateNames,
         relatedIU,
       };
       return enhanced;
@@ -260,12 +265,15 @@ function mergeFeatures({ data, featureCollection, key, scales }) {
     const featureData = dataMap[id];
     const { performance } = featureData;
     const prevalenceOverTime = featureData?.prevalence ?? {};
+
     const endemicity = featureData?.endemicity ?? "–";
     // const population = featureData?.population ?? '–'
 
     // get color from scale if prevalence value available
-    const colorsByYear = mapValues(prevalenceOverTime, (prevalence) =>
-      isFinite(prevalence) ? color(prev(prevalence)).hex() : null
+    const colorsByYear = mapValues(prevalenceOverTime, (prevalence) => {
+      if ( featureData.endemicity == 'Non-endemic' ) return '#fff'
+        return isFinite(prevalence) ? color(prev(prevalence)).hex() : null
+      }
     );
 
     return merge({}, feature, {
@@ -314,7 +322,8 @@ class DataAPI {
     const { states } = this.dataStore;
 
     if (states) {
-      return filter(this.rowFilter)(states);
+      return states;
+      //return filter(this.rowFilter)(states);
     }
 
     return null;
@@ -355,6 +364,7 @@ class DataAPI {
 
     return null;
   }
+
 
   get IUsCurrentRegimeByCountry() {
     const ius = this.filteredIURows;
@@ -652,10 +662,12 @@ class DataAPI {
 
   get iusByCountrySuggestions() {
     const { country } = this.uiState;
+    const states = this.iuByCoutryData;
     const ius = this.iuByCoutryData;
+
     if (ius) {
       const result = flow(
-        map(({ id, name, endemicity, prevalence }) => ({ id, name, endemicity, prevalence: prevalence['2020'] })),
+        map(({ id, name, endemicity, prevalence, relatedStateNames }) => ({ id, name, endemicity, prevalence: prevalence['2020'], relatedStateName: relatedStateNames[0] })),
         sortByFP("name")
       )(ius);
       return result;

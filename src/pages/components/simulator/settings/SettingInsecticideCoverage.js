@@ -36,7 +36,7 @@ const SettingInsecticideCoverage = ({ inModal, label, classAdd }) => {
       <Slider
         value={simParams.v_to_hR}
         id="v_to_hR"
-        min={1}
+        min={0}
         step={1}
         max={100}
         onChange={(event, newValue) => {

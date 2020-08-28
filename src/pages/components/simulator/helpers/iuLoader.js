@@ -35,7 +35,7 @@ export const loadAllIUhistoricData = async (
   const params = await loadIUParams(implementationUnit)
   // set default values
   const defaultSimParams = {
-    coverage: 60, // $("#MDACoverage").val(),
+    coverage: 65, // $("#MDACoverage").val(),
     mda: 1, // $("#inputMDARounds").val(), TODO: what do we do here?
     mdaSixMonths: 12, // TODO; what do we do here
     endemicity: 10, // $("#endemicity").val(),

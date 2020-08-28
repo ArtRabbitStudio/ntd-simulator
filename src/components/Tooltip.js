@@ -16,7 +16,7 @@ export default function Tooltip({ feature, year, position }) {
       : `${name} ${NO_DATA}`
 
   if ( endemicity === 'Non-endemic' ) {
-    title = `${name} [${endemicity}]`
+    title = `${name} ${prevalence}% [${endemicity}]`
   }
 
   return (

@@ -48,12 +48,10 @@ const Country = props => {
     const {
         iuFeatures,
         countryFeatures,
-        //stateFeaturesCurrentCountry: stateFeatures,
-        //stateDataCurrentCountry: stateData,
-        stateScales,
+        //stateFeatures,
+        //stateScales,
         //iuData,
     } = useDataAPI()
-    //console.log(iuData);
 
     const { country } = useUIState()
     
@@ -94,10 +92,11 @@ const Country = props => {
                 <div className={classes.settings}>
                     <Map
                         countryFeatures={countryFeatures}
-                        //stateFeatures={stateFeatures}
+                        //stateFeatures={stateFeaturesCurrentCountry}
                         iuFeatures={iuFeatures}
                         colorScale={false}
                         height={720}
+                        trendMode={false}
                         disableZoom={true}
                         country={country}
                         showNotAvailable={(value)=>{

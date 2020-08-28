@@ -27,9 +27,12 @@ export var SessionData = {
 
     sessionData.scenarios[scenInd] = scenario
     var toStore = JSON.stringify(sessionData)
+    console.log('toStore',toStore)
     try {
       localStorage.setItem('sessionData', toStore)
     } catch (error) {
+      
+      console.log('error',error)
       alert('Too many scenarios to store. Try deleting some.')
     }
     return sessionData
