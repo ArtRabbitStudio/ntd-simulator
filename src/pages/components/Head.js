@@ -5,7 +5,6 @@ import Typography from '@material-ui/core/Typography';
 import { NavLink } from 'react-router-dom';
 
 import Logo from '../../images/ntd-logo.svg';
-import { stackOffsetNone } from 'd3';
 
 const useStyles = makeStyles(theme => ({
     card: {

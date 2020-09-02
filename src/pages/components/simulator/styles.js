@@ -8,10 +8,6 @@ import RemoveIcon from "../../../images/delete-icon-blue.svg";
 import SettingsIcon from '../../../images/settings.svg';
 
 const useStyles = makeStyles((theme) => ({
-  tabs: {
-    flexGrow: 1,
-    backgroundColor: theme.palette.background.paper,
-  },
   title: {
     marginBottom: 24,
   },
@@ -125,6 +121,8 @@ const useStyles = makeStyles((theme) => ({
     position: "relative",
   },
   tabs: {
+    flexGrow: 1,
+    backgroundColor: theme.palette.background.paper,
     padding: theme.spacing(0, 6),
     borderBottom: "1px solid #e0e0e0",
   },

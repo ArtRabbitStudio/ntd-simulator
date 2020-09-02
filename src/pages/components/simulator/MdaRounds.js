@@ -74,6 +74,7 @@ const MdaRounds = (props) => {
       }
       setSimMDAactive([...MDAactive])
     }
+  // eslint-disable-next-line
   }, [simParams.mdaSixMonths])
 
   return (

@@ -1,5 +1,5 @@
 import React from "react";
-import { Switch, Route, useLocation } from "react-router-dom";
+import { Switch, Route } from "react-router-dom";
 import useSyncRouteState from "./hooks/useSyncRouteState";
 
 import ScrollToTop from "./pages/components/ScrollToTop";
@@ -114,7 +114,6 @@ const theme = createMuiTheme({
     },
     h6: {
       textTransform: "uppercase",
-      textTransform: 'uppercase',
       fontSize: 14,
       letterSpacing: 1
     },
@@ -224,14 +223,13 @@ console.shallowCloneLog = function () {
 
 
 function App() {
-  const location = useLocation();
   useSyncRouteState();
 
   return (
     <CssBaseline>
       <ThemeProvider theme={theme}>
         <StoreProvider>
-          <ScrollToTop /*location={location}*/>
+          <ScrollToTop>
             <Switch>
               <Route exact path="/" component={Home} />
               <Route exact path="/country/:country" component={Country} />

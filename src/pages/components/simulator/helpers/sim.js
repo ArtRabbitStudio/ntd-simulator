@@ -1,3 +1,4 @@
+/* eslint-disable */
 /** Random.js library.
  *
  * The code is licensed as LGPL.
@@ -50,7 +51,7 @@ var Random = function(seed) {
   seed = seed === undefined ? new Date().getTime() : seed;
   if (
     typeof seed !== "number" || // ARG_CHECK
-    Math.ceil(seed) != Math.floor(seed)
+    Math.ceil(seed) !== Math.floor(seed)
   ) {
     // ARG_CHECK
     throw new TypeError("seed value must be an integer"); // ARG_CHECK

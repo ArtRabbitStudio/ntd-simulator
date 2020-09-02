@@ -82,12 +82,16 @@ Most browsers allow you to refuse to accept cookies. For example:
         <Typography paragraph variant="body1" component="p">
 
 
-We welcome feedback about our website and about the work of the NTD Modelling Consortium. Please contact us for more information.
-<br />
-<br /><a href="javascript:location='mailto:\u0064\u0065\u0069\u0072\u0064\u0072\u0065\u002e\u0068\u006f\u006c\u006c\u0069\u006e\u0067\u0073\u0077\u006f\u0072\u0074\u0068\u0040\u0062\u0064\u0069\u002e\u006f\u0078\u002e\u0061\u0063\u002e\u0075\u006b';void 0">Professor Déirdre Hollingsworth</a><br />
+        We welcome feedback about our website and about the work of the NTD Modelling Consortium. Please contact us for more information.
+        <br /><br />
+        {
+        //eslint-disable-next-line
+        }<a href="javascript:location='mailto:\u0064\u0065\u0069\u0072\u0064\u0072\u0065\u002e\u0068\u006f\u006c\u006c\u0069\u006e\u0067\u0073\u0077\u006f\u0072\u0074\u0068\u0040\u0062\u0064\u0069\u002e\u006f\u0078\u002e\u0061\u0063\u002e\u0075\u006b';void 0">Professor Déirdre Hollingsworth</a><br />
           University of Oxford<br />
           <br />
-          <a href="javascript:location='mailto:\u0062\u0065\u0074\u0068\u002e\u0062\u0072\u0075\u0063\u0065\u0040\u0062\u0064\u0069\u002e\u006f\u0078\u002e\u0061\u0063\u002e\u0075\u006b';void 0">Beth Bruce</a><br />
+          {
+          //eslint-disable-next-line
+          }<a href="javascript:location='mailto:\u0062\u0065\u0074\u0068\u002e\u0062\u0072\u0075\u0063\u0065\u0040\u0062\u0064\u0069\u002e\u006f\u0078\u002e\u0061\u0063\u002e\u0075\u006b';void 0">Beth Bruce</a><br />
           University of Oxford<br />
 <br />Big Data Institute
 <br />University of Oxford

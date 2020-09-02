@@ -14,7 +14,7 @@ import {
 } from '@material-ui/core'
 import RotateLeftIcon from '@material-ui/icons/RotateLeft'
 
-import { useTheme } from '@material-ui/styles'
+import SessionStorage from './components/simulator/helpers/sessionStorage.js'
 import PropTypes from 'prop-types'
 import React, { useEffect, useState } from 'react'
 import ScenarioGraph from '../components/ScenarioGraph'
@@ -52,6 +52,8 @@ import TextContents from './components/TextContents'
 
 SimulatorEngine.simControler.documentReady()
 
+window.SessionStorage = SessionStorage;
+
 function a11yProps(index) {
   return {
     id: `simple-tab-${index}`,
@@ -81,17 +83,13 @@ TabPanel.propTypes = {
   value: PropTypes.any.isRequired,
 }
 
-let countryLinks = []
-
 const Simulator = (props) => {
+  console.log( `Simulator render()` );
   const classes = useStyles()
-  const theme = useTheme()
   const { simParams, dispatchSimParams } = useStore()
-  const { country, implementationUnit } = useUIState()
+  const { implementationUnit } = useUIState()
   const { selectedIUData } = useDataAPI()
 
-  // console.log('simParams')
-  // console.log(simParams)
   /* MDA object */
   const [graphMetric, setGraphMetric] = useState('Ms')
 
@@ -119,9 +117,6 @@ const Simulator = (props) => {
 
   /* Simulation, tabs etc */
   const [simInProgress, setSimInProgress] = useState(false)
-  // console.log(parseInt(window.localStorage.getItem('scenarioIndex')))
-  // console.log(parseInt(window.localStorage.getItem('scenarioIndex')) + 1)
-  // console.log(window.localStorage.getItem('sessionData'))
   const [tabLength, setTabLength] = useState(
     JSON.parse(window.localStorage.getItem('sessionData')) === null
       ? 0
@@ -131,6 +126,7 @@ const Simulator = (props) => {
     JSON.parse(window.localStorage.getItem('scenarioIndex')) || 0
   )
   const handleTabChange = (event, newValue) => {
+    console.log( event, newValue );
     setTabIndex(newValue)
   }
   useEffect(() => {
@@ -144,14 +140,20 @@ const Simulator = (props) => {
       })
       SimulatorEngine.ScenarioIndex.setIndex(tabIndex)
     }
+  // eslint-disable-next-line
   }, [tabIndex])
 
   const [simulationProgress, setSimulationProgress] = useState(0)
   const [scenarioInputs, setScenarioInputs] = useState([])
+  console.log( `Simulator setting scenarios in state, calling SessionStorage.fetchAllScenarios()` );
+  const allScenarios = SessionStorage.fetchAllScenarios()
   const [scenarioResults, setScenarioResults] = useState(
+    allScenarios
+  /*
     window.localStorage.getItem('sessionData')
       ? JSON.parse(window.localStorage.getItem('sessionData')).scenarios
       : []
+  */
   )
   const [scenarioMDAs, setScenarioMDAs] = useState([])
 
@@ -164,9 +166,12 @@ const Simulator = (props) => {
         type: 'needsRerun',
         payload: false,
       })
+      console.log( `Simulator triggering scenarioResults[${tabIndex}]` );
       if (typeof scenarioResults[tabIndex] === 'undefined') {
         //console.log('scenarioResults',resultObject)
-        setScenarioResults([...scenarioResults, JSON.parse(resultObject)])
+        const newScenarioResults = [...scenarioResults, JSON.parse(resultObject)];
+        console.log( `Simulator calling setScenarioResults( ${newScenarioResults} )` );
+        setScenarioResults( newScenarioResults )
         setScenarioInputs([
           ...scenarioInputs,
           JSON.parse(resultObject).params.inputs,
@@ -322,6 +327,7 @@ const Simulator = (props) => {
   }
   const removeCurrentScenario = () => {
     if (!simInProgress) {
+      console.log( `Simulator asked to deleteScenario ${tabIndex}` );
       SimulatorEngine.SessionData.deleteScenario(tabIndex)
 
       let newScenarios = [...scenarioResults]
@@ -404,10 +410,12 @@ const Simulator = (props) => {
         })
       }
     }
+  // eslint-disable-next-line
   }, [])
 
   useEffect(() => {
     detectChange(simParams, dispatchSimParams)
+  // eslint-disable-next-line
   }, [
     simParams.coverage,
     // simParams.mda,
@@ -473,6 +481,7 @@ const Simulator = (props) => {
             {scenarioResults.map((result, i) => (
               <TabPanel key={`scenario-result-${i}`} value={tabIndex} index={i}>
                 <div className={classes.simulatorBody}>
+              FUCK YES {i}
                   <div className={classes.simulatorInnerBody}>
                     <Grid container spacing={0}>
                       <Grid item md={6} xs={12}>

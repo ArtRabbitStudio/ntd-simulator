@@ -72,7 +72,7 @@ export const loadAllIUhistoricData = async (
     defaults.covN = bednets
     defaults.defaultParams.covN = bednets
   }
-  const mdaRegimen = last(filter(mdaData.regimen, (x) => x != 'xxx'))
+  const mdaRegimen = last(filter(mdaData.regimen, (x) => x !== 'xxx'))
   if (mdaRegimen) {
     defaults.mdaRegimen = mdaRegimen
     defaults.defaultParams.mdaRegimen = mdaRegimen
@@ -82,7 +82,7 @@ export const loadAllIUhistoricData = async (
     defaults.rho = adherence
     defaults.defaultParams.rho = adherence
   }
-  const coverage = last(filter(mdaData.coverage, (x) => x != 0))
+  const coverage = last(filter(mdaData.coverage, (x) => x !== 0))
   if (coverage) {
     defaults.coverage = coverage
     defaults.defaultParams.coverage = coverage
@@ -202,7 +202,7 @@ export const loadIUParams = async (implementationUnit) => {
   forEach(IUParamsJSON.data, (row, i) => {
     //console.log('rownumber',i)
     //console.log('row',row)
-    if (row.Population == "") return
+    if (row.Population === "") return
     newParams.Population.push(Number(row.Population));
     newParams.shapeRisk.push(Number(row.shapeRisk));
     newParams.v_to_h.push(Number(row.v_to_h));
@@ -232,6 +232,8 @@ export const loadIUParams = async (implementationUnit) => {
   //console.log('newParams',newParams)
   return newParams
 
+  /*
+   * IS THIS NEEDED?
   newParams = {
     Population: IUParamsJSON.data.map((item) => Number(item.Population)),
     shapeRisk: IUParamsJSON.data.map((item) => Number(item.shapeRisk)),
@@ -259,6 +261,7 @@ export const loadIUParams = async (implementationUnit) => {
     aImp_2019: IUParamsJSON.data.map((item) => Number(item.aImp_2019)),
   }
   return newParams
+   */
 }
 
 export const generateMdaFuture = (simParams) => {

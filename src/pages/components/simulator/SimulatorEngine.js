@@ -2,17 +2,24 @@
 //import { Random } from './sim-0.26'
 import { Random } from './helpers/sim'
 import { subtract } from 'mathjs'
+import SessionStorage from './helpers/sessionStorage';
+
 export var s = new Random()
 export var SessionData = {
-  storeResults: (results, scenLabel, stats) => {
+
+  storeResults: (results, scenLabel) => {
+
     //takes results: an Array of json with each json obj having ts, Ms, Ws.
     //combines these with parameter information and stores to be retrieved whenever.
-    var sessionData = JSON.parse(localStorage.getItem('sessionData')) //retrieve session dat from storage.
+   // var sessionData = JSON.parse(localStorage.getItem('sessionData')) //retrieve session dat from storage.
+    console.log( `SessionData.storeResults calling SessionStorage.fetchScenario( ${scenLabel} )` );
+    var sessionData = SessionStorage.fetchScenario( scenLabel );
     if (sessionData == null || sessionData.scenarios == null) {
       sessionData = { scenarios: [] }
     }
     if (scenLabel == null) {
-      scenLabel = 'Scenario ' + (ScenarioIndex.getIndex() + 1)
+    //  scenLabel = 'Scenario ' + (ScenarioIndex.getIndex() + 1)
+      scenLabel = 'Scenario ' + ( SessionStorage.scenarioCount + 1)
     }
     var scenario = {
       params: params,
@@ -27,9 +34,10 @@ export var SessionData = {
 
     sessionData.scenarios[scenInd] = scenario
     var toStore = JSON.stringify(sessionData)
-    console.log('toStore',toStore)
+//    console.log('toStore',toStore)
     try {
-      localStorage.setItem('sessionData', toStore)
+      SessionStorage.storeScenario( scenario );
+      localStorage.setItem( 'sessionData', toStore )
     } catch (error) {
       
       console.log('error',error)
@@ -37,17 +45,21 @@ export var SessionData = {
     }
     return sessionData
   },
-  storeSession: (session) => {
-    var toStore = JSON.stringify(session)
-    localStorage.setItem('sessionData', toStore)
-  },
+
   storeStats: (stats) => {
+  /*
     var sessionData = JSON.parse(localStorage.getItem('sessionData')) //retrieve session dat from storage.
     var scenInd = ScenarioIndex.getIndex()
     sessionData.scenarios[scenInd]['stats'] = stats
     var toStore = JSON.stringify(sessionData)
     localStorage.setItem('sessionData', toStore)
+  */
+    var scen = SessionStorage.currentTabScenario;
+    scen.stats = stats;
+    SessionStorage.storeScenario( scen );
   },
+
+  /*
   createNewSession: () => {
     var sessionData = JSON.parse(localStorage.getItem('sessionData'))
     if (sessionData == null || sessionData.scenarios == null) {
@@ -59,6 +71,8 @@ export var SessionData = {
     sessionData.scenarios[scenInd] = scenario
     var toStore = JSON.stringify(sessionData)
   },
+  */
+
   deleteSession: () => {
     //delete session data to start fresh when page loads.
     localStorage.setItem('sessionData', null)
@@ -87,8 +101,10 @@ export var SessionData = {
     }
   },
   nRounds: (i) => {
-    var ses = SessionData.retrieveSessions()
-    var scen = ses.scenarios[i]
+  //  var ses = SessionData.retrieveSessions()
+  //  var scen = ses.scenarios[i]
+    console.log( `SessionData.nRounds calling SessionStorage.fetchScenarioAtIndex( ${i} )` );
+    var scen = SessionStorage.fetchScenarioAtIndex( i );
     var n = scen.results.length
     var rounds = []
     for (var j = 0; j < n; j++) {
@@ -97,14 +113,16 @@ export var SessionData = {
     return rounds
   },
   reductions: (i, yr, endemicity) => {
-    var ses = SessionData.retrieveSessions()
-    var scen = ses.scenarios[i]
+  //  var ses = SessionData.retrieveSessions()
+  //  var scen = ses.scenarios[i]
+    console.log( `SessionData.reductions calling SessionStorage.fetchScenarioAtIndex( ${i} )` );
+    var scen = SessionStorage.fetchScenarioAtIndex( i );
     var n = scen.results.length
     var red = 0
     var nn = 0
     for (var j = 0; j < n; j++) {
       if (endemicity) {
-        if (scen.results[j].endemicity == endemicity) {
+        if (scen.results[j].endemicity === endemicity) {
           red += scen.results[j].reductionYears[yr]
           nn += 1
         }
@@ -116,6 +134,22 @@ export var SessionData = {
     return red / nn
   },
   ran: (i) => {
+    try {
+      console.log( `SessionData.ran calling SessionStorage.fetchScenarioAtIndex( ${i} )` );
+      var scen = SessionStorage.fetchScenarioAtIndex( i );
+      if (scen.results.length > 0) {
+        return true
+      } else {
+        return false
+      }
+    }
+
+    catch ( error ) {
+      return false;
+    }
+
+    /*
+
     var ses = SessionData.retrieveSessions()
 
     if (!ses) {
@@ -131,8 +165,11 @@ export var SessionData = {
     } else {
       return false
     }
+    */
   },
   deleteScenario: (tabIndex) => {
+    SessionStorage.removeScenarioAtIndex( tabIndex );
+
     var ses = SessionData.retrieveSessions()
     // console.log(ses)
     // console.log('Deleting scenario at index:', tabIndex)
@@ -157,12 +194,17 @@ export var SessionData = {
 }
 export var ScenarioIndex = {
   getIndex: function () {
-    return Number(localStorage.getItem('scenarioIndex'))
+    console.info( `ScenarioIndex.getIndex();` );
+  //  return Number(localStorage.getItem('scenarioIndex'))
+    return SessionStorage.scenarioCount;
   },
   setIndex: function (ind) {
+    console.info( `ScenarioIndex.setIndex( ${ind} );` );
     try {
-      var ses = SessionData.retrieveSessions()
-      var scen = ses.scenarios[ind]
+    //  var ses = SessionData.retrieveSessions()
+    //  var scen = ses.scenarios[ind]
+      console.log( `SessionData.ScenarioIndex.setIndex calling SessionStorage.fetchScenarioAtIndex( ${ind} )` );
+      var scen = SessionStorage.fetchScenarioAtIndex( ind );
       params = scen.params
     } catch (err) {}
 
@@ -170,6 +212,7 @@ export var ScenarioIndex = {
   },
 }
 export var Person = function (a, b) {
+  /* eslint-disable */
   //constructor(a,b) {
   this.b = s.gamma(a, b)
   this.M = 0.5
@@ -184,7 +227,7 @@ export var Person = function (a, b) {
   //}
 
   this.repRate = function () {
-    if (params.nu == 0) {
+    if (params.nu === 0) {
       if (this.WM > 0) {
         return this.WF
       } else {
@@ -308,12 +351,13 @@ export var Person = function (a, b) {
   }
 }
 export var Model = function (n) {
+  /* eslint-disable */
   //constructor(n){
 
   this.sU = 0
   this.sB = 0
   this.sN = 0
-  this.people = new Array()
+  this.people = []
   this.n = n
   this.bedNetInt = 0
   this.ts = []
@@ -394,7 +438,8 @@ export var Model = function (n) {
       }
     }
     if (bedNetInc < 0) {
-      var bednetProb =
+     // var bednetProb =
+      bednetProb =
         ((params.covNOld - params.covN) * this.n) / (params.covNOld * this.n)
       for (var j = 0; j < this.n; j++) {
         if ((this.people[j].bedNet = 1)) {
@@ -426,7 +471,7 @@ export var Model = function (n) {
         inds.push(i)
       }
     }
-    if (params.mdaFreq == 12) {
+    if (params.mdaFreq === 12) {
       return Math.floor(this.ts[inds[0]])
     } else {
       return Math.floor(2 * this.ts[inds[0]])
@@ -1046,8 +1091,11 @@ export var simControler = {
   /* DOM manipulation */
 
   scenarioRunStats: (simulatorCallback) => {
-    var scenInd = ScenarioIndex.getIndex()
-    var scenario = SessionData.retrieveSessions()['scenarios'][scenInd]
+  // var scenInd = ScenarioIndex.getIndex()
+  // var scenLabel = SessionStorage.currentTabLabel
+  // var scenario = SessionData.retrieveSessions()['scenarios'][scenInd]
+    var scenario = SessionStorage.currentTabScenario
+
     var ts = [],
       dyrs = [],
       ryrs = []
@@ -1218,7 +1266,7 @@ export var simControler = {
       if (progression === maxN) {
         console.log("number of parameter sets", numberParamSets)
         console.log(simControler.iuParams)
-        console.log(parDict)
+       // console.log(parDict)
 
         clearInterval(progress)
         SessionData.storeResults(
@@ -1303,10 +1351,10 @@ export var simControler = {
     }
   },
   runScenario: function (paramsFromUI, tabIndex, simulatorCallback) {
-    //        console.log(paramsFromUI);
+            console.log('runScenario:', paramsFromUI);
     this.params = { ...paramsFromUI }
     ScenarioIndex.setIndex(tabIndex)
-    SessionData.createNewSession()
+   // SessionData.createNewSession()
     // console.log(this);
     /*     simControler.fixInput(false); */
 

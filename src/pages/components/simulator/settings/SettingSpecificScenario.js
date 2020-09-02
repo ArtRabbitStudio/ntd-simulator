@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import useStyles from '../styles'
 
 import { useStore } from '../../../../store/simulatorStore'
@@ -12,7 +12,7 @@ import {
 } from '@material-ui/core'
 import { useHistory } from 'react-router-dom'
 import { specificScenarios } from '../helpers/specificScenarios'
-import { useDataAPI, useUIState } from '../../../../hooks/stateHooks'
+import { useUIState } from '../../../../hooks/stateHooks'
 
 const SettingSpecificScenario = ({ inModal, label, classAdd }) => {
   const classes = useStyles()

@@ -1,14 +1,10 @@
 import { Button, Typography } from '@material-ui/core'
-import Accordion from '@material-ui/core/Accordion'
-import AccordionSummary from '@material-ui/core/AccordionSummary'
-import AccordionDetails from '@material-ui/core/AccordionDetails'
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 
 import { makeStyles } from '@material-ui/core/styles'
 import { observer } from 'mobx-react'
-import React, { useEffect, useState, Fragment } from 'react'
+import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom'
-import { orderBy, map } from 'lodash'
+import { map } from 'lodash'
 import PrevalenceMiniGraph from '../components/PrevalenceMiniGraph'
 import { useDataAPI, useUIState } from '../hooks/stateHooks'
 import { Layout } from '../layout'
@@ -20,16 +16,12 @@ import { loadAllIUhistoricData } from './components/simulator/helpers/iuLoader'
 
 // settings
 import {
-  SettingName,
   SettingFrequency,
   SettingTargetCoverage,
   SettingDrugRegimen,
-  SettingBasePrevalence,
-  SettingNumberOfRuns,
   SettingMosquitoType,
   SettingBedNetCoverage,
   SettingInsecticideCoverage,
-  SettingPrecision,
   SettingSystematicAdherence,
   SettingSpecificScenario,
 } from './components/simulator/settings'
@@ -97,8 +89,6 @@ const useStyles = makeStyles((theme) => ({
   },
   legend: {
     textTransform: 'uppercase',
-    textTransform: 'uppercase',
-    fontSize: 14,
     letterSpacing: 1,
     fontSize: 12,
     width: 30,
@@ -163,13 +153,8 @@ const Setup = (props) => {
   const { simParams, dispatchSimParams } = useStore()
   const { country, implementationUnit, disease } = useUIState()
   const {
-    iuFeatures,
-    //stateFeaturesCurrentCountry: stateFeatures,
-    //stateDataCurrentCountry: stateData,
-    stateScales,
     selectedIUData
   } = useDataAPI()
-  //console.log('selectedIUData',selectedIUData)
 
 
   const doWeHaveData = simParams.IUData.id === implementationUnit

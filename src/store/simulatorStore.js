@@ -1,5 +1,5 @@
 // store.js
-import React, { createContext, useContext, useReducer, useState } from 'react'
+import React, { createContext, useContext, useReducer } from 'react'
 
 const StoreContext = createContext()
 const initialState = {
