@@ -130,6 +130,7 @@ const Simulator = (props) => {
     setTabIndex(newValue)
   }
   useEffect(() => {
+    console.log( `Simulator useEffect() 1` );
     if (typeof scenarioInputs[tabIndex] != 'undefined') {
       dispatchSimParams({
         type: 'everythingbuthistoric',
@@ -148,7 +149,7 @@ const Simulator = (props) => {
   console.log( `Simulator setting scenarios in state, calling SessionStorage.fetchAllScenarios()` );
   const allScenarios = SessionStorage.fetchAllScenarios()
   const [scenarioResults, setScenarioResults] = useState(
-    allScenarios
+    ( () => { console.log( 'Simulator useState( allScenarios )' ); return allScenarios; } )()
   /*
     window.localStorage.getItem('sessionData')
       ? JSON.parse(window.localStorage.getItem('sessionData')).scenarios
@@ -366,6 +367,7 @@ const Simulator = (props) => {
   }
 
   useEffect(() => {
+    console.log( `Simulator useEffect() 2` );
     if (typeof scenarioResults[tabIndex] === 'undefined') {
       //console.log('No scenarios? Running a new one...')
       runNewScenario()
@@ -414,6 +416,7 @@ const Simulator = (props) => {
   }, [])
 
   useEffect(() => {
+    console.log( `Simulator useEffect() 3` );
     detectChange(simParams, dispatchSimParams)
   // eslint-disable-next-line
   }, [
