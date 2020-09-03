@@ -1,4 +1,4 @@
-import { Button, Typography } from '@material-ui/core'
+import { Button, Typography, Tooltip } from '@material-ui/core'
 import Accordion from '@material-ui/core/Accordion'
 import AccordionSummary from '@material-ui/core/AccordionSummary'
 import AccordionDetails from '@material-ui/core/AccordionDetails'
@@ -17,6 +17,7 @@ import HeadWithInputs from './components/HeadWithInputs'
 import SelectCountry from './components/SelectCountry'
 import TextContents from './components/TextContents'
 import { loadAllIUhistoricData } from './components/simulator/helpers/iuLoader'
+import InfoIcon from "../images/info-24-px.svg";
 
 // settings
 import {
@@ -102,6 +103,7 @@ const useStyles = makeStyles((theme) => ({
     letterSpacing: 1,
     fontSize: 12,
     width: 30,
+    marginTop:25, 
     marginBottom: 0,
     marginLeft: -3,
   },
@@ -128,6 +130,18 @@ const useStyles = makeStyles((theme) => ({
         textAlign: 'left',
       },
     },
+  },
+  withHelp: {
+    cursor: "help",
+    backgroundImage: `url(${InfoIcon})`,
+    backgroundPosition: "right center",
+    backgroundSize: "auto",
+    backgroundRepeat: "no-repeat",
+    width: "fit-content",
+    paddingRight: 30,
+    padding: theme.spacing(1, 0),
+    paddingBottom:0,
+    marginBottom:0
   },
   buttonsControl: {
     margin: theme.spacing(0),
@@ -256,24 +270,34 @@ const Setup = (props) => {
 
         <div className={classes.charts}>
           <div className={classes.chart}>
+          <Tooltip
+              title="Inferred prevalence based on geostatistical maps interpolating through space and projected forward in time using the transmission model."
+              aria-label="info"
+            >
             <Typography
               variant="h6"
               component="h6"
-              className={classes.headline}
+              className={`${classes.headline} ${classes.withHelp}`}
             >
-              Prevalence data (
+              Estimated prevalence (
               {selectedIUData[0] && selectedIUData[0].endemicity})
             </Typography>
+          </Tooltip>
             <PrevalenceMiniGraph data={selectedIUData[0]} />
           </div>
           <div className={classes.chart}>
+          <Tooltip
+              title="White bars: No intervention. Blue bars: intervention, height of blue in bar shows coverage."
+              aria-label="info"
+            >
             <Typography
               variant="h6"
               component="h6"
-              className={classes.headline}
+              className={`${classes.headline} ${classes.withHelp}`}
             >
-              Espen intervention data
+              Espen intervention data (MDA)
             </Typography>
+            </Tooltip>
             <div className="bars setup">
               {simParams.IUData.mdaObj &&
                 mdaObjTimeFiltered.time.map((e, i) => (
@@ -306,7 +330,7 @@ const Setup = (props) => {
                 mdaObjTimeFiltered.time.map((e, i) => (
                   <Typography
                     key={`bar-legend=${i}`}
-                    className={classes.legend}
+                    className={`${classes.legend}`}
                     component="p"
                   >
                     {'‘' +
@@ -330,14 +354,14 @@ const Setup = (props) => {
         <div className={classes.settings}>
           <div className={classes.formControlWrap}>
             <div className={classes.setupFormControl}>
-              <Typography paragraph variant="body1" component="p">
+              <Typography paragraph variant="h3" component="p">
                 Environmental factors
                 </Typography>
             </div>
           </div>
           <div className={classes.formControlWrap}>
             <div className={classes.setupFormControl}>
-              <Typography paragraph variant="body1" component="p">
+              <Typography paragraph variant="h3" component="p">
                 MDA settings
                 </Typography>
             </div>
