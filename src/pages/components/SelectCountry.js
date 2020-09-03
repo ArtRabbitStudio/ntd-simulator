@@ -125,9 +125,14 @@ const SelectCountry = ({ selectIU, showConfirmation }) => {
     navigate()
   };
 
-  const selected = countrySuggestions.find(x => x.id === country)
-  const activeIUs = iusByCountrySuggestions.filter(x => (x.prevalence !== null && x.endemicity !== "Non-endemic") )
+  const defaultCountrySuggestionOption = { name: "Select a country" };
+  const defaultIUSuggestionOption = { name: "Select IU" };
+
+  const countrySuggestionsWithDefault = [ defaultCountrySuggestionOption ].concat( countrySuggestions );
+  const selected = countrySuggestionsWithDefault.find(x => x.id === country)
+  const activeIUs = [ defaultIUSuggestionOption ].concat( iusByCountrySuggestions.filter(x => (x.prevalence !== null && x.endemicity !== "Non-endemic") ) )
   const selectedIU = activeIUs.find(x => x.id === implementationUnit)
+
   return (
     <React.Fragment>
       <Box className={classes.box}>
@@ -135,9 +140,10 @@ const SelectCountry = ({ selectIU, showConfirmation }) => {
         <FormControl className={`${classes.formControl} countries`}>
           <Autocomplete
             id="combo-box-demo"
-            options={countrySuggestions}
+            options={countrySuggestionsWithDefault}
             getOptionLabel={option => option.name}
-            value={selected ?? { name: 'Select a country' }}
+            getOptionSelected={ ( a, b ) => { return a.name === b.name } } // stop the Autocomplete warning barf
+            value={selected ?? defaultCountrySuggestionOption}
             renderInput={params => (
               <TextField {...params} /*InputProps={{ ...params.InputProps, disableUnderline: true }}*/ />
             )}
@@ -151,8 +157,8 @@ const SelectCountry = ({ selectIU, showConfirmation }) => {
               id="iu"
               options={activeIUs}
               getOptionLabel={option => ( option.relatedStateName ? `${option.name} (${option.relatedStateName})` : `${option.name}` ) }
-              // eslint-disable-next-line
-              value={selectedIU ?? { name: 'Select IU' }}
+              getOptionSelected={ ( a, b ) => { return a.name === b.name } } // stop the Autocomplete warning barf
+              value={selectedIU ?? defaultIUSuggestionOption}
               renderInput={params => (
                 <TextField {...params}/* InputProps={{ ...params.InputProps, disableUnderline: true }}*/ />
               )}
