@@ -24,7 +24,7 @@ export const loadAllIUhistoricData = async (
 
   // clear LS
   window.localStorage.removeItem('simParams')
-  window.localStorage.removeItem('scenarioIndex')
+ // window.localStorage.removeItem('scenarioIndex')
   window.localStorage.removeItem('sessionData')
 
   //const doWeHaveData = simParams.IUData.id === implementationUnit

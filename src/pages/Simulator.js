@@ -14,7 +14,7 @@ import {
 } from '@material-ui/core'
 import RotateLeftIcon from '@material-ui/icons/RotateLeft'
 
-import SessionStorage from './components/simulator/helpers/sessionStorage.js'
+import SessionStorage from './components/simulator/helpers/sessionStorage'
 import PropTypes from 'prop-types'
 import React, { useEffect, useState } from 'react'
 import ScenarioGraph from '../components/ScenarioGraph'
@@ -77,14 +77,333 @@ function TabPanel(props) {
     </Typography>
   )
 }
+
 TabPanel.propTypes = {
   children: PropTypes.node,
   index: PropTypes.any.isRequired,
   value: PropTypes.any.isRequired,
 }
 
+let renderCount = 0;
+
 const Simulator = (props) => {
-  console.log( `Simulator render()` );
+
+  console.log( `Simulator render() #${++renderCount}` );
+  console.log( props );
+
+  const classes = useStyles();
+
+  const defaultTabIndex = (
+    () => {
+      const idx = props.scenarioKeys.findIndex( ( { id, label } ) => id === props.scenarioId );
+      console.log( `Simulator setting defaultTabIndex` );
+      return idx < 0 ? 0 : idx;
+    }
+  )();
+
+//  const [ scenarioInputs, setScenarioInputs ] = useState( [] );
+//  const [ scenarioMDAs, setScenarioMDAs ] = useState( [] );
+  const [graphMetric, setGraphMetric] = useState('Ms')
+
+  const [ tabIndex, setTabIndex ] = useState( defaultTabIndex );
+
+  const { simParams, dispatchSimParams } = useStore();
+  const { implementationUnit } = useUIState();
+  const { selectedIUData } = useDataAPI();
+
+  // 2nd-arg empty array makes this a componentDidMount equivalent - only re-run if {nothing} changes
+  useEffect(
+    () => {
+    },
+    []
+  );
+
+  const [ confirmatonOpen, setConfirmatonOpen ] = useState( false );
+
+  const confirmRemoveCurrentScenario = () => {
+    if (!props.simInProgress) {
+      setConfirmatonOpen(true)
+    }
+  };
+
+  const confirmedRemoveCurrentScenario = () => {
+    console.log( "WAAAAA" );
+    if (!props.simInProgress) {
+      setConfirmatonOpen( false );
+      props.removeScenario( props.scenarioId );
+    }
+  };
+
+  const resetCurrentScenario = () => {
+    dispatchSimParams({
+      type: 'resetScenario',
+    })
+  }
+  const handleTabChange = ( event, newTabIndex ) => {
+
+    if( props.scenarioKeys[ newTabIndex ] && props.scenarioKeys[ newTabIndex ].id !== props.scenarioId ) {
+      props.switchScenario( props.scenarioKeys[ newTabIndex ].id );
+    }
+
+    setTabIndex( newTabIndex );
+    
+  };
+
+  const scenarioDisplay = props.scenarioData ? (
+    <Grid item md={12} xs={12} className={classes.chartContainer}>
+      <TabPanel
+        key={`scenario-result-${props.scenarioId}`}
+        value={tabIndex}
+        index={tabIndex}
+      >
+        <div className={classes.simulatorBody}>
+          <div className={classes.simulatorInnerBody}>
+            <Grid container spacing={0}>
+              <Grid item md={6} xs={12}>
+                <Typography
+                  className={classes.chartTitle}
+                  variant="h3"
+                  component="h2"
+                >
+                  {props.scenarioData.label}
+                </Typography>
+                <SettingPrecision
+                  classAdd={classes.precision}
+                  inModal={true}
+                  label="Precision"
+                />
+              </Grid>
+
+              <Grid item md={6} xs={12}>
+                <div className={classes.rightControls}>
+                  <Fab
+                    color="inherit"
+                    aria-label="REMOVE SCENARIO"
+                    disabled={props.simInProgress || props.scenarioKeys.length === 0}
+                    className={classes.removeIcon}
+                    onClick={confirmRemoveCurrentScenario}
+                  >
+                    &nbsp;
+                  </Fab>
+
+                  <ChartSettings
+                    title="Edit scenario"
+                    buttonText="Update Scenario"
+                    action={props.runCurrentScenario}
+                  >
+                    <TextContents>
+                      <Typography paragraph variant="body1" component="p">
+                        What scenario do you want to simulate?
+                      </Typography>
+                    </TextContents>
+
+                    <SettingName inModal={true} label="Scenario name" />
+                    <SettingBedNetCoverage
+                      inModal={true}
+                      label="Bed Net Coverage"
+                    />
+                    <SettingFrequency inModal={true} label="Treatment frequency" />
+                    <SettingDrugRegimen inModal={true} label="Drug regimen" />
+                    <SettingTargetCoverage
+                      inModal={true}
+                      label="Treatment target coverage"
+                    />
+                    <SettingSystematicAdherence
+                      inModal={true}
+                      label="Systematic adherence"
+                    />
+                    {/* no longer in use <SettingBasePrevalence inModal={true} label="Base prevalence" /> */}
+                    {/* no longer in use <SettingNumberOfRuns inModal={true} label="Number of runs" /> */}
+                    <SettingInsecticideCoverage
+                      inModal={true}
+                      label="Insecticide Coverage"
+                    />
+                    <SettingMosquitoType inModal={true} label="Mosquito type" />
+                    <TextContents>
+                      <Typography paragraph variant="body1" component="p">
+                        Are you interested in a specific scenario?
+                      </Typography>
+                    </TextContents>
+                    <SettingSpecificScenario inModal={true} />
+                  </ChartSettings>
+
+                  <FormControl
+                    variant="outlined"
+                    className={classes.formControlPrevalence}
+                  >
+                    <Select
+                      labelId="larvae-prevalence"
+                      id="larvae-prevalence"
+                      value={graphMetric}
+                      MenuProps={{ disablePortal: true }}
+                      onChange={(ev) => {
+                        // console.log(ev.target.value)
+                        setGraphMetric(ev.target.value);
+                      }}
+                    >
+                      <MenuItem value={"Ms"}>Prevalence microfilariae</MenuItem>
+                      <MenuItem value={"Ls"}>
+                        Prevalence in the mosquito population
+                      </MenuItem>
+                      <MenuItem value={"Ws"}>
+                        Prevalence of worms in the lymph nodes
+                      </MenuItem>
+                    </Select>
+                  </FormControl>
+                </div>
+              </Grid>
+            </Grid>
+
+            <div className={classes.scenarioGraph}>
+              {simParams.needsRerun && (
+                <div className={classes.updateScenario}>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    disabled={
+                      props.simInProgress || props.scenarioKeys.length === 0
+                    } /*  || scenarioInputs.length === 0 */
+                    onClick={props.runCurrentScenario}
+                  >
+                    UPDATE SCENARIO
+                  </Button>{" "}
+                  &nbsp;
+                  <IconButton
+                    className={classes.buttonBG}
+                    variant="contained"
+                    color="primary"
+                    aria-label="reset scenario"
+                    component="span"
+                    disabled={
+                      props.simInProgress || props.scenarioKeys.length === 0
+                    } /*  || scenarioInputs.length === 0 */
+                    onClick={resetCurrentScenario}
+                  >
+                    <RotateLeftIcon />
+                  </IconButton>
+                </div>
+              )}
+
+              <ScenarioGraph
+                data={props.scenarioData}
+                showAllResults={false}
+                metrics={[graphMetric]}
+                simInProgress={props.simInProgress}
+                simNeedsRerun={simParams.needsRerun}
+                simParams={simParams}
+                classes={classes}
+                IU={implementationUnit}
+                IUData={selectedIUData}
+              />
+            </div>
+
+{/*
+            {scenarioMDAs[tabIndex] && simParams.tweakedPrediction && (
+              <MdaRounds
+                history={scenarioMDAs[tabIndex]}
+                future={simParams.tweakedPrediction}
+              />
+            )}
+*/}
+
+            <Typography
+              className={classes.scenarioGraphLegendInterventions}
+              variant="h6"
+              component="h6"
+            >
+              Interventions
+            </Typography>
+          </div>
+        </div>
+      </TabPanel>
+
+      <ConfirmationDialog
+        title="Do you want to delete this scenario?"
+        onClose={() => {
+          setConfirmatonOpen(false);
+        }}
+        onConfirm={confirmedRemoveCurrentScenario}
+        open={confirmatonOpen}
+      />
+
+      {props.simulationProgress !== 0 && props.simulationProgress !== 100 && (
+        <div className={classes.progress}>
+          <CircularProgress
+            variant="determinate"
+            value={props.simulationProgress}
+            color="primary"
+          />
+        </div>
+      )}
+    </Grid>
+
+  ) : null;
+
+  return (
+    <div id="SimulatorLoader">
+      <Layout>
+
+      <HeadWithInputs title="prevalence simulator" />
+
+      <SelectCountry selectIU={true} showConfirmation={true} />
+
+        <section className={classes.simulator}>
+
+        <Grid container spacing={0}>
+
+          <Grid item xs={12} className={classes.tabs}>
+
+            <Tabs
+              value={ tabIndex }
+              onChange={ handleTabChange }
+              aria-label="Available scenarios"
+              indicatorColor="secondary"
+              textColor="secondary"
+              variant="scrollable"
+              scrollButtons="auto"
+            >
+              { props.scenarioKeys.map(
+                ( { id, label }, idx ) => {
+                return (
+                  <Tab
+                    // key={`tab-element-${i}`}
+                    // label={
+                    //   simParams.scenarioLabels[i]
+                    //     ? simParams.scenarioLabels[i]
+                    //     : `Scenario ${i + 1}`
+                    // }
+                    key={ id }
+                    label={ label }
+                    { ...a11yProps( idx ) }
+                  />
+                );
+                }
+              ) }
+
+              { props.scenarioKeys.length < 5 && (
+                <Tab
+                  key={ `tab-element-99` }
+                  label={ `+ Add one` }
+                  disabled={ props.simInProgress }
+                  onClick={ props.runNewScenario }
+                />
+              ) }
+            </Tabs>
+
+          </Grid>
+
+        </Grid>
+
+       { scenarioDisplay }
+
+        </section>
+      </Layout>
+    </div>
+  );
+}
+
+const FuckYou = ( props ) => {
+
   const classes = useStyles()
   const { simParams, dispatchSimParams } = useStore()
   const { implementationUnit } = useUIState()
@@ -93,6 +412,7 @@ const Simulator = (props) => {
   /* MDA object */
   const [graphMetric, setGraphMetric] = useState('Ms')
 
+/*
   // check for stale scenarios object in LS
   const LSSessionData = JSON.parse(window.localStorage.getItem('sessionData'))
   if (
@@ -114,6 +434,7 @@ const Simulator = (props) => {
     //console.log('reloading')
     window.location.reload()
   }
+*/
 
   /* Simulation, tabs etc */
   const [simInProgress, setSimInProgress] = useState(false)
@@ -123,9 +444,11 @@ const Simulator = (props) => {
       : JSON.parse(window.localStorage.getItem('sessionData')).scenarios.length
   )
   const [tabIndex, setTabIndex] = useState(
-    JSON.parse(window.localStorage.getItem('scenarioIndex')) || 0
+   // JSON.parse(window.localStorage.getItem('scenarioIndex')) || 0
+    SessionStorage.currentScenarioIndex || 0
   )
   const handleTabChange = (event, newValue) => {
+    renderCount = 0;
     console.log( event, newValue );
     setTabIndex(newValue)
   }
@@ -253,7 +576,6 @@ const Simulator = (props) => {
         SimulatorEngine.simControler.mdaObj2015 = trimMdaHistory(mdaHistory)
         SimulatorEngine.simControler.mdaObjFuture = mdaPrediction
         SimulatorEngine.simControler.iuParams = IUData.params
-        console.log('runningScenario')
         console.log('mdaObj',SimulatorEngine.simControler.mdaObj)
         console.log('iuParams',SimulatorEngine.simControler.iuParams)
 
@@ -309,7 +631,6 @@ const Simulator = (props) => {
       SimulatorEngine.simControler.mdaObj2015 = trimMdaHistory(mdaHistory)
       SimulatorEngine.simControler.mdaObjFuture = mdaPrediction
       SimulatorEngine.simControler.iuParams = IUData.params
-      console.log('runningScenario')
       console.log('mdaObj',SimulatorEngine.simControler.mdaObj)
       console.log('iuParams',SimulatorEngine.simControler.iuParams)
 
@@ -326,10 +647,11 @@ const Simulator = (props) => {
       type: 'resetScenario',
     })
   }
+  /* REPLACEME */
   const removeCurrentScenario = () => {
     if (!simInProgress) {
       console.log( `Simulator asked to deleteScenario ${tabIndex}` );
-      SimulatorEngine.SessionData.deleteScenario(tabIndex)
+     // SimulatorEngine.SessionData.deleteScenario(tabIndex)
 
       let newScenarios = [...scenarioResults]
       newScenarios = newScenarios.filter(
@@ -356,13 +678,13 @@ const Simulator = (props) => {
   const [confirmatonOpen, setConfirmatonOpen] = useState(false)
   const confirmRemoveCurrentScenario = () => {
     if (!simInProgress) {
-      setConfirmatonOpen(true)
+      setConfirmatonOpen(true);
     }
   }
   const confirmedRemoveCurrentScenario = () => {
     if (!simInProgress) {
-      setConfirmatonOpen(false)
-      removeCurrentScenario()
+      setConfirmatonOpen(false);
+      removeCurrentScenario();
     }
   }
 
@@ -484,7 +806,6 @@ const Simulator = (props) => {
             {scenarioResults.map((result, i) => (
               <TabPanel key={`scenario-result-${i}`} value={tabIndex} index={i}>
                 <div className={classes.simulatorBody}>
-              FUCK YES {i}
                   <div className={classes.simulatorInnerBody}>
                     <Grid container spacing={0}>
                       <Grid item md={6} xs={12}>

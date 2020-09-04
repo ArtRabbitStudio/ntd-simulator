@@ -7,7 +7,7 @@ import Home from "./pages/Home";
 import Page from "./pages/Page";
 import Country from "./pages/Country";
 import Setup from "./pages/Setup";
-import Simulator from "./pages/Simulator";
+import SimulatorLoader from "./pages/SimulatorLoader";
 import DataMethodolgy from "./pages/DataMethodology";
 import About from "./pages/About";
 import PrivacyCookies from "./pages/PrivacyCookies";
@@ -240,7 +240,7 @@ function App() {
               <Route
                 exact
                 path="/simulator/:country?/:iu?"
-                component={Simulator}
+                component={SimulatorLoader}
               />
               <Route exact path="**" component={Page} />
             </Switch>

@@ -4,6 +4,7 @@ import useStyles from '../styles'
 import { useStore } from '../../../../store/simulatorStore'
 import { FormControl, TextField } from '@material-ui/core'
 import { simControler } from '../SimulatorEngine'
+import SessionStorage from '../helpers/sessionStorage'
 
 const SettingName = ({ inModal, label }) => {
   const classes = useStyles()
@@ -24,7 +25,8 @@ const SettingName = ({ inModal, label }) => {
         id="scenario-name"
         value={
           simParams.scenarioLabels[
-            JSON.parse(window.localStorage.getItem('scenarioIndex')) || 0
+           // JSON.parse(window.localStorage.getItem('scenarioIndex')) || 0
+            SessionStorage.currentScenarioIndex || 0
           ]
         }
         label={label}

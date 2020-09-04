@@ -1,6 +1,8 @@
 // store.js
 import React, { createContext, useContext, useReducer } from 'react'
 
+import SessionStorage from '../pages/components/simulator/helpers/sessionStorage'
+
 const StoreContext = createContext()
 const initialState = {
   scenarioLabels: [],
@@ -48,7 +50,8 @@ const reducer = (simParams, action) => {
       }
     case 'scenarioLabel':
       let newLabels = [...simParams.scenarioLabels]
-      newLabels[JSON.parse(window.localStorage.getItem('scenarioIndex')) || 0] =
+//      newLabels[JSON.parse(window.localStorage.getItem('scenarioIndex')) || 0] =
+      newLabels[SessionStorage.currentScenarioIndex] =
         action.payload
       return {
         ...simParams,

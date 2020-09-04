@@ -7,58 +7,6 @@ import SessionStorage from './helpers/sessionStorage';
 export var s = new Random()
 export var SessionData = {
 
-  storeResults: (results, scenLabel) => {
-
-    //takes results: an Array of json with each json obj having ts, Ms, Ws.
-    //combines these with parameter information and stores to be retrieved whenever.
-   // var sessionData = JSON.parse(localStorage.getItem('sessionData')) //retrieve session dat from storage.
-    console.log( `SessionData.storeResults calling SessionStorage.fetchScenario( ${scenLabel} )` );
-    var sessionData = SessionStorage.fetchScenario( scenLabel );
-    if (sessionData == null || sessionData.scenarios == null) {
-      sessionData = { scenarios: [] }
-    }
-    if (scenLabel == null) {
-    //  scenLabel = 'Scenario ' + (ScenarioIndex.getIndex() + 1)
-      scenLabel = 'Scenario ' + ( SessionStorage.scenarioCount + 1)
-    }
-    var scenario = {
-      params: params,
-      results: results,
-      label: scenLabel,
-      mda: simControler.mdaObj,
-      mdaUI: simControler.mdaObjUI,
-      mda2015: simControler.mdaObj2015,
-      mdaFuture: simControler.mdaObjFuture,
-    }
-    var scenInd = ScenarioIndex.getIndex()
-
-    sessionData.scenarios[scenInd] = scenario
-    var toStore = JSON.stringify(sessionData)
-//    console.log('toStore',toStore)
-    try {
-      SessionStorage.storeScenario( scenario );
-      localStorage.setItem( 'sessionData', toStore )
-    } catch (error) {
-      
-      console.log('error',error)
-      alert('Too many scenarios to store. Try deleting some.')
-    }
-    return sessionData
-  },
-
-  storeStats: (stats) => {
-  /*
-    var sessionData = JSON.parse(localStorage.getItem('sessionData')) //retrieve session dat from storage.
-    var scenInd = ScenarioIndex.getIndex()
-    sessionData.scenarios[scenInd]['stats'] = stats
-    var toStore = JSON.stringify(sessionData)
-    localStorage.setItem('sessionData', toStore)
-  */
-    var scen = SessionStorage.currentTabScenario;
-    scen.stats = stats;
-    SessionStorage.storeScenario( scen );
-  },
-
   /*
   createNewSession: () => {
     var sessionData = JSON.parse(localStorage.getItem('sessionData'))
@@ -77,6 +25,7 @@ export var SessionData = {
     //delete session data to start fresh when page loads.
     localStorage.setItem('sessionData', null)
   },
+  /*
   retrieveSessions: () => {
     var ses = JSON.parse(localStorage.getItem('sessionData'))
     if (ses && ses.scenarios && ses.scenarios[0] && ses.scenarios[0].label) {
@@ -88,6 +37,7 @@ export var SessionData = {
       return ses
     }
   },
+  */
   convertRun: (m, endemicity) => {
     //convert model object to JSON for run.
     return {
@@ -167,9 +117,13 @@ export var SessionData = {
     }
     */
   },
+  /*
   deleteScenario: (tabIndex) => {
     SessionStorage.removeScenarioAtIndex( tabIndex );
-
+  }
+  */
+/*
+  deleteScenario: (tabIndex) => {
     var ses = SessionData.retrieveSessions()
     // console.log(ses)
     // console.log('Deleting scenario at index:', tabIndex)
@@ -177,9 +131,9 @@ export var SessionData = {
     var newSessionArray = [...sessionArray]
     // console.log(sessionArray)
 
-    /*     var newSessionArray = newSessionArray
-      .slice(0, tabIndex)
-      .concat(newSessionArray.slice(tabIndex + 1, newSessionArray.length)) */
+    //     var newSessionArray = newSessionArray
+    //  .slice(0, tabIndex)
+    //  .concat(newSessionArray.slice(tabIndex + 1, newSessionArray.length))
     newSessionArray.splice(tabIndex, 1)
     // console.log(newSessionArray)
 
@@ -191,6 +145,7 @@ export var SessionData = {
       newSessionArray.length - 1 === -1 ? 0 : newSessionArray.length - 1
     )
   },
+*/
 }
 export var ScenarioIndex = {
   getIndex: function () {
@@ -208,7 +163,8 @@ export var ScenarioIndex = {
       params = scen.params
     } catch (err) {}
 
-    return localStorage.setItem('scenarioIndex', ind)
+    SessionStorage.currentScenarioIndex = ind;
+  //  return localStorage.setItem('scenarioIndex', ind)
   },
 }
 export var Person = function (a, b) {
@@ -1090,63 +1046,6 @@ export var simControler = {
   //////////////////////////////////////////
   /* DOM manipulation */
 
-  scenarioRunStats: (simulatorCallback) => {
-  // var scenInd = ScenarioIndex.getIndex()
-  // var scenLabel = SessionStorage.currentTabLabel
-  // var scenario = SessionData.retrieveSessions()['scenarios'][scenInd]
-    var scenario = SessionStorage.currentTabScenario
-
-    var ts = [],
-      dyrs = [],
-      ryrs = []
-
-    ts = scenario['results'][0]['ts']
-
-    var stats = simControler.reductionStatsCalc(scenario, params.covMDA)
-
-    dyrs = stats.doses
-    ryrs = stats.reduction
-
-    //    console.log(ts)
-    //    console.log(dyrs)
-    SessionData.storeStats({
-      ts: ts,
-      prev_reds: ryrs,
-      doses: dyrs,
-      Ws: stats.medW,
-      Ms: stats.medM,
-      Ls: stats.medL,
-      WsMax: stats.maxW,
-      MsMax: stats.maxM,
-      LsMax: stats.maxL,
-      WsMin: stats.minW,
-      MsMin: stats.minM,
-      LsMin: stats.minL,
-    })
-
-    // simControler.dump(scenario);
-    // $("#scenario-statistic")[0].innerHTML = JSON.stringify(obj);
-    // add stats in scenario
-    scenario.stats = {
-      ts: ts,
-      prev_reds: ryrs,
-      doses: dyrs,
-      Ws: stats.medW,
-      Ms: stats.medM,
-      Ls: stats.medL,
-      WsMax: stats.maxW,
-      MsMax: stats.maxM,
-      LsMax: stats.maxL,
-      WsMin: stats.minW,
-      MsMin: stats.minM,
-      LsMin: stats.minL,
-    }
-    simulatorCallback(JSON.stringify(scenario), simControler.newScenario)
-    // console.log(JSON.stringify(scenario));
-    // return JSON.stringify(scenario);
-    //fixInput(false);
-  },
-
   maximum: (values) => {
     values.sort(function (a, b) {
       return a - b
@@ -1184,7 +1083,7 @@ export var simControler = {
     else return (values[half - 1] + values[half]) / 2.0
   },
 
-  runMapSimulation: function (tabIndex, simulatorCallback) {
+  runMapSimulation: function ( scenarioId, { progressCallback, resultCallback } ) {
     //statFunctions.setInputParams({ nMDA: 60 })
     //max number of mda rounds even if doing it six monthly.
 
@@ -1219,8 +1118,7 @@ export var simControler = {
     // // will multiplying by 1.0 make the result a double, or whatever variable type is equivalent to a decimal (not an integer basically)?
     // // after maxN steps forward, this will be equal to the number of parameter sets, so will end on the final line of the parameter file
     // var paramsStep = numberParamSets*1.0/maxN
-    //
-    // // paramsNumber will tell us which row from the parameters file we want to take parameters from
+    // // // paramsNumber will tell us which row from the parameters file we want to take parameters from
     // // this will be increased by paramStep for each simulation.
     // // Initialise at 0 so we begin on the first line of the simControler.iuParams file
     // var paramsNumber = 0
@@ -1258,7 +1156,7 @@ export var simControler = {
       // the historic 2000-2019 and then to 2030
       m.evolveAndSaves(131.0, mdaJSON, paramsNumber,parDict)
       runs.push(SessionData.convertRun(m))
-      simulatorCallback(parseInt((progression * 100) / maxN))
+      progressCallback(parseInt((progression * 100) / maxN))
 
       // // step forward the position at which we will get the next set of parameters in the next simulation
       // paramsNumber += paramsStep
@@ -1269,19 +1167,173 @@ export var simControler = {
        // console.log(parDict)
 
         clearInterval(progress)
-        SessionData.storeResults(
-          runs,
-          simControler.scenarioLabel
-            ? simControler.scenarioLabel
-            : 'Scenario #' + (tabIndex + 1)
-        )
-        simControler.scenarioRunStats(simulatorCallback)
-      } else {
+
+        const newScenario = {
+          ...( scenarioId ? SessionStorage.fetchScenario( scenarioId ) : SessionStorage.newScenario() ),
+          params: params,
+          results: runs,
+          mda: simControler.mdaObj,
+          mdaUI: simControler.mdaObjUI,
+          mda2015: simControler.mdaObj2015,
+          mdaFuture: simControler.mdaObjFuture,
+        };
+
+        newScenario.stats = ( () => {
+          var ts = [],
+            dyrs = [],
+            ryrs = [];
+
+          ts = newScenario.results[0]['ts'];
+
+          var stats = simControler.reductionStatsCalc( newScenario, params.covMDA );
+
+          dyrs = stats.doses;
+          ryrs = stats.reduction;
+
+          return {
+            ts: ts,
+            prev_reds: ryrs,
+            doses: dyrs,
+            Ws: stats.medW,
+            Ms: stats.medM,
+            Ls: stats.medL,
+            WsMax: stats.maxW,
+            MsMax: stats.maxM,
+            LsMax: stats.maxL,
+            WsMin: stats.minW,
+            MsMin: stats.minM,
+            LsMin: stats.minL
+          };
+        } )();
+
+        SessionStorage.storeScenario( newScenario );
+        resultCallback( newScenario, simControler.newScenario );
+
+      }
+
+      else {
         progression += 1
       }
     }, 10)
 
   },
+
+/*
+  //takes results: an Array of json with each json obj having ts, Ms, Ws.
+  //combines these with parameter information and stores to be retrieved whenever.
+  storeResults: ( results ) => {
+
+   // var sessionData = JSON.parse(localStorage.getItem('sessionData')) //retrieve session dat from storage.
+
+    console.log( `SessionData.storeResults creating a new scenario object by calling SessionStorage.newScenario()` );
+    var emptyScenario = SessionStorage.newScenario();
+
+//   if (sessionData == null || sessionData.scenarios == null) {
+//     sessionData = { scenarios: [] }
+//   }
+//   if (scenLabel == null) {
+//   //  scenLabel = 'Scenario ' + (ScenarioIndex.getIndex() + 1)
+//     scenLabel = 'Scenario ' + ( SessionStorage.scenarioCount + 1)
+//   }
+
+    var scenario = {
+      ...emptyScenario,
+      params: params,
+      results: results,
+      label: scenLabel,
+      mda: simControler.mdaObj,
+      mdaUI: simControler.mdaObjUI,
+      mda2015: simControler.mdaObj2015,
+      mdaFuture: simControler.mdaObjFuture,
+    }
+
+//    var scenInd = ScenarioIndex.getIndex()
+//    sessionData.scenarios[scenInd] = scenario
+//    var toStore = JSON.stringify(sessionData)
+
+
+    try {
+      SessionStorage.storeScenario( scenario );
+    //  localStorage.setItem( 'sessionData', toStore )
+      return scenario;
+    }
+
+    catch ( e ) {
+      console.warn( 'error',e.message );
+      alert('Too many scenarios to store. Try deleting some.');
+    }
+
+  },
+*/
+
+/*
+  scenarioRunStats: ( storedScenario, simulatorCallback ) => {
+
+  // var scenInd = ScenarioIndex.getIndex()
+  // var scenLabel = SessionStorage.currentTabLabel
+  // var scenario = SessionData.retrieveSessions()['scenarios'][scenInd]
+    var scenario = SessionStorage.currentTabScenario
+
+    var ts = [],
+      dyrs = [],
+      ryrs = []
+
+    ts = storedScenario['results'][0]['ts']
+
+    var stats = simControler.reductionStatsCalc(storedScenario, params.covMDA)
+
+    dyrs = stats.doses
+    ryrs = stats.reduction
+
+    //    console.log(ts)
+    //    console.log(dyrs)
+    SessionData.storeStats({
+      ts: ts,
+      prev_reds: ryrs,
+      doses: dyrs,
+      Ws: stats.medW,
+      Ms: stats.medM,
+      Ls: stats.medL,
+      WsMax: stats.maxW,
+      MsMax: stats.maxM,
+      LsMax: stats.maxL,
+      WsMin: stats.minW,
+      MsMin: stats.minM,
+      LsMin: stats.minL,
+    })
+
+    // simControler.dump(scenario);
+    // $("#scenario-statistic")[0].innerHTML = JSON.stringify(obj);
+
+
+    simulatorCallback(
+      storedScenario,
+      // JSON.stringify(scenario),
+      simControler.newScenario
+    );
+
+    // console.log(JSON.stringify(scenario));
+    // return JSON.stringify(scenario);
+    //fixInput(false);
+  },
+*/
+
+
+/*
+  storeStats: (stats) => {
+  
+    //var sessionData = JSON.parse(localStorage.getItem('sessionData')) //retrieve session dat from storage.
+    //var scenInd = ScenarioIndex.getIndex()
+    //sessionData.scenarios[scenInd]['stats'] = stats
+    //var toStore = JSON.stringify(sessionData)
+    //localStorage.setItem('sessionData', toStore)
+  
+    var scen = SessionStorage.currentTabScenario;
+    scen.stats = stats;
+    SessionStorage.storeScenario( scen );
+  },
+*/
+
   reductionStatsCalc: (scenario, coverage) => {
     var n = scenario['results'].length
     var T =
@@ -1350,21 +1402,24 @@ export var simControler = {
       minL: minL,
     }
   },
-  runScenario: function (paramsFromUI, tabIndex, simulatorCallback) {
-            console.log('runScenario:', paramsFromUI);
+  runScenario: function ( paramsFromUI, scenarioId, callbacks ) {
+    console.log('runScenario:', paramsFromUI, callbacks);
     this.params = { ...paramsFromUI }
+    /*
     ScenarioIndex.setIndex(tabIndex)
    // SessionData.createNewSession()
     // console.log(this);
-    /*     simControler.fixInput(false); */
+    //     simControler.fixInput(false);
 
     if (SessionData.ran(tabIndex)) {
       ScenarioIndex.setIndex(tabIndex)
     } else {
       //     this.runMapSimulation(tabIndex, simulatorCallback)
     }
-    this.runMapSimulation(tabIndex, simulatorCallback)
+    */
+    this.runMapSimulation( scenarioId, callbacks )
   },
+
   fixInput: (fix_input) => {
     var curScen = ScenarioIndex.getIndex()
     if (fix_input == null) {

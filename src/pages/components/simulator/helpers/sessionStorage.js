@@ -1,18 +1,135 @@
-import { Base64 } from 'js-base64';
+import { v4 as uuidv4 } from 'uuid';
 
 const STORAGE_KEY_SCENARIO_KEYS  = 'ntd.scenarioKeys';
-const STORAGE_KEY_SCENARIO_DATA = 'ntd.scenarioData:';
-//const STORAGE_KEY_SCENARIO_INDEX = 'ntd.scenarioIndex';
+const STORAGE_KEY_SCENARIO_DATA = 'ntd.scenarioData';
 
-const getKeyForLabel = ( label ) => {
-    return `${STORAGE_KEY_SCENARIO_DATA}${Base64.encode( label )}`;
+const getKeyForId = ( id ) => {
+    return `${STORAGE_KEY_SCENARIO_DATA}:${id}`;
 };
 
-const getLabelForKey = ( key ) => {
-  return Base64.decode( key.split( ':' )[ 1 ] );
+/*
+const getIdForKey = ( key ) => {
+  return key.split( ':' )[ 1 ];
+};
+*/
+
+const sessionStorage = {
+
+  get scenarioKeys() {
+    return JSON.parse( localStorage.getItem( STORAGE_KEY_SCENARIO_KEYS ) ) || []
+  },
+
+  set scenarioKeys( newKeys ) {
+    if( newKeys === [] ) {
+      localStorage.removeItem( STORAGE_KEY_SCENARIO_KEYS );
+      return;
+    }
+    localStorage.setItem( STORAGE_KEY_SCENARIO_KEYS, JSON.stringify( newKeys ) );
+  },
+
+  get scenarioCount() {
+    return this.scenarioKeys.length;
+  },
+
+  newScenario: function( label = null ) {
+
+    // REPLACEME
+    label = label ? label : new Date();
+    const id = uuidv4();
+
+    console.log( `SessionStorage creating new scenario ${id} / ${label}` );
+
+    const scenario = { id, label };
+
+    return this.storeScenario( scenario );
+  },
+
+  storeScenario: function ( scenario ) {
+
+    if( !scenario.id || typeof scenario.id === 'undefined' ) {
+      scenario.id = uuidv4();
+    }
+
+    const storageKey = getKeyForId( scenario.id );
+
+    console.log( `SessionStorage storing scenario ${scenario.id} "${scenario.label}" under key:`, storageKey );
+
+    try {
+      localStorage.setItem( storageKey, JSON.stringify( scenario ) );
+    }
+
+    catch( error ) {
+
+      if ( isQuotaExceeded( error ) ) {
+        throw new Error( 'SessionStorage.storeScenario: localStorage quota exceeded' );
+      }
+
+      console.error( error.message );
+      return;
+
+    }
+
+    let existingKeys = this.scenarioKeys;
+
+    let keyExists = existingKeys.reduce(
+      ( acc, { id, label } ) => {
+        return acc || ( id === scenario.id );
+      },
+      false
+    );
+
+    if ( !keyExists ) {
+      const newKeys = [
+        ...existingKeys,
+        { id: scenario.id , label: scenario.label }
+      ];
+      this.scenarioKeys = newKeys;
+    }
+
+    return scenario;
+
+  },
+
+  fetchScenario: function ( idToFetch ) {
+    const storageKey = getKeyForId( idToFetch );
+    console.log( `SessionStorage fetching scenario "${idToFetch}" via key:`, storageKey );
+    const result = JSON.parse( localStorage.getItem( storageKey ) );
+    if ( !result ) {
+      throw new Error( `SessionStorage couldn't find a scenario with id ${idToFetch}` );
+    }
+    return result;
+  },
+
+  fetchAllScenarios: function() {
+    return this.scenarioKeys.map(
+      ( { id, label } ) => {
+        return this.fetchScenario( id );
+      }
+    );
+  },
+
+  removeScenario: function( idToRemove ) {
+
+    const storageKey = getKeyForId( idToRemove );
+    console.log( `SessionStorage removing scenario for id ${idToRemove} under key ${storageKey}` );
+    localStorage.removeItem( storageKey );
+
+    let newKeys = [ ...this.scenarioKeys ].filter(
+      ( { id, label } ) => {
+        return id !== idToRemove;
+      }
+    );
+
+    console.log( 'newKeys', newKeys );
+
+    this.scenarioKeys = newKeys;
+
+    return;
+  },
+
 };
 
-// http://crocodillon.com/blog/always-catch-localstorage-security-and-quota-exceeded-errors
+// crocodillon.com/blog/always-catch-localstorage-security-and-quota-exceeded-errors
 const isQuotaExceeded = ( e ) => {
 
   var quotaExceeded = false;
@@ -49,130 +166,6 @@ const isQuotaExceeded = ( e ) => {
   }
 
   return quotaExceeded;
-}
-
-const sessionStorage = {
-
-  storeScenario: function ( scenario ) {
-
-    if( !scenario.label || typeof scenario.label === 'undefined' ) {
-      throw new Error( `Can't store scenario with no 'label' field:`, scenario );
-    }
-
-    const storageKey = getKeyForLabel( scenario.label );
-
-    console.log( `SessionStorage storing scenario "${scenario.label}" under key:`, storageKey );
-
-    try {
-      localStorage.setItem( storageKey, JSON.stringify( scenario ) );
-    }
-
-    catch( error ) {
-
-      if ( isQuotaExceeded( error ) ) {
-        throw new Error( 'localStorage quota exceeded' );
-      }
-
-      console.error( error.message );
-      return;
-
-    }
-
-    let existingKeys = this.scenarioKeys;
-
-    if ( !existingKeys.includes( storageKey ) ) {
-      existingKeys.push( storageKey );
-      this.scenarioKeys = existingKeys;
-    }
-
-    return;
-
-  },
-
-  fetchScenario: function ( label ) {
-    const storageKey = getKeyForLabel( label );
-    console.log( `SessionStorage fetching scenario "${label}" via key:`, storageKey );
-    const result = JSON.parse( localStorage.getItem( storageKey ) );
-    return result;
-  },
-
-  fetchScenarioAtIndex: function ( idx ) {
-
-    let existingKeys = this.scenarioKeys;
-
-    if( idx >= existingKeys.length ) {
-      throw new Error( `SessionStorage: can't remove scenario at index ${idx}` );
-    }
-
-    const label = getLabelForKey( existingKeys[ idx ] );
-    return this.fetchScenario( label );
-
-  },
-
-  fetchAllScenarios: function() {
-    const existingKeys = this.scenarioKeys;
-    return existingKeys.map(
-      ( k ) => {
-        const label = getLabelForKey( k );
-        return this.fetchScenario( label );
-      }
-    );
-  },
-
-  removeScenario: function( label ) {
-    const storageKey = getKeyForLabel( label );
-    console.log( `SessionStorage removing scenario for label ${label} under key ${storageKey}` );
-    localStorage.removeItem( storageKey );
-
-    let existingKeys = this.scenarioKeys;
-
-    const newKeys = existingKeys.filter(
-      ( k ) => { return k !== storageKey; }
-    );
-
-    this.scenarioKeys = newKeys;
-
-    return;
-  },
-
-  removeScenarioAtIndex: function( idx ) {
-
-    let existingKeys = this.scenarioKeys;
-
-    if( idx >= existingKeys.length ) {
-      throw new Error( `SessionStorage: can't remove scenario at index ${idx}` );
-    }
-
-    const label = getLabelForKey( existingKeys[ idx ] );
-    console.log( `SessionStorage: removing scenario for label: "${label}"` );
-    this.removeScenario( label );
-
-    return;
-  },
-
-  get scenarioKeys() {
-    return JSON.parse( localStorage.getItem( STORAGE_KEY_SCENARIO_KEYS ) ) || [];
-  },
-
-  set scenarioKeys( newKeys ) {
-    localStorage.setItem( STORAGE_KEY_SCENARIO_KEYS, JSON.stringify( newKeys ) );
-  },
-
-  get scenarioCount() {
-    return this.scenarioKeys.length;
-  },
-
-  get currentTabLabel() {
-    let existingKeys = this.scenarioKeys;
-    return existingKeys.length
-      ? getLabelForKey( existingKeys[ existingKeys.length - 1 ] )
-      : null;
-  },
-
-  get currentTabScenario() {
-    return this.fetchScenario( this.currentTabLabel );
-  }
-
 };
 
 export default sessionStorage;
