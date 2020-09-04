@@ -3,6 +3,7 @@ import { last, filter, forEach } from 'lodash'
 import {
   DISEASE_LIMF, DISEASE_TRACHOMA
 } from '../../../../constants'
+import SessionStorage from './sessionStorage';
 
 export const loadAllIUhistoricData = async (
   simParams,
@@ -25,7 +26,9 @@ export const loadAllIUhistoricData = async (
   // clear LS
   window.localStorage.removeItem('simParams')
  // window.localStorage.removeItem('scenarioIndex')
-  window.localStorage.removeItem('sessionData')
+ // window.localStorage.removeItem('sessionData')
+
+  SessionStorage.removeAllScenarios();
 
   //const doWeHaveData = simParams.IUData.id === implementationUnit
   //console.log('doWeHaveData ? ', doWeHaveData)

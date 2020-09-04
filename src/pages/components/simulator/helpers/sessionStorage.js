@@ -91,21 +91,27 @@ const sessionStorage = {
   },
 
   fetchScenario: function ( idToFetch ) {
+
     const storageKey = getKeyForId( idToFetch );
     console.log( `SessionStorage fetching scenario "${idToFetch}" via key:`, storageKey );
+
     const result = JSON.parse( localStorage.getItem( storageKey ) );
+
     if ( !result ) {
       throw new Error( `SessionStorage couldn't find a scenario with id ${idToFetch}` );
     }
+
     return result;
   },
 
   fetchAllScenarios: function() {
+
     return this.scenarioKeys.map(
       ( { id, label } ) => {
         return this.fetchScenario( id );
       }
     );
+
   },
 
   removeScenario: function( idToRemove ) {
@@ -120,12 +126,21 @@ const sessionStorage = {
       }
     );
 
-    console.log( 'newKeys', newKeys );
-
     this.scenarioKeys = newKeys;
 
     return;
   },
+
+  removeAllScenarios: function() {
+
+    console.log( `SessionStorage removing all scenarios` );
+
+    return this.scenarioKeys.map(
+      ( { id, label } ) => {
+        return this.removeScenario( id );
+      }
+    );
+  }
 
 };
 

@@ -340,7 +340,7 @@ const Simulator = (props) => {
   ) : null;
 
   return (
-    <div id="SimulatorLoader">
+    <div id="Simulator">
       <Layout>
 
       <HeadWithInputs title="prevalence simulator" />

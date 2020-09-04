@@ -292,19 +292,21 @@ const SimulatorLoader = ( props ) => {
   );
 
   return (
-    <Simulator
-        scenarioId={currentScenarioId}
-        scenarioData={currentScenarioData}
-        scenarioKeys={ntdScenarioKeys}
-        switchScenario={switchScenario}
-        removeScenario={removeScenario}
-        runNewScenario={runNewScenario}
-        runCurrentScenario={runCurrentScenario}
-        simInProgress={simInProgress}
-        setSimInProgress={setSimInProgress}
-        simulationProgress={simulationProgress}
-        setSimulationProgress={setSimulationProgress}
-      />
+    <div id="SimulatorLoader">
+      <Simulator
+          scenarioId={currentScenarioId}
+          scenarioData={currentScenarioData}
+          scenarioKeys={ntdScenarioKeys}
+          switchScenario={switchScenario}
+          removeScenario={removeScenario}
+          runNewScenario={runNewScenario}
+          runCurrentScenario={runCurrentScenario}
+          simInProgress={simInProgress}
+          setSimInProgress={setSimInProgress}
+          simulationProgress={simulationProgress}
+          setSimulationProgress={setSimulationProgress}
+        />
+    </div>
   );
 }
 
