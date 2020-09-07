@@ -1084,6 +1084,8 @@ export var simControler = {
   },
 
   runMapSimulation: function ( scenarioId, { progressCallback, resultCallback } ) {
+
+    console.log( "SIM PARAMS AT runMapSimulation:", params );
     //statFunctions.setInputParams({ nMDA: 60 })
     //max number of mda rounds even if doing it six monthly.
 
@@ -1177,6 +1179,11 @@ export var simControler = {
           mda2015: simControler.mdaObj2015,
           mdaFuture: simControler.mdaObjFuture,
         };
+
+        // has the label been updated in the UI?
+        if( params.inputs.scenarioLabels[ scenarioId ] ) {
+          newScenario.label = params.inputs.scenarioLabels[ scenarioId ];
+        }
 
         newScenario.stats = ( () => {
           var ts = [],

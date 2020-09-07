@@ -1,11 +1,9 @@
 // store.js
 import React, { createContext, useContext, useReducer } from 'react'
 
-import SessionStorage from '../pages/components/simulator/helpers/sessionStorage'
-
 const StoreContext = createContext()
 const initialState = {
-  scenarioLabels: [],
+  scenarioLabels: {},
   coverage: 90, // $("#MDACoverage").val(),
   mda: 2, // $("#inputMDARounds").val(),
   mdaSixMonths: 6, // $("input:radio[name=mdaSixMonths]:checked").val(),
@@ -49,9 +47,8 @@ const reducer = (simParams, action) => {
         needsRerun: action.payload,
       }
     case 'scenarioLabel':
-      let newLabels = [...simParams.scenarioLabels]
-//      newLabels[JSON.parse(window.localStorage.getItem('scenarioIndex')) || 0] =
-      newLabels[SessionStorage.currentScenarioIndex] =
+      let newLabels = {...simParams.scenarioLabels}
+      newLabels[action.scenarioId] =
         action.payload
       return {
         ...simParams,

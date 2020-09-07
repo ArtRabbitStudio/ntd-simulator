@@ -56,7 +56,7 @@ export const loadAllIUhistoricData = async (
   }
   const defaults = {
     ...defaultSimParams, // these ones are observed
-    scenarioLabels: [],
+    scenarioLabels: {},
     macrofilaricide: 65, // $("#Macrofilaricide").val(), - NOT CHANGED ANYWHERE
     microfilaricide: 65, // - NOT CHANGED ANYWHERE
     defaultParams: { ...defaultSimParams },

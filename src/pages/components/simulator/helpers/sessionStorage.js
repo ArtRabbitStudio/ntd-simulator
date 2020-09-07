@@ -34,7 +34,7 @@ const sessionStorage = {
   newScenario: function( label = null ) {
 
     // REPLACEME
-    label = label ? label : new Date();
+    label = label ? label : new Date().toISOString().split('T').join(' ').replace(/\.\d{3}Z/, '');
     const id = uuidv4();
 
     console.log( `SessionStorage creating new scenario ${id} / ${label}` );
@@ -71,20 +71,11 @@ const sessionStorage = {
 
     let existingKeys = this.scenarioKeys;
 
-    let keyExists = existingKeys.reduce(
-      ( acc, { id, label } ) => {
-        return acc || ( id === scenario.id );
-      },
-      false
-    );
-
-    if ( !keyExists ) {
-      const newKeys = [
-        ...existingKeys,
-        { id: scenario.id , label: scenario.label }
-      ];
-      this.scenarioKeys = newKeys;
-    }
+    const newKeys = [
+      ...existingKeys.filter( ( { id, label } ) => id !== scenario.id ),
+      { id: scenario.id , label: scenario.label }
+    ];
+    this.scenarioKeys = newKeys;
 
     return scenario;
 
