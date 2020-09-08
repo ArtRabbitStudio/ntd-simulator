@@ -1,5 +1,6 @@
 // store.js
 import React, { createContext, useContext, useReducer } from 'react'
+import SessionStorage from '../pages/components/simulator/helpers/sessionStorage';
 
 const StoreContext = createContext()
 const initialState = {
@@ -115,7 +116,6 @@ const reducer = (simParams, action) => {
         },
       }
     case 'tweakedBeenFiddledWith':
-      console.log(action.payload)
       let newBeenFiddledWith = [...simParams.tweakedPrediction.beenFiddledWith]
       newBeenFiddledWith[action.payload] = true
       return {
@@ -126,6 +126,7 @@ const reducer = (simParams, action) => {
         },
       }
     case 'resetScenario':
+      console.log( simParams );
       return {
         ...simParams,
         ...simParams.defaultParams,
@@ -287,9 +288,17 @@ const reducer = (simParams, action) => {
 export const StoreProvider = ({ children }) => {
   const [simParams, dispatchSimParams] = useReducer(reducer, initialState)
   return (
-    <StoreContext.Provider value={{ simParams, dispatchSimParams }}>
-      {children}
-    </StoreContext.Provider>
+    <React.Fragment>
+      <StoreContext.Provider value={{ simParams, dispatchSimParams }}>
+
+        <StoreContext.Consumer>
+          { value => { SessionStorage.simParams = value.simParams; } }
+        </StoreContext.Consumer>
+      
+        {children}
+
+      </StoreContext.Provider>
+    </React.Fragment>
   )
 }
 

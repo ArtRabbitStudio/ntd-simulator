@@ -66,7 +66,6 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const SelectCountry = ({ selectIU, showConfirmation }) => {
-  console.log( "SelectCountry render()" );
   const classes = useStyles()
   const history = useHistory()
   const matchSection = useRouteMatch('/:section')

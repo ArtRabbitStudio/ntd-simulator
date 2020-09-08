@@ -2,14 +2,11 @@ import {
   Box,
   Button,
   IconButton,
-  CircularProgress,
   Fab,
   FormControl,
   Grid,
   MenuItem,
   Select,
-  Tab,
-  Tabs,
   Typography,
 } from '@material-ui/core'
 import RotateLeftIcon from '@material-ui/icons/RotateLeft'
@@ -19,20 +16,10 @@ import PropTypes from 'prop-types'
 import React, { useEffect, useState } from 'react'
 import ScenarioGraph from '../components/ScenarioGraph'
 import { useUIState, useDataAPI } from '../hooks/stateHooks'
-import { Layout } from '../layout'
 import { useStore } from './../store/simulatorStore'
 import ChartSettings from './components/ChartSettings'
-import ConfirmationDialog from './components/ConfirmationDialog'
-import HeadWithInputs from './components/HeadWithInputs'
-import SelectCountry from './components/SelectCountry'
-import { removeInactiveMDArounds } from './components/simulator/helpers/removeInactiveMDArounds'
-import { detectChange } from './components/simulator/helpers/detectChange'
-import { obtainIUData } from './components/simulator/helpers/obtainIUData'
-import { trimMdaHistory } from './components/simulator/helpers/trimMdaHistory'
-import { combineFullMda } from './components/simulator/helpers/combineFullMda'
-import { shallIupdateTabLabel } from './components/simulator/helpers/shallIupdateTabLabel'
 import MdaRounds from './components/simulator/MdaRounds'
-import { generateMdaFuture } from './components/simulator/helpers/iuLoader'
+import { detectChange } from './components/simulator/helpers/detectChange'
 
 // settings
 import {
@@ -54,13 +41,6 @@ import TextContents from './components/TextContents'
 SimulatorEngine.simControler.documentReady()
 
 window.SessionStorage = SessionStorage;
-
-function a11yProps(index) {
-  return {
-    id: `simple-tab-${index}`,
-    'aria-controls': `simple-tabpanel-${index}`,
-  }
-}
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props
@@ -85,12 +65,7 @@ TabPanel.propTypes = {
   value: PropTypes.any.isRequired,
 }
 
-let renderCount = 0;
-
 const SimulatorDisplay = (props) => {
-
-  console.log( `SimulatorDisplay render() #${++renderCount}` );
-  console.log( props );
 
   const classes = useStyles();
 
@@ -102,9 +77,24 @@ const SimulatorDisplay = (props) => {
 
   // 2nd-arg empty array makes this a componentDidMount equivalent - only re-run if {nothing} changes
   useEffect(
+
     () => {
+      detectChange( simParams, dispatchSimParams );
     },
-    []
+
+    // eslint-disable-next-line
+    [
+      simParams.coverage,
+      simParams.mdaSixMonths,
+      simParams.covN,
+      simParams.mdaRegimen,
+      simParams.rho,
+      simParams.species,
+      simParams.runs,
+      simParams.tweakedPrediction,
+      simParams.defaultPrediction,
+    ]
+
   );
 
   const resetCurrentScenario = () => {
@@ -145,7 +135,7 @@ const SimulatorDisplay = (props) => {
 
                   <ChartSettings
                     title="Edit scenario"
-                    buttonText="Update Scenario"
+                    buttonText="Update Scenario in ChartSettings"
                     action={props.runCurrentScenario}
                   >
                     <TextContents>
@@ -231,7 +221,7 @@ const SimulatorDisplay = (props) => {
                     } /*  || scenarioInputs.length === 0 */
                     onClick={props.runCurrentScenario}
                   >
-                    UPDATE SCENARIO
+                    UPDATE SCENARIO IN DIV
                   </Button>{" "}
                   &nbsp;
                   <IconButton
@@ -263,12 +253,12 @@ const SimulatorDisplay = (props) => {
               />
             </div>
 
-            {props.scenarioMDAs[props.scenarioId] && simParams.tweakedPrediction && (
+            { props.scenarioMDAs[ props.scenarioId ] && simParams.tweakedPrediction && (
               <MdaRounds
-                history={props.scenarioMDAs[props.scenarioId]}
+                history={props.scenarioMDAs[ props.scenarioId ]}
                 future={simParams.tweakedPrediction}
               />
-            )}
+            ) }
 
             <Typography
               className={classes.scenarioGraphLegendInterventions}

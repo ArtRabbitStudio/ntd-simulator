@@ -1,5 +1,9 @@
 import { v4 as uuidv4 } from 'uuid';
 
+const STORAGE_KEY_SCENARIO_PARAMS  = {
+  DEFAULT: 'ntd.scenarioParams.default',
+  SCENARIO: 'ntd.scenarioParams.scenario'
+};
 const STORAGE_KEY_SCENARIO_KEYS  = 'ntd.scenarioKeys';
 const STORAGE_KEY_SCENARIO_DATA = 'ntd.scenarioData';
 
@@ -7,13 +11,11 @@ const getKeyForId = ( id ) => {
     return `${STORAGE_KEY_SCENARIO_DATA}:${id}`;
 };
 
-/*
-const getIdForKey = ( key ) => {
-  return key.split( ':' )[ 1 ];
-};
-*/
-
 const sessionStorage = {
+
+  set simParams( newSimParams ) {
+    localStorage.setItem( STORAGE_KEY_SCENARIO_PARAMS.DEFAULT, JSON.stringify( newSimParams ) );
+  },
 
   get scenarioKeys() {
     return JSON.parse( localStorage.getItem( STORAGE_KEY_SCENARIO_KEYS ) ) || []
@@ -31,9 +33,8 @@ const sessionStorage = {
     return this.scenarioKeys.length;
   },
 
-  newScenario: function( label = null ) {
+  createNewScenario: function( label = null ) {
 
-    // REPLACEME
     label = label ? label : new Date().toISOString().split('T').join(' ').replace(/\.\d{3}Z/, '');
     const id = uuidv4();
 

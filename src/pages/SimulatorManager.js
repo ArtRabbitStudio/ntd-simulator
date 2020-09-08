@@ -1,9 +1,10 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
 import { Box, CircularProgress, Grid, Tab, Tabs, Typography } from '@material-ui/core';
 import PropTypes from 'prop-types'
 
 import SessionStorage from './components/simulator/helpers/sessionStorage'
-import Simulator from './Simulator';
+import SimulatorDisplay from './SimulatorDisplay';
 import * as SimulatorEngine from './components/simulator/SimulatorEngine'
 import { useStore } from './../store/simulatorStore'
 import useStyles from './components/simulator/styles'
@@ -13,6 +14,7 @@ import SelectCountry from './components/SelectCountry'
 import ConfirmationDialog from './components/ConfirmationDialog'
 
 import { obtainIUData } from './components/simulator/helpers/obtainIUData'
+import { detectChange } from './components/simulator/helpers/detectChange'
 import { generateMdaFuture } from './components/simulator/helpers/iuLoader'
 import { combineFullMda } from './components/simulator/helpers/combineFullMda'
 import { removeInactiveMDArounds } from './components/simulator/helpers/removeInactiveMDArounds'
@@ -49,11 +51,8 @@ TabPanel.propTypes = {
   value: PropTypes.any.isRequired,
 };
 
-let renderCount = 0;
-
 const SimulatorManager = ( props ) => {
 
-  console.log( `SimulatorManager render() #${++renderCount}` );
 
   const [ ntdScenarioKeys, setNtdScenarioKeys ] = useState( [] );
   const [ currentScenarioId, setCurrentScenarioId ] = useState( null );
@@ -67,7 +66,6 @@ const SimulatorManager = ( props ) => {
     () => {
       const idx = ntdScenarioKeys.findIndex( ( { id, label } ) => id === currentScenarioId );
       const defaultIdx = idx < 0 ? 0 : idx;
-      console.log( `SimulatorManager setting defaultTabIndex ${defaultIdx}` );
       return defaultIdx;
     }
   )();
@@ -80,30 +78,60 @@ const SimulatorManager = ( props ) => {
 
   const classes = useStyles();
 
-  const runNewScenario = async () => {
-
-    renderCount = 0;
-
-    console.log( 'SimulatorManager running new scenario' );
-
-    if ( ntdScenarioKeys.length > 5 && !simInProgress ) {
-      alert('Sorry maximum number of Scenarios is 5.');
-      return;
-    }
+  const runScenario = ( isNewScenario ) => {
 
     if (!simInProgress) {
 
       setSimInProgress(true);
 
-      const IUData = obtainIUData(simParams, dispatchSimParams);
-      SimulatorEngine.simControler.iuParams = IUData.params;
+      dispatchSimParams( {
+        type: 'needsRerun',
+        payload: false,
+      } );
 
+      updateMDAAndIUData( isNewScenario );
+
+      if ( !isNewScenario ) {
+        if (
+          shallIupdateTabLabel(
+            simParams.specificPrediction,
+            simParams.scenarioLabels[ currentScenarioId ]
+          )
+        ) {
+          dispatchSimParams({
+            type: 'scenarioLabel',
+            scenarioId: currentScenarioId,
+            payload: simParams.specificPrediction.label,
+          })
+        }
+      }
+
+      SimulatorEngine.simControler.newScenario = isNewScenario;
+
+      console.log( `SimulatorManager calling SimulatorEngine.simControler.runScenario( ${currentScenarioId}, isNewScenario: ${isNewScenario} ) in runCurrentScenario` );
+
+      SimulatorEngine.simControler.runScenario(
+        simParams,
+        isNewScenario
+          ? null // "create a new ID"
+          : currentScenarioId, // "re-run the scenario with this ID"
+        { progressCallback, resultCallback }
+      );
+    }
+  };
+
+  const updateMDAAndIUData = ( isNewScenario ) => {
+
+      const IUData = obtainIUData( simParams, dispatchSimParams );
+      if ( isNewScenario ) {
+        SimulatorEngine.simControler.iuParams = IUData.params;
+      }
       const mdaHistory = IUData.mdaObj;
-      const generatedMda = generateMdaFuture(simParams);
+      const generatedMda = generateMdaFuture( simParams );
       const mdaPrediction =
-      simParams.specificPrediction !== null
-        ? { ...generatedMda, ...simParams.specificPrediction }
-        : generatedMda;
+        simParams.specificPrediction !== null
+          ? { ...generatedMda, ...simParams.specificPrediction }
+          : generatedMda;
       const fullMDA = combineFullMda( mdaHistory, mdaPrediction );
 
       dispatchSimParams( {
@@ -121,90 +149,42 @@ const SimulatorManager = ( props ) => {
       SimulatorEngine.simControler.mdaObj2015 = trimMdaHistory( mdaHistory );
       SimulatorEngine.simControler.mdaObjFuture = mdaPrediction;
       SimulatorEngine.simControler.iuParams = IUData.params;
+  };
 
-      console.log( 'runNewScenario: mdaObj', SimulatorEngine.simControler.mdaObj );
-      console.log( 'runNewScenario: iuParams', SimulatorEngine.simControler.iuParams );
+  const runNewScenario = async () => {
 
-      SimulatorEngine.simControler.newScenario = true;
-      // null 2nd parameter == 'no scenarioId' == 'create a new one'
-      SimulatorEngine.simControler.runScenario( simParams, null, { progressCallback, resultCallback } );
+    console.log( 'SimulatorManager running new scenario' );
+
+    if ( ntdScenarioKeys.length > 5 && !simInProgress ) {
+      alert('Sorry maximum number of Scenarios is 5.');
+      return;
     }
+
+    runScenario( true );
 
   };
 
   const runCurrentScenario = async () => {
 
-    if (!simInProgress) {
+    console.log( `SimulatorManager running current scenario ${currentScenarioId}` );
 
-      setSimInProgress(true);
+    runScenario( false );
 
-      const IUData = obtainIUData( simParams, dispatchSimParams );
-      const mdaHistory = IUData.mdaObj;
-      const generatedMda = generateMdaFuture( simParams );
-      const mdaPrediction =
-        simParams.specificPrediction !== null
-          ? { ...generatedMda, ...simParams.specificPrediction }
-          : generatedMda;
-      const fullMDA = combineFullMda(mdaHistory, mdaPrediction);
-
-      console.log( "simParams updated", simParams );
-
-      if (
-        shallIupdateTabLabel(
-          simParams.specificPrediction,
-          simParams.scenarioLabels[ currentScenarioId ]
-        )
-      ) {
-        dispatchSimParams({
-          type: 'scenarioLabel',
-          scenarioId: currentScenarioId,
-          payload: simParams.specificPrediction.label,
-        })
-      }
-
-      dispatchSimParams( {
-        type: 'defaultPrediction',
-        payload: mdaPrediction,
-      } );
-
-      dispatchSimParams( {
-        type: 'tweakedPrediction',
-        payload: mdaPrediction,
-      } );
-
-      SimulatorEngine.simControler.mdaObj = removeInactiveMDArounds( fullMDA );
-      SimulatorEngine.simControler.mdaObjUI = fullMDA;
-      SimulatorEngine.simControler.mdaObj2015 = trimMdaHistory( mdaHistory );
-      SimulatorEngine.simControler.mdaObjFuture = mdaPrediction;
-      SimulatorEngine.simControler.iuParams = IUData.params;
-
-      console.log( 'runCurrentScenario: mdaObj',SimulatorEngine.simControler.mdaObj );
-      console.log( 'runCurrentScenario: iuParams',SimulatorEngine.simControler.iuParams );
-
-      SimulatorEngine.simControler.newScenario = false;
-
-      SimulatorEngine.simControler.runScenario(
-        simParams,
-        currentScenarioId, // "re-run the scenario with this ID"
-        { progressCallback, resultCallback }
-      );
-    }
-  }
+  };
 
   const progressCallback = ( progress ) => {
-    console.log( `Simulator returned progress ${progress}` );
+//    console.log( `SimulatorEngine returned progress ${progress}` );
     setSimulationProgress( progress );
-
   };
 
   const resultCallback = ( newStoredScenario, isNewScenario ) => {
 
-    console.log( `Simulator returned result, stored in scenario id ${newStoredScenario.id}` );
+    console.log( `SimulatorEngine returned result, stored in scenario id ${newStoredScenario.id}` );
 
-    dispatchSimParams({
+    dispatchSimParams( {
       type: 'needsRerun',
       payload: false,
-    })
+    } );
 
     setSimInProgress( false );
 
@@ -218,24 +198,26 @@ const SimulatorManager = ( props ) => {
       console.info( `SimulatorManager received updated scenario ${newStoredScenario.id}` );
     }
 
-    // store MDAs & inputs in state for use in simulator, keyed by id
-    setScenarioMDAs( { ...scenarioMDAs, [ newStoredScenario.id ]: JSON.parse( JSON.stringify( newStoredScenario.mda2015 ) ) } );
-    setScenarioInputs( { ...scenarioInputs, [ newStoredScenario.id ]: JSON.parse( JSON.stringify( newStoredScenario.params.inputs ) ) } );
-
-    switchScenario( newStoredScenario.id );
     setNtdScenarioKeys( SessionStorage.scenarioKeys );
+    switchScenario( newStoredScenario.id );
 
   };
 
   const switchScenario = ( id ) => {
 
     try {
-      console.log( `SimulatorManager asked to switchScenario( ${id} ) from currentScenario ${currentScenarioId}` );
 
       const newScenarioData = SessionStorage.fetchScenario( id );
-      console.log( `SimulatorManager loaded newScenarioData for ${newScenarioData.id}` );
+
       setCurrentScenarioData( newScenarioData );
       setCurrentScenarioId( newScenarioData.id );
+
+      // store MDAs & inputs in state for use in simulator, keyed by id
+      console.log( `switchScenario setting MDAs & Inputs for ${newScenarioData.id}\n`, newScenarioData.mda2015, '\n', newScenarioData.params.inputs );
+      setScenarioMDAs( { ...scenarioMDAs, [ newScenarioData.id ]: JSON.parse( JSON.stringify( newScenarioData.mda2015 ) ) } );
+      setScenarioInputs( { ...scenarioInputs, [ newScenarioData.id ]: JSON.parse( JSON.stringify( newScenarioData.params.inputs ) ) } );
+
+      updateMDAAndIUData( false );
 
       console.log( `SimulatorManager switched scenario to ${newScenarioData.id}: "${newScenarioData.label}"` );
     }
@@ -260,15 +242,17 @@ const SimulatorManager = ( props ) => {
     }
   };
 
-  const removeScenario = ( id ) => {
+  const removeScenario = ( scenarioId ) => {
 
-    SessionStorage.removeScenario( id );
+//    const currentScenarioIndexInKeys = ntdScenarioKeys.findIndex( ( { id, label } ) => id === scenarioId );
+
+    SessionStorage.removeScenario( scenarioId );
     
     const stateScenarioMDAs = JSON.parse( JSON.stringify( scenarioMDAs ) );
     const stateScenarioInputs = JSON.parse( JSON.stringify( scenarioInputs ) );
 
-    delete stateScenarioMDAs[ id ];
-    delete stateScenarioInputs[ id ];
+    delete stateScenarioMDAs[ scenarioId ];
+    delete stateScenarioInputs[ scenarioId ];
 
     setScenarioMDAs( stateScenarioMDAs );
     setScenarioInputs( stateScenarioInputs );
@@ -277,7 +261,8 @@ const SimulatorManager = ( props ) => {
     setNtdScenarioKeys( scenarioKeys );
 
     if ( scenarioKeys.length ) {
-      const loadedScenarioData = SessionStorage.fetchScenario( scenarioKeys[ scenarioKeys.length - 1 ].id );
+      const lastScenarioKeyIdx = scenarioKeys.length -1;
+      const loadedScenarioData = SessionStorage.fetchScenario( scenarioKeys[ lastScenarioKeyIdx ].id );
       setCurrentScenarioData( loadedScenarioData );
       setCurrentScenarioId( loadedScenarioData.id );
     }
@@ -299,13 +284,58 @@ const SimulatorManager = ( props ) => {
     
   };
 
+  useEffect(
+    () => {
+      console.log( `currentScenarioId updated: ${currentScenarioId}`, scenarioInputs );
+      if ( typeof scenarioInputs[ currentScenarioId ] !== 'undefined' ) {
+        console.log( 'dispatchingSimParams', simParams );
+        dispatchSimParams({
+          type: 'everythingbuthistoric',
+          payload: {
+            ...scenarioInputs[ currentScenarioId ],
+            scenarioLabels: simParams.scenarioLabels,
+          },
+        })
+      }
+    },
+    [ currentScenarioId ]
+  );
+
+  useEffect(
+
+    () => {
+
+      console.log( `currentScenarioId changed to ${currentScenarioId}` );
+      const currentScenarioIndexInKeys = ntdScenarioKeys.findIndex( ( { id, label } ) => id === currentScenarioId );
+      if ( currentScenarioIndexInKeys !== -1 ) {
+        setTabIndex( currentScenarioIndexInKeys );
+      }
+
+    },
+
+    [ currentScenarioId ]
+  );
+
+  useEffect(
+    () => {
+      console.log( `scenarioMDAs changed to `, scenarioMDAs );
+    },
+    [ scenarioMDAs ]
+  );
+
+  useEffect(
+    () => {
+      console.log( `scenarioInputs changed to `, scenarioInputs );
+    },
+    [ scenarioInputs ]
+  );
+
   // 2nd-arg empty array makes this a componentDidMount equivalent - only re-run if {nothing} changes
   useEffect(
     () => {
 
       const scenarioKeys = SessionStorage.scenarioKeys; 
 
-      console.log( `SimulatorManager mount-time scenario load, setting scenarioKeys:`, scenarioKeys );
       setNtdScenarioKeys( scenarioKeys );
 
       if ( scenarioKeys.length === 0 ) {
@@ -314,24 +344,84 @@ const SimulatorManager = ( props ) => {
       }
 
       if( !currentScenarioId && scenarioKeys.length ) {
+        switchScenario( scenarioKeys[ 0 ].id );
+        /*
         try {
           const firstScenarioData = SessionStorage.fetchScenario( scenarioKeys[ 0 ].id );
 
-          console.log( `SimulatorManager setting currentScenarioData to ${scenarioKeys[ 0 ].label} (id ${scenarioKeys[ 0 ].id})` );
           setCurrentScenarioData( firstScenarioData );
-
-          console.log( `SimulatorManager setting currentScenarioKey to ${scenarioKeys[ 0 ].id}` );
           setCurrentScenarioId( scenarioKeys[ 0 ].id );
         }
         catch ( e ) {
         // TODO display error message somehow
         //  setScenarioLoadingError( e.message );
         }
+        */
       }
+
+/*
+      const scenariosArray = SessionStorage.fetchAllScenarios();
+
+      let paramsInputs = scenariosArray.map((item) => item.params.inputs)
+      let mdaFuture = scenariosArray.map((item) => item.mdaFuture)
+      let MDAs = scenariosArray.map((item) => item.mda2015)
+      // make new default prediction from ex tweaked one - the one from "mdaFuture".
+      let paramsInputsWithPrediction = paramsInputs.map((item, index) => ({
+        ...item,
+        defaultPrediction: {
+          time: [...mdaFuture[index].time],
+          coverage: [...mdaFuture[index].coverage],
+          adherence: [...mdaFuture[index].adherence],
+          bednets: [...mdaFuture[index].bednets],
+          regimen: [...mdaFuture[index].regimen],
+          active: [...mdaFuture[index].active],
+          beenFiddledWith: [...mdaFuture[index].beenFiddledWith],
+        },
+        tweakedPrediction: {
+          time: [...mdaFuture[index].time],
+          coverage: [...mdaFuture[index].coverage],
+          adherence: [...mdaFuture[index].adherence],
+          bednets: [...mdaFuture[index].bednets],
+          regimen: [...mdaFuture[index].regimen],
+          active: [...mdaFuture[index].active],
+          beenFiddledWith: [...mdaFuture[index].beenFiddledWith],
+        },
+      }))
+//      setScenarioInputs(paramsInputsWithPrediction)
+//      if (typeof paramsInputsWithPrediction[tabIndex] != 'undefined') {
+//        setScenarioMDAs(MDAs)
+//        //console.log(simParams)
+        console.log( "DISPATCHING everythingbuthistoric", paramsInputsWithPrediction );
+//        dispatchSimParams({
+//          type: 'everythingbuthistoric',
+//          payload: paramsInputsWithPrediction[tabIndex],
+//        })
+//      }
+*/
     } ,
-    // eslint-disable-next-line
+
     []
   );
+
+/*
+  useEffect(
+    () => {
+      detectChange(simParams, dispatchSimParams)
+    },
+
+    [
+      simParams.coverage,
+      simParams.mdaSixMonths,
+      simParams.covN,
+      simParams.mdaRegimen,
+      simParams.rho,
+      simParams.species,
+      simParams.runs,
+      simParams.tweakedPrediction,
+      simParams.defaultPrediction,
+    ]
+  );
+*/
 
   return (
     <div id="SimulatorManager">
@@ -388,7 +478,7 @@ const SimulatorManager = ( props ) => {
         value={tabIndex}
         index={tabIndex}
       >
-        <Simulator
+        <SimulatorDisplay
             scenarioId={currentScenarioId}
             scenarioData={currentScenarioData}
             scenarioKeys={ntdScenarioKeys}

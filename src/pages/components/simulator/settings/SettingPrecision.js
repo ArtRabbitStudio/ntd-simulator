@@ -24,6 +24,7 @@ const SettingPrecision = ({ inModal, label, classAdd }) => {
         max={200}
         onChange={(event, newValue) => {
           dispatchSimParams({ type: "runs", payload: newValue });
+          dispatchSimParams({ type: "needsRerun", payload: true });
         }}
         aria-labelledby="slider"
         valueLabelDisplay={inModal ? "auto" : "on"}

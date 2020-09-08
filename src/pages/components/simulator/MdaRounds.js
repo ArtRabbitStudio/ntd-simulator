@@ -37,7 +37,6 @@ const MdaRounds = (props) => {
   const [doseSettingsOpen, setDoseSettingsOpen] = useState(false)
 
   const setSimMDAcoverage = (array) => {
-    console.log('curMDARound', curMDARound)
     dispatchSimParams({ type: 'tweakedBeenFiddledWith', payload: curMDARound })
     dispatchSimParams({ type: 'tweakedCoverage', payload: array })
   }

@@ -21,7 +21,6 @@ const SettingSpecificScenario = ({ inModal, label, classAdd }) => {
   const { country, implementationUnit } = useUIState()
   const handleChange = (event) => {
     const par = event.target.value
-    console.log(par)
     dispatchSimParams({
       type: 'specificPredictionIndex',
       payload: par,
