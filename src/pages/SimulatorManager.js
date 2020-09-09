@@ -81,11 +81,6 @@ const SimulatorManager = ( props ) => {
 
       setSimInProgress(true);
 
-      dispatchSimState( {
-        type: 'needsRerun',
-        payload: false,
-      } );
-
       updateMDAAndIUData( isNewScenario );
 
       SimulatorEngine.simControler.newScenario = isNewScenario;
@@ -173,10 +168,7 @@ const SimulatorManager = ( props ) => {
 
     console.log( `SimulatorEngine returned result, stored in scenario id ${resultScenario.id}` );
 
-    dispatchSimState( {
-      type: 'needsRerun',
-      payload: false,
-    } );
+    delete resultScenario.isDirty;
 
     setSimInProgress( false );
 

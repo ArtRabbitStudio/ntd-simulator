@@ -38,7 +38,6 @@ const SettingPrecision = ({ inModal, label, classAdd }) => {
             id: scenarioState.currentScenarioId
           } );
 
-          dispatchSimState({ type: "needsRerun", payload: true });
         }}
         aria-labelledby="slider"
         valueLabelDisplay={inModal ? "auto" : "on"}
