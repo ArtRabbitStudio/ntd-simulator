@@ -1,7 +1,8 @@
 import React from 'react'
 import useStyles from '../styles'
 
-import { useStore } from '../../../../store/simulatorStore'
+import { useSimulatorStore } from '../../../../store/simulatorStore'
+import { useScenarioStore, ScenarioStoreConstants } from "../../../../store/scenarioStore";
 
 import { FormControl, Slider, FormLabel, Tooltip } from '@material-ui/core'
 
@@ -13,11 +14,25 @@ const SettingSystematicAdherence = ({
   onChange,
 }) => {
   const classes = useStyles()
-  const { simParams, dispatchSimParams } = useStore()
+  const { dispatchSimState } = useSimulatorStore()
+  const { scenarioState, dispatchScenarioStateUpdate } = useScenarioStore();
 
+  const isPerIUSetting = value !== null && typeof value !== 'undefined';
+
+  /* TODO FIXME */
   const handleChange = (event, newValue) => {
-    // this used to be a special occastion. If nothing changes we can use the handleSlerChanges handler instead.
-    dispatchSimParams({ type: 'rho', payload: newValue })
+    if ( isPerIUSetting ) {
+      // this used to be a special occastion. If nothing changes we can use the handleSlerChanges handler instead.
+      dispatchSimState({ type: 'rho', payload: newValue })
+    }
+    else {
+      dispatchScenarioStateUpdate( {
+        type: ScenarioStoreConstants.ACTION_TYPES.UPDATE_SCENARIO_SETTING_BY_ID,
+        id: scenarioState.currentScenarioId,
+        key: 'rho',
+        value: newValue
+      } );
+    }
   }
   return (
     <FormControl fullWidth className={`${classes.formControl} ${classAdd}`}>
@@ -38,7 +53,7 @@ const SettingSystematicAdherence = ({
         </FormLabel>
       </Tooltip>
       <Slider
-        value={value ? value : simParams.rho}
+        value={ isPerIUSetting ? value : scenarioState.scenarioData[ scenarioState.currentScenarioId ].settings.rho}
         min={0}
         step={0.1}
         max={1}

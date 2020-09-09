@@ -1,7 +1,8 @@
 import React from 'react';
 import useStyles from "../styles";
 
-import { useStore } from "../../../../store/simulatorStore";
+import { useSimulatorStore } from "../../../../store/simulatorStore";
+import { useScenarioStore, ScenarioStoreConstants } from "../../../../store/scenarioStore";
 
 import {
   FormControl,
@@ -12,12 +13,15 @@ import {
   Tooltip
 } from "@material-ui/core";
 
-const SettingMosquitoType = ({ inModal, label }) => {
+const SettingMosquitoType = ({ inModal, value, label }) => {
 
   const classes = useStyles();
-  const { simParams, dispatchSimParams } = useStore();
+  const { dispatchSimState } = useSimulatorStore();
+  const { scenarioState, dispatchScenarioStateUpdate } = useScenarioStore();
 
+  const isPerIUSetting = value !== null && typeof value !== 'undefined';
 
+  /* TODO FIXME */
 
   return (
     <FormControl fullWidth className={classes.formControlSelect}>
@@ -40,12 +44,22 @@ const SettingMosquitoType = ({ inModal, label }) => {
         row
         aria-label="Species"
         name="species"
-        value={simParams.species}
+        value={ isPerIUSetting ? value : scenarioState.scenarioData[ scenarioState.currentScenarioId ].settings.species}
         onChange={(event) => {
-          dispatchSimParams({
-            type: "species",
-            payload: Number(event.target.value),
-          });
+          if ( isPerIUSetting ) {
+            dispatchSimState({
+              type: "species",
+              payload: Number(event.target.value),
+            });
+          }
+          else {
+            dispatchScenarioStateUpdate( {
+              type: ScenarioStoreConstants.ACTION_TYPES.UPDATE_SCENARIO_SETTING_BY_ID,
+              id: scenarioState.currentScenarioId,
+              key: 'species',
+              value: Number(event.target.value),
+            } );
+          }
         }}
       >
         <FormControlLabel

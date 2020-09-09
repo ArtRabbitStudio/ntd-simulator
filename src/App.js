@@ -13,7 +13,8 @@ import About from "./pages/About";
 import PrivacyCookies from "./pages/PrivacyCookies";
 
 // index.js
-import { StoreProvider } from "./store/simulatorStore";
+import { SimulatorStoreProvider } from "./store/simulatorStore";
+import { ScenarioStoreProvider } from "./store/scenarioStore";
 
 //import 'typeface-roboto'
 //import 'typeface-libre-franklin'
@@ -228,24 +229,26 @@ function App() {
   return (
     <CssBaseline>
       <ThemeProvider theme={theme}>
-        <StoreProvider>
-          <ScrollToTop>
-            <Switch>
-              <Route exact path="/" component={Home} />
-              <Route exact path="/country/:country" component={Country} />
-              <Route exact path="/setup/:country/:iu" component={Setup} />
-              <Route exact path="/data-and-methodolgy" component={DataMethodolgy} />
-              <Route exact path="/about" component={About} />
-              <Route exact path="/privacy-cookies" component={PrivacyCookies} />
-              <Route
-                exact
-                path="/simulator/:country?/:iu?"
-                component={SimulatorManager}
-              />
-              <Route exact path="**" component={Page} />
-            </Switch>
-          </ScrollToTop>
-        </StoreProvider>
+        <ScenarioStoreProvider>
+          <SimulatorStoreProvider>
+            <ScrollToTop>
+              <Switch>
+                <Route exact path="/" component={Home} />
+                <Route exact path="/country/:country" component={Country} />
+                <Route exact path="/setup/:country/:iu" component={Setup} />
+                <Route exact path="/data-and-methodolgy" component={DataMethodolgy} />
+                <Route exact path="/about" component={About} />
+                <Route exact path="/privacy-cookies" component={PrivacyCookies} />
+                <Route
+                  exact
+                  path="/simulator/:country?/:iu?"
+                  component={SimulatorManager}
+                />
+                <Route exact path="**" component={Page} />
+              </Switch>
+            </ScrollToTop>
+          </SimulatorStoreProvider>
+        </ScenarioStoreProvider>
       </ThemeProvider>
     </CssBaseline>
   );

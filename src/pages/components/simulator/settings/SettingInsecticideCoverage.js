@@ -1,7 +1,8 @@
 import React from 'react';
 import useStyles from "../styles";
 
-import { useStore } from "../../../../store/simulatorStore";
+import { useSimulatorStore } from "../../../../store/simulatorStore";
+import { useScenarioStore, ScenarioStoreConstants } from "../../../../store/scenarioStore";
 
 import {
   FormControl,
@@ -10,10 +11,13 @@ import {
   Tooltip
 } from "@material-ui/core";
 
-const SettingInsecticideCoverage = ({ inModal, label, classAdd }) => {
+const SettingInsecticideCoverage = ({ inModal, label, value, classAdd }) => {
 
   const classes = useStyles();
-  const { simParams, dispatchSimParams } = useStore();
+  const { dispatchSimState } = useSimulatorStore();
+  const { scenarioState, dispatchScenarioStateUpdate } = useScenarioStore();
+
+  const isPerIUSetting = value !== null && typeof value !== 'undefined';
 
   return (
     <FormControl fullWidth className={`${classes.formControl} ${classAdd}`}>
@@ -34,13 +38,26 @@ const SettingInsecticideCoverage = ({ inModal, label, classAdd }) => {
       </FormLabel>
       </Tooltip>
       <Slider
-        value={simParams.v_to_hR}
+        value={ isPerIUSetting ? value : scenarioState.scenarioData[ scenarioState.currentScenarioId ].settings.v_to_hR }
         id="v_to_hR"
         min={0}
         step={1}
         max={100}
         onChange={(event, newValue) => {
-          dispatchSimParams({ type: "v_to_hR", payload: newValue });
+
+          if( isPerIUSetting ) {
+            dispatchSimState({ type: "v_to_hR", payload: newValue });
+          }
+
+          else {
+            dispatchScenarioStateUpdate( {
+              type: ScenarioStoreConstants.ACTION_TYPES.UPDATE_SCENARIO_SETTING_BY_ID,
+              id: scenarioState.currentScenarioId,
+              key: 'v_to_hR',
+              value: newValue
+            } );
+          }
+
         }}
         aria-labelledby="slider"
         marks={[

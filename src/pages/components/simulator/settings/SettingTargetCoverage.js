@@ -1,7 +1,8 @@
 import React from 'react'
 import useStyles from '../styles'
 
-import { useStore } from '../../../../store/simulatorStore'
+import { useSimulatorStore } from '../../../../store/simulatorStore'
+import { useScenarioStore, ScenarioStoreConstants } from "../../../../store/scenarioStore";
 
 import { FormControl, Slider, FormLabel, Tooltip } from '@material-ui/core'
 
@@ -13,11 +14,25 @@ const SettingTargetCoverage = ({
   onChange
 }) => {
   const classes = useStyles()
-  const { simParams, dispatchSimParams } = useStore()
+  const { dispatchSimState } = useSimulatorStore()
+  const { scenarioState, dispatchScenarioStateUpdate } = useScenarioStore();
 
+  const isPerIUSetting = value !== null && typeof value !== 'undefined';
+
+  /* TODO FIXME */
   const handleChange = (event, newValue) => {
     // this used to be a special occastion. If nothing changes we can use the handleSlerChanges handler instead.
-    dispatchSimParams({ type: 'coverage', payload: newValue })
+    if ( isPerIUSetting ) {
+      dispatchSimState({ type: 'coverage', payload: newValue })
+    }
+    else {
+      dispatchScenarioStateUpdate( {
+        type: ScenarioStoreConstants.ACTION_TYPES.UPDATE_SCENARIO_SETTING_BY_ID,
+        id: scenarioState.currentScenarioId,
+        key: 'coverage',
+        value: newValue
+      } );
+    }
   }
 
   return (
@@ -39,7 +54,7 @@ const SettingTargetCoverage = ({
       </FormLabel>
       </Tooltip>
       <Slider
-        value={value ? value : simParams.coverage}
+        value={ isPerIUSetting ? value : scenarioState.scenarioData[ scenarioState.currentScenarioId ].settings.coverage}
         min={0}
         step={1}
         max={100}

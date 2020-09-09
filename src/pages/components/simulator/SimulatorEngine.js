@@ -1,5 +1,6 @@
 import { Random } from './helpers/sim'
 import { subtract } from 'mathjs'
+import { v4 as uuidv4 } from 'uuid';
 import SessionStorage from './helpers/sessionStorage';
 
 export var s = new Random();
@@ -984,9 +985,9 @@ export var simControler = {
     else return (values[half - 1] + values[half]) / 2.0
   },
 
-  runMapSimulation: function ( scenarioId, { progressCallback, resultCallback } ) {
+  runMapSimulation: function ( existingScenario, { progressCallback, resultCallback } ) {
 
-    console.log( `SIM PARAMS AT runMapSimulation for scenarioId ${scenarioId}:`, params );
+    console.log( `SIM PARAMS AT runMapSimulation for scenarioId ${ existingScenario ? existingScenario.id : null }:`, params );
     //statFunctions.setInputParams({ nMDA: 60 })
     //max number of mda rounds even if doing it six monthly.
 
@@ -1071,8 +1072,19 @@ export var simControler = {
 
         clearInterval(progress)
 
+        const createNewScenario = ( label = null ) => {
+
+          label = label ? label : new Date().toISOString().split('T').join(' ').replace(/\.\d{3}Z/, '');
+          const id = uuidv4();
+
+          console.log( `SimulatorEngine creating new scenario ${id} / ${label}` );
+
+          return { id, label };
+
+        };
+
         const newScenario = {
-          ...( scenarioId ? SessionStorage.fetchScenario( scenarioId ) : SessionStorage.createNewScenario() ),
+          ...( existingScenario ? existingScenario : createNewScenario() ),
           params: params,
           results: runs,
           mda: simControler.mdaObj,
@@ -1081,11 +1093,41 @@ export var simControler = {
           mdaFuture: simControler.mdaObjFuture,
         };
 
-        console.log( "SimulatorEngine mda2015", newScenario.mda2015 );
+        // copy default per-IU settings into new per-scenario-object settings
+        if( !existingScenario || !newScenario.settings ) {
+
+          newScenario.settings = {
+
+            coverage: this.params.coverage,
+            mda: this.params.mda,
+            mdaSixMonths: this.params.mdaSixMonths,
+            endemicity: this.params.endemicity,
+            covN: this.params.covN,
+            v_to_hR: this.params.v_to_hR,
+            vecCap: this.params.vecCap,
+            vecComp: this.params.vecComp,
+            vecD: this.params.vecD,
+            mdaRegimen: this.params.mdaRegimen,
+            rho: this.params.rho,
+            rhoBComp: this.params.rhoBComp,
+            rhoCN: this.params.rhoCN,
+            species: this.params.species,
+            runs: this.params.runs,
+            specificPrediction: this.params.specificPrediction,
+            specificPredictionIndex: this.params.specificPredictionIndex
+
+          };
+
+          // inherit a specific-prediction label from per-IU settings
+          if ( newScenario.settings.specificPredictionIndex > -1 && newScenario.settings.specificPrediction ) {
+            newScenario.label = newScenario.settings.specificPrediction.label;
+          }
+
+        }
 
         // has the label been updated in the UI?
-        if( params.inputs.scenarioLabels[ scenarioId ] ) {
-          newScenario.label = params.inputs.scenarioLabels[ scenarioId ];
+        if( existingScenario && params.inputs.scenarioLabels[ existingScenario.id ] ) {
+          newScenario.label = params.inputs.scenarioLabels[ existingScenario.id ];
         }
 
         newScenario.stats = ( () => {
@@ -1116,7 +1158,6 @@ export var simControler = {
           };
         } )();
 
-        SessionStorage.storeScenario( newScenario );
         resultCallback( newScenario, simControler.newScenario );
 
       }
@@ -1196,10 +1237,10 @@ export var simControler = {
       minL: minL,
     }
   },
-  runScenario: function ( paramsFromUI, scenarioId, callbacks ) {
+  runScenario: function ( paramsFromUI, existingScenario, callbacks ) {
     console.log('runScenario:', paramsFromUI, callbacks);
     this.params = { ...paramsFromUI }
-    this.runMapSimulation( scenarioId, callbacks )
+    this.runMapSimulation( existingScenario, callbacks )
   },
 
   fixInput: (fix_input) => {

@@ -2,8 +2,33 @@
 import React, { createContext, useContext, useReducer } from 'react'
 import SessionStorage from '../pages/components/simulator/helpers/sessionStorage';
 
-const StoreContext = createContext()
+const SimulatorStoreContext = createContext()
 const initialState = {
+
+/*
+ * These are per-scenario and are injected in src/pages/components/simulator/helpers/iuLoader.js
+ * via dispatchSimState( type: 'everything', defaults )
+ *
+ *	covN: 0
+ *	coverage: 65
+ *	endemicity: 10
+ *	macrofilaricide: 65
+ *	mda: 1
+ *	mdaRegimen: "xIA"
+ *	mdaSixMonths: 12
+ *	microfilaricide: 65
+ *	rho: 0.35
+ *	rhoBComp: 0
+ *	rhoCN: 0
+ *	runs: 10
+ *	scenarioLabels: {}
+ *	species: 0
+ *	v_to_hR: 0
+ *	vecCap: 0
+ *	vecComp: 0
+ *	vecD: 0
+*/
+
   scenarioLabels: {},
   coverage: 90, // $("#MDACoverage").val(),
   mda: 2, // $("#inputMDARounds").val(),
@@ -35,249 +60,249 @@ const initialState = {
   needsRerun: false,
 }
 
-const reducer = (simParams, action) => {
+const reducer = (simState, action) => {
   switch (action.type) {
     case 'everything':
       return {
-        ...simParams,
+        ...simState,
         ...action.payload,
       }
     case 'needsRerun':
       return {
-        ...simParams,
+        ...simState,
         needsRerun: action.payload,
       }
     case 'scenarioLabel':
-      let newLabels = {...simParams.scenarioLabels}
+      let newLabels = {...simState.scenarioLabels}
       newLabels[action.scenarioId] =
         action.payload
       return {
-        ...simParams,
+        ...simState,
         scenarioLabels: newLabels,
       }
     case 'specificPrediction':
       return {
-        ...simParams,
+        ...simState,
         specificPrediction: action.payload,
       }
     case 'specificPredictionIndex':
       return {
-        ...simParams,
+        ...simState,
         specificPredictionIndex: action.payload,
       }
     case 'defaultPrediction':
       return {
-        ...simParams,
+        ...simState,
         defaultPrediction: action.payload,
       }
     case 'tweakedPrediction':
       return {
-        ...simParams,
+        ...simState,
         tweakedPrediction: action.payload,
       }
     case 'tweakedCoverage':
       return {
-        ...simParams,
+        ...simState,
         tweakedPrediction: {
-          ...simParams.tweakedPrediction,
+          ...simState.tweakedPrediction,
           coverage: action.payload,
         },
       }
     case 'tweakedAdherence':
       return {
-        ...simParams,
+        ...simState,
         tweakedPrediction: {
-          ...simParams.tweakedPrediction,
+          ...simState.tweakedPrediction,
           adherence: action.payload,
         },
       }
     case 'tweakedBednets':
       return {
-        ...simParams,
+        ...simState,
         tweakedPrediction: {
-          ...simParams.tweakedPrediction,
+          ...simState.tweakedPrediction,
           bednets: action.payload,
         },
       }
     case 'tweakedRegimen':
       return {
-        ...simParams,
+        ...simState,
         tweakedPrediction: {
-          ...simParams.tweakedPrediction,
+          ...simState.tweakedPrediction,
           regimen: action.payload,
         },
       }
     case 'tweakedActive':
       return {
-        ...simParams,
+        ...simState,
         tweakedPrediction: {
-          ...simParams.tweakedPrediction,
+          ...simState.tweakedPrediction,
           active: action.payload,
         },
       }
     case 'tweakedBeenFiddledWith':
-      let newBeenFiddledWith = [...simParams.tweakedPrediction.beenFiddledWith]
+      let newBeenFiddledWith = [...simState.tweakedPrediction.beenFiddledWith]
       newBeenFiddledWith[action.payload] = true
       return {
-        ...simParams,
+        ...simState,
         tweakedPrediction: {
-          ...simParams.tweakedPrediction,
+          ...simState.tweakedPrediction,
           beenFiddledWith: [...newBeenFiddledWith],
         },
       }
     case 'resetScenario':
-      console.log( simParams );
+      console.log( simState );
       return {
-        ...simParams,
-        ...simParams.defaultParams,
+        ...simState,
+        ...simState.defaultParams,
         tweakedPrediction: {
-          time: [...simParams.defaultPrediction.time],
-          coverage: [...simParams.defaultPrediction.coverage],
-          adherence: [...simParams.defaultPrediction.adherence],
-          bednets: [...simParams.defaultPrediction.bednets],
-          regimen: [...simParams.defaultPrediction.regimen],
-          active: [...simParams.defaultPrediction.active],
-          beenFiddledWith: [...simParams.defaultPrediction.beenFiddledWith],
+          time: [...simState.defaultPrediction.time],
+          coverage: [...simState.defaultPrediction.coverage],
+          adherence: [...simState.defaultPrediction.adherence],
+          bednets: [...simState.defaultPrediction.bednets],
+          regimen: [...simState.defaultPrediction.regimen],
+          active: [...simState.defaultPrediction.active],
+          beenFiddledWith: [...simState.defaultPrediction.beenFiddledWith],
         },
         needsRerun: false,
       }
     case 'everythingbuthistoric':
-      let newIUDataall = { ...simParams.IUData }
+      let newIUDataall = { ...simState.IUData }
       return {
-        ...simParams,
+        ...simState,
         ...action.payload,
         IUData: newIUDataall,
       }
     case 'IUData':
       return {
-        ...simParams,
+        ...simState,
         IUData: action.payload,
       }
     /*     case 'IUid':
-      let newIUData = { ...simParams.IUData }
+      let newIUData = { ...simState.IUData }
       newIUData.id = action.payload
       return {
-        ...simParams,
+        ...simState,
         IUData: newIUData,
       } */
     case 'mdaObj':
-      let newIUDatamda = { ...simParams.IUData }
+      let newIUDatamda = { ...simState.IUData }
       newIUDatamda.mdaObj = action.payload
       return {
-        ...simParams,
+        ...simState,
         IUData: newIUDatamda,
       }
     case 'params':
-      let newIUDataparams = { ...simParams.IUData }
+      let newIUDataparams = { ...simState.IUData }
       newIUDataparams.params = action.payload
       return {
-        ...simParams,
+        ...simState,
         IUData: newIUDataparams,
       }
     case 'coverage':
       return {
-        ...simParams,
+        ...simState,
         coverage: action.payload,
-        defaultParams: { ...simParams.defaultParams, coverage: action.payload },
+        defaultParams: { ...simState.defaultParams, coverage: action.payload },
       }
     case 'adherence':
       return {
-        ...simParams,
+        ...simState,
         adherence: action.payload,
         defaultParams: {
-          ...simParams.defaultParams,
+          ...simState.defaultParams,
           adherence: action.payload,
         },
       }
     case 'mda':
       return {
-        ...simParams,
+        ...simState,
         mda: action.payload,
       }
     case 'mdaSixMonths':
       return {
-        ...simParams,
+        ...simState,
         mdaSixMonths: action.payload,
         defaultParams: {
-          ...simParams.defaultParams,
+          ...simState.defaultParams,
           mdaSixMonths: action.payload,
         },
       }
     case 'endemicity':
       return {
-        ...simParams,
+        ...simState,
         endemicity: action.payload,
       }
     case 'covN':
       return {
-        ...simParams,
+        ...simState,
         covN: action.payload,
-        defaultParams: { ...simParams.defaultParams, covN: action.payload },
+        defaultParams: { ...simState.defaultParams, covN: action.payload },
       }
     case 'v_to_hR':
       return {
-        ...simParams,
+        ...simState,
         v_to_hR: action.payload,
       }
     case 'vecCap':
       return {
-        ...simParams,
+        ...simState,
         vecCap: action.payload,
       }
     case 'vecComp':
       return {
-        ...simParams,
+        ...simState,
         vecComp: action.payload,
       }
     case 'vecD':
       return {
-        ...simParams,
+        ...simState,
         vecD: action.payload,
       }
     case 'mdaRegimen':
       return {
-        ...simParams,
+        ...simState,
         mdaRegimen: action.payload,
         defaultParams: {
-          ...simParams.defaultParams,
+          ...simState.defaultParams,
           mdaRegimen: action.payload,
         },
       }
     case 'rho':
       return {
-        ...simParams,
+        ...simState,
         rho: action.payload,
-        defaultParams: { ...simParams.defaultParams, rho: action.payload },
+        defaultParams: { ...simState.defaultParams, rho: action.payload },
       }
     case 'rhoBComp':
       return {
-        ...simParams,
+        ...simState,
         rhoBComp: action.payload,
       }
     case 'rhoCN':
       return {
-        ...simParams,
+        ...simState,
         rhoCN: action.payload,
       }
     case 'species':
       return {
-        ...simParams,
+        ...simState,
         species: action.payload,
-        defaultParams: { ...simParams.defaultParams, species: action.payload },
+        defaultParams: { ...simState.defaultParams, species: action.payload },
       }
     case 'macrofilaricide':
       return {
-        ...simParams,
+        ...simState,
         macrofilaricide: action.payload,
       }
     case 'microfilaricide':
       return {
-        ...simParams,
+        ...simState,
         microfilaricide: action.payload,
       }
     case 'runs':
       return {
-        ...simParams,
+        ...simState,
         runs: action.payload,
       }
     default:
@@ -285,21 +310,21 @@ const reducer = (simParams, action) => {
   }
 }
 
-export const StoreProvider = ({ children }) => {
-  const [simParams, dispatchSimParams] = useReducer(reducer, initialState)
+export const SimulatorStoreProvider = ({ children }) => {
+  const [simState, dispatchSimState] = useReducer(reducer, initialState)
   return (
     <React.Fragment>
-      <StoreContext.Provider value={{ simParams, dispatchSimParams }}>
+      <SimulatorStoreContext.Provider value={{ simState, dispatchSimState }}>
 
-        <StoreContext.Consumer>
-          { value => { SessionStorage.simParams = value.simParams; } }
-        </StoreContext.Consumer>
+        <SimulatorStoreContext.Consumer>
+          { value => { SessionStorage.simState = value.simState; } }
+        </SimulatorStoreContext.Consumer>
       
         {children}
 
-      </StoreContext.Provider>
+      </SimulatorStoreContext.Provider>
     </React.Fragment>
   )
 }
 
-export const useStore = () => useContext(StoreContext)
+export const useSimulatorStore = () => useContext(SimulatorStoreContext)

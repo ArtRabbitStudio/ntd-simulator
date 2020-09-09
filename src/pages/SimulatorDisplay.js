@@ -16,10 +16,11 @@ import PropTypes from 'prop-types'
 import React, { useEffect, useState } from 'react'
 import ScenarioGraph from '../components/ScenarioGraph'
 import { useUIState, useDataAPI } from '../hooks/stateHooks'
-import { useStore } from './../store/simulatorStore'
+import { useSimulatorStore } from './../store/simulatorStore'
+import { useScenarioStore } from './../store/scenarioStore'
 import ChartSettings from './components/ChartSettings'
 import MdaRounds from './components/simulator/MdaRounds'
-import { detectChange } from './components/simulator/helpers/detectChange'
+//import { detectChange } from './components/simulator/helpers/detectChange'
 
 // settings
 import {
@@ -71,7 +72,9 @@ const SimulatorDisplay = (props) => {
 
   const [ graphMetric, setGraphMetric ] = useState( 'Ms' )
 
-  const { simParams, dispatchSimParams } = useStore();
+  const { simState, dispatchSimState } = useSimulatorStore();
+  const { scenarioState, /*dispatchScenarioStateUpdate*/ } = useScenarioStore();
+
   const { implementationUnit } = useUIState();
   const { selectedIUData } = useDataAPI();
 
@@ -79,30 +82,34 @@ const SimulatorDisplay = (props) => {
   useEffect(
 
     () => {
-      detectChange( simParams, dispatchSimParams );
+     // detectChange( simState, dispatchSimState );
     },
 
     // eslint-disable-next-line
     [
-      simParams.coverage,
-      simParams.mdaSixMonths,
-      simParams.covN,
-      simParams.mdaRegimen,
-      simParams.rho,
-      simParams.species,
-      simParams.runs,
-      simParams.tweakedPrediction,
-      simParams.defaultPrediction,
+      simState.coverage,
+      simState.mdaSixMonths,
+      simState.covN,
+      simState.mdaRegimen,
+      simState.rho,
+      simState.species,
+      simState.runs,
+      simState.tweakedPrediction,
+      simState.defaultPrediction,
     ]
 
   );
 
   const resetCurrentScenario = () => {
-    dispatchSimParams({
+    dispatchSimState({
       type: 'resetScenario',
     })
   }
-  const scenarioDisplay = props.scenarioData ? (
+
+  const scenarioId = scenarioState.currentScenarioId;
+  const scenarioData = scenarioState.scenarioData[ scenarioId ];
+
+  const scenarioDisplay = scenarioData ? (
         <div className={classes.simulatorBody}>
           <div className={classes.simulatorInnerBody}>
             <Grid container spacing={0}>
@@ -112,7 +119,7 @@ const SimulatorDisplay = (props) => {
                   variant="h3"
                   component="h2"
                 >
-                  {props.scenarioData.label}
+                  {scenarioData.label}
                 </Typography>
                 <SettingPrecision
                   classAdd={classes.precision}
@@ -136,6 +143,8 @@ const SimulatorDisplay = (props) => {
                   <ChartSettings
                     title="Edit scenario"
                     buttonText="Update Scenario in ChartSettings"
+                    cancelText="Cancel Changes"
+                    cancel={props.resetCurrentScenario}
                     action={props.runCurrentScenario}
                   >
                     <TextContents>
@@ -147,11 +156,11 @@ const SimulatorDisplay = (props) => {
                     <SettingName
                       inModal={true}
                       label="Scenario name"
-                      scenarioId={props.scenarioId}
+                      scenarioId={scenarioId}
                       scenarioLabel={
-                        simParams.scenarioLabels[ props.scenarioId ]
-                           ? simParams.scenarioLabels[ props.scenarioId ]
-                           : props.scenarioData.label
+                        simState.scenarioLabels[ scenarioId ]
+                           ? simState.scenarioLabels[ scenarioId ]
+                           : scenarioData.label
                       }
                     />
                     <SettingBedNetCoverage
@@ -163,10 +172,12 @@ const SimulatorDisplay = (props) => {
                     <SettingTargetCoverage
                       inModal={true}
                       label="Treatment target coverage"
+                      value={simState.coverage}
                     />
                     <SettingSystematicAdherence
                       inModal={true}
                       label="Systematic adherence"
+                      value={simState.rho}
                     />
                     {/* no longer in use <SettingBasePrevalence inModal={true} label="Base prevalence" /> */}
                     {/* no longer in use <SettingNumberOfRuns inModal={true} label="Number of runs" /> */}
@@ -177,7 +188,7 @@ const SimulatorDisplay = (props) => {
                     <SettingMosquitoType inModal={true} label="Mosquito type" />
                     <TextContents>
                       <Typography paragraph variant="body1" component="p">
-                        Are you interested in a specific scenario?
+                        Are you interested in a specific scenario? { scenarioState.scenarioData[ scenarioState.currentScenarioId ].specificPredictionIndex }
                       </Typography>
                     </TextContents>
                     <SettingSpecificScenario inModal={true} />
@@ -211,7 +222,7 @@ const SimulatorDisplay = (props) => {
             </Grid>
 
             <div className={classes.scenarioGraph}>
-              {simParams.needsRerun && (
+              { scenarioState.scenarioData[ scenarioState.currentScenarioId ].isDirty  && (
                 <div className={classes.updateScenario}>
                   <Button
                     variant="contained"
@@ -221,7 +232,7 @@ const SimulatorDisplay = (props) => {
                     } /*  || scenarioInputs.length === 0 */
                     onClick={props.runCurrentScenario}
                   >
-                    UPDATE SCENARIO IN DIV
+                    UPDATE SCENARIO{/* IN DIV */}
                   </Button>{" "}
                   &nbsp;
                   <IconButton
@@ -233,7 +244,7 @@ const SimulatorDisplay = (props) => {
                     disabled={
                       props.simInProgress || props.scenarioKeys.length === 0
                     } /*  || scenarioInputs.length === 0 */
-                    onClick={resetCurrentScenario}
+                    onClick={props.resetCurrentScenario}
                   >
                     <RotateLeftIcon />
                   </IconButton>
@@ -241,22 +252,22 @@ const SimulatorDisplay = (props) => {
               )}
 
               <ScenarioGraph
-                data={props.scenarioData}
+                data={scenarioData}
                 showAllResults={false}
                 metrics={[graphMetric]}
                 simInProgress={props.simInProgress}
-                simNeedsRerun={simParams.needsRerun}
-                simParams={simParams}
+                simNeedsRerun={ scenarioState.scenarioData[ scenarioState.currentScenarioId ].isDirty }
+                simState={simState}
                 classes={classes}
                 IU={implementationUnit}
                 IUData={selectedIUData}
               />
             </div>
 
-            { props.scenarioMDAs[ props.scenarioId ] && simParams.tweakedPrediction && (
+            { props.scenarioMDAs[ scenarioId ] && simState.tweakedPrediction && (
               <MdaRounds
-                history={props.scenarioMDAs[ props.scenarioId ]}
-                future={simParams.tweakedPrediction}
+                history={props.scenarioMDAs[ scenarioId ]}
+                future={simState.tweakedPrediction}
               />
             ) }
 

@@ -63,7 +63,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 // <button mat-button aria-label="settings" className={classes.icon} onClick={(event) => handleClickOpen(event)}></button>
-const ChartSettings = ({ title, buttonText, action, onOpen, children }) => {
+const ChartSettings = ({ title, buttonText, cancelText, cancel, action, onOpen, children }) => {
 
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
@@ -81,6 +81,9 @@ const ChartSettings = ({ title, buttonText, action, onOpen, children }) => {
   const handleClickClose = (event) => {
 
     console.log(event.target.classList);
+    if( cancel ) {
+      cancel( event );
+    }
     setOpen(false);
   };
 
@@ -109,6 +112,7 @@ const ChartSettings = ({ title, buttonText, action, onOpen, children }) => {
               </div>
             </div>
 
+            <Button onClick={(event) => handleClickClose(event)} className={classes.button} variant="contained" color="primary">{cancelText}</Button>
             <Button onClick={(event) => handleConfirm(event)} className={classes.button} variant="contained" color="primary">{buttonText}</Button>
           </Paper>
         </ClickAwayListener>

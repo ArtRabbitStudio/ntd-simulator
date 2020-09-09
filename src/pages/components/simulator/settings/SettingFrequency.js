@@ -1,7 +1,8 @@
 import React from 'react';
 import useStyles from "../styles";
 
-import { useStore } from "../../../../store/simulatorStore";
+import { useSimulatorStore } from "../../../../store/simulatorStore";
+import { useScenarioStore, ScenarioStoreConstants } from "../../../../store/scenarioStore";
 
 import {
   FormControl,
@@ -11,13 +12,27 @@ import {
   Tooltip
 } from "@material-ui/core";
 
-const SettingFrequency = ({ inModal, label, classAdd }) => {
+const SettingFrequency = ({ inModal, label, value, classAdd }) => {
 
   const classes = useStyles();
-  const { simParams, dispatchSimParams } = useStore();
+  const { dispatchSimState } = useSimulatorStore();
+  const { scenarioState, dispatchScenarioStateUpdate } = useScenarioStore();
 
+  const isPerIUSetting = value !== null && typeof value !== 'undefined';
+
+  /* TODO FIXME */
   const handleChange = (event) => {
-    dispatchSimParams({ type: "mdaSixMonths", payload: event.target.value });
+    if ( isPerIUSetting ) {
+      dispatchSimState({ type: "mdaSixMonths", payload: event.target.value });
+    }
+    else {
+      dispatchScenarioStateUpdate( {
+        type: ScenarioStoreConstants.ACTION_TYPES.UPDATE_SCENARIO_SETTING_BY_ID,
+        id: scenarioState.currentScenarioId,
+        key: 'mdaSixMonths',
+        value: event.target.value
+      } );
+    }
   };
 
   return (
@@ -44,7 +59,7 @@ const SettingFrequency = ({ inModal, label, classAdd }) => {
         labelId="demo-simple-select-helper-label"
         id="demo-simple-select-helper"
         MenuProps={{ disablePortal: true }}
-        value={simParams.mdaSixMonths}
+        value={ isPerIUSetting ? value : scenarioState.scenarioData[ scenarioState.currentScenarioId ].settings.mdaSixMonths }
         onChange={handleChange}
       >
         <MenuItem value={12}>Annual</MenuItem>

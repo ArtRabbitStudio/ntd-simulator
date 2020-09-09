@@ -1,58 +1,58 @@
 import { diff } from 'deep-diff';
 
-export const detectChange = (simParams, dispatchSimParams) => {
+export const detectChange = (simState, dispatchSimState) => {
   //console.log('compare params')
   const observedSimParams = {
-    coverage: simParams.coverage,
-    mda: simParams.mda,
-    mdaSixMonths: simParams.mdaSixMonths,
-    endemicity: simParams.endemicity,
-    covN: simParams.covN,
-    v_to_hR: simParams.v_to_hR,
-    vecCap: simParams.vecCap,
-    vecComp: simParams.vecComp,
-    vecD: simParams.vecD,
-    mdaRegimen: simParams.mdaRegimen,
-    rho: simParams.rho,
-    rhoBComp: simParams.rhoBComp,
-    rhoCN: simParams.rhoCN,
-    species: simParams.species,
-    runs: simParams.runs,
+    coverage: simState.coverage,
+    mda: simState.mda,
+    mdaSixMonths: simState.mdaSixMonths,
+    endemicity: simState.endemicity,
+    covN: simState.covN,
+    v_to_hR: simState.v_to_hR,
+    vecCap: simState.vecCap,
+    vecComp: simState.vecComp,
+    vecD: simState.vecD,
+    mdaRegimen: simState.mdaRegimen,
+    rho: simState.rho,
+    rhoBComp: simState.rhoBComp,
+    rhoCN: simState.rhoCN,
+    species: simState.species,
+    runs: simState.runs,
   }
   const changeDetected =
     JSON.stringify(observedSimParams) !==
-    JSON.stringify(simParams.defaultParams)
+    JSON.stringify(simState.defaultParams)
   if (changeDetected) {
     console.log(
       '%c Param change detected! ',
       'background: #222; color: #bada55'
     )
-    console.log( diff( observedSimParams, simParams.defaultParams ) );
-    dispatchSimParams({
+    console.log( diff( observedSimParams, simState.defaultParams ) );
+    dispatchSimState({
       type: 'needsRerun',
       payload: true,
     })
     return
   } else {
     console.log('%c No Param changes. ', 'background: #222; color: #cc9900')
-    dispatchSimParams({
+    dispatchSimState({
       type: 'needsRerun',
       payload: false,
     })
   }
   const MDAchangeDetected =
-    JSON.stringify(simParams.tweakedPrediction) !==
-    JSON.stringify(simParams.defaultPrediction)
+    JSON.stringify(simState.tweakedPrediction) !==
+    JSON.stringify(simState.defaultPrediction)
   if (MDAchangeDetected) {
     console.log('%c MDA change detected! ', 'background: #222; color: #bada55')
-    console.log( diff( simParams.tweakedPrediction, simParams.defaultPrediction ) );
-    dispatchSimParams({
+    console.log( diff( simState.tweakedPrediction, simState.defaultPrediction ) );
+    dispatchSimState({
       type: 'needsRerun',
       payload: true,
     })
   } else {
     console.log('%c No MDA changes. ', 'background: #222; color: #cc9900')
-    dispatchSimParams({
+    dispatchSimState({
       type: 'needsRerun',
       payload: false,
     })
