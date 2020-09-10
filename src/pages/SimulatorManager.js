@@ -167,7 +167,7 @@ const SimulatorManager = ( props ) => {
 
   const runCurrentScenario = async () => {
 
-    console.log( `SimulatorManager running current scenario ${scenarioState.currentScenarioId}` );
+    console.log( `SimulatorManager re-running current scenario ${scenarioState.currentScenarioId}` );
 
     runScenario( false );
 
@@ -183,14 +183,13 @@ const SimulatorManager = ( props ) => {
 
   const resultCallback = ( resultScenario, isNewScenario ) => {
 
-    console.log( `SimulatorEngine returned result, stored in scenario id ${resultScenario.id}` );
 
     delete resultScenario.isDirty;
 
     setSimInProgress( false );
 
     if( isNewScenario ) {
-      console.info( `SimulatorManager received new scenario ${resultScenario.id}` );
+      console.log( `SimulatorManager received new result scenario from SimulatorEngine, storing in scenario id ${resultScenario.id}` );
 
       dispatchScenarioStateUpdate( {
         type: ScenarioStoreConstants.ACTION_TYPES.SET_NEW_SCENARIO_DATA,
@@ -200,7 +199,7 @@ const SimulatorManager = ( props ) => {
     }
 
     else {
-      console.info( `SimulatorManager received updated scenario ${resultScenario.id}` );
+      console.log( `SimulatorManager received updated result scenario from SimulatorEngine, storing in scenario id ${resultScenario.id}` );
 
       dispatchScenarioStateUpdate( {
         type: ScenarioStoreConstants.ACTION_TYPES.UPDATE_SCENARIO_DATA,
@@ -253,7 +252,7 @@ const SimulatorManager = ( props ) => {
   };
 
   const resetScenario = ( scenarioId ) => {
-    console.log( `RESETTING SCENARIO ${scenarioId}` );
+    console.log( `SimulatorManager resetting scenario ${scenarioId}` );
     const scenario = SessionStorage.fetchScenario( scenarioId );
     dispatchScenarioStateUpdate( {
       type: ScenarioStoreConstants.ACTION_TYPES.SET_LOADED_SCENARIO_DATA,
@@ -289,7 +288,7 @@ const SimulatorManager = ( props ) => {
         return;
       }
 
-      console.log( `scenarioState.currentScenarioId changed to ${scenarioState.currentScenarioId}` );
+   //   console.log( `SimulatorManager saw scenarioState.currentScenarioId changed to ${scenarioState.currentScenarioId}` );
 
       const currentScenarioIndexInKeys = scenarioState.scenarioKeys.findIndex( ( { id, label } ) => id === scenarioState.currentScenarioId );
 
@@ -338,7 +337,7 @@ const SimulatorManager = ( props ) => {
 
       // none loaded - make a new one
       else {
-        console.log( "CREATING NEW SCENARIO" );
+        console.log( "SimulatorManager creating new scenario" );
         runNewScenario();
       }
 

@@ -987,7 +987,7 @@ export var simControler = {
 
   runMapSimulation: function ( existingScenario, { progressCallback, resultCallback } ) {
 
-    console.log( `SIM PARAMS AT runMapSimulation for scenarioId ${ existingScenario ? existingScenario.id : null }:`, params );
+    console.log( `SimulatorEngine running map simulation with completed params for scenarioId ${ existingScenario ? existingScenario.id : null }:`, params );
     //statFunctions.setInputParams({ nMDA: 60 })
     //max number of mda rounds even if doing it six monthly.
 
@@ -1066,8 +1066,8 @@ export var simControler = {
       // paramsNumber += paramsStep
 
       if (progression === maxN) {
-        console.log("number of parameter sets", numberParamSets)
-        console.log(simControler.iuParams)
+       // console.log("number of parameter sets", numberParamSets)
+       // console.log(simControler.iuParams)
        // console.log(parDict)
 
         clearInterval(progress)
@@ -1233,7 +1233,7 @@ export var simControler = {
     }
   },
   runScenario: function ( paramsFromUI, existingScenario, callbacks ) {
-    console.log('runScenario:', paramsFromUI, callbacks);
+    console.log( `SimulatorEngine running ${ existingScenario ? 'scenario ' + existingScenario.id : 'new scenario' } with params:`, paramsFromUI );
     this.params = { ...paramsFromUI }
     this.runMapSimulation( existingScenario, callbacks )
   },

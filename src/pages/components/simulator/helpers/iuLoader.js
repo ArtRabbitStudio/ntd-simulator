@@ -89,8 +89,8 @@ export const loadAllIUhistoricData = async (
     defaults.coverage = coverage
     defaults.defaultParams.coverage = coverage
   }
-  console.log('mdaData', mdaData)
-  console.log('defaults', defaults)
+  //console.log('mdaData', mdaData)
+  //console.log('defaults', defaults)
   dispatchSimState({
     type: 'everything',
     payload: defaults,

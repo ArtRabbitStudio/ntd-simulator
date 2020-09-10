@@ -196,7 +196,6 @@ const SimulatorDisplay = (props) => {
                       value={graphMetric}
                       MenuProps={{ disablePortal: true }}
                       onChange={(ev) => {
-                        // console.log(ev.target.value)
                         setGraphMetric(ev.target.value);
                       }}
                     >

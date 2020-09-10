@@ -80,7 +80,6 @@ const ChartSettings = ({ title, buttonText, cancelText, cancel, action, onOpen, 
 
   const handleClickClose = (event) => {
 
-    console.log(event.target.classList);
     if( cancel ) {
       cancel( event );
     }
