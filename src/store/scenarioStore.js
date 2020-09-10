@@ -9,9 +9,9 @@ export const ScenarioStoreConstants = {
     UPDATE_SCENARIO_DATA: 'updateScenarioData',
     UPDATE_SCENARIO_LABEL_BY_ID: 'updateScenarioLabelById',
     UPDATE_SCENARIO_SETTING_BY_ID: 'updateScenarioSettingById',
+    UPDATE_SCENARIO_MDA_FUTURE_SETTING_BY_ID_AND_IDX: 'updateScenarioMdaFutureSettingByIdAndIdx',
     SWITCH_SCENARIO_BY_ID: 'switchScenarioById',
     MARK_SCENARIO_DIRTY_BY_ID: 'markScenarioDirtyById',
-//    UNMARK_SCENARIO_DIRTY_BY_ID: 'unmarkScenarioDirtyById',
     REMOVE_SCENARIO_BY_ID: 'removeScenarioById',
     SET_NEW_SCENARIO_DATA: 'setNewScenarioData',
     SET_SCENARIO_KEYS: 'setScenarioKeys'
@@ -25,6 +25,13 @@ const initialState = {
   scenarioKeys: [],
   scenarioData: {},
   currentScenarioId: null
+};
+
+const settingToMdaFutureMap = {
+  coverage: 'coverage',
+  covN: 'bednets',
+  rho: 'adherence',
+  mdaRegimen: 'regimen'
 };
 
 const reducer = ( scenarioState, action ) => {
@@ -59,7 +66,21 @@ const reducer = ( scenarioState, action ) => {
 
       case ScenarioStoreConstants.ACTION_TYPES.UPDATE_SCENARIO_SETTING_BY_ID:
         newState.scenarioData[ action.id ].settings[ action.key ] = action.value;
+        // copy this per-scenario setting across to all the MDA rounds for this scenario
+        const mdaFutureKey = settingToMdaFutureMap[ action.key ];
+        newState.scenarioData[ action.id ].mdaFuture[ mdaFutureKey ].forEach(
+          ( v, idx ) => {
+            newState.scenarioData[ action.id ].mdaFuture[ mdaFutureKey ][ idx ] = action.value;
+          }
+        );
         newState.updatedScenarioId = action.id;
+        break;
+
+
+      case ScenarioStoreConstants.ACTION_TYPES.UPDATE_SCENARIO_MDA_FUTURE_SETTING_BY_ID_AND_IDX:
+        newState.scenarioData[ action.id ].mdaFuture[ action.key ][ action.idx ] = action.value;
+        newState.updatedScenarioId = action.id;
+        newState.scenarioData[ action.id ].isDirty = true;
         break;
 
 
@@ -79,11 +100,6 @@ const reducer = ( scenarioState, action ) => {
         newState.scenarioData[ action.id ].isDirty = true;
         break;
 
-/*
-      case ScenarioStoreConstants.ACTION_TYPES.UNMARK_SCENARIO_DIRTY_BY_ID:
-        newState.scenarioData[ action.id ].isDirty = false;
-        break;
-*/
 
       case ScenarioStoreConstants.ACTION_TYPES.REMOVE_SCENARIO_BY_ID:
 

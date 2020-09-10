@@ -94,6 +94,10 @@ const ChartSettings = ({ title, buttonText, cancelText, cancel, action, onOpen, 
     setOpen(false);
   };
 
+  const igorsCheatStyle = {
+    padding: "6px 25px"
+  };
+
   return (
     <div className={classes.root}>
       <Fab color="inherit" aria-label="settings" className={classes.icon} onClick={handleClickOpen}> </Fab>
@@ -112,8 +116,10 @@ const ChartSettings = ({ title, buttonText, cancelText, cancel, action, onOpen, 
               </div>
             </div>
 
-            <Button onClick={(event) => handleClickClose(event)} className={classes.button} variant="contained" color="primary">{cancelText}</Button>
-            <Button onClick={(event) => handleConfirm(event)} className={classes.button} variant="contained" color="primary">{buttonText}</Button>
+            <div className={classes.modalButtons}>
+              <Button onClick={(event) => handleClickClose(event)} className={`${classes.modalButton} light`} style={igorsCheatStyle} variant="contained">{cancelText}</Button>
+              <Button onClick={(event) => handleConfirm(event)} className={classes.modalButton} style={igorsCheatStyle} variant="contained" color="primary">{buttonText}</Button>
+            </div>
           </Paper>
         </ClickAwayListener>
       }

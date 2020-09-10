@@ -72,7 +72,7 @@ const SimulatorDisplay = (props) => {
 
   const [ graphMetric, setGraphMetric ] = useState( 'Ms' )
 
-  const { simState, dispatchSimState } = useSimulatorStore();
+  const { simState } = useSimulatorStore();
   const { scenarioState, /*dispatchScenarioStateUpdate*/ } = useScenarioStore();
 
   const { implementationUnit } = useUIState();
@@ -99,12 +99,6 @@ const SimulatorDisplay = (props) => {
     ]
 
   );
-
-  const resetCurrentScenario = () => {
-    dispatchSimState({
-      type: 'resetScenario',
-    })
-  }
 
   const scenarioId = scenarioState.currentScenarioId;
   const scenarioData = scenarioState.scenarioData[ scenarioId ];
@@ -142,7 +136,7 @@ const SimulatorDisplay = (props) => {
 
                   <ChartSettings
                     title="Edit scenario"
-                    buttonText="Update Scenario in ChartSettings"
+                    buttonText="Update Scenario"
                     cancelText="Cancel Changes"
                     cancel={props.resetCurrentScenario}
                     action={props.runCurrentScenario}
@@ -172,12 +166,10 @@ const SimulatorDisplay = (props) => {
                     <SettingTargetCoverage
                       inModal={true}
                       label="Treatment target coverage"
-                      value={simState.coverage}
                     />
                     <SettingSystematicAdherence
                       inModal={true}
                       label="Systematic adherence"
-                      value={simState.rho}
                     />
                     {/* no longer in use <SettingBasePrevalence inModal={true} label="Base prevalence" /> */}
                     {/* no longer in use <SettingNumberOfRuns inModal={true} label="Number of runs" /> */}
@@ -229,10 +221,10 @@ const SimulatorDisplay = (props) => {
                     color="primary"
                     disabled={
                       props.simInProgress || props.scenarioKeys.length === 0
-                    } /*  || scenarioInputs.length === 0 */
+                    }
                     onClick={props.runCurrentScenario}
                   >
-                    UPDATE SCENARIO{/* IN DIV */}
+                    UPDATE SCENARIO
                   </Button>{" "}
                   &nbsp;
                   <IconButton
@@ -243,7 +235,7 @@ const SimulatorDisplay = (props) => {
                     component="span"
                     disabled={
                       props.simInProgress || props.scenarioKeys.length === 0
-                    } /*  || scenarioInputs.length === 0 */
+                    }
                     onClick={props.resetCurrentScenario}
                   >
                     <RotateLeftIcon />
@@ -264,12 +256,7 @@ const SimulatorDisplay = (props) => {
               />
             </div>
 
-            { props.scenarioMDAs[ scenarioId ] && simState.tweakedPrediction && (
-              <MdaRounds
-                history={props.scenarioMDAs[ scenarioId ]}
-                future={simState.tweakedPrediction}
-              />
-            ) }
+            <MdaRounds />
 
             <Typography
               className={classes.scenarioGraphLegendInterventions}

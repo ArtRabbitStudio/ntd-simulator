@@ -1,6 +1,5 @@
 // store.js
 import React, { createContext, useContext, useReducer } from 'react'
-import SessionStorage from '../pages/components/simulator/helpers/sessionStorage';
 
 const SimulatorStoreContext = createContext()
 const initialState = {
@@ -139,32 +138,6 @@ const reducer = (simState, action) => {
           ...simState.tweakedPrediction,
           active: action.payload,
         },
-      }
-    case 'tweakedBeenFiddledWith':
-      let newBeenFiddledWith = [...simState.tweakedPrediction.beenFiddledWith]
-      newBeenFiddledWith[action.payload] = true
-      return {
-        ...simState,
-        tweakedPrediction: {
-          ...simState.tweakedPrediction,
-          beenFiddledWith: [...newBeenFiddledWith],
-        },
-      }
-    case 'resetScenario':
-      console.log( simState );
-      return {
-        ...simState,
-        ...simState.defaultParams,
-        tweakedPrediction: {
-          time: [...simState.defaultPrediction.time],
-          coverage: [...simState.defaultPrediction.coverage],
-          adherence: [...simState.defaultPrediction.adherence],
-          bednets: [...simState.defaultPrediction.bednets],
-          regimen: [...simState.defaultPrediction.regimen],
-          active: [...simState.defaultPrediction.active],
-          beenFiddledWith: [...simState.defaultPrediction.beenFiddledWith],
-        },
-        needsRerun: false,
       }
     case 'everythingbuthistoric':
       let newIUDataall = { ...simState.IUData }
@@ -316,10 +289,6 @@ export const SimulatorStoreProvider = ({ children }) => {
     <React.Fragment>
       <SimulatorStoreContext.Provider value={{ simState, dispatchSimState }}>
 
-        <SimulatorStoreContext.Consumer>
-          { value => { SessionStorage.simState = value.simState; } }
-        </SimulatorStoreContext.Consumer>
-      
         {children}
 
       </SimulatorStoreContext.Provider>

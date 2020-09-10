@@ -1,7 +1,6 @@
 import React from 'react';
 import useStyles from "../styles";
 
-import { useSimulatorStore } from "../../../../store/simulatorStore";
 import { useScenarioStore, ScenarioStoreConstants } from "../../../../store/scenarioStore";
 
 import {
@@ -13,7 +12,6 @@ import {
 const SettingPrecision = ({ inModal, label, classAdd }) => {
 
   const classes = useStyles();
-  const { dispatchSimState } = useSimulatorStore();
   const { scenarioState, dispatchScenarioStateUpdate } = useScenarioStore();
 
   return (
