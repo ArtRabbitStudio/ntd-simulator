@@ -36,7 +36,11 @@ const settingToMdaFutureMap = {
 
 const reducer = ( scenarioState, action ) => {
 
-  console.log( 'scenarioStore got action:', action );
+  if ( !action.type ) {
+    throw new Error ( 'ScenarioStore got type-less action:', action );
+  }
+
+//  console.log( 'ScenarioStore got action:', action.type );
 
   let newState = {
     ...scenarioState,
@@ -129,7 +133,7 @@ const reducer = ( scenarioState, action ) => {
 
 
       default:
-        console.log( `=> scenarioStore got OOB update type ${action.type}:`, action );
+     //   console.log( `=> scenarioStore got OOB update type ${action.type}:`, action );
         break;
     }
 
@@ -153,7 +157,7 @@ const scenarioStoreConsumer = ( { scenarioState } ) => {
     return;
   }
 
-  console.log( `scenarioStoreConsumer got update type ${scenarioState.updateType}` );
+//  console.log( `scenarioStoreConsumer got update type ${scenarioState.updateType}` );
 
   try {
     switch( scenarioState.updateType ) {
@@ -174,7 +178,7 @@ const scenarioStoreConsumer = ( { scenarioState } ) => {
         break;
 
       default:
-        console.info( `-> scenarioStoreConsumer got OOB update type ${scenarioState.updateType}`, scenarioState );
+     //   console.info( `-> scenarioStoreConsumer got OOB update type ${scenarioState.updateType}`, scenarioState );
         break;
 
     }
