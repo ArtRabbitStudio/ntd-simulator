@@ -30,5 +30,5 @@ export default function () {
                 setImplementationUnit(null)
             }
         }
-    }, [matchSub, matchTop, setCountry, currentCountry])
+    }, [matchSub, matchTop, setCountry, currentCountry, currentImplementationUnit, matchIU, setImplementationUnit])
 }

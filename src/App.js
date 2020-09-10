@@ -1,5 +1,5 @@
 import React from "react";
-import { Switch, Route, useLocation } from "react-router-dom";
+import { Switch, Route } from "react-router-dom";
 import useSyncRouteState from "./hooks/useSyncRouteState";
 
 import ScrollToTop from "./pages/components/ScrollToTop";
@@ -7,13 +7,14 @@ import Home from "./pages/Home";
 import Page from "./pages/Page";
 import Country from "./pages/Country";
 import Setup from "./pages/Setup";
-import Simulator from "./pages/Simulator";
+import SimulatorManager from "./pages/SimulatorManager";
 import DataMethodolgy from "./pages/DataMethodology";
 import About from "./pages/About";
 import PrivacyCookies from "./pages/PrivacyCookies";
 
 // index.js
-import { StoreProvider } from "./store/simulatorStore";
+import { SimulatorStoreProvider } from "./store/simulatorStore";
+import { ScenarioStoreProvider } from "./store/scenarioStore";
 
 //import 'typeface-roboto'
 //import 'typeface-libre-franklin'
@@ -114,7 +115,6 @@ const theme = createMuiTheme({
     },
     h6: {
       textTransform: "uppercase",
-      textTransform: 'uppercase',
       fontSize: 14,
       letterSpacing: 1
     },
@@ -224,30 +224,31 @@ console.shallowCloneLog = function () {
 
 
 function App() {
-  const location = useLocation();
   useSyncRouteState();
 
   return (
     <CssBaseline>
       <ThemeProvider theme={theme}>
-        <StoreProvider>
-          <ScrollToTop /*location={location}*/>
-            <Switch>
-              <Route exact path="/" component={Home} />
-              <Route exact path="/country/:country" component={Country} />
-              <Route exact path="/setup/:country/:iu" component={Setup} />
-              <Route exact path="/data-and-methodolgy" component={DataMethodolgy} />
-              <Route exact path="/about" component={About} />
-              <Route exact path="/privacy-cookies" component={PrivacyCookies} />
-              <Route
-                exact
-                path="/simulator/:country?/:iu?"
-                component={Simulator}
-              />
-              <Route exact path="**" component={Page} />
-            </Switch>
-          </ScrollToTop>
-        </StoreProvider>
+        <ScenarioStoreProvider>
+          <SimulatorStoreProvider>
+            <ScrollToTop>
+              <Switch>
+                <Route exact path="/" component={Home} />
+                <Route exact path="/country/:country" component={Country} />
+                <Route exact path="/setup/:country/:iu" component={Setup} />
+                <Route exact path="/data-and-methodolgy" component={DataMethodolgy} />
+                <Route exact path="/about" component={About} />
+                <Route exact path="/privacy-cookies" component={PrivacyCookies} />
+                <Route
+                  exact
+                  path="/simulator/:country?/:iu?"
+                  component={SimulatorManager}
+                />
+                <Route exact path="**" component={Page} />
+              </Switch>
+            </ScrollToTop>
+          </SimulatorStoreProvider>
+        </ScenarioStoreProvider>
       </ThemeProvider>
     </CssBaseline>
   );

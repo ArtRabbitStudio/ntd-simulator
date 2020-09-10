@@ -1,7 +1,7 @@
 import React from 'react';
 import useStyles from "../styles";
 
-import { useStore } from "../../../../store/simulatorStore";
+import { useSimulatorStore } from "../../../../store/simulatorStore";
 
 import {
   FormControl,
@@ -12,7 +12,7 @@ import {
 const SettingBasePrevalence = ({ inModal, label, classAdd }) => {
 
   const classes = useStyles();
-  const { simParams, dispatchSimParams } = useStore();
+  const { simState, dispatchSimState } = useSimulatorStore();
 
   return (
     <FormControl fullWidth className={`${classes.formControl} ${classAdd}`}>
@@ -24,13 +24,13 @@ const SettingBasePrevalence = ({ inModal, label, classAdd }) => {
         {label}
       </FormLabel>
       <Slider
-        value={simParams.endemicity}
+        value={simState.endemicity}
         id="endemicity"
         min={5}
         step={0.5}
         max={18}
         onChange={(event, newValue) => {
-          dispatchSimParams({ type: "endemicity", payload: newValue });
+          dispatchSimState({ type: "endemicity", payload: newValue });
         }}
         aria-labelledby="slider"
         marks={[

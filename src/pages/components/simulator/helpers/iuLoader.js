@@ -3,10 +3,11 @@ import { last, filter, forEach } from 'lodash'
 import {
   DISEASE_LIMF, DISEASE_TRACHOMA
 } from '../../../../constants'
+import SessionStorage from './sessionStorage';
 
 export const loadAllIUhistoricData = async (
-  simParams,
-  dispatchSimParams,
+  simState,
+  dispatchSimState,
   implementationUnit,
   disease
 ) => {
@@ -23,11 +24,13 @@ export const loadAllIUhistoricData = async (
   }
 
   // clear LS
-  window.localStorage.removeItem('simParams')
-  window.localStorage.removeItem('scenarioIndex')
-  window.localStorage.removeItem('sessionData')
+  window.localStorage.removeItem('simState')
+ // window.localStorage.removeItem('scenarioIndex')
+ // window.localStorage.removeItem('sessionData')
 
-  //const doWeHaveData = simParams.IUData.id === implementationUnit
+  SessionStorage.removeAllScenarios();
+
+  //const doWeHaveData = simState.IUData.id === implementationUnit
   //console.log('doWeHaveData ? ', doWeHaveData)
   //console.log('implementationUnit ? ', implementationUnit)
   // if (!doWeHaveData) {
@@ -53,7 +56,7 @@ export const loadAllIUhistoricData = async (
   }
   const defaults = {
     ...defaultSimParams, // these ones are observed
-    scenarioLabels: [],
+    scenarioLabels: {},
     macrofilaricide: 65, // $("#Macrofilaricide").val(), - NOT CHANGED ANYWHERE
     microfilaricide: 65, // - NOT CHANGED ANYWHERE
     defaultParams: { ...defaultSimParams },
@@ -62,8 +65,7 @@ export const loadAllIUhistoricData = async (
       mdaObj: mdaData,
       params: params,
     },
-    defaultPrediction: generateMdaFuture(simParams),
-    tweakedPrediction: generateMdaFuture(simParams),
+    defaultPrediction: generateMdaFutureFromDefaults(simState),
     specificPrediction: null, // null or {}
     needsRerun: false,
   }
@@ -72,7 +74,7 @@ export const loadAllIUhistoricData = async (
     defaults.covN = bednets
     defaults.defaultParams.covN = bednets
   }
-  const mdaRegimen = last(filter(mdaData.regimen, (x) => x != 'xxx'))
+  const mdaRegimen = last(filter(mdaData.regimen, (x) => x !== 'xxx'))
   if (mdaRegimen) {
     defaults.mdaRegimen = mdaRegimen
     defaults.defaultParams.mdaRegimen = mdaRegimen
@@ -82,18 +84,18 @@ export const loadAllIUhistoricData = async (
     defaults.rho = adherence
     defaults.defaultParams.rho = adherence
   }
-  const coverage = last(filter(mdaData.coverage, (x) => x != 0))
+  const coverage = last(filter(mdaData.coverage, (x) => x !== 0))
   if (coverage) {
     defaults.coverage = coverage
     defaults.defaultParams.coverage = coverage
   }
-  console.log('mdaData', mdaData)
-  console.log('defaults', defaults)
-  dispatchSimParams({
+  //console.log('mdaData', mdaData)
+  //console.log('defaults', defaults)
+  dispatchSimState({
     type: 'everything',
     payload: defaults,
   })
-  window.localStorage.setItem('simParams', JSON.stringify(defaults))
+  window.localStorage.setItem('simState', JSON.stringify(defaults))
   // }
 }
 
@@ -202,7 +204,7 @@ export const loadIUParams = async (implementationUnit) => {
   forEach(IUParamsJSON.data, (row, i) => {
     //console.log('rownumber',i)
     //console.log('row',row)
-    if (row.Population == "") return
+    if (row.Population === "") return
     newParams.Population.push(Number(row.Population));
     newParams.shapeRisk.push(Number(row.shapeRisk));
     newParams.v_to_h.push(Number(row.v_to_h));
@@ -232,6 +234,8 @@ export const loadIUParams = async (implementationUnit) => {
   //console.log('newParams',newParams)
   return newParams
 
+  /*
+   * IS THIS NEEDED?
   newParams = {
     Population: IUParamsJSON.data.map((item) => Number(item.Population)),
     shapeRisk: IUParamsJSON.data.map((item) => Number(item.shapeRisk)),
@@ -259,11 +263,12 @@ export const loadIUParams = async (implementationUnit) => {
     aImp_2019: IUParamsJSON.data.map((item) => Number(item.aImp_2019)),
   }
   return newParams
+   */
 }
 
-export const generateMdaFuture = (simParams) => {
+export const generateMdaFutureFromDefaults = (simState) => {
   //console.log('generateMDAFuture')
-  //console.log(simParams)
+  //console.log(simState)
   const numberOfYears = 11 * 2
   let MDAtime = []
   for (let i = 0; i < numberOfYears; i++) {
@@ -273,66 +278,27 @@ export const generateMdaFuture = (simParams) => {
   }
   let MDAcoverage = []
   for (let i = 0; i < numberOfYears; i++) {
-    MDAcoverage.push(
-      simParams.tweakedPrediction &&
-        simParams.tweakedPrediction.beenFiddledWith[i] === true
-        ? simParams.tweakedPrediction.coverage[i]
-        : simParams.coverage
-    )
+    MDAcoverage.push( simState.coverage )
   }
   let MDAadherence = []
   for (let i = 0; i < numberOfYears; i++) {
-    MDAadherence.push(
-      simParams.tweakedPrediction &&
-        simParams.tweakedPrediction.beenFiddledWith[i] === true
-        ? simParams.tweakedPrediction.adherence[i]
-        : simParams.rho
-    )
+    MDAadherence.push( simState.rho )
   }
   let MDAbednets = []
   for (let i = 0; i < numberOfYears; i++) {
-    MDAbednets.push(
-      simParams.tweakedPrediction &&
-        simParams.tweakedPrediction.beenFiddledWith[i] === true
-        ? simParams.tweakedPrediction.bednets[i]
-        : simParams.covN
-    )
+    MDAbednets.push( simState.covN )
   }
   let MDAregimen = []
   for (let i = 0; i < numberOfYears; i++) {
-    MDAregimen.push(
-      simParams.tweakedPrediction &&
-        simParams.tweakedPrediction.beenFiddledWith[i] === true
-        ? simParams.tweakedPrediction.regimen[i]
-        : simParams.mdaRegimen
-    )
+    MDAregimen.push( simState.mdaRegimen )
   }
   let MDAactive = []
   for (let i = 0; i < numberOfYears; i++) {
-    if (simParams.mdaSixMonths === 12 && i % 2 === 1) {
-      MDAactive.push(
-        simParams.tweakedPrediction &&
-          simParams.tweakedPrediction.beenFiddledWith[i] === true
-          ? simParams.tweakedPrediction.active[i]
-          : false
-      )
+    if (simState.mdaSixMonths === 12 && i % 2 === 1) {
+      MDAactive.push( false )
     } else {
-      MDAactive.push(
-        simParams.tweakedPrediction &&
-          simParams.tweakedPrediction.beenFiddledWith[i] === true
-          ? simParams.tweakedPrediction.active[i]
-          : true
-      ) // alternate here
+      MDAactive.push( true ) // alternate here
     }
-  }
-  let MDAbeenFiddledWith = []
-  for (let i = 0; i < numberOfYears; i++) {
-    MDAbeenFiddledWith.push(
-      simParams.tweakedPrediction &&
-        simParams.tweakedPrediction.beenFiddledWith[i] === true
-        ? true
-        : false
-    )
   }
   const newMDAs = {
     time: [...MDAtime],
@@ -341,9 +307,49 @@ export const generateMdaFuture = (simParams) => {
     bednets: [...MDAbednets],
     regimen: [...MDAregimen],
     active: [...MDAactive],
-    beenFiddledWith: [...MDAbeenFiddledWith],
   }
-  //  console.log('newMDAs')
-  //  console.log(JSON.stringify(newMDAs))
+  return newMDAs
+}
+
+export const generateMdaFutureFromScenario = ( scenario, simState ) => {
+
+  const mdaFuture = scenario.mdaFuture;
+
+  const numberOfYears = 11 * 2
+
+  let MDAtime = []
+  for (let i = 0; i < numberOfYears; i++) {
+    // 246/12 = 2020
+    // 228/12 = 2019
+    MDAtime.push(6 * i + 246)
+  }
+  let MDAcoverage = []
+  for (let i = 0; i < numberOfYears; i++) {
+    MDAcoverage.push( mdaFuture.coverage[i] )
+  }
+  let MDAadherence = []
+  for (let i = 0; i < numberOfYears; i++) {
+    MDAadherence.push( mdaFuture.adherence[i] )
+  }
+  let MDAbednets = []
+  for (let i = 0; i < numberOfYears; i++) {
+    MDAbednets.push( mdaFuture.bednets[i] )
+  }
+  let MDAregimen = []
+  for (let i = 0; i < numberOfYears; i++) {
+    MDAregimen.push( mdaFuture.regimen[i] )
+  }
+  let MDAactive = []
+  for (let i = 0; i < numberOfYears; i++) {
+    MDAactive.push( mdaFuture.active[i] )
+  }
+  const newMDAs = {
+    time: [...MDAtime],
+    coverage: [...MDAcoverage],
+    adherence: [...MDAadherence],
+    bednets: [...MDAbednets],
+    regimen: [...MDAregimen],
+    active: [...MDAactive],
+  }
   return newMDAs
 }

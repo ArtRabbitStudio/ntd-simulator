@@ -25,28 +25,19 @@ import {
   max,
   zip,
   mapValues,
-  first,
   last,
   transform,
   findIndex,
 } from "lodash";
-import { color, extent, scaleSymlog, scaleLinear, interpolateHcl } from "d3";
+import { color, extent, scaleSymlog, interpolateHcl } from "d3";
 
 import { DISEASE_LIMF, DISEASE_TRACHOMA } from "../constants";
 
-const seq5 = ["#BA455E", "#CB7386", "#DDA2AF", "#EED0D7", "#ffffff"];
-const seq5b = ["#A91636", "#BA455E", "#CB7386", "#DDA2AF", "#FFFFFF"];
-const div3 = ["#32C2A2", "#ededed", "#fe4c73"];
-const div5 = ["#32C2A2", "#84DAC7", "#ededed", "#FFB2C3", "#fe4c73"];
-const div7 = [
-  "#32C2A2",
-  "#ADE6DA",
-  "#D6F3EC",
-  "#0000ff",
-  "#DDA2AF",
-  "#CB7386",
-  "#BA455E",
-];
+//const seq5 = ["#BA455E", "#CB7386", "#DDA2AF", "#EED0D7", "#ffffff"];
+//const seq5b = ["#A91636", "#BA455E", "#CB7386", "#DDA2AF", "#FFFFFF"];
+//const div3 = ["#32C2A2", "#ededed", "#fe4c73"];
+//const div5 = ["#32C2A2", "#84DAC7", "#ededed", "#FFB2C3", "#fe4c73"];
+//const div7 = [ "#32C2A2", "#ADE6DA", "#D6F3EC", "#0000ff", "#DDA2AF", "#CB7386", "#BA455E" ];
 
 const emptyFeatureCollection = { type: "FeatureCollection", features: [] };
 
@@ -271,7 +262,7 @@ function mergeFeatures({ data, featureCollection, key, scales }) {
 
     // get color from scale if prevalence value available
     const colorsByYear = mapValues(prevalenceOverTime, (prevalence) => {
-      if ( featureData.endemicity == 'Non-endemic' ) return '#fff'
+      if ( featureData.endemicity === 'Non-endemic' ) return '#fff'
         return isFinite(prevalence) ? color(prev(prevalence)).hex() : null
       }
     );
@@ -498,6 +489,7 @@ class DataAPI {
       return flow(filter((x) => x.id === this.uiState.implementationUnit))(ius);
     }
     return 'nada';
+    /*
     const stats = this.IUStats;
 
     if (ius) {
@@ -506,6 +498,7 @@ class DataAPI {
     }
 
     return null;
+    */
   }
 
   get countryFeatures() {
@@ -661,8 +654,6 @@ class DataAPI {
   }
 
   get iusByCountrySuggestions() {
-    const { country } = this.uiState;
-    const states = this.iuByCoutryData;
     const ius = this.iuByCoutryData;
 
     if (ius) {

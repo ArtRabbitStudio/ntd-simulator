@@ -1,18 +1,27 @@
 import React from 'react'
 import useStyles from '../styles'
 
-import { useStore } from '../../../../store/simulatorStore'
+import { useSimulatorStore } from '../../../../store/simulatorStore'
+import { useScenarioStore, ScenarioStoreConstants } from '../../../../store/scenarioStore'
 import { FormControl, TextField } from '@material-ui/core'
-import { simControler } from '../SimulatorEngine'
 
-const SettingName = ({ inModal, label }) => {
+const SettingName = ({ inModal, label, scenarioId, scenarioLabel }) => {
   const classes = useStyles()
-  const { simParams, dispatchSimParams } = useStore()
+  const { dispatchSimState } = useSimulatorStore()
+  const { dispatchScenarioStateUpdate } = useScenarioStore()
 
   const handleChange = (event) => {
+    dispatchScenarioStateUpdate( {
+      type: ScenarioStoreConstants.ACTION_TYPES.UPDATE_SCENARIO_LABEL_BY_ID,
+      id: scenarioId,
+      label: event.target.value
+    } );
     // this used to be a special occastion. If nothing changes we can use the handleSlerChanges handler instead.
-    dispatchSimParams({ type: 'scenarioLabel', payload: event.target.value })
-    simControler.scenarioLabel = event.target.value
+    dispatchSimState( {
+      type: 'scenarioLabel',
+      scenarioId: scenarioId,
+      payload: event.target.value
+    } );
   }
   return (
     <FormControl
@@ -22,11 +31,7 @@ const SettingName = ({ inModal, label }) => {
     >
       <TextField
         id="scenario-name"
-        value={
-          simParams.scenarioLabels[
-            JSON.parse(window.localStorage.getItem('scenarioIndex')) || 0
-          ]
-        }
+        value={scenarioLabel}
         label={label}
         onChange={handleChange}
       />

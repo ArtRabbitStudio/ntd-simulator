@@ -1,19 +1,16 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { observer } from 'mobx-react'
-import { match, useRouteMatch } from 'react-router-dom'
 
 import { makeStyles } from '@material-ui/core/styles'
 import { useDataAPI, useUIState } from '../../hooks/stateHooks'
-import { useHistory } from 'react-router-dom'
 
 import Box from '@material-ui/core/Box'
-import InputLabel from '@material-ui/core/InputLabel'
 import MenuItem from '@material-ui/core/MenuItem'
 import FormControl from '@material-ui/core/FormControl'
 import Select from '@material-ui/core/Select'
 
 import {
-  DISEASE_LABELS, DISEASE_LIMF
+  DISEASE_LABELS
 } from '../../constants'
 
 const useStyles = makeStyles(theme => ({
@@ -43,10 +40,9 @@ const Inputs = props => {
 
   const { diseases } = useDataAPI()
   const { disease, setDisease } = useUIState()
-  const history = useHistory()
 
   const handleDiseaseChange = (event, value) => {
-    if (value.props.value != 'other') {
+    if (value.props.value !== 'other') {
       setDisease(event);
     }
   }

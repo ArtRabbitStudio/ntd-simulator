@@ -1,7 +1,8 @@
 import React from 'react';
 import useStyles from "../styles";
 
-import { useStore } from "../../../../store/simulatorStore";
+import { useSimulatorStore } from "../../../../store/simulatorStore";
+import { useScenarioStore, ScenarioStoreConstants } from "../../../../store/scenarioStore";
 
 import {
   FormControl,
@@ -13,10 +14,24 @@ import {
 const SettingBedNetCoverage = ({ inModal, label, value, onChange, classAdd }) => {
 
   const classes = useStyles();
-  const { simParams, dispatchSimParams } = useStore();
+  const { dispatchSimState } = useSimulatorStore();
+  const { scenarioState, dispatchScenarioStateUpdate } = useScenarioStore();
 
+  const isPerIUSetting = value !== null && typeof value !== 'undefined';
+
+  /* TODO FIXME */
   const handleChange = (event, newValue) => {
-    dispatchSimParams({ type: "covN", payload: newValue });
+    if ( isPerIUSetting ) {
+      dispatchSimState({ type: "covN", payload: newValue });
+    }
+    else {
+      dispatchScenarioStateUpdate( {
+        type: ScenarioStoreConstants.ACTION_TYPES.UPDATE_SCENARIO_SETTING_BY_ID,
+        id: scenarioState.currentScenarioId,
+        key: 'covN',
+        value: newValue
+      } );
+    }
   };
 
   return (
@@ -38,7 +53,7 @@ const SettingBedNetCoverage = ({ inModal, label, value, onChange, classAdd }) =>
       </FormLabel>
       </Tooltip>
       <Slider
-        value={value ? value : simParams.covN}
+        value={ isPerIUSetting ? value : scenarioState.scenarioData[ scenarioState.currentScenarioId ].settings.covN }
         min={0}
         step={1}
         max={100}

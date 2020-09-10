@@ -1,13 +1,10 @@
 import React, { useEffect, forwardRef, useImperativeHandle } from 'react'
-import ReactMapGL, { Source, Layer, Popup, HTMLOverlay } from 'react-map-gl'
-import { useHistory, useRouteMatch, Link as RouterLink } from 'react-router-dom'
+import ReactMapGL, { Source, Layer } from 'react-map-gl'
+import { useHistory } from 'react-router-dom'
 import centroid from '@turf/centroid'
-import { Typography, Slider, Box, Link, Paper } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
-import { format } from 'd3'
 import Tooltip from './Tooltip'
 import useMapReducer from '../hooks/useMapReducer'
-import { NO_DATA } from '../constants'
 import 'mapbox-gl/dist/mapbox-gl.css'
 
 const useStyles = makeStyles({
@@ -29,7 +26,7 @@ function Map({
     showNotAvailable,
 }) {
     const [
-        { year, viewport, feature, featureHover, popup, tooltip, playing, ready },
+        { year, viewport, feature, featureHover, tooltip, ready },
         dispatch,
     ] = useMapReducer()
 
@@ -138,7 +135,8 @@ function Map({
                 dragPan={false}
                 boxZoom={false}
                 dragRotate={false}
-                touchZoomRotate={false}
+                touchZoom={false}
+                touchRotate={false}
                 mapStyle="mapbox://styles/kpcarter100/ck80d7xh004tt1irt06j8jkme"
                 interactiveLayerIds={interactiveLayers}
                 onViewportChange={handleViewportChange}

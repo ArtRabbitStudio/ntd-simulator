@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
+import React from 'react'
 import useStyles from '../styles'
 
-import { useStore } from '../../../../store/simulatorStore'
+import { useSimulatorStore } from '../../../../store/simulatorStore'
+import { useScenarioStore, ScenarioStoreConstants } from "../../../../store/scenarioStore";
 
 import {
   FormControl,
@@ -12,49 +13,98 @@ import {
 } from '@material-ui/core'
 import { useHistory } from 'react-router-dom'
 import { specificScenarios } from '../helpers/specificScenarios'
-import { useDataAPI, useUIState } from '../../../../hooks/stateHooks'
+import { useUIState } from '../../../../hooks/stateHooks'
 
 const SettingSpecificScenario = ({ inModal, label, classAdd }) => {
   const classes = useStyles()
   const history = useHistory()
-  const { simParams, dispatchSimParams } = useStore()
+  const { dispatchSimState } = useSimulatorStore()
+  const { scenarioState, dispatchScenarioStateUpdate } = useScenarioStore();
   const { country, implementationUnit } = useUIState()
-  const handleChange = (event) => {
-    const par = event.target.value
-    console.log(par)
-    dispatchSimParams({
+
+  const handleChangeFromScenario = (event) => {
+
+    const par = event.target.value;
+
+    dispatchScenarioStateUpdate( {
+      type: ScenarioStoreConstants.ACTION_TYPES.UPDATE_SCENARIO_SETTING_BY_ID,
+      id: scenarioState.currentScenarioId,
+      key: 'specificPredictionIndex',
+      value: par
+    } );
+
+    if (par === -1) {
+
+      dispatchScenarioStateUpdate( {
+        type: ScenarioStoreConstants.ACTION_TYPES.UPDATE_SCENARIO_SETTING_BY_ID,
+        id: scenarioState.currentScenarioId,
+        key: 'specificPrediction',
+        value: null
+      } );
+
+      for( let idx = 0; idx < 4; idx++ ) {
+        dispatchScenarioStateUpdate( {
+          type: ScenarioStoreConstants.ACTION_TYPES.UPDATE_SCENARIO_MDA_FUTURE_SETTING_BY_ID_AND_IDX,
+          id: scenarioState.currentScenarioId,
+          idx: idx,
+          key: 'active',
+          value: true
+        } );
+      }
+    }
+
+    else if (specificScenarios.length > par) {
+
+      dispatchScenarioStateUpdate( {
+        type: ScenarioStoreConstants.ACTION_TYPES.UPDATE_SCENARIO_SETTING_BY_ID,
+        id: scenarioState.currentScenarioId,
+        key: 'specificPrediction',
+        value: specificScenarios[par]
+      } );
+
+      dispatchScenarioStateUpdate( {
+        type: ScenarioStoreConstants.ACTION_TYPES.UPDATE_SCENARIO_LABEL_BY_ID,
+        id: scenarioState.currentScenarioId,
+        label: specificScenarios[par].label
+      } );
+
+      for( let idx = 0; idx < 4; idx++ ) {
+        dispatchScenarioStateUpdate( {
+          type: ScenarioStoreConstants.ACTION_TYPES.UPDATE_SCENARIO_MDA_FUTURE_SETTING_BY_ID_AND_IDX,
+          id: scenarioState.currentScenarioId,
+          idx: idx,
+          key: 'active',
+          value: par > idx - 1 ? false : true
+        } );
+      }
+
+    }
+
+  }
+
+  const setSpecificScenarioFromSetup = (par) => {
+    dispatchSimState({
       type: 'specificPredictionIndex',
       payload: par,
     })
-    if (par === -1) {
-      dispatchSimParams({
-        type: 'specificPrediction',
-        payload: null,
-      })
-    } else if (specificScenarios.length > par) {
-      dispatchSimParams({
-        type: 'specificPrediction',
-        payload: specificScenarios[par],
-      })
-    }
-  }
-  const setSpecScen = (par) => {
+
     if (specificScenarios.length > par) {
       console.log('updating specificPrediction')
-      dispatchSimParams({
+      dispatchSimState({
         type: 'specificPrediction',
         payload: specificScenarios[par],
       })
       history.push({ pathname: `/simulator/${country}/${implementationUnit}` })
     }
   }
+
   return inModal === false ? (
     <React.Fragment>
       <Button
         variant="contained"
         color="primary"
         onClick={() => {
-          setSpecScen(0)
+          setSpecificScenarioFromSetup(0)
         }}
       >
         6 months COVID disruption
@@ -64,7 +114,7 @@ const SettingSpecificScenario = ({ inModal, label, classAdd }) => {
         variant="contained"
         color="primary"
         onClick={() => {
-          setSpecScen(1)
+          setSpecificScenarioFromSetup(1)
         }}
       >
         1 year COVID disruption
@@ -74,7 +124,7 @@ const SettingSpecificScenario = ({ inModal, label, classAdd }) => {
         variant="contained"
         color="primary"
         onClick={() => {
-          setSpecScen(2)
+          setSpecificScenarioFromSetup(2)
         }}
       >
         18 months COVID disruption
@@ -84,7 +134,7 @@ const SettingSpecificScenario = ({ inModal, label, classAdd }) => {
         variant="contained"
         color="primary"
         onClick={() => {
-          setSpecScen(3)
+          setSpecificScenarioFromSetup(3)
         }}
       >
         2 year COVID disruption
@@ -97,8 +147,8 @@ const SettingSpecificScenario = ({ inModal, label, classAdd }) => {
         labelId="demo-simple-select-helper-label"
         id="demo-simple-select-helper"
         MenuProps={{ disablePortal: true }}
-        value={simParams.specificPredictionIndex}
-        onChange={handleChange}
+        value={scenarioState.scenarioData[ scenarioState.currentScenarioId ].settings.specificPredictionIndex}
+        onChange={handleChangeFromScenario}
       >
         <MenuItem value={-1}>No</MenuItem>
         <MenuItem value={0}>6 months COVID disruption</MenuItem>

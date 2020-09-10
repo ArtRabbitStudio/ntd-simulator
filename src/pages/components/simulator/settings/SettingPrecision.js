@@ -1,7 +1,7 @@
 import React from 'react';
 import useStyles from "../styles";
 
-import { useStore } from "../../../../store/simulatorStore";
+import { useScenarioStore, ScenarioStoreConstants } from "../../../../store/scenarioStore";
 
 import {
   FormControl,
@@ -12,18 +12,30 @@ import {
 const SettingPrecision = ({ inModal, label, classAdd }) => {
 
   const classes = useStyles();
-  const { simParams, dispatchSimParams } = useStore();
+  const { scenarioState, dispatchScenarioStateUpdate } = useScenarioStore();
 
   return (
     <FormControl className={`${classes.formControlPrecision} ${classAdd}`}>
       <Slider
         className={classes.precisionSlider}
-        value={simParams.runs}
+        value={ scenarioState.scenarioData[ scenarioState.currentScenarioId ].settings.runs }
         min={1}
         step={1}
         max={200}
         onChange={(event, newValue) => {
-          dispatchSimParams({ type: "runs", payload: newValue });
+
+          dispatchScenarioStateUpdate( {
+            type: ScenarioStoreConstants.ACTION_TYPES.UPDATE_SCENARIO_SETTING_BY_ID,
+            id: scenarioState.currentScenarioId,
+            key: 'runs',
+            value: newValue
+          } );
+
+          dispatchScenarioStateUpdate( {
+            type: ScenarioStoreConstants.ACTION_TYPES.MARK_SCENARIO_DIRTY_BY_ID,
+            id: scenarioState.currentScenarioId
+          } );
+
         }}
         aria-labelledby="slider"
         valueLabelDisplay={inModal ? "auto" : "on"}

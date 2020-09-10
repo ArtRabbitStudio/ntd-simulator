@@ -1,15 +1,15 @@
-export const obtainIUData = (simParams, dispatchSimParams) => {
+export const obtainIUData = (simState, dispatchSimState) => {
   // Store? Storage? Redirect.
-  let IUData = simParams.IUData
+  let IUData = simState.IUData
   //IUData)
   if (!IUData.id) {
-    let simParamsFromLC = window.localStorage.getItem('simParams')
-    simParamsFromLC = JSON.parse(simParamsFromLC)
+    let simStateFromLC = window.localStorage.getItem('simState')
+    simStateFromLC = JSON.parse(simStateFromLC)
     const IUDataFromLC =
-      simParamsFromLC && simParamsFromLC.IUData ? simParamsFromLC.IUData : null
+      simStateFromLC && simStateFromLC.IUData ? simStateFromLC.IUData : null
     IUData = IUDataFromLC && IUDataFromLC ? IUDataFromLC : null
     if (IUData) {
-      dispatchSimParams({
+      dispatchSimState({
         type: 'IUData',
         payload: IUDataFromLC,
       })

@@ -316,7 +316,6 @@ function ScenarioGraph({
           {ticksX.map((t, i) => {
             const xt = x(t)
             const yearLabel = 2000 + t
-            const yearOutput = '‘' + yearLabel.toString().substr(-2)
             return (
               <g key={xt}>
                 <line

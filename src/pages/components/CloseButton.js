@@ -3,7 +3,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import Fab from '@material-ui/core/Fab';
 
 import CloseIcon from '../../images/close.svg';
-import CloseIconHover from '../../images/close-hover.svg';
 
 const useStyles = makeStyles(theme => ({
   root: {

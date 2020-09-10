@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { observer } from 'mobx-react'
-import { match, useRouteMatch } from 'react-router-dom'
+import { useRouteMatch } from 'react-router-dom'
 
 import { makeStyles } from '@material-ui/core/styles'
 import { useDataAPI, useUIState } from '../../hooks/stateHooks'
@@ -12,10 +12,6 @@ import Box from '@material-ui/core/Box'
 import TextField from '@material-ui/core/TextField'
 import Autocomplete from '@material-ui/lab/Autocomplete'
 import FormControl from '@material-ui/core/FormControl'
-
-import {
-  DISEASE_LABELS, DISEASE_LIMF
-} from '../../constants'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -74,15 +70,10 @@ const SelectCountry = ({ selectIU, showConfirmation }) => {
   const history = useHistory()
   const matchSection = useRouteMatch('/:section')
 
-  const { countrySuggestions, iuFeatures, iusByCountrySuggestions,  } = useDataAPI()
+  const { countrySuggestions, iusByCountrySuggestions,  } = useDataAPI()
   const { country, implementationUnit } = useUIState()
 
-
   const [goTo, setGoTo] = useState(false);
-
-  const navigateToCountry = (id) => {
-
-  }
 
   const navigate = (url) => {
     let u = url ? url : goTo;
@@ -90,6 +81,7 @@ const SelectCountry = ({ selectIU, showConfirmation }) => {
   }
 
   const handleCountryChange = (event, value) => {
+    console.log( 'SelectCountry handleCountryChange' );
     let section = 'country'
     if (matchSection) {
       if (matchSection.params.section !== 'simulator') { // keep the page, not for simulator
@@ -110,6 +102,7 @@ const SelectCountry = ({ selectIU, showConfirmation }) => {
   }
 
   const handleIUChange = (event, value) => {
+    console.log( 'SelectCountry handleIUChange' );
     let section = 'setup'
     if (value) {
       let url = `/${section}/${country}/${value.id}`
@@ -131,9 +124,14 @@ const SelectCountry = ({ selectIU, showConfirmation }) => {
     navigate()
   };
 
-  const selected = countrySuggestions.find(x => x.id === country)
-  const activeIUs = iusByCountrySuggestions.filter(x => (x.prevalence != null && x.endemicity != "Non-endemic") )
+  const defaultCountrySuggestionOption = { name: "Select a country" };
+  const defaultIUSuggestionOption = { name: "Select IU" };
+
+  const countrySuggestionsWithDefault = [ defaultCountrySuggestionOption ].concat( countrySuggestions );
+  const selected = countrySuggestionsWithDefault.find(x => x.id === country)
+  const activeIUs = [ defaultIUSuggestionOption ].concat( iusByCountrySuggestions.filter(x => (x.prevalence !== null && x.endemicity !== "Non-endemic") ) )
   const selectedIU = activeIUs.find(x => x.id === implementationUnit)
+
   return (
     <React.Fragment>
       <Box className={classes.box}>
@@ -141,9 +139,10 @@ const SelectCountry = ({ selectIU, showConfirmation }) => {
         <FormControl className={`${classes.formControl} countries`}>
           <Autocomplete
             id="combo-box-demo"
-            options={countrySuggestions}
+            options={countrySuggestionsWithDefault}
             getOptionLabel={option => option.name}
-            value={selected ?? { name: 'Select a country' }}
+            getOptionSelected={ ( a, b ) => { return a.name === b.name } } // stop the Autocomplete warning barf
+            value={selected ?? defaultCountrySuggestionOption}
             renderInput={params => (
               <TextField {...params} /*InputProps={{ ...params.InputProps, disableUnderline: true }}*/ />
             )}
@@ -157,7 +156,8 @@ const SelectCountry = ({ selectIU, showConfirmation }) => {
               id="iu"
               options={activeIUs}
               getOptionLabel={option => ( option.relatedStateName ? `${option.name} (${option.relatedStateName})` : `${option.name}` ) }
-              value={selectedIU ?? { name: 'Select IU' }}
+              getOptionSelected={ ( a, b ) => { return a.name === b.name } } // stop the Autocomplete warning barf
+              value={selectedIU ?? defaultIUSuggestionOption}
               renderInput={params => (
                 <TextField {...params}/* InputProps={{ ...params.InputProps, disableUnderline: true }}*/ />
               )}

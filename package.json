@@ -12,6 +12,8 @@
     "@turf/bbox": "^6.0.1",
     "@turf/centroid": "^6.0.2",
     "d3": "^5.15.0",
+    "deep-diff": "^1.0.2",
+    "js-base64": "^3.4.5",
     "lodash": "^4.17.19",
     "mathjs": "^6.6.1",
     "mobx": "^5.15.4",
@@ -26,7 +28,8 @@
     "react-scripts": "3.4.1",
     "react-virtualized-auto-sizer": "^1.0.2",
     "typeface-libre-franklin": "0.0.75",
-    "typeface-roboto": "0.0.75"
+    "typeface-roboto": "0.0.75",
+    "uuid": "^8.3.0"
   },
   "scripts": {
     "start": "react-scripts start",

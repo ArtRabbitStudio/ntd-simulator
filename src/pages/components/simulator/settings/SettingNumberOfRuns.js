@@ -1,7 +1,7 @@
 import React from 'react';
 import useStyles from "../styles";
 
-import { useStore } from "../../../../store/simulatorStore";
+import { useSimulatorStore } from "../../../../store/simulatorStore";
 
 import {
   FormControl,
@@ -12,7 +12,7 @@ import {
 const SettingNumberOfRuns = ({ inModal, label, classAdd }) => {
 
   const classes = useStyles();
-  const { simParams, dispatchSimParams } = useStore();
+  const { simState, dispatchSimState } = useSimulatorStore();
 
   return (
     <FormControl fullWidth className={`${classes.formControl} ${classAdd}`}>
@@ -24,12 +24,12 @@ const SettingNumberOfRuns = ({ inModal, label, classAdd }) => {
         {label}
       </FormLabel>
       <Slider
-        value={simParams.runs}
+        value={simState.runs}
         min={1}
         step={1}
         max={100}
         onChange={(event, newValue) => {
-          dispatchSimParams({ type: "runs", payload: newValue });
+          dispatchSimState({ type: "runs", payload: newValue });
         }}
         aria-labelledby="slider"
         marks={[

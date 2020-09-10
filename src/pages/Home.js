@@ -1,5 +1,4 @@
-import React, { useEffect, useRef } from 'react';
-import { useHistory } from 'react-router-dom';
+import React, { useEffect } from 'react';
 import { Typography, Link } from '@material-ui/core';
 import { useUIState } from '../hooks/stateHooks'
 
@@ -47,14 +46,13 @@ const useStyles = makeStyles(theme => ({
 const Home = (props) => {
 
   const classes = useStyles();
-  const history = useHistory();
-  const { country: currentCountry, implementationUnit: currentImplementationUnit, setImplementationUnit, setCountry } = useUIState()
+  const { country: currentCountry, setImplementationUnit, setCountry } = useUIState()
 
 
   useEffect(() => {
     setImplementationUnit(null);
     setCountry(null);
-  }, [currentCountry])
+  }, [currentCountry, setCountry, setImplementationUnit])
 
 
 

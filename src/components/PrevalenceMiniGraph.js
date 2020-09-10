@@ -1,10 +1,7 @@
-import React, { useState } from 'react'
-import { map, flatten, flattenDeep, pick, values,max,filter } from 'lodash'
-import { scaleLinear, extent, line } from 'd3'
+import React from 'react'
+import { map, max, filter } from 'lodash'
+import { scaleLinear, line } from 'd3'
 import AutoSizer from 'react-virtualized-auto-sizer'
-
-
-let fadeOutTimeout = null;
 
 function Path({ data, x, y, color, start }) {
   const coords = data.map((d,index) => [x(start+index), y(d)])
@@ -12,15 +9,13 @@ function Path({ data, x, y, color, start }) {
   return <path d={l} stroke={color} fill="none" strokeWidth="2" />
 }
 
-
-
 function PrevalenceMiniGraph({
   data,
   width = 600,
   height = 150
 
 }) {
-  if ( data == undefined ) return null
+  if ( data === undefined ) return null
   const lPad = 30
   const rPad = 10
   const tPad = 0
@@ -44,11 +39,7 @@ function PrevalenceMiniGraph({
     .range([height-tPad, 0])
 
   const yTicks = yScale.ticks(4)
-  const xTicks = xScale.ticks(12)
   const yearWidth = xScale(start + 1) - xScale(start)
-  const halfYearWidth = Math.round(yearWidth / 2)
-  const startX = xScale(start)
-  const endX = xScale(end)
   const seriesObj = filter(cleanedPrevalence,(value,index)=>{
       return ( (2000 + index) >= start && (2000+index) <= end )
   })

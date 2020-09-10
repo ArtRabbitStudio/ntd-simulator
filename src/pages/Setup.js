@@ -1,18 +1,13 @@
 import { Button, Typography, Tooltip } from '@material-ui/core'
-import Accordion from '@material-ui/core/Accordion'
-import AccordionSummary from '@material-ui/core/AccordionSummary'
-import AccordionDetails from '@material-ui/core/AccordionDetails'
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-
 import { makeStyles } from '@material-ui/core/styles'
 import { observer } from 'mobx-react'
-import React, { useEffect, useState, Fragment } from 'react'
+import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom'
-import { orderBy, map } from 'lodash'
+import { map } from 'lodash'
 import PrevalenceMiniGraph from '../components/PrevalenceMiniGraph'
 import { useDataAPI, useUIState } from '../hooks/stateHooks'
 import { Layout } from '../layout'
-import { useStore } from './../store/simulatorStore'
+import { useSimulatorStore } from './../store/simulatorStore'
 import HeadWithInputs from './components/HeadWithInputs'
 import SelectCountry from './components/SelectCountry'
 import TextContents from './components/TextContents'
@@ -21,16 +16,12 @@ import InfoIcon from "../images/info-24-px.svg";
 
 // settings
 import {
-  SettingName,
   SettingFrequency,
   SettingTargetCoverage,
   SettingDrugRegimen,
-  SettingBasePrevalence,
-  SettingNumberOfRuns,
   SettingMosquitoType,
   SettingBedNetCoverage,
   SettingInsecticideCoverage,
-  SettingPrecision,
   SettingSystematicAdherence,
   SettingSpecificScenario,
 } from './components/simulator/settings'
@@ -98,8 +89,6 @@ const useStyles = makeStyles((theme) => ({
   },
   legend: {
     textTransform: 'uppercase',
-    textTransform: 'uppercase',
-    fontSize: 14,
     letterSpacing: 1,
     fontSize: 12,
     width: 30,
@@ -174,23 +163,18 @@ const Setup = (props) => {
 
   const history = useHistory()
   const classes = useStyles()
-  const { simParams, dispatchSimParams } = useStore()
+  const { simState, dispatchSimState } = useSimulatorStore()
   const { country, implementationUnit, disease } = useUIState()
   const {
-    iuFeatures,
-    //stateFeaturesCurrentCountry: stateFeatures,
-    //stateDataCurrentCountry: stateData,
-    stateScales,
     selectedIUData
   } = useDataAPI()
-  //console.log('selectedIUData',selectedIUData)
 
 
-  const doWeHaveData = simParams.IUData.id === implementationUnit
+  const doWeHaveData = simState.IUData.id === implementationUnit
   const loadData = async () => {
     await loadAllIUhistoricData(
-      simParams,
-      dispatchSimParams,
+      simState,
+      dispatchSimState,
       implementationUnit,
       disease
     )
@@ -217,7 +201,7 @@ const Setup = (props) => {
     )
   }
   let mdaObjTimeFiltered = null
-  if (simParams.IUData.mdaObj) {
+  if (simState.IUData.mdaObj) {
     const startYear = 2008
     const endYear = 2019
     mdaObjTimeFiltered = {
@@ -228,15 +212,15 @@ const Setup = (props) => {
       coverage: [],
       regimen: [],
     }
-    map(simParams.IUData.mdaObj.time, (e, i) => {
+    map(simState.IUData.mdaObj.time, (e, i) => {
       const currentYear = 2000 + e / 12
       if (currentYear >= startYear && currentYear <= endYear) {
-        mdaObjTimeFiltered.time.push(simParams.IUData.mdaObj.time[i])
-        mdaObjTimeFiltered.active.push(simParams.IUData.mdaObj.active[i])
-        mdaObjTimeFiltered.adherence.push(simParams.IUData.mdaObj.adherence[i])
-        mdaObjTimeFiltered.bednets.push(simParams.IUData.mdaObj.bednets[i])
-        mdaObjTimeFiltered.coverage.push(simParams.IUData.mdaObj.coverage[i])
-        mdaObjTimeFiltered.regimen.push(simParams.IUData.mdaObj.regimen[i])
+        mdaObjTimeFiltered.time.push(simState.IUData.mdaObj.time[i])
+        mdaObjTimeFiltered.active.push(simState.IUData.mdaObj.active[i])
+        mdaObjTimeFiltered.adherence.push(simState.IUData.mdaObj.adherence[i])
+        mdaObjTimeFiltered.bednets.push(simState.IUData.mdaObj.bednets[i])
+        mdaObjTimeFiltered.coverage.push(simState.IUData.mdaObj.coverage[i])
+        mdaObjTimeFiltered.regimen.push(simState.IUData.mdaObj.regimen[i])
       }
     })
   }
@@ -244,7 +228,7 @@ const Setup = (props) => {
   const selecteIUName = selectedIUData[0] ? selectedIUData[0]['name'] : ''
 
   const submitSetup = (event) => {
-    dispatchSimParams({
+    dispatchSimState({
       type: 'specificPrediction',
       payload: null,
     })
@@ -299,7 +283,7 @@ const Setup = (props) => {
             </Typography>
             </Tooltip>
             <div className="bars setup">
-              {simParams.IUData.mdaObj &&
+              {simState.IUData.mdaObj &&
                 mdaObjTimeFiltered.time.map((e, i) => (
                   <div
                     key={`bar-setup-${i}`}
@@ -326,7 +310,7 @@ const Setup = (props) => {
                 ))}
             </div>
             <div className="bars setup">
-              {simParams.IUData.mdaObj &&
+              {simState.IUData.mdaObj &&
                 mdaObjTimeFiltered.time.map((e, i) => (
                   <Typography
                     key={`bar-legend=${i}`}
@@ -370,7 +354,7 @@ const Setup = (props) => {
 
           <div className={classes.formControlWrap}>
             <div className={classes.setupFormControl}>
-              <SettingBedNetCoverage inModal={false} label="Bed Net Coverage" />
+              <SettingBedNetCoverage inModal={false} label="Bed Net Coverage" value={simState.covN} />
             </div>
           </div>
 
@@ -379,13 +363,14 @@ const Setup = (props) => {
               <SettingFrequency
                 inModal={false}
                 label="MDA Frequency"
+                value={simState.mdaSixMonths}
               />
             </div>
           </div>
 
           <div className={classes.formControlWrap}>
             <div className={classes.setupFormControl}>
-              <SettingMosquitoType inModal={false} label="Type of Mosquito" />
+              <SettingMosquitoType inModal={false} label="Type of Mosquito" value={simState.species} />
             </div>
           </div>
 
@@ -394,13 +379,14 @@ const Setup = (props) => {
               <SettingTargetCoverage
                 inModal={false}
                 label="MDA Target Coverage"
+                value={simState.coverage}
               />
             </div>
           </div>
 
           <div className={classes.formControlWrap}>
             <div className={classes.setupFormControl}>
-              <SettingInsecticideCoverage inModal={false} label="Inseticide Coverage" />
+              <SettingInsecticideCoverage inModal={false} label="Inseticide Coverage" value={simState.v_to_hR} />
             </div>
           </div>
 
@@ -410,6 +396,7 @@ const Setup = (props) => {
               <SettingDrugRegimen
                 inModal={false}
                 label="MDA Drug Regimen"
+                value={simState.mdaRegimen}
               />
             </div>
           </div>
@@ -423,10 +410,11 @@ const Setup = (props) => {
                 label="Systematic adherence"
                 onChange={(event, newValue) => {
                   // this needs to change defaultParams as well, right?
-                  // dispatchSimParams({ type: 'defaultsrho', payload: newValue })
+                  // dispatchSimState({ type: 'defaultsrho', payload: newValue })
                   //console.log('RHO', newValue)
-                  dispatchSimParams({ type: 'rho', payload: newValue })
+                  dispatchSimState({ type: 'rho', payload: newValue })
                 }}
+                value={simState.rho}
               />
             </div>
           </div>
