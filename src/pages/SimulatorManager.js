@@ -17,7 +17,7 @@ import ConfirmationDialog from './components/ConfirmationDialog'
 
 import { obtainIUData } from './components/simulator/helpers/obtainIUData'
 //import { detectChange } from './components/simulator/helpers/detectChange'
-import { generateMdaFuture } from './components/simulator/helpers/iuLoader'
+import { generateMdaFutureFromDefaults, generateMdaFutureFromScenario } from './components/simulator/helpers/iuLoader'
 import { combineFullMda } from './components/simulator/helpers/combineFullMda'
 import { removeInactiveMDArounds } from './components/simulator/helpers/removeInactiveMDArounds'
 import { trimMdaHistory } from './components/simulator/helpers/trimMdaHistory'
@@ -87,42 +87,61 @@ const SimulatorManager = ( props ) => {
 
       const currentScenarioData = scenarioState.currentScenarioId ? scenarioState.scenarioData[ scenarioState.currentScenarioId ] : null;
 
-      SimulatorEngine.simControler.runScenario(
-        simState,
-        isNewScenario
-          ? null // "create a new ID"
-          : currentScenarioData, // "re-run the scenario with this ID"
-        { progressCallback, resultCallback }
-      );
+      const callbacks = { progressCallback, resultCallback };
+
+      if ( isNewScenario ) {
+        SimulatorEngine.simControler.runScenario(
+          simState, // use default params
+          null, // create a new ID & scenario
+          callbacks
+        );
+      }
+
+      else {
+        SimulatorEngine.simControler.runScenario(
+          currentScenarioData.settings,  // use per-scenario params
+          currentScenarioData,  // use existing scenario
+          callbacks
+        );
+      }
+
     }
 
   };
 
   const updateMDAAndIUData = ( isNewScenario ) => {
 
-      const scenarioData = scenarioState.scenarioData[ scenarioState.currentScenarioId ];
-
-      const specificPrediction = scenarioData ? scenarioData.settings.specificPrediction : simState.specificPrediction;
-
+      // get MDA history
       const IUData = obtainIUData( simState, dispatchSimState );
+
       if ( isNewScenario ) {
         SimulatorEngine.simControler.iuParams = IUData.params;
       }
+
       const mdaHistory = IUData.mdaObj;
-      const generatedMda = generateMdaFuture( simState );
+
+      // generate MDA predictions
+      const scenarioData = scenarioState.scenarioData[ scenarioState.currentScenarioId ];
+
+      const specificPrediction = 
+        ( scenarioData && isNewScenario === false )
+          ? scenarioData.settings.specificPrediction
+          : simState.specificPrediction;
+
+      const generatedMda =
+        ( scenarioData && isNewScenario === false )
+          ? generateMdaFutureFromScenario( scenarioData )
+          : generateMdaFutureFromDefaults( simState );
+
       const mdaPrediction =
         specificPrediction !== null
           ? { ...generatedMda, ...specificPrediction }
           : generatedMda;
+
       const fullMDA = combineFullMda( mdaHistory, mdaPrediction );
 
       dispatchSimState( {
         type: 'defaultPrediction',
-        payload: mdaPrediction,
-      } );
-
-      dispatchSimState( {
-        type: 'tweakedPrediction',
         payload: mdaPrediction,
       } );
 

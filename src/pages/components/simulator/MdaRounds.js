@@ -21,7 +21,7 @@ const MdaRounds = (props) => {
   const history = scenarioState.scenarioData[ scenarioState.currentScenarioId ].mda2015;
   const future = scenarioState.scenarioData[ scenarioState.currentScenarioId ].mdaFuture;
 
-  const { simState, dispatchSimState } = useSimulatorStore()
+  const { simState } = useSimulatorStore()
   const classes = useStyles()
 
   const closeRoundModal = (event) => {
@@ -49,7 +49,7 @@ const MdaRounds = (props) => {
   };
 
   const setSimMDAactive = (array) => {
-    dispatchSimState({ type: 'tweakedActive', payload: array })
+   // dispatchSimState({ type: 'tweakedActive', payload: array })
   }
 
   const numberOfYears = 22

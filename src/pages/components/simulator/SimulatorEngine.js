@@ -1125,11 +1125,6 @@ export var simControler = {
 
         }
 
-        // has the label been updated in the UI?
-        if( existingScenario && params.inputs.scenarioLabels[ existingScenario.id ] ) {
-          newScenario.label = params.inputs.scenarioLabels[ existingScenario.id ];
-        }
-
         newScenario.stats = ( () => {
           var ts = [],
             dyrs = [],

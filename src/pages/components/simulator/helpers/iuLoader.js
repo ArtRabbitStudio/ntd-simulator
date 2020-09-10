@@ -65,8 +65,7 @@ export const loadAllIUhistoricData = async (
       mdaObj: mdaData,
       params: params,
     },
-    defaultPrediction: generateMdaFuture(simState),
-    tweakedPrediction: generateMdaFuture(simState),
+    defaultPrediction: generateMdaFutureFromDefaults(simState),
     specificPrediction: null, // null or {}
     needsRerun: false,
   }
@@ -267,7 +266,7 @@ export const loadIUParams = async (implementationUnit) => {
    */
 }
 
-export const generateMdaFuture = (simState) => {
+export const generateMdaFutureFromDefaults = (simState) => {
   //console.log('generateMDAFuture')
   //console.log(simState)
   const numberOfYears = 11 * 2
@@ -279,66 +278,27 @@ export const generateMdaFuture = (simState) => {
   }
   let MDAcoverage = []
   for (let i = 0; i < numberOfYears; i++) {
-    MDAcoverage.push(
-      simState.tweakedPrediction &&
-        simState.tweakedPrediction.beenFiddledWith[i] === true
-        ? simState.tweakedPrediction.coverage[i]
-        : simState.coverage
-    )
+    MDAcoverage.push( simState.coverage )
   }
   let MDAadherence = []
   for (let i = 0; i < numberOfYears; i++) {
-    MDAadherence.push(
-      simState.tweakedPrediction &&
-        simState.tweakedPrediction.beenFiddledWith[i] === true
-        ? simState.tweakedPrediction.adherence[i]
-        : simState.rho
-    )
+    MDAadherence.push( simState.rho )
   }
   let MDAbednets = []
   for (let i = 0; i < numberOfYears; i++) {
-    MDAbednets.push(
-      simState.tweakedPrediction &&
-        simState.tweakedPrediction.beenFiddledWith[i] === true
-        ? simState.tweakedPrediction.bednets[i]
-        : simState.covN
-    )
+    MDAbednets.push( simState.covN )
   }
   let MDAregimen = []
   for (let i = 0; i < numberOfYears; i++) {
-    MDAregimen.push(
-      simState.tweakedPrediction &&
-        simState.tweakedPrediction.beenFiddledWith[i] === true
-        ? simState.tweakedPrediction.regimen[i]
-        : simState.mdaRegimen
-    )
+    MDAregimen.push( simState.mdaRegimen )
   }
   let MDAactive = []
   for (let i = 0; i < numberOfYears; i++) {
     if (simState.mdaSixMonths === 12 && i % 2 === 1) {
-      MDAactive.push(
-        simState.tweakedPrediction &&
-          simState.tweakedPrediction.beenFiddledWith[i] === true
-          ? simState.tweakedPrediction.active[i]
-          : false
-      )
+      MDAactive.push( false )
     } else {
-      MDAactive.push(
-        simState.tweakedPrediction &&
-          simState.tweakedPrediction.beenFiddledWith[i] === true
-          ? simState.tweakedPrediction.active[i]
-          : true
-      ) // alternate here
+      MDAactive.push( true ) // alternate here
     }
-  }
-  let MDAbeenFiddledWith = []
-  for (let i = 0; i < numberOfYears; i++) {
-    MDAbeenFiddledWith.push(
-      simState.tweakedPrediction &&
-        simState.tweakedPrediction.beenFiddledWith[i] === true
-        ? true
-        : false
-    )
   }
   const newMDAs = {
     time: [...MDAtime],
@@ -347,9 +307,49 @@ export const generateMdaFuture = (simState) => {
     bednets: [...MDAbednets],
     regimen: [...MDAregimen],
     active: [...MDAactive],
-    beenFiddledWith: [...MDAbeenFiddledWith],
   }
-  //  console.log('newMDAs')
-  //  console.log(JSON.stringify(newMDAs))
+  return newMDAs
+}
+
+export const generateMdaFutureFromScenario = ( scenario, simState ) => {
+
+  const mdaFuture = scenario.mdaFuture;
+
+  const numberOfYears = 11 * 2
+
+  let MDAtime = []
+  for (let i = 0; i < numberOfYears; i++) {
+    // 246/12 = 2020
+    // 228/12 = 2019
+    MDAtime.push(6 * i + 246)
+  }
+  let MDAcoverage = []
+  for (let i = 0; i < numberOfYears; i++) {
+    MDAcoverage.push( mdaFuture.coverage[i] )
+  }
+  let MDAadherence = []
+  for (let i = 0; i < numberOfYears; i++) {
+    MDAadherence.push( mdaFuture.adherence[i] )
+  }
+  let MDAbednets = []
+  for (let i = 0; i < numberOfYears; i++) {
+    MDAbednets.push( mdaFuture.bednets[i] )
+  }
+  let MDAregimen = []
+  for (let i = 0; i < numberOfYears; i++) {
+    MDAregimen.push( mdaFuture.regimen[i] )
+  }
+  let MDAactive = []
+  for (let i = 0; i < numberOfYears; i++) {
+    MDAactive.push( mdaFuture.active[i] )
+  }
+  const newMDAs = {
+    time: [...MDAtime],
+    coverage: [...MDAcoverage],
+    adherence: [...MDAadherence],
+    bednets: [...MDAbednets],
+    regimen: [...MDAregimen],
+    active: [...MDAactive],
+  }
   return newMDAs
 }

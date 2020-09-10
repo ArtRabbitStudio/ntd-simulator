@@ -53,7 +53,6 @@ const initialState = {
     params: null, // parms object for IU
   },
   defaultPrediction: null, // future mdaObjPrediction for IU - user sets on setup page
-  tweakedPrediction: null, // future mdaObjPrediction for IU
   specificPrediction: null, // null or {}
   specificPredictionIndex: -1, // null or {}
   needsRerun: false,
@@ -93,51 +92,6 @@ const reducer = (simState, action) => {
       return {
         ...simState,
         defaultPrediction: action.payload,
-      }
-    case 'tweakedPrediction':
-      return {
-        ...simState,
-        tweakedPrediction: action.payload,
-      }
-    case 'tweakedCoverage':
-      return {
-        ...simState,
-        tweakedPrediction: {
-          ...simState.tweakedPrediction,
-          coverage: action.payload,
-        },
-      }
-    case 'tweakedAdherence':
-      return {
-        ...simState,
-        tweakedPrediction: {
-          ...simState.tweakedPrediction,
-          adherence: action.payload,
-        },
-      }
-    case 'tweakedBednets':
-      return {
-        ...simState,
-        tweakedPrediction: {
-          ...simState.tweakedPrediction,
-          bednets: action.payload,
-        },
-      }
-    case 'tweakedRegimen':
-      return {
-        ...simState,
-        tweakedPrediction: {
-          ...simState.tweakedPrediction,
-          regimen: action.payload,
-        },
-      }
-    case 'tweakedActive':
-      return {
-        ...simState,
-        tweakedPrediction: {
-          ...simState.tweakedPrediction,
-          active: action.payload,
-        },
       }
     case 'everythingbuthistoric':
       let newIUDataall = { ...simState.IUData }
