@@ -52,7 +52,7 @@ export const loadAllIUhistoricData = async (
     rhoBComp: 0, // $("#brMda").val(),
     rhoCN: 0, // $("#bedNetMda").val(),
     species: 0, // $("input[name=speciesRadios]:checked").val(),
-    runs: 10,
+    runs: 50,
   }
   const defaults = {
     ...defaultSimParams, // these ones are observed

@@ -29,8 +29,7 @@ const MdaRounds = (props) => {
     setCurMDARound(-1)
   }
   const closeRoundTooltip = (event) => {
-    // this breaks things
-    // setCurMDARound(-1)
+    setCurMDARound(-1)
   }
 
   const [curMDARound, setCurMDARound] = useState(-1)
@@ -163,7 +162,7 @@ const MdaRounds = (props) => {
                   {future.active[curMDARound] !==
                     false && (
                     <span className="t">
-                      {future.coverage[i]}%
+                      {future.coverage[i]}% coverage
                     </span>
                   )}
                   {future.active[curMDARound] ===

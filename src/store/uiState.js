@@ -22,6 +22,8 @@ class UiState {
         this.disease = event.target.value
     }
 
+
+
 }
 
 decorate(UiState, {

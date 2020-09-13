@@ -5,6 +5,8 @@ import Anopheles from "../../../images/Anopheles.jpg";
 import Culex from "../../../images/Culex.jpg";
 import InfoIcon from "../../../images/info-24-px.svg";
 import RemoveIcon from "../../../images/delete-icon-blue.svg";
+import graphTypeIconSimple from "../../../images/graph-icon.svg";
+import graphTypeIconComplex from "../../../images/graph-complex-icon.svg";
 import SettingsIcon from '../../../images/settings.svg';
 
 const useStyles = makeStyles((theme) => ({
@@ -84,6 +86,48 @@ const useStyles = makeStyles((theme) => ({
 
     "& .MuiTouchRipple-root": {
       backgroundImage: `url(${RemoveIcon})`,
+      backgroundPosition: "center",
+      backgroundSize: "auto",
+      backgroundRepeat: "no-repeat",
+    },
+    "&:hover": {
+      backgroundColor: "rgb(204, 232, 244)",
+      "& .MuiTouchRipple-root": {
+        //backgroundImage: `url(${IconHover})`,
+      },
+    },
+  },
+  graphTypeIconSimple: {
+    backgroundColor: "transparent",
+    boxShadow: "none",
+    float: 'right',
+    marginTop:-25,
+    marginLeft: 10,
+    zIndex: 9,
+
+    "& .MuiTouchRipple-root": {
+      backgroundImage: `url(${graphTypeIconSimple})`,
+      backgroundPosition: "center",
+      backgroundSize: "auto",
+      backgroundRepeat: "no-repeat",
+    },
+    "&:hover": {
+      backgroundColor: "rgb(204, 232, 244)",
+      "& .MuiTouchRipple-root": {
+        //backgroundImage: `url(${IconHover})`,
+      },
+    },
+  },
+  graphTypeIconComplex: {
+    backgroundColor: "transparent",
+    boxShadow: "none",
+    float: 'right',
+    marginTop:-25,
+    marginLeft: 10,
+    zIndex: 9,
+
+    "& .MuiTouchRipple-root": {
+      backgroundImage: `url(${graphTypeIconComplex})`,
       backgroundPosition: "center",
       backgroundSize: "auto",
       backgroundRepeat: "no-repeat",

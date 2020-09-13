@@ -2,70 +2,16 @@ import React, { useState } from 'react'
 import { observer } from 'mobx-react'
 import { useRouteMatch } from 'react-router-dom'
 
-import { makeStyles } from '@material-ui/core/styles'
 import { useDataAPI, useUIState } from '../../hooks/stateHooks'
 import { useHistory } from 'react-router-dom'
 
 import ConfirmationDialog from "./ConfirmationDialog";
-
-import Box from '@material-ui/core/Box'
-import TextField from '@material-ui/core/TextField'
+import { Box, TextField,FormControl,Fab } from '@material-ui/core';
 import Autocomplete from '@material-ui/lab/Autocomplete'
-import FormControl from '@material-ui/core/FormControl'
+import useStyles from '../../theme/SelectCountry'
 
-const useStyles = makeStyles(theme => ({
-  root: {
-    zIndex: 9,
-    position: 'relative',
-  },
-  box: {
-    zIndex: 9,
-    position: 'relative',
-    width: '100%',
-    display: 'flex',
-    flexDirection: 'column',
-    margin: theme.spacing(0, 0, 4, 0),
-    [theme.breakpoints.up('md')]: {
-    },
-    [theme.breakpoints.up('lg')]: {
-    },
-  },
-  formControl: {
-    margin: theme.spacing(0, 0, 0, 0),
-    width: '100%',
-    textAlign: 'left',
-    '& > label': {},
-    '& input': {
-      fontSize: 18
 
-    },
-    '&.countries': {
-      margin: theme.spacing(0, 0, 2, 0),
-    },
-    '&.countries input': {
-      fontSize: 26,
-      color: '#2c3f4d'
-
-    },
-    [theme.breakpoints.up('sm')]: {
-    },
-    [theme.breakpoints.up('md')]: {
-      width: '50%',
-      '& input': {
-        fontSize: 24
-
-      },
-      '&.countries input': {
-        fontSize: 44
-
-      },
-    },
-    [theme.breakpoints.up('lg')]: {
-    },
-  },
-}))
-
-const SelectCountry = ({ selectIU, showConfirmation }) => {
+const SelectCountry = ({ selectIU, showConfirmation, showBack }) => {
   const classes = useStyles()
   const history = useHistory()
   const matchSection = useRouteMatch('/:section')
@@ -79,10 +25,21 @@ const SelectCountry = ({ selectIU, showConfirmation }) => {
     let u = url ? url : goTo;
     history.push({ pathname: u })
   }
+  
+  const handleBackToCountry = () => {
+    const section = 'country'
+    const url = `/${section}/${country}`;
+    if (showConfirmation) {
+      setGoTo(url)
+      setConfirmatonOpen(true);
+    } else {
+      navigate(url)
+    }
+  }
+
 
   const handleCountryChange = (event, value) => {
-    console.log( 'SelectCountry handleCountryChange' );
-    let section = 'country'
+    const section = 'country'
     if (matchSection) {
       if (matchSection.params.section !== 'simulator') { // keep the page, not for simulator
         //section = matchSection.params.section
@@ -90,7 +47,7 @@ const SelectCountry = ({ selectIU, showConfirmation }) => {
     }
 
     if (value) {
-      let url = `/${section}/${value.id}`;
+      const url = `/${section}/${value.id}`;
       if (showConfirmation) {
         setGoTo(url)
         setConfirmatonOpen(true);
@@ -102,7 +59,6 @@ const SelectCountry = ({ selectIU, showConfirmation }) => {
   }
 
   const handleIUChange = (event, value) => {
-    console.log( 'SelectCountry handleIUChange' );
     let section = 'setup'
     if (value) {
       let url = `/${section}/${country}/${value.id}`
@@ -138,7 +94,7 @@ const SelectCountry = ({ selectIU, showConfirmation }) => {
 
         <FormControl className={`${classes.formControl} countries`}>
           <Autocomplete
-            id="combo-box-demo"
+            id="country"
             options={countrySuggestionsWithDefault}
             getOptionLabel={option => option.name}
             getOptionSelected={ ( a, b ) => { return a.name === b.name } } // stop the Autocomplete warning barf
@@ -148,10 +104,20 @@ const SelectCountry = ({ selectIU, showConfirmation }) => {
             )}
             onChange={handleCountryChange}
           />
+          {showBack && <Fab
+          color="inherit"
+          aria-label="REMOVE SCENARIO"
+          disabled={false}
+          className={classes.reloadIcon}
+          onClick={()=>{handleBackToCountry()}}
+        >
+          &nbsp;
+        </Fab>}
         </FormControl>
+        
 
         {selectIU &&
-          <FormControl className={`${classes.formControl}`}>
+          <FormControl className={`${classes.formControl} ius` }>
             <Autocomplete
               id="iu"
               options={activeIUs}

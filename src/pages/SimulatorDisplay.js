@@ -71,7 +71,15 @@ const SimulatorDisplay = (props) => {
   const classes = useStyles();
 
   const [ graphMetric, setGraphMetric ] = useState( 'Ms' )
+  const [ graphTypeSimpleLocal, setGraphTypeSimpleLocal ] = useState(true)
+  const handleGraphTypeChange = () => {
+    if (graphTypeSimpleLocal) {
+      setGraphTypeSimpleLocal(false)
+    } else {
+      setGraphTypeSimpleLocal(true)
+    }
 
+  }
   const { simState } = useSimulatorStore();
   const { scenarioState, /*dispatchScenarioStateUpdate*/ } = useScenarioStore();
 
@@ -118,7 +126,9 @@ const SimulatorDisplay = (props) => {
                 <SettingPrecision
                   classAdd={classes.precision}
                   inModal={true}
-                  label="Precision"
+                  label="Precision (runs)"
+                  setGraphTypeSimple={handleGraphTypeChange}
+                  graphTypeSimple={graphTypeSimpleLocal}
                 />
               </Grid>
 
@@ -244,6 +254,7 @@ const SimulatorDisplay = (props) => {
 
               <ScenarioGraph
                 data={scenarioData}
+                graphTypeSimple={graphTypeSimpleLocal}
                 showAllResults={false}
                 metrics={[graphMetric]}
                 simInProgress={props.simInProgress}

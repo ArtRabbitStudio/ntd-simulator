@@ -345,17 +345,18 @@ const SimulatorManager = ( props ) => {
 
     []
   );
-
+  // debug
+  //Scenario state last updated: {scenarioState.updated.toISOString()}
   return (
     <div id="SimulatorManager">
       <Layout>
 
       <HeadWithInputs title="prevalence simulator" />
 
-      Scenario state last updated: {scenarioState.updated.toISOString()}
-
-      <SelectCountry selectIU={true} showConfirmation={true} />
-
+      
+    
+      <SelectCountry selectIU={true} showConfirmation={true} showBack={true} />
+    
         <section className={classes.simulator}>
 
         <Grid container spacing={0}>

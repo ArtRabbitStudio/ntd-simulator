@@ -25,6 +25,7 @@ function ScenarioGraph({
   classes,
   simInProgress,
   simNeedsRerun,
+  graphTypeSimple,
   IU,
   IUData
 }) {
@@ -38,6 +39,7 @@ function ScenarioGraph({
   const svgWidth = width
 
   const dataSelection = showAllResults ? data.results : [data.results[0]]
+
 
   const isStartYear = (element) => element >= startYear;
   const isPrediction = (element) => element >= futureYear;
@@ -63,10 +65,10 @@ function ScenarioGraph({
   domainY[0] = 0;
 
   const ShowActivePoint = ({ active, coord, mode }) => {
-    const highColour = mode === 'f' ? '#FAEAE1' : '#cccccc'
+    const highColour = mode === 'f' ? '#D86422' : '#ABB2B8'
     const lowColour = mode === 'f' ? '#ffc914' : '#ffc914'
-    const textHigh = mode === 'f' ? '#252525' : '#252525'
-    const textLow = mode === 'f' ? '#252525' : '#252525'
+    const textHigh = mode === 'f' ? '#fff' : '#fff'
+    const textLow = mode === 'f' ? '#2c3f4d' : '#2c3f4d'
 
     return (
       <g
@@ -167,8 +169,6 @@ function ScenarioGraph({
   }
 
 
-
-
   const x = scaleLinear().domain(domainX).range([0, width - rPad])
 
   const y = scaleLinear().domain(domainY).range([height, 0]).nice()
@@ -221,8 +221,8 @@ function ScenarioGraph({
     
     // future path
 
-    const color = main ? '#D86422' : '#eeee'
-    const hcolor = main ? '#CCCCCC' : '#eeee'
+    const color = main ? '#D86422' : '#eee'
+    const hcolor = main ? '#ABB2B8' : '#eee'
 
     let activeCoords = []
     let activeMode = 'h'
@@ -236,13 +236,16 @@ function ScenarioGraph({
 
     }
 
+    /*  for debugging
+        {historicReferencUpperLine && <path d={historicReferencUpperLine} stroke="#64BADE" fill="none" strokeWidth="1" />}
+        {historicReferencLowerLine && <path d={historicReferencLowerLine} stroke="#64BADE" fill="none" strokeWidth="1" />}
+        {historicReferncePrevalenceLine && <path d={historicReferncePrevalenceLine} stroke="#1998CE" fill="none" strokeWidth="1" />}
+    */
 
 
     return (
       <>
-        {historicReferencUpperLine && <path d={historicReferencUpperLine} stroke="#64BADE" fill="none" strokeWidth="1" />}
-        {historicReferencLowerLine && <path d={historicReferencLowerLine} stroke="#64BADE" fill="none" strokeWidth="1" />}
-        {historicReferncePrevalenceLine && <path d={historicReferncePrevalenceLine} stroke="#1998CE" fill="none" strokeWidth="1" />}
+        
         {metrics.map((m, i) => (
           <g key={`${i}-l`}>
             <Path
@@ -294,6 +297,48 @@ function ScenarioGraph({
       </>
     )
   }
+  const renderRange = (d,dMax,dts, main) => {
+    //console.log('renderRange',d)
+
+    if (simInProgress) return
+
+
+    //seriesObj.splice(0,IndexToStartForOutput)
+    // historic path
+    const tsSeries = dts.slice(IndexToStartForOutput)
+    const ftsSeries = dts.slice(IndexForPrediction)
+    const historicSeries = d.slice(IndexToStartForOutput, IndexForPrediction + 1)
+    const futureSeries = d.slice(IndexForPrediction)
+    const historicSeriesMax = dMax.slice(IndexToStartForOutput, IndexForPrediction + 1)
+    const futureSeriesMax = dMax.slice(IndexForPrediction)
+
+    const points = historicSeriesMax.map((value,index)=>{
+      return `${x(tsSeries[index])},${y(value)} `
+    })
+    let pointsMax = historicSeries.map((value,index)=>{
+      return `${x(tsSeries[index])},${y(value)} `
+    })
+    pointsMax.reverse()
+    const historicColor = '#959FA6'
+    const fpoints = futureSeriesMax.map((value,index)=>{
+      return `${x(ftsSeries[index])},${y(value)} `
+    })
+    let fpointsMax = futureSeries.map((value,index)=>{
+      return `${x(ftsSeries[index])},${y(value)} `
+    })
+    fpointsMax.reverse()
+    const futureColor = '#D86422'
+
+    return (
+
+      <>
+          <polygon points={points+' '+pointsMax} fill={historicColor} opacity={.1} />
+          <polygon points={fpoints+' '+fpointsMax} fill={historicColor} opacity={.15} />
+      </>
+
+    )
+  
+  }
 
   return (
     <React.Fragment>
@@ -328,7 +373,7 @@ function ScenarioGraph({
                     ? {}
                     : { strokeDasharray: '10 2' })}
                   {...(15 + i === futureYear ? { strokeWidth: "2" } : {})}
-                  {...(15 + i === futureYear ? { stroke: "#ccc" } : { stroke: "#ccc" })}
+                  {...(15 + i === futureYear ? { stroke: "#ddd" } : { stroke: "#ddd" })}
                 ></line>
                 <text x={xt} y={height + yPad - 20} fontSize={12} textAnchor="middle">
                   {yearLabel}
@@ -368,19 +413,23 @@ function ScenarioGraph({
               </g>
             )
           })}
+          {graphTypeSimple && data.results &&
+            <g key={`results1-stats`}>{renderRange( data.stats[metrics+'Min'],  data.stats[metrics+'Max'], data.stats['ts'], false, x, y)}</g>
+          }
           <line
             key={`WHO target`}
             x1={0}
             x2={width - lPad - rPad}
             y1={y(1)}
             y2={y(1)}
-            stroke="#ffc914"
+            stroke="#03D386"
             strokeDasharray='10 2'
           ></line>
-          {data.results &&
+          {!graphTypeSimple && data.results &&
             data.results.map((result, i) => (
               <g key={`results1-${i}`}>{renderResult(result, false, x, y)}</g>
             ))}
+          
           {data.stats &&
             [data.stats].map((result, i) => (
               <g key={`results-${i}`}>{renderResult(result, true, x, y)}</g>
