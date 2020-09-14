@@ -24,8 +24,6 @@ const MdaRounds = (props) => {
   const { simState } = useSimulatorStore()
   const classes = useStyles()
 
-  console.log('classes',classes)
-
   const closeRoundModal = (event) => {
     setDoseSettingsOpen(false)
     setCurMDARound(-1)
@@ -89,6 +87,16 @@ const MdaRounds = (props) => {
     }
   // eslint-disable-next-line
   }, [simState.mdaSixMonths])
+
+ 
+  const outputMDATime = (curMDARound) => {
+    const year = 2020 + ( curMDARound / 2) 
+    if ( year % 1 === 0 ) {
+      return year
+    } else {
+      return Math.floor(year)+' - round 2'
+    }
+  }
 
 
   return (
@@ -226,12 +234,13 @@ const MdaRounds = (props) => {
             >
               <Typography className={classes.title} variant="h4" component="h4">
                 {/* MDA round #  */}
-                {simState.mdaSixMonths === 6
+                {outputMDATime(curMDARound)}
+                {/*simState.mdaSixMonths === 6
                   ? curMDARound % 2
                     ? new Date().getFullYear() + Math.floor(curMDARound / 2)
                     : new Date().getFullYear() + curMDARound / 2
                   : new Date().getFullYear() + curMDARound}
-                {curMDARound % 2 ? ' - round 2' : ''}
+                {curMDARound % 2 ? ' - round 2' : ''*/}
               </Typography>
 
               <SettingTargetCoverage

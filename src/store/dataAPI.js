@@ -48,7 +48,7 @@ const groupProps = (obj, pattern) =>
     mapKeys((key) => key.replace(/[^\d]/g, ""))
   )(obj);
 
-const roundPrevalence = (p) => (isFinite(p) ? round(p * 100, 2) : null);
+const roundPrevalence = (p) => (isFinite(p) ? round((p * 100 * 100))/100 : null);
 
 const buildScales = (stats, data) => {
   //   const prev = scaleSequential(interpolateReds)
@@ -196,11 +196,11 @@ function createEntries({ data, relations, key }) {
           : key === "StateCode"
             ? meta.StateName
             : meta.IUName;
-
+      
       const prevalence = mapValuesFP(roundPrevalence)(groupProps(row, "Prev_"));
       const prevValues = values(prevalence);
       // take specific value depending on data we're assuming it's supplied from 2010 - 2019
-      const performance = last(prevValues) - prevValues[9];
+      const performance = round(last(prevValues) - prevValues[9]*100)/100;
       // this looks at the entire range from 2000 - 2019 or first and last
       //const performance = last(prevValues) - first(prevValues);
 
@@ -486,6 +486,7 @@ class DataAPI {
   get selectedIUData() {
     const ius = this.IUsCurrentRegime;
     if (this.uiState.implementationUnit) {
+      console.log(flow(filter((x) => x.id === this.uiState.implementationUnit))(ius))
       return flow(filter((x) => x.id === this.uiState.implementationUnit))(ius);
     }
     return 'nada';
