@@ -45,7 +45,7 @@ const initialState = {
   species: 0, // $("input[name=speciesRadios]:checked").val(),
   /* macrofilaricide: 65, // $("#Macrofilaricide").val(),
   microfilaricide: 65, // $("#Microfilaricide").val(), */
-  runs: 50, // $("#runs").val()
+  runs: 30, // $("#runs").val()
   defaultParams: null,
   IUData: {
     id: null, //which IU is loaded if any

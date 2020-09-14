@@ -8,6 +8,7 @@ import {
   MenuItem,
   Select,
   Typography,
+  Tooltip
 } from '@material-ui/core'
 import RotateLeftIcon from '@material-ui/icons/RotateLeft'
 
@@ -268,13 +269,20 @@ const SimulatorDisplay = (props) => {
 
             <MdaRounds />
 
+            
+            <Tooltip
+              title="White bars show no intervention;  blue bars show intervention, the height of the blue colour shows coverage. Historic interventions before 2019 are greyed out."
+              aria-label="info"
+            >
+
             <Typography
-              className={classes.scenarioGraphLegendInterventions}
+              className={`${classes.scenarioGraphLegendInterventions} ${classes.withHelp}`}
               variant="h6"
               component="h6"
             >
               Interventions
             </Typography>
+            </Tooltip>
           </div>
         </div>
 

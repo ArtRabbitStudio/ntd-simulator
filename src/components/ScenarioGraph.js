@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { zip, zipObject, map, flatten, flattenDeep, pick, values, max, forEach,filter } from 'lodash'
+import { zip, zipObject, map, flatten, flattenDeep, pick, values, max, forEach } from 'lodash'
 import { scaleLinear, extent, line } from 'd3'
 import AutoSizer from 'react-virtualized-auto-sizer'
 import {
@@ -185,7 +185,7 @@ function ScenarioGraph({
     // historic path
     const historicSeries = seriesObj.slice(IndexToStartForOutput, IndexForPrediction + 1)
     const futureSeries = seriesObj.slice(IndexForPrediction)
-    let historicReferenceUpper = null
+    /*let historicReferenceUpper = null
     let historicReferencUpperLine = null
     let historicReferenceLower = null
     let historicReferencLowerLine = null
@@ -217,7 +217,7 @@ function ScenarioGraph({
       }),value => value != null)
       historicReferencLowerLine = line()(historicReferenceLower)
       
-    }
+    }*/
     
     // future path
 
@@ -319,7 +319,7 @@ function ScenarioGraph({
       return `${x(tsSeries[index])},${y(value)} `
     })
     pointsMax.reverse()
-    const historicColor = '#959FA6'
+    const bgColor = '#959FA6'
     const fpoints = futureSeriesMax.map((value,index)=>{
       return `${x(ftsSeries[index])},${y(value)} `
     })
@@ -327,13 +327,12 @@ function ScenarioGraph({
       return `${x(ftsSeries[index])},${y(value)} `
     })
     fpointsMax.reverse()
-    const futureColor = '#D86422'
 
     return (
 
       <>
-          <polygon points={points+' '+pointsMax} fill={historicColor} opacity={.1} />
-          <polygon points={fpoints+' '+fpointsMax} fill={historicColor} opacity={.15} />
+          <polygon points={points+' '+pointsMax} fill={bgColor} opacity={.1} />
+          <polygon points={fpoints+' '+fpointsMax} fill={bgColor} opacity={.15} />
       </>
 
     )
@@ -375,7 +374,7 @@ function ScenarioGraph({
                   {...(15 + i === futureYear ? { strokeWidth: "2" } : {})}
                   {...(15 + i === futureYear ? { stroke: "#ddd" } : { stroke: "#ddd" })}
                 ></line>
-                <text x={xt} y={height + yPad - 20} fontSize={12} textAnchor="middle">
+                <text x={xt} y={height + yPad - 20} fontSize={12} textAnchor="middle" fill="#2c3f4d">
                   {yearLabel}
                 </text>
                 {(i < ticksX.length - 1) && <line
@@ -406,7 +405,7 @@ function ScenarioGraph({
                     ? {}
                     : { strokeDasharray: '10 2' })}
                 ></line>
-                <text x={-rPad} y={yt + 4} fontSize={12} textAnchor="middle">
+                <text x={-rPad} y={yt + 4} fontSize={12} fill="#2c3f4d" textAnchor="middle">
                   {`${t}%`}
                 </text>
                 {yearBar}

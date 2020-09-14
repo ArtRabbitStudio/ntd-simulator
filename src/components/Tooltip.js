@@ -6,13 +6,14 @@ export default function Tooltip({ feature, year, position }) {
   const { endemicity,name, performance, [`prev-${year}`]: prevalence } = feature.properties
   const [x, y] = position
 
+  let trend = performance <= 0 ? ' | Trend: ⬇' + -1 * performance + '% ' : ' | Trend: ⬆' + performance + '%'
+  if ( performance === 0 ) {
+    trend = '';
+  }
+
   let title =
     prevalence !== 'null'
-      ? `${name} ${prevalence}% ${
-          performance <= 0
-            ? '⬇' + -1 * performance + '%'
-            : '⬆' + performance + '%'
-        }`
+      ? `${name}: ${prevalence}% ${trend}`
       : `${name} ${NO_DATA}`
 
   if ( endemicity === 'Non-endemic' ) {

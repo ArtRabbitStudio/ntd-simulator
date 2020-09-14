@@ -24,6 +24,8 @@ const MdaRounds = (props) => {
   const { simState } = useSimulatorStore()
   const classes = useStyles()
 
+  console.log('classes',classes)
+
   const closeRoundModal = (event) => {
     setDoseSettingsOpen(false)
     setCurMDARound(-1)
@@ -51,6 +53,24 @@ const MdaRounds = (props) => {
    // dispatchSimState({ type: 'tweakedActive', payload: array })
   }
 
+  const outputTitle = (time,coverage,adherence,bednets,regimen,active) => {
+    if ( !active || coverage === 0 ) {
+        return `${calculateTime(time)}: no intervention`
+    } else {
+      return `${calculateTime(time)}: coverage ${coverage}%`
+    }
+    
+  }
+  const calculateTime = (months) => {
+    const year = (2000 + (months)/12) - .5
+    if ( year % 1  === 0 ) {
+      return year
+    } else {
+      return Math.floor(year)+' - round 2'
+    }
+   
+  }
+
   const numberOfYears = 22
   React.useEffect(() => {
     // global mdaSixMonths change
@@ -73,6 +93,10 @@ const MdaRounds = (props) => {
 
   return (
     <React.Fragment>
+      <div className={classes.legend}>
+        <Typography className={classes.legendText} variant="h5" component="h5">0%</Typography>
+        <Typography className={`${classes.legendText} ${classes.legendTextBottom}`} variant="h5" component="h5">100%</Typography>
+      </div>
       <div className="bars">
         {/* history */}
         {history &&
@@ -81,18 +105,7 @@ const MdaRounds = (props) => {
             <React.Fragment key={`bar-hist-${i}`}>
               <div
                 className={`bar history`}
-                title={
-                  history.time[i] +
-                  ', ' +
-                  history.coverage[i] +
-                  ', ' +
-                  history.adherence[i] +
-                  ', ' +
-                  history.bednets[i] +
-                  ', ' +
-                  history.regimen[i] +
-                  ' '
-                }
+                title={outputTitle(history.time[i],history.coverage[i],history.adherence[i],history.bednets[i],history.regimen[i],true)}
               >
                 <span
                   style={{
@@ -102,18 +115,7 @@ const MdaRounds = (props) => {
               </div>
               <div
                 className={`bar history`}
-                title={
-                  history.time[i] +
-                  ', ' +
-                  history.coverage[i] +
-                  ', ' +
-                  history.adherence[i] +
-                  ', ' +
-                  history.bednets[i] +
-                  ', ' +
-                  history.regimen[i] +
-                  ' '
-                }
+                title={outputTitle(history.time[i],history.coverage[i],history.adherence[i],history.bednets[i],history.regimen[i],true)}
               >
                 <span
                   style={{
@@ -134,20 +136,7 @@ const MdaRounds = (props) => {
             className={`bar ${
               future.active[i] === false ? 'removed' : ''
             } ${i === curMDARound ? 'current' : ''}`}
-            title={
-              future.time[i] +
-              ', ' +
-              future.coverage[i] +
-              ', ' +
-              future.adherence[i] +
-              ', ' +
-              future.bednets[i] +
-              ', ' +
-              future.regimen[i] +
-              ', ' +
-              future.active[i] +
-              ' '
-            }
+            title={outputTitle(future.time[i],future.coverage[i],future.adherence[i],future.bednets[i],future.regimen[i],future.active[i])}
           >
             <span
               className={i === curMDARound ? 'current' : ''}

@@ -1,9 +1,11 @@
 import React, { useEffect, forwardRef, useImperativeHandle } from 'react'
-import ReactMapGL, { Source, Layer } from 'react-map-gl'
+import ReactMapGL, { Source, Layer, HTMLOverlay } from 'react-map-gl'
 import { useHistory } from 'react-router-dom'
 import centroid from '@turf/centroid'
+import { Typography, Box, Paper } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import Tooltip from './Tooltip'
+import Legend from './Legend'
 import useMapReducer from '../hooks/useMapReducer'
 import 'mapbox-gl/dist/mapbox-gl.css'
 
@@ -35,6 +37,7 @@ function Map({
             dispatch({ type: 'START_PLAY' })
         },
     }))
+
 
     //if (countryFeatures) console.log('countryFeatures',countryFeatures)
     /*if (iuFeatures) console.log('iuFeatures',iuFeatures)
@@ -216,7 +219,30 @@ function Map({
                     <Tooltip feature={featureHover} year={year} position={tooltip} />
                 )}
 
+                {/* Legend */}
+                
+                <HTMLOverlay
+                    redraw={() => (
+                    <div
+                        style={{
+                        right: 32,
+                        bottom: 32,
+                        position: 'absolute',
+                        }}
+                    >
+                        <Paper>
+                        <Box p={1} pb={2}>
+                            <Typography variant="body2" className={classes.legendTitle}>
+                            {trendMode ? 'Prevalence 2019' : 'Prevalence 2019'}
+                            </Typography>
 
+                            <Legend colorScale={colorScale} />
+                        </Box>
+                        </Paper>
+                    </div>
+                    )}
+                />
+                
             </ReactMapGL>
         </div>
     )

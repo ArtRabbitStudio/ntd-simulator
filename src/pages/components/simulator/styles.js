@@ -205,6 +205,19 @@ const useStyles = makeStyles((theme) => ({
     left: "50%",
     transform: "translate(-50%, 0%)",
   },
+  legend: {
+    float:'left',
+    width:30,
+    height:110,
+
+  },
+  legendText: {
+    fontSize:12,
+    textAlign: 'right'
+  },
+  legendTextBottom: {
+    marginTop:90
+  },
   buttonBG: {
     backgroundColor: "#fff"
   },
@@ -215,7 +228,7 @@ const useStyles = makeStyles((theme) => ({
   withHelp: {
     cursor: "help",
     backgroundImage: `url(${InfoIcon})`,
-    backgroundPosition: "right center",
+    backgroundPosition: "right 4px",
     backgroundSize: "auto",
     backgroundRepeat: "no-repeat",
     width: "fit-content",

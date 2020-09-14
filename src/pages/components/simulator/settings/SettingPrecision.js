@@ -1,6 +1,5 @@
 import React from 'react';
 import useStyles from "../styles";
-import { observer } from 'mobx-react'
 
 
 

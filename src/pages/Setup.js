@@ -140,7 +140,7 @@ const Setup = (props) => {
           </div>
           <div className={classes.chart}>
           <Tooltip
-              title="White bars: No intervention. Blue bars: intervention, height of blue in bar shows coverage."
+              title="White bars show no intervention;  blue bars show intervention, the height of the blue colour shows coverage."
               aria-label="info"
             >
             <Typography

@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { observer } from 'mobx-react'
+import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles'
 import SimpleDialog from './components/SimpleDialog'
 import { useDataAPI, useUIState } from '../hooks/stateHooks'
@@ -34,6 +35,10 @@ const useStyles = makeStyles(theme => ({
         marginLeft: -theme.spacing(6),
         padding: theme.spacing(4, 6),
     },
+    legend: {
+        marginTop: theme.spacing(2),
+        color: theme.palette.text.secondary,
+    }
 }))
 
 
@@ -45,6 +50,7 @@ const Country = props => {
     const {
         iuFeatures,
         countryFeatures,
+        iuScales,
         //stateFeatures,
         //stateScales,
         //iuData,
@@ -91,7 +97,7 @@ const Country = props => {
                         countryFeatures={countryFeatures}
                         //stateFeatures={stateFeaturesCurrentCountry}
                         iuFeatures={iuFeatures}
-                        colorScale={false}
+                        colorScale={iuScales.prev}
                         height={720}
                         trendMode={false}
                         disableZoom={true}
@@ -102,6 +108,7 @@ const Country = props => {
                         }}
                     />
                 </div>
+                <Typography component="h6" variant="h6" className={classes.legend}>Prevalence map and trends since 2010.</Typography>
             </section>
             
             {notAvaliableAlert &&
