@@ -12,7 +12,7 @@ export const loadAllIUhistoricData = async (
   disease
 ) => {
 
-  // TODO new param diesase 
+  // TODO new param diesase
   switch (disease) {
     case DISEASE_LIMF:
       break;
@@ -34,6 +34,26 @@ export const loadAllIUhistoricData = async (
   // set default values
   const defaultSimParams = {
     settings: {
+    covN: 0, // $("#bedNetCoverage").val(),
+    coverage: 90, // $("#MDACoverage").val(),
+    endemicity: 10, // $("#endemicity").val(),
+    macrofilaricide: 65, // $("#Macrofilaricide").val(),
+    mda: 2, // $("#inputMDARounds").val(),
+    mdaRegimen: 'xIA', // $("input[name=mdaRegimenRadios]:checked").val(),
+    mdaSixMonths: 6, // $("input:radio[name=mdaSixMonths]:checked").val(),
+    microfilaricide: 65, // $("#Microfilaricide").val(),
+    rho: 0.2, // $("#sysAdherence").val(),
+    rhoBComp: 0, // $("#brMda").val(),
+    rhoCN: 0, // $("#bedNetMda").val(),
+    runs: 10, // $("#runs").val()
+    species: 0, // $("input[name=speciesRadios]:checked").val(),
+    specificPrediction: null, // null or {}
+    specificPredictionIndex: -1, // null or {}
+    v_to_hR: 0, // $("#insecticideCoverage").val(),
+    vecCap: 0, // $("#vectorialCapacity").val(),
+    vecComp: 0, //$("#vectorialCompetence").val(),
+    vecD: 0, //$("#vectorialDeathRate").val(),
+    /*
       coverage: 65, // $("#MDACoverage").val(),
       mda: 1, // $("#inputMDARounds").val(), TODO: what do we do here?
       mdaSixMonths: 12, // TODO; what do we do here
@@ -54,6 +74,7 @@ export const loadAllIUhistoricData = async (
       microfilaricide: 65, // - NOT CHANGED ANYWHERE
       specificPrediction: null, // null or {},
       specificPredictionIndex: -1
+    */
     }
   }
 
@@ -297,11 +318,18 @@ export const generateMdaFutureFromDefaults = (simState) => {
 
   let MDAactive = [];
   for ( let i = 0; i < numberOfYears; i++ ) {
-    if (simState.mdaSixMonths === 12 && i % 2 === 1) {
-      MDAactive.push( false );
-    } else {
-      MDAactive.push( true ); // alternate here
+
+    let active;
+
+    if( i <= simState.settings.specificPredictionIndex ) {
+      active = false;
     }
+
+    else {
+      active = simState.settings.mdaSixMonths === 6 ? true : ( i % 2 ? false : true );
+    }
+
+    MDAactive.push( active );
   }
 
   const newMDAs = {
@@ -352,7 +380,18 @@ export const generateMdaFutureFromScenario = ( scenario ) => {
 
   let MDAactive = [];
   for ( let i = 0; i < numberOfYears; i++ ) {
-    MDAactive.push( mdaFuture.active[i] );
+
+    let active;
+
+    if( i <= scenario.settings.specificPredictionIndex ) {
+      active = false;
+    }
+
+    else {
+      active = scenario.settings.mdaSixMonths === 6 ? true : ( i % 2 ? false : true );
+    }
+
+    MDAactive.push( active );
   }
 
   const newMDAs = {

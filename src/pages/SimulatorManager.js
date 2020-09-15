@@ -306,7 +306,7 @@ const SimulatorManager = ( props ) => {
       const simulatorState = SessionStorage.simulatorState;
 
       // if it's got state for this IU cached
-      if( simulatorState.IUData.id === props.match.params.iu ) {
+      if( simulatorState && simulatorState.IUData && simulatorState.IUData.id === props.match.params.iu ) {
 
         // set it in memory
         if ( simulatorState ) {

@@ -70,15 +70,63 @@ const reducer = ( scenarioState, action ) => {
 
       case ScenarioStoreConstants.ACTION_TYPES.UPDATE_SCENARIO_SETTING_BY_ID:
         newState.scenarioData[ action.id ].settings[ action.key ] = action.value;
+
         // copy this per-scenario setting across to all the MDA rounds for this scenario
-        const mdaFutureKey = settingToMdaFutureMap[ action.key ];
-        if( Object.keys( newState.scenarioData[ action.id ].mdaFuture ).includes( mdaFutureKey ) ) {
+        if( Object.keys( settingToMdaFutureMap ).includes( action.key ) ) {
+          const mdaFutureKey = settingToMdaFutureMap[ action.key ];
           newState.scenarioData[ action.id ].mdaFuture[ mdaFutureKey ].forEach(
             ( v, idx ) => {
               newState.scenarioData[ action.id ].mdaFuture[ mdaFutureKey ][ idx ] = action.value;
             }
           );
         }
+
+        /*
+         * work out whether a specific prediction (e.g. 6 months covid) is set
+         * either in existing state or in new action
+         */
+        const specificPredictionIndex =
+          action.key === 'mdaSixMonths'
+            ? newState.scenarioData[ action.id ].settings.specificPredictionIndex
+            : action.key === 'specificPredictionIndex'
+              ? action.value
+              : null;
+
+        /*
+         * work out if it's annual or every 6 months, either
+         * from existing state or in new action
+         */
+        const mdaSixMonths = action.key === 'mdaSixMonths'
+          ? action.value
+          : newState.scenarioData[ action.id ].settings.mdaSixMonths;
+
+        /*
+         * assuming there's a proper prediction set, block off any years in the prediction
+         * and then work out 6-monthly/yearly after that
+         */
+        if ( specificPredictionIndex !== null && typeof specificPredictionIndex !== 'undefined' ) {
+
+          newState.scenarioData[ action.id ].mdaFuture.active = newState.scenarioData[ action.id ].mdaFuture.active.map(
+
+            ( v, idx ) => {
+
+              let active;
+
+              if( idx <= specificPredictionIndex ) {
+                active = false;
+              }
+
+              else {
+                active = mdaSixMonths === 6 ? true : ( idx % 2 ? false : true );
+              }
+
+              return active;
+            }
+          );
+
+        }
+
+
         newState.updatedScenarioId = action.id;
         break;
 

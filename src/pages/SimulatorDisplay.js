@@ -252,22 +252,28 @@ const SimulatorDisplay = (props) => {
               />
             </div>
 
-            <MdaRounds />
+            { props.simInProgress ? null : (
+              <React.Fragment>
 
+                <MdaRounds />
             
-            <Tooltip
-              title="White bars show no intervention;  blue bars show intervention, the height of the blue colour shows coverage. Historic interventions before 2019 are greyed out."
-              aria-label="info"
-            >
+                <Tooltip
+                  title="White bars show no intervention;  blue bars show intervention, the height of the blue colour shows coverage. Historic interventions before 2019 are greyed out."
+                  aria-label="info"
+                >
 
-            <Typography
-              className={`${classes.scenarioGraphLegendInterventions} ${classes.withHelp}`}
-              variant="h6"
-              component="h6"
-            >
-              Interventions
-            </Typography>
-            </Tooltip>
+                <Typography
+                  className={`${classes.scenarioGraphLegendInterventions} ${classes.withHelp}`}
+                  variant="h6"
+                  component="h6"
+                >
+                  Interventions
+                </Typography>
+                </Tooltip>
+
+              </React.Fragment>
+            ) }
+
           </div>
         </div>
 

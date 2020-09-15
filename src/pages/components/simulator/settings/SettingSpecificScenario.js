@@ -42,15 +42,6 @@ const SettingSpecificScenario = ({ inModal, label, classAdd }) => {
         value: null
       } );
 
-      for( let idx = 0; idx < 4; idx++ ) {
-        dispatchScenarioStateUpdate( {
-          type: ScenarioStoreConstants.ACTION_TYPES.UPDATE_SCENARIO_MDA_FUTURE_SETTING_BY_ID_AND_IDX,
-          id: scenarioState.currentScenarioId,
-          idx: idx,
-          key: 'active',
-          value: true
-        } );
-      }
     }
 
     else if (specificScenarios.length > par) {
@@ -68,15 +59,6 @@ const SettingSpecificScenario = ({ inModal, label, classAdd }) => {
         label: specificScenarios[par].label
       } );
 
-      for( let idx = 0; idx < 4; idx++ ) {
-        dispatchScenarioStateUpdate( {
-          type: ScenarioStoreConstants.ACTION_TYPES.UPDATE_SCENARIO_MDA_FUTURE_SETTING_BY_ID_AND_IDX,
-          id: scenarioState.currentScenarioId,
-          idx: idx,
-          key: 'active',
-          value: par > idx - 1 ? false : true
-        } );
-      }
 
     }
 
