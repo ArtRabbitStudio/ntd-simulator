@@ -16,7 +16,6 @@ import SelectCountry from './components/SelectCountry'
 import ConfirmationDialog from './components/ConfirmationDialog'
 
 import { obtainIUData } from './components/simulator/helpers/obtainIUData'
-//import { detectChange } from './components/simulator/helpers/detectChange'
 import { generateMdaFutureFromDefaults, generateMdaFutureFromScenario } from './components/simulator/helpers/iuLoader'
 import { combineFullMda } from './components/simulator/helpers/combineFullMda'
 import { removeInactiveMDArounds } from './components/simulator/helpers/removeInactiveMDArounds'
@@ -139,11 +138,6 @@ const SimulatorManager = ( props ) => {
           : generatedMda;
 
       const fullMDA = combineFullMda( mdaHistory, mdaPrediction );
-
-      dispatchSimState( {
-        type: 'defaultPrediction',
-        payload: mdaPrediction,
-      } );
 
       SimulatorEngine.simControler.mdaObj = removeInactiveMDArounds( fullMDA );
       SimulatorEngine.simControler.mdaObjUI = fullMDA;
@@ -406,13 +400,9 @@ const SimulatorManager = ( props ) => {
       >
         <SimulatorDisplay
             scenarioKeys={scenarioState.scenarioKeys}
-            switchScenario={switchScenario}
-            removeScenario={removeScenario}
-            runNewScenario={runNewScenario}
             resetCurrentScenario={resetCurrentScenario}
             runCurrentScenario={runCurrentScenario}
             simInProgress={simInProgress}
-            setSimInProgress={setSimInProgress}
             confirmRemoveCurrentScenario={confirmRemoveCurrentScenario}
           />
 

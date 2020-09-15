@@ -20,7 +20,6 @@ const initialState = {
  *	rhoBComp: 0
  *	rhoCN: 0
  *	runs: 10
- *	scenarioLabels: {}
  *	species: 0
  *	v_to_hR: 0
  *	vecCap: 0
@@ -28,7 +27,6 @@ const initialState = {
  *	vecD: 0
 */
 
-  scenarioLabels: {},
   coverage: 90, // $("#MDACoverage").val(),
   mda: 2, // $("#inputMDARounds").val(),
   mdaSixMonths: 6, // $("input:radio[name=mdaSixMonths]:checked").val(),
@@ -52,10 +50,8 @@ const initialState = {
     mdaObj: null, // historic mdaObj for IU
     params: null, // parms object for IU
   },
-  defaultPrediction: null, // future mdaObjPrediction for IU - user sets on setup page
   specificPrediction: null, // null or {}
   specificPredictionIndex: -1, // null or {}
-  needsRerun: false,
 }
 
 const reducer = (simState, action) => {
@@ -64,19 +60,6 @@ const reducer = (simState, action) => {
       return {
         ...simState,
         ...action.payload,
-      }
-    case 'needsRerun':
-      return {
-        ...simState,
-        needsRerun: action.payload,
-      }
-    case 'scenarioLabel':
-      let newLabels = {...simState.scenarioLabels}
-      newLabels[action.scenarioId] =
-        action.payload
-      return {
-        ...simState,
-        scenarioLabels: newLabels,
       }
     case 'specificPrediction':
       return {
@@ -87,11 +70,6 @@ const reducer = (simState, action) => {
       return {
         ...simState,
         specificPredictionIndex: action.payload,
-      }
-    case 'defaultPrediction':
-      return {
-        ...simState,
-        defaultPrediction: action.payload,
       }
     case 'everythingbuthistoric':
       let newIUDataall = { ...simState.IUData }

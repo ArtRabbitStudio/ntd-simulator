@@ -1,9 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 
-const STORAGE_KEY_SCENARIO_PARAMS  = {
-  DEFAULT: 'ntd.scenarioParams.default',
-  SCENARIO: 'ntd.scenarioParams.scenario'
-};
+const STORAGE_KEY_SIMULATOR_STATE = 'ntd.simulatorState';
 const STORAGE_KEY_SCENARIO_KEYS  = 'ntd.scenarioKeys';
 const STORAGE_KEY_SCENARIO_DATA = 'ntd.scenarioData';
 
@@ -13,8 +10,17 @@ const getKeyForId = ( id ) => {
 
 const sessionStorage = {
 
-  set simState( newSimParams ) {
-    localStorage.setItem( STORAGE_KEY_SCENARIO_PARAMS.DEFAULT, JSON.stringify( newSimParams ) );
+  get simulatorState() {
+    try {
+      return JSON.parse( localStorage.getItem( STORAGE_KEY_SIMULATOR_STATE ) );
+    }
+    catch ( e ) {
+      throw new Error( `SessionStorage couldn't load simulator state: ${e.message}` );
+    }
+  },
+
+  set simulatorState( newSimState ) {
+    localStorage.setItem( STORAGE_KEY_SIMULATOR_STATE, JSON.stringify( newSimState ) );
   },
 
   get scenarioKeys() {

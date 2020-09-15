@@ -24,16 +24,9 @@ export const loadAllIUhistoricData = async (
   }
 
   // clear LS
-  window.localStorage.removeItem('simState')
- // window.localStorage.removeItem('scenarioIndex')
- // window.localStorage.removeItem('sessionData')
-
+  SessionStorage.simulatorState = null;
   SessionStorage.removeAllScenarios();
 
-  //const doWeHaveData = simState.IUData.id === implementationUnit
-  //console.log('doWeHaveData ? ', doWeHaveData)
-  //console.log('implementationUnit ? ', implementationUnit)
-  // if (!doWeHaveData) {
   const mdaData = await loadMdaHistory(implementationUnit)
   const params = await loadIUParams(implementationUnit)
   // set default values
@@ -56,7 +49,6 @@ export const loadAllIUhistoricData = async (
   }
   const defaults = {
     ...defaultSimParams, // these ones are observed
-    scenarioLabels: {},
     macrofilaricide: 65, // $("#Macrofilaricide").val(), - NOT CHANGED ANYWHERE
     microfilaricide: 65, // - NOT CHANGED ANYWHERE
     defaultParams: { ...defaultSimParams },
@@ -65,9 +57,7 @@ export const loadAllIUhistoricData = async (
       mdaObj: mdaData,
       params: params,
     },
-    defaultPrediction: generateMdaFutureFromDefaults(simState),
     specificPrediction: null, // null or {}
-    needsRerun: false,
   }
   const bednets = last(mdaData.bednets)
   if (bednets) {
@@ -89,14 +79,13 @@ export const loadAllIUhistoricData = async (
     defaults.coverage = coverage
     defaults.defaultParams.coverage = coverage
   }
-  //console.log('mdaData', mdaData)
-  //console.log('defaults', defaults)
+
   dispatchSimState({
     type: 'everything',
     payload: defaults,
   })
-  window.localStorage.setItem('simState', JSON.stringify(defaults))
-  // }
+
+  SessionStorage.simulatorState = defaults;
 }
 
 export const loadMdaHistory = async (implementationUnit) => {

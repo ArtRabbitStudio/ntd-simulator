@@ -1,22 +1,29 @@
-export const obtainIUData = (simState, dispatchSimState) => {
-  // Store? Storage? Redirect.
-  let IUData = simState.IUData
-  //IUData)
+import SessionStorage from './sessionStorage';
+
+export const obtainIUData = ( simState, dispatchSimState ) => {
+
+  let IUData = simState.IUData;
+
   if (!IUData.id) {
-    let simStateFromLC = window.localStorage.getItem('simState')
-    simStateFromLC = JSON.parse(simStateFromLC)
+
+    let simStateFromLC = SessionStorage.simulatorState;
+
     const IUDataFromLC =
-      simStateFromLC && simStateFromLC.IUData ? simStateFromLC.IUData : null
-    IUData = IUDataFromLC && IUDataFromLC ? IUDataFromLC : null
+      ( simStateFromLC && simStateFromLC.IUData ) ? simStateFromLC.IUData : null;
+
+    IUData = ( IUDataFromLC && IUDataFromLC ) ? IUDataFromLC : null;
+
     if (IUData) {
-      dispatchSimState({
+      dispatchSimState( {
         type: 'IUData',
         payload: IUDataFromLC,
-      })
-    } else {
-      window.location.href = '/'
+      } );
     }
-    // console.log(IUData)
+    else {
+      window.location.href = '/';
+    }
+
   }
-  return IUData
+
+  return IUData;
 }

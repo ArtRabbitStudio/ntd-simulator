@@ -21,7 +21,6 @@ import { useSimulatorStore } from './../store/simulatorStore'
 import { useScenarioStore } from './../store/scenarioStore'
 import ChartSettings from './components/ChartSettings'
 import MdaRounds from './components/simulator/MdaRounds'
-//import { detectChange } from './components/simulator/helpers/detectChange'
 
 // settings
 import {
@@ -91,20 +90,10 @@ const SimulatorDisplay = (props) => {
   useEffect(
 
     () => {
-     // detectChange( simState, dispatchSimState );
     },
 
     // eslint-disable-next-line
     [
-      simState.coverage,
-      simState.mdaSixMonths,
-      simState.covN,
-      simState.mdaRegimen,
-      simState.rho,
-      simState.species,
-      simState.runs,
-      simState.tweakedPrediction,
-      simState.defaultPrediction,
     ]
 
   );
@@ -162,11 +151,7 @@ const SimulatorDisplay = (props) => {
                       inModal={true}
                       label="Scenario name"
                       scenarioId={scenarioId}
-                      scenarioLabel={
-                        simState.scenarioLabels[ scenarioId ]
-                           ? simState.scenarioLabels[ scenarioId ]
-                           : scenarioData.label
-                      }
+                      scenarioLabel={ scenarioData.label }
                     />
                     <SettingBedNetCoverage
                       inModal={true}
