@@ -1,62 +1,75 @@
 // store.js
 import React, { createContext, useContext, useReducer } from 'react'
 
-const SimulatorStoreContext = createContext()
+import SessionStorage from '../pages/components/simulator/helpers/sessionStorage';
+
+const SimulatorStoreContext = createContext();
+
 const initialState = {
 
-/*
- * These are per-scenario and are injected in src/pages/components/simulator/helpers/iuLoader.js
- * via dispatchSimState( type: 'everything', defaults )
- *
- *	covN: 0
- *	coverage: 65
- *	endemicity: 10
- *	macrofilaricide: 65
- *	mda: 1
- *	mdaRegimen: "xIA"
- *	mdaSixMonths: 12
- *	microfilaricide: 65
- *	rho: 0.35
- *	rhoBComp: 0
- *	rhoCN: 0
- *	runs: 10
- *	species: 0
- *	v_to_hR: 0
- *	vecCap: 0
- *	vecComp: 0
- *	vecD: 0
-*/
+  /*
+   * These are the default settings to be used per-scenario and are
+   * injected into reducer state in src/pages/components/simulator/helpers/iuLoader.js
+   * via dispatchSimState( type: 'everything', defaults )
+   *
+   *	covN: 0
+   *	coverage: 90
+   *	endemicity: 10
+   *	macrofilaricide: 65
+   *	mda: 2
+   *	mdaRegimen: "xIA"
+   *	mdaSixMonths: 6
+   *	microfilaricide: 65
+   *	rho: 0.2
+   *	rhoBComp: 0
+   *	rhoCN: 0
+   *	runs: 10
+   *	species: 0
+   *	v_to_hR: 0
+   *	vecCap: 0
+   *	vecComp: 0
+   *	vecD: 0
+  */
+  settings: {
+    covN: 0, // $("#bedNetCoverage").val(),
+    coverage: 90, // $("#MDACoverage").val(),
+    endemicity: 10, // $("#endemicity").val(),
+    macrofilaricide: 65, // $("#Macrofilaricide").val(),
+    mda: 2, // $("#inputMDARounds").val(),
+    mdaRegimen: 'xIA', // $("input[name=mdaRegimenRadios]:checked").val(),
+    mdaSixMonths: 6, // $("input:radio[name=mdaSixMonths]:checked").val(),
+    microfilaricide: 65, // $("#Microfilaricide").val(),
+    rho: 0.2, // $("#sysAdherence").val(),
+    rhoBComp: 0, // $("#brMda").val(),
+    rhoCN: 0, // $("#bedNetMda").val(),
+    runs: 10, // $("#runs").val()
+    species: 0, // $("input[name=speciesRadios]:checked").val(),
+    specificPrediction: null, // null or {}
+    specificPredictionIndex: -1, // null or {}
+    v_to_hR: 0, // $("#insecticideCoverage").val(),
+    vecCap: 0, // $("#vectorialCapacity").val(),
+    vecComp: 0, //$("#vectorialCompetence").val(),
+    vecD: 0, //$("#vectorialDeathRate").val(),
+  },
 
-  coverage: 90, // $("#MDACoverage").val(),
-  mda: 2, // $("#inputMDARounds").val(),
-  mdaSixMonths: 6, // $("input:radio[name=mdaSixMonths]:checked").val(),
-  endemicity: 10, // $("#endemicity").val(),
-  covN: 0, // $("#bedNetCoverage").val(),
-  v_to_hR: 0, // $("#insecticideCoverage").val(),
-  vecCap: 0, // $("#vectorialCapacity").val(),
-  vecComp: 0, //$("#vectorialCompetence").val(),
-  vecD: 0, //$("#vectorialDeathRate").val(),
-  mdaRegimen: 'xIA', // $("input[name=mdaRegimenRadios]:checked").val(),
-  rho: 0.2, // $("#sysAdherence").val(),
-  rhoBComp: 0, // $("#brMda").val(),
-  rhoCN: 0, // $("#bedNetMda").val(),
-  species: 0, // $("input[name=speciesRadios]:checked").val(),
-  /* macrofilaricide: 65, // $("#Macrofilaricide").val(),
-  microfilaricide: 65, // $("#Microfilaricide").val(), */
-  runs: 30, // $("#runs").val()
-  defaultParams: null,
   IUData: {
     id: null, //which IU is loaded if any
     mdaObj: null, // historic mdaObj for IU
     params: null, // parms object for IU
   },
-  specificPrediction: null, // null or {}
-  specificPredictionIndex: -1, // null or {}
-}
 
-const reducer = (simState, action) => {
+};
+
+const reducer = (incomingSimState, action) => {
+
+  const simState = {
+    ...incomingSimState,
+    lastUpdateType: action.type
+  };
+
   switch (action.type) {
     case 'everything':
+      console.log( 'SimulatorStore setting everything:', action.payload );
       return {
         ...simState,
         ...action.payload,
@@ -64,12 +77,12 @@ const reducer = (simState, action) => {
     case 'specificPrediction':
       return {
         ...simState,
-        specificPrediction: action.payload,
+        settings: { ...simState.settings, specificPrediction: action.payload }
       }
     case 'specificPredictionIndex':
       return {
         ...simState,
-        specificPredictionIndex: action.payload,
+        settings: { ...simState.settings, specificPredictionIndex: action.payload }
       }
     case 'everythingbuthistoric':
       let newIUDataall = { ...simState.IUData }
@@ -83,13 +96,6 @@ const reducer = (simState, action) => {
         ...simState,
         IUData: action.payload,
       }
-    /*     case 'IUid':
-      let newIUData = { ...simState.IUData }
-      newIUData.id = action.payload
-      return {
-        ...simState,
-        IUData: newIUData,
-      } */
     case 'mdaObj':
       let newIUDatamda = { ...simState.IUData }
       newIUDatamda.mdaObj = action.payload
@@ -107,119 +113,122 @@ const reducer = (simState, action) => {
     case 'coverage':
       return {
         ...simState,
-        coverage: action.payload,
-        defaultParams: { ...simState.defaultParams, coverage: action.payload },
+       settings: { ...simState.settings, coverage: action.payload }
       }
     case 'adherence':
       return {
         ...simState,
         adherence: action.payload,
-        defaultParams: {
-          ...simState.defaultParams,
-          adherence: action.payload,
-        },
       }
     case 'mda':
       return {
         ...simState,
-        mda: action.payload,
+        settings: { ...simState.settings, mda: action.payload }
       }
     case 'mdaSixMonths':
       return {
         ...simState,
-        mdaSixMonths: action.payload,
-        defaultParams: {
-          ...simState.defaultParams,
-          mdaSixMonths: action.payload,
-        },
+        settings: { ...simState.settings, mdaSixMonths: action.payload }
       }
     case 'endemicity':
       return {
         ...simState,
-        endemicity: action.payload,
+        settings: { ...simState.settings, endemicity: action.payload }
       }
     case 'covN':
       return {
         ...simState,
-        covN: action.payload,
-        defaultParams: { ...simState.defaultParams, covN: action.payload },
+        settings: { ...simState.settings, covN: action.payload }
       }
     case 'v_to_hR':
       return {
         ...simState,
-        v_to_hR: action.payload,
+        settings: { ...simState.settings, v_to_hR: action.payload }
       }
     case 'vecCap':
       return {
         ...simState,
-        vecCap: action.payload,
+        settings: { ...simState.settings, vecCap: action.payload }
       }
     case 'vecComp':
       return {
         ...simState,
-        vecComp: action.payload,
+        settings: { ...simState.settings, vecComp: action.payload }
       }
     case 'vecD':
       return {
         ...simState,
-        vecD: action.payload,
+        settings: { ...simState.settings, vecD: action.payload }
       }
     case 'mdaRegimen':
       return {
         ...simState,
-        mdaRegimen: action.payload,
-        defaultParams: {
-          ...simState.defaultParams,
-          mdaRegimen: action.payload,
-        },
+        settings: { ...simState.settings, mdaRegimen: action.payload }
       }
     case 'rho':
       return {
         ...simState,
-        rho: action.payload,
-        defaultParams: { ...simState.defaultParams, rho: action.payload },
+        settings: { ...simState.settings, rho: action.payload }
       }
     case 'rhoBComp':
       return {
         ...simState,
-        rhoBComp: action.payload,
+        settings: { ...simState.settings, rhoBComp: action.payload }
       }
     case 'rhoCN':
       return {
         ...simState,
-        rhoCN: action.payload,
+        settings: { ...simState.settings, rhoCN: action.payload }
       }
     case 'species':
       return {
         ...simState,
-        species: action.payload,
-        defaultParams: { ...simState.defaultParams, species: action.payload },
+        settings: { ...simState.settings, species: action.payload }
       }
     case 'macrofilaricide':
       return {
         ...simState,
-        macrofilaricide: action.payload,
+        settings: { ...simState.settings, macrofilaricide: action.payload }
       }
     case 'microfilaricide':
       return {
         ...simState,
-        microfilaricide: action.payload,
+        settings: { ...simState.settings, microfilaricide: action.payload }
       }
     case 'runs':
       return {
         ...simState,
-        runs: action.payload,
+        settings: { ...simState.settings, runs: action.payload }
       }
     default:
       throw new Error(`Unhandled action type: ${action.type}`)
   }
-}
+};
+
+const simulatorStoreConsumer = ( { simState } ) => {
+
+//  console.log( `simulatorStoreConsumer saving simState on update type ${simState.lastUpdateType}:`, simState );
+
+  /*
+   * only update the simulator state in session storage on a typed action,
+   * i.e. not on reload/default reducer state hydration
+   */
+  if( !simState.lastUpdateType ) {
+    return;
+  }
+
+  SessionStorage.simulatorState = simState;
+};
 
 export const SimulatorStoreProvider = ({ children }) => {
   const [simState, dispatchSimState] = useReducer(reducer, initialState)
   return (
     <React.Fragment>
       <SimulatorStoreContext.Provider value={{ simState, dispatchSimState }}>
+
+        <SimulatorStoreContext.Consumer>
+          { simulatorStoreConsumer }
+        </SimulatorStoreContext.Consumer>
 
         {children}
 

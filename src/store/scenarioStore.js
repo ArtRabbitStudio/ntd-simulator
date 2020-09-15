@@ -44,7 +44,7 @@ const reducer = ( scenarioState, action ) => {
 
   let newState = {
     ...scenarioState,
-    updateType: action.type
+    lastUpdateType: action.type
   };
 
   try {
@@ -72,11 +72,13 @@ const reducer = ( scenarioState, action ) => {
         newState.scenarioData[ action.id ].settings[ action.key ] = action.value;
         // copy this per-scenario setting across to all the MDA rounds for this scenario
         const mdaFutureKey = settingToMdaFutureMap[ action.key ];
-        newState.scenarioData[ action.id ].mdaFuture[ mdaFutureKey ].forEach(
-          ( v, idx ) => {
-            newState.scenarioData[ action.id ].mdaFuture[ mdaFutureKey ][ idx ] = action.value;
-          }
-        );
+        if( Object.keys( newState.scenarioData[ action.id ].mdaFuture ).includes( mdaFutureKey ) ) {
+          newState.scenarioData[ action.id ].mdaFuture[ mdaFutureKey ].forEach(
+            ( v, idx ) => {
+              newState.scenarioData[ action.id ].mdaFuture[ mdaFutureKey ][ idx ] = action.value;
+            }
+          );
+        }
         newState.updatedScenarioId = action.id;
         break;
 
@@ -153,20 +155,20 @@ const reducer = ( scenarioState, action ) => {
 
 const scenarioStoreConsumer = ( { scenarioState } ) => {
 
-  if( !scenarioState.updateType ) {
+  if( !scenarioState.lastUpdateType ) {
     return;
   }
 
-//  console.log( `scenarioStoreConsumer got update type ${scenarioState.updateType}` );
+//  console.log( `scenarioStoreConsumer got update type ${scenarioState.lastUpdateType}` );
 
   try {
-    switch( scenarioState.updateType ) {
+    switch( scenarioState.lastUpdateType ) {
       /* eslint-disable no-fallthrough */
 
       case ScenarioStoreConstants.ACTION_TYPES.UPDATE_SCENARIO_DATA:
       case ScenarioStoreConstants.ACTION_TYPES.SET_NEW_SCENARIO_DATA:
 
-        console.log( `scenarioStoreConsumer storing scenario ${scenarioState.updatedScenarioId} on update type ${scenarioState.updateType}` );
+        console.log( `scenarioStoreConsumer storing scenario ${scenarioState.updatedScenarioId} on update type ${scenarioState.lastUpdateType}` );
         const scenarioData = scenarioState.scenarioData[ scenarioState.updatedScenarioId ];
         SessionStorage.storeScenario( scenarioData );
         break;
@@ -178,7 +180,7 @@ const scenarioStoreConsumer = ( { scenarioState } ) => {
         break;
 
       default:
-     //   console.info( `-> scenarioStoreConsumer got OOB update type ${scenarioState.updateType}`, scenarioState );
+     //   console.info( `-> scenarioStoreConsumer got OOB update type ${scenarioState.lastUpdateType}`, scenarioState );
         break;
 
     }

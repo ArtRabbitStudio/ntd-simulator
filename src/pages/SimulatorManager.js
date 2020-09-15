@@ -15,7 +15,6 @@ import HeadWithInputs from './components/HeadWithInputs'
 import SelectCountry from './components/SelectCountry'
 import ConfirmationDialog from './components/ConfirmationDialog'
 
-import { obtainIUData } from './components/simulator/helpers/obtainIUData'
 import { generateMdaFutureFromDefaults, generateMdaFutureFromScenario } from './components/simulator/helpers/iuLoader'
 import { combineFullMda } from './components/simulator/helpers/combineFullMda'
 import { removeInactiveMDArounds } from './components/simulator/helpers/removeInactiveMDArounds'
@@ -51,7 +50,13 @@ TabPanel.propTypes = {
   value: PropTypes.any.isRequired,
 };
 
+/*
+ * this is a Routed component so we have
+ * history, location, match { params { country, iu } }
+ */
 const SimulatorManager = ( props ) => {
+
+  const classes = useStyles();
 
   const { simState, dispatchSimState } = useSimulatorStore();
   const { scenarioState, dispatchScenarioStateUpdate } = useScenarioStore();
@@ -70,13 +75,11 @@ const SimulatorManager = ( props ) => {
 
   const [ tabIndex, setTabIndex ] = useState( defaultTabIndex );
 
-  const classes = useStyles();
-
   const runScenario = ( isNewScenario ) => {
 
     if (!simInProgress) {
 
-      setSimInProgress(true);
+      setSimInProgress( true );
 
       updateMDAAndIUData( isNewScenario );
 
@@ -90,7 +93,7 @@ const SimulatorManager = ( props ) => {
 
       if ( isNewScenario ) {
         SimulatorEngine.simControler.runScenario(
-          simState, // use default params
+          simState.settings, // use default params
           null, // create a new ID & scenario
           callbacks
         );
@@ -111,7 +114,7 @@ const SimulatorManager = ( props ) => {
   const updateMDAAndIUData = ( isNewScenario ) => {
 
       // get MDA history
-      const IUData = obtainIUData( simState, dispatchSimState );
+      const IUData = simState.IUData;
 
       if ( isNewScenario ) {
         SimulatorEngine.simControler.iuParams = IUData.params;
@@ -298,6 +301,28 @@ const SimulatorManager = ( props ) => {
   // 2nd-arg empty array makes this a componentDidMount equivalent - only re-run if {nothing} changes
   useEffect(
     () => {
+
+      // try to load simulator state from storage
+      const simulatorState = SessionStorage.simulatorState;
+
+      // if it's got state for this IU cached
+      if( simulatorState.IUData.id === props.match.params.iu ) {
+
+        // set it in memory
+        if ( simulatorState ) {
+          dispatchSimState( {
+            type: 'everything',
+            payload: simulatorState
+          } );
+        }
+
+      }
+
+      // otherwise clear out the cache & any sceanrios
+      else {
+        SessionStorage.simulatorState = null;
+        SessionStorage.removeAllScenarios();
+      }
 
       const scenarioKeys = SessionStorage.scenarioKeys;
 

@@ -223,7 +223,7 @@ const Setup = (props) => {
 
           <div className={classes.formControlWrap}>
             <div className={classes.setupFormControl}>
-              <SettingBedNetCoverage inModal={false} label="Bed Net Coverage" value={simState.covN} />
+              <SettingBedNetCoverage inModal={false} label="Bed Net Coverage" value={simState.settings.covN} />
             </div>
           </div>
 
@@ -232,14 +232,14 @@ const Setup = (props) => {
               <SettingFrequency
                 inModal={false}
                 label="MDA Frequency"
-                value={simState.mdaSixMonths}
+                value={simState.settings.mdaSixMonths}
               />
             </div>
           </div>
 
           <div className={classes.formControlWrap}>
             <div className={classes.setupFormControl}>
-              <SettingMosquitoType inModal={false} label="Type of Mosquito" value={simState.species} />
+              <SettingMosquitoType inModal={false} label="Type of Mosquito" value={simState.settings.species} />
             </div>
           </div>
 
@@ -248,14 +248,14 @@ const Setup = (props) => {
               <SettingTargetCoverage
                 inModal={false}
                 label="MDA Target Coverage"
-                value={simState.coverage}
+                value={simState.settings.coverage}
               />
             </div>
           </div>
 
           <div className={classes.formControlWrap}>
             <div className={classes.setupFormControl}>
-              <SettingInsecticideCoverage inModal={false} label="Inseticide Coverage" value={simState.v_to_hR} />
+              <SettingInsecticideCoverage inModal={false} label="Inseticide Coverage" value={simState.settings.v_to_hR} />
             </div>
           </div>
 
@@ -265,7 +265,7 @@ const Setup = (props) => {
               <SettingDrugRegimen
                 inModal={false}
                 label="MDA Drug Regimen"
-                value={simState.mdaRegimen}
+                value={simState.settings.mdaRegimen}
               />
             </div>
           </div>
@@ -278,12 +278,9 @@ const Setup = (props) => {
                 inModal={false}
                 label="Systematic adherence"
                 onChange={(event, newValue) => {
-                  // this needs to change defaultParams as well, right?
-                  // dispatchSimState({ type: 'defaultsrho', payload: newValue })
-                  //console.log('RHO', newValue)
                   dispatchSimState({ type: 'rho', payload: newValue })
                 }}
-                value={simState.rho}
+                value={simState.settings.rho}
               />
             </div>
           </div>

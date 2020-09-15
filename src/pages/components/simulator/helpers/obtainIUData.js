@@ -8,6 +8,8 @@ export const obtainIUData = ( simState, dispatchSimState ) => {
 
     let simStateFromLC = SessionStorage.simulatorState;
 
+    console.log( 'obtainIUData retrieved simStateFromLC:', simStateFromLC );
+
     const IUDataFromLC =
       ( simStateFromLC && simStateFromLC.IUData ) ? simStateFromLC.IUData : null;
 

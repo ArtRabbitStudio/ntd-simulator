@@ -1,8 +1,7 @@
 import React from 'react';
 import useStyles from "../styles";
 
-
-
+import { useSimulatorStore } from "../../../../store/simulatorStore";
 import { useScenarioStore, ScenarioStoreConstants } from "../../../../store/scenarioStore";
 
 import {
@@ -15,6 +14,7 @@ import {
 const SettingPrecision = ({ inModal, label, classAdd, setGraphTypeSimple,graphTypeSimple }) => {
 
   const classes = useStyles();
+  const { dispatchSimState } = useSimulatorStore();
   const { scenarioState, dispatchScenarioStateUpdate } = useScenarioStore();
 
 
@@ -39,6 +39,9 @@ const SettingPrecision = ({ inModal, label, classAdd, setGraphTypeSimple,graphTy
             type: ScenarioStoreConstants.ACTION_TYPES.MARK_SCENARIO_DIRTY_BY_ID,
             id: scenarioState.currentScenarioId
           } );
+
+          // update overall simulator precision settings too
+          dispatchSimState({ type: "runs", payload: newValue });
 
         }}
         aria-labelledby="slider"

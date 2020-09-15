@@ -14,12 +14,13 @@ export const loadAllIUhistoricData = async (
 
   // TODO new param diesase 
   switch (disease) {
-    default:
     case DISEASE_LIMF:
-
       break;
-    case DISEASE_TRACHOMA:
 
+    case DISEASE_TRACHOMA:
+      break;
+
+    default:
       break;
   }
 
@@ -29,63 +30,70 @@ export const loadAllIUhistoricData = async (
 
   const mdaData = await loadMdaHistory(implementationUnit)
   const params = await loadIUParams(implementationUnit)
+
   // set default values
   const defaultSimParams = {
-    coverage: 65, // $("#MDACoverage").val(),
-    mda: 1, // $("#inputMDARounds").val(), TODO: what do we do here?
-    mdaSixMonths: 12, // TODO; what do we do here
-    endemicity: 10, // $("#endemicity").val(),
-    covN: 0, // $("#bedNetCoverage").val(),
-    v_to_hR: 0, // $("#insecticideCoverage").val(),
-    vecCap: 0, // $("#vectorialCapacity").val(),
-    vecComp: 0, //$("#vectorialCompetence").val(),
-    vecD: 0, //$("#vectorialDeathRate").val(),
-    mdaRegimen: 'xIA', // $("input[name=mdaRegimenRadios]:checked").val(),
-    rho: 0.2, // $("#sysAdherence").val(),
-    rhoBComp: 0, // $("#brMda").val(),
-    rhoCN: 0, // $("#bedNetMda").val(),
-    species: 0, // $("input[name=speciesRadios]:checked").val(),
-    runs: 30,
+    settings: {
+      coverage: 65, // $("#MDACoverage").val(),
+      mda: 1, // $("#inputMDARounds").val(), TODO: what do we do here?
+      mdaSixMonths: 12, // TODO; what do we do here
+      endemicity: 10, // $("#endemicity").val(),
+      covN: 0, // $("#bedNetCoverage").val(),
+      v_to_hR: 0, // $("#insecticideCoverage").val(),
+      vecCap: 0, // $("#vectorialCapacity").val(),
+      vecComp: 0, //$("#vectorialCompetence").val(),
+      vecD: 0, //$("#vectorialDeathRate").val(),
+      mdaRegimen: 'xIA', // $("input[name=mdaRegimenRadios]:checked").val(),
+      rho: 0.2, // $("#sysAdherence").val(),
+      rhoBComp: 0, // $("#brMda").val(),
+      rhoCN: 0, // $("#bedNetMda").val(),
+      species: 0, // $("input[name=speciesRadios]:checked").val(),
+      runs: 30,
+
+      macrofilaricide: 65, // $("#Macrofilaricide").val(), - NOT CHANGED ANYWHERE
+      microfilaricide: 65, // - NOT CHANGED ANYWHERE
+      specificPrediction: null, // null or {},
+      specificPredictionIndex: -1
+    }
   }
+
   const defaults = {
     ...defaultSimParams, // these ones are observed
-    macrofilaricide: 65, // $("#Macrofilaricide").val(), - NOT CHANGED ANYWHERE
-    microfilaricide: 65, // - NOT CHANGED ANYWHERE
-    defaultParams: { ...defaultSimParams },
     IUData: {
       id: implementationUnit,
       mdaObj: mdaData,
       params: params,
     },
-    specificPrediction: null, // null or {}
   }
+
   const bednets = last(mdaData.bednets)
   if (bednets) {
-    defaults.covN = bednets
-    defaults.defaultParams.covN = bednets
+    defaults.settings.covN = bednets
   }
+
   const mdaRegimen = last(filter(mdaData.regimen, (x) => x !== 'xxx'))
   if (mdaRegimen) {
-    defaults.mdaRegimen = mdaRegimen
-    defaults.defaultParams.mdaRegimen = mdaRegimen
+    defaults.settings.mdaRegimen = mdaRegimen
   }
+
   const adherence = last(mdaData.adherence)
   if (adherence) {
-    defaults.rho = adherence
-    defaults.defaultParams.rho = adherence
+    defaults.settings.rho = adherence
   }
+
   const coverage = last(filter(mdaData.coverage, (x) => x !== 0))
   if (coverage) {
-    defaults.coverage = coverage
-    defaults.defaultParams.coverage = coverage
+    defaults.settings.coverage = coverage
   }
+
+  console.log( "iuLoader creating simState defaults:", defaults );
 
   dispatchSimState({
     type: 'everything',
     payload: defaults,
   })
 
-  SessionStorage.simulatorState = defaults;
+//  SessionStorage.simulatorState = defaults;
 }
 
 export const loadMdaHistory = async (implementationUnit) => {
@@ -112,7 +120,7 @@ export const loadMdaHistory = async (implementationUnit) => {
   // Step 4: concatenate chunks into single Uint8Array
   let chunksAll = new Uint8Array(receivedLength); // (4.1)
   let position = 0;
-  for (let chunk of chunks) {
+  for ( let chunk of chunks) {
     chunksAll.set(chunk, position); // (4.2)
     position += chunk.length;
   }
@@ -177,7 +185,7 @@ export const loadIUParams = async (implementationUnit) => {
   // Step 4: concatenate chunks into single Uint8Array
   let chunksAll = new Uint8Array(receivedLength); // (4.1)
   let position = 0;
-  for (let chunk of chunks) {
+  for ( let chunk of chunks) {
     chunksAll.set(chunk, position); // (4.2)
     position += chunk.length;
   }
@@ -256,89 +264,105 @@ export const loadIUParams = async (implementationUnit) => {
 }
 
 export const generateMdaFutureFromDefaults = (simState) => {
-  //console.log('generateMDAFuture')
-  //console.log(simState)
-  const numberOfYears = 11 * 2
-  let MDAtime = []
-  for (let i = 0; i < numberOfYears; i++) {
+
+  const numberOfYears = 11 * 2;
+
+  let MDAtime = [];
+
+  for ( let i = 0; i < numberOfYears; i++ ) {
     // 246/12 = 2020
     // 228/12 = 2019
-    MDAtime.push(6 * i + 246)
+    MDAtime.push(6 * i + 246);
   }
-  let MDAcoverage = []
-  for (let i = 0; i < numberOfYears; i++) {
-    MDAcoverage.push( simState.coverage )
+
+  let MDAcoverage = [];
+  for ( let i = 0; i < numberOfYears; i++ ) {
+    MDAcoverage.push( simState.settings.coverage );
   }
-  let MDAadherence = []
-  for (let i = 0; i < numberOfYears; i++) {
-    MDAadherence.push( simState.rho )
+
+  let MDAadherence = [];
+  for ( let i = 0; i < numberOfYears; i++ ) {
+    MDAadherence.push( simState.settings.rho );
   }
-  let MDAbednets = []
-  for (let i = 0; i < numberOfYears; i++) {
-    MDAbednets.push( simState.covN )
+
+  let MDAbednets = [];
+  for ( let i = 0; i < numberOfYears; i++ ) {
+    MDAbednets.push( simState.settings.covN );
   }
-  let MDAregimen = []
-  for (let i = 0; i < numberOfYears; i++) {
-    MDAregimen.push( simState.mdaRegimen )
+
+  let MDAregimen = [];
+  for ( let i = 0; i < numberOfYears; i++ ) {
+    MDAregimen.push( simState.settings.mdaRegimen );
   }
-  let MDAactive = []
-  for (let i = 0; i < numberOfYears; i++) {
+
+  let MDAactive = [];
+  for ( let i = 0; i < numberOfYears; i++ ) {
     if (simState.mdaSixMonths === 12 && i % 2 === 1) {
-      MDAactive.push( false )
+      MDAactive.push( false );
     } else {
-      MDAactive.push( true ) // alternate here
+      MDAactive.push( true ); // alternate here
     }
   }
+
   const newMDAs = {
-    time: [...MDAtime],
-    coverage: [...MDAcoverage],
-    adherence: [...MDAadherence],
-    bednets: [...MDAbednets],
-    regimen: [...MDAregimen],
-    active: [...MDAactive],
-  }
-  return newMDAs
+    time: [ ...MDAtime ],
+    coverage: [ ...MDAcoverage ],
+    adherence: [ ...MDAadherence ],
+    bednets: [ ...MDAbednets ],
+    regimen: [ ...MDAregimen ],
+    active: [ ...MDAactive ],
+  };
+
+  return newMDAs;
 }
 
-export const generateMdaFutureFromScenario = ( scenario, simState ) => {
+export const generateMdaFutureFromScenario = ( scenario ) => {
 
   const mdaFuture = scenario.mdaFuture;
 
-  const numberOfYears = 11 * 2
+  const numberOfYears = 11 * 2;
 
-  let MDAtime = []
-  for (let i = 0; i < numberOfYears; i++) {
+  let MDAtime = [];
+
+  for ( let i = 0; i < numberOfYears; i++ ) {
     // 246/12 = 2020
     // 228/12 = 2019
-    MDAtime.push(6 * i + 246)
+    MDAtime.push(6 * i + 246);
   }
-  let MDAcoverage = []
-  for (let i = 0; i < numberOfYears; i++) {
-    MDAcoverage.push( mdaFuture.coverage[i] )
+
+  let MDAcoverage = [];
+  for ( let i = 0; i < numberOfYears; i++ ) {
+    MDAcoverage.push( mdaFuture.coverage[i] );
   }
-  let MDAadherence = []
-  for (let i = 0; i < numberOfYears; i++) {
-    MDAadherence.push( mdaFuture.adherence[i] )
+
+  let MDAadherence = [];
+  for ( let i = 0; i < numberOfYears; i++ ) {
+    MDAadherence.push( mdaFuture.adherence[i] );
   }
-  let MDAbednets = []
-  for (let i = 0; i < numberOfYears; i++) {
-    MDAbednets.push( mdaFuture.bednets[i] )
+
+  let MDAbednets = [];
+  for ( let i = 0; i < numberOfYears; i++ ) {
+    MDAbednets.push( mdaFuture.bednets[i] );
   }
-  let MDAregimen = []
-  for (let i = 0; i < numberOfYears; i++) {
-    MDAregimen.push( mdaFuture.regimen[i] )
+
+  let MDAregimen = [];
+  for ( let i = 0; i < numberOfYears; i++ ) {
+    MDAregimen.push( mdaFuture.regimen[i] );
   }
-  let MDAactive = []
-  for (let i = 0; i < numberOfYears; i++) {
-    MDAactive.push( mdaFuture.active[i] )
+
+  let MDAactive = [];
+  for ( let i = 0; i < numberOfYears; i++ ) {
+    MDAactive.push( mdaFuture.active[i] );
   }
+
   const newMDAs = {
-    time: [...MDAtime],
-    coverage: [...MDAcoverage],
-    adherence: [...MDAadherence],
-    bednets: [...MDAbednets],
-    regimen: [...MDAregimen],
-    active: [...MDAactive],
-  }
-  return newMDAs
+    time: [ ...MDAtime ],
+    coverage: [ ...MDAcoverage ],
+    adherence: [ ...MDAadherence ],
+    bednets: [ ...MDAbednets ],
+    regimen: [ ...MDAregimen ],
+    active: [ ...MDAactive ],
+  };
+
+  return newMDAs;
 }

@@ -486,7 +486,7 @@ class DataAPI {
   get selectedIUData() {
     const ius = this.IUsCurrentRegime;
     if (this.uiState.implementationUnit) {
-      console.log(flow(filter((x) => x.id === this.uiState.implementationUnit))(ius))
+    //  console.log(flow(filter((x) => x.id === this.uiState.implementationUnit))(ius))
       return flow(filter((x) => x.id === this.uiState.implementationUnit))(ius);
     }
     return 'nada';
