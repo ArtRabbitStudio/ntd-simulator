@@ -985,21 +985,6 @@ export var simControler = {
     else return (values[half - 1] + values[half]) / 2.0
   },
 
-  createScenario: function ( settings ) {
-
-    const label = new Date().toISOString().split('T').join(' ').replace(/\.\d{3}Z/, '');
-    const id = uuidv4();
-
-    console.log( `SimulatorEngine creating new scenario (createScenario) ${id} / ${label}` );
-
-    return {
-      id,
-      label,
-      settings: { ...settings }
-    };
-
-  },
-
   runScenario: function ( paramsFromUI, existingScenario, callbacks ) {
     console.log( `SimulatorEngine running ${ existingScenario ? 'scenario ' + existingScenario.id : 'new scenario' } with params:`, paramsFromUI );
     this.params = { ...paramsFromUI }

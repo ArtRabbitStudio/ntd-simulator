@@ -34,6 +34,9 @@ const Setup = (props) => {
   const classes = useStyles()
   const { simState, dispatchSimState } = useSimulatorStore()
   const { country, implementationUnit, disease } = useUIState()
+
+  console.log( country, implementationUnit, disease );
+
   const {
     selectedIUData
   } = useDataAPI()

@@ -101,7 +101,7 @@ const SettingsDialog = ( props ) => {
 
         <TextContents>
           <Typography paragraph variant="body1" component="p">
-            Are you interested in a specific scenario? { scenarioState.scenarioData[ scenarioState.currentScenarioId ].specificPredictionIndex }
+            Are you interested in a specific scenario? { scenarioData.settings.specificPredictionIndex }
           </Typography>
         </TextContents>
         <SettingSpecificScenario

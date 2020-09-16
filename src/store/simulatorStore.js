@@ -1,66 +1,75 @@
 // store.js
-import React, { createContext, useContext, useReducer } from 'react'
+import React, { createContext, useContext, useReducer } from 'react';
 
 import SessionStorage from '../pages/components/simulator/helpers/sessionStorage';
 
 const SimulatorStoreContext = createContext();
 
-const initialState = {
+const initialState = ( () => {
 
-  /*
-   * These are the default settings to be used per-scenario and are
-   * injected into reducer state in src/pages/components/simulator/helpers/iuLoader.js
-   * via dispatchSimState( type: 'everything', defaults )
-   *
-   *	covN: 0
-   *	coverage: 90
-   *	endemicity: 10
-   *	macrofilaricide: 65
-   *	mda: 2
-   *	mdaRegimen: "xIA"
-   *	mdaSixMonths: 6
-   *	microfilaricide: 65
-   *	rho: 0.2
-   *	rhoBComp: 0
-   *	rhoCN: 0
-   *	runs: 10
-   *	species: 0
-   *	v_to_hR: 0
-   *	vecCap: 0
-   *	vecComp: 0
-   *	vecD: 0
-  */
-  settings: {
-    covN: 0, // $("#bedNetCoverage").val(),
-    coverage: 90, // $("#MDACoverage").val(),
-    endemicity: 10, // $("#endemicity").val(),
-    macrofilaricide: 65, // $("#Macrofilaricide").val(),
-    mda: 2, // $("#inputMDARounds").val(),
-    mdaRegimen: 'xIA', // $("input[name=mdaRegimenRadios]:checked").val(),
-    mdaSixMonths: 6, // $("input:radio[name=mdaSixMonths]:checked").val(),
-    microfilaricide: 65, // $("#Microfilaricide").val(),
-    rho: 0.2, // $("#sysAdherence").val(),
-    rhoBComp: 0, // $("#brMda").val(),
-    rhoCN: 0, // $("#bedNetMda").val(),
-    runs: 10, // $("#runs").val()
-    species: 0, // $("input[name=speciesRadios]:checked").val(),
-    specificPrediction: null, // null or {}
-    specificPredictionIndex: -1, // null or {}
-    v_to_hR: 0, // $("#insecticideCoverage").val(),
-    vecCap: 0, // $("#vectorialCapacity").val(),
-    vecComp: 0, //$("#vectorialCompetence").val(),
-    vecD: 0, //$("#vectorialDeathRate").val(),
-  },
+    const storedState = SessionStorage.simulatorState;
 
-  IUData: {
-    id: null, //which IU is loaded if any
-    mdaObj: null, // historic mdaObj for IU
-    params: null, // parms object for IU
-  },
+    if ( storedState ) {
+      delete storedState.lastUpdateType;
+    }
 
-};
+    return storedState ? storedState : {
 
-const reducer = (incomingSimState, action) => {
+      /*
+       * These are the default settings to be used per-scenario and are
+       * injected into reducer state in src/pages/components/simulator/helpers/iuLoader.js
+       * via dispatchSimState( type: 'everything', defaults )
+       *
+       *	covN: 0
+       *	coverage: 90
+       *	endemicity: 10
+       *	macrofilaricide: 65
+       *	mda: 2
+       *	mdaRegimen: "xIA"
+       *	mdaSixMonths: 6
+       *	microfilaricide: 65
+       *	rho: 0.2
+       *	rhoBComp: 0
+       *	rhoCN: 0
+       *	runs: 10
+       *	species: 0
+       *	v_to_hR: 0
+       *	vecCap: 0
+       *	vecComp: 0
+       *	vecD: 0
+      */
+      settings: {
+        covN: 0, // $("#bedNetCoverage").val(),
+        coverage: 90, // $("#MDACoverage").val(),
+        endemicity: 10, // $("#endemicity").val(),
+        macrofilaricide: 65, // $("#Macrofilaricide").val(),
+        mda: 2, // $("#inputMDARounds").val(),
+        mdaRegimen: 'xIA', // $("input[name=mdaRegimenRadios]:checked").val(),
+        mdaSixMonths: 6, // $("input:radio[name=mdaSixMonths]:checked").val(),
+        microfilaricide: 65, // $("#Microfilaricide").val(),
+        rho: 0.2, // $("#sysAdherence").val(),
+        rhoBComp: 0, // $("#brMda").val(),
+        rhoCN: 0, // $("#bedNetMda").val(),
+        runs: 10, // $("#runs").val()
+        species: 0, // $("input[name=speciesRadios]:checked").val(),
+        specificPrediction: null, // null or {}
+        specificPredictionIndex: -1, // null or {}
+        v_to_hR: 0, // $("#insecticideCoverage").val(),
+        vecCap: 0, // $("#vectorialCapacity").val(),
+        vecComp: 0, //$("#vectorialCompetence").val(),
+        vecD: 0, //$("#vectorialDeathRate").val(),
+      },
+
+      IUData: {
+        id: null, //which IU is loaded if any
+        mdaObj: null, // historic mdaObj for IU
+        params: null, // parms object for IU
+      },
+
+  }
+} )();
+
+const reducer = ( incomingSimState, action ) => {
 
   const simState = {
     ...incomingSimState,
@@ -220,8 +229,10 @@ const simulatorStoreConsumer = ( { simState } ) => {
   SessionStorage.simulatorState = simState;
 };
 
-export const SimulatorStoreProvider = ({ children }) => {
-  const [simState, dispatchSimState] = useReducer(reducer, initialState)
+export const SimulatorStoreProvider = ( { children } ) => {
+
+  const [ simState, dispatchSimState ] = useReducer( reducer, initialState );
+
   return (
     <React.Fragment>
       <SimulatorStoreContext.Provider value={{ simState, dispatchSimState }}>
@@ -237,4 +248,4 @@ export const SimulatorStoreProvider = ({ children }) => {
   )
 }
 
-export const useSimulatorStore = () => useContext(SimulatorStoreContext)
+export const useSimulatorStore = () => useContext(SimulatorStoreContext);

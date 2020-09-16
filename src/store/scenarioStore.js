@@ -43,8 +43,6 @@ const reducer = ( scenarioState, action ) => {
     throw new Error ( 'ScenarioStore got type-less action:', action );
   }
 
-//  console.log( 'ScenarioStore got action:', action.type );
-
   let newState = {
     ...scenarioState,
     lastUpdateType: action.type
@@ -67,23 +65,27 @@ const reducer = ( scenarioState, action ) => {
 
       case ScenarioStoreConstants.ACTION_TYPES.SAVE_SCENARIO_DATA:
         newState.scenarioData[ action.scenario.id ] = action.scenario;
+        delete newState.scenarioData[ action.scenario.id ].labelChanged;
         newState.lastUpdatedScenarioId = action.scenario.id;
         break;
 
 
       case ScenarioStoreConstants.ACTION_TYPES.SAVE_SCENARIO_BY_ID:
+        delete newState.scenarioData[ action.id ].labelChanged;
         newState.lastUpdatedScenarioId = action.id;
         break;
 
 
       case ScenarioStoreConstants.ACTION_TYPES.UPDATE_SCENARIO_DATA:
         newState.scenarioData[ action.scenario.id ] = action.scenario;
+        delete newState.scenarioData[ action.scenario.id ].labelChanged;
         newState.lastUpdatedScenarioId = action.scenario.id;
         break;
 
 
       case ScenarioStoreConstants.ACTION_TYPES.UPDATE_SCENARIO_LABEL_BY_ID:
         newState.scenarioData[ action.id ].label = action.label;
+        newState.scenarioData[ action.id ].labelChanged = true;
         newState.lastUpdatedScenarioId = action.id;
         break;
 
@@ -236,7 +238,7 @@ const scenarioStoreConsumer = ( { scenarioState } ) => {
       case ScenarioStoreConstants.ACTION_TYPES.UPDATE_SCENARIO_DATA:
       case ScenarioStoreConstants.ACTION_TYPES.SET_NEW_SCENARIO_DATA:
 
-        console.log( `scenarioStoreConsumer storing scenario ${scenarioState.lastUpdatedScenarioId} on update type ${scenarioState.lastUpdateType}` );
+        console.log( `ScenarioStoreContext.Consumer storing scenario ${scenarioState.lastUpdatedScenarioId} on update type ${scenarioState.lastUpdateType}` );
         const scenarioData = scenarioState.scenarioData[ scenarioState.lastUpdatedScenarioId ];
         SessionStorage.storeScenario( scenarioData );
         break;
@@ -244,13 +246,13 @@ const scenarioStoreConsumer = ( { scenarioState } ) => {
       case ScenarioStoreConstants.ACTION_TYPES.SAVE_SCENARIO_DATA:
       case ScenarioStoreConstants.ACTION_TYPES.SAVE_SCENARIO_BY_ID:
 
-        console.log( `scenarioStoreConsumer saving existing scenario ${scenarioState.lastUpdatedScenarioId} on update type ${scenarioState.lastUpdateType}` );
+        console.log( `ScenarioStoreContext.Consumer saving existing scenario ${scenarioState.lastUpdatedScenarioId} on update type ${scenarioState.lastUpdateType}` );
         SessionStorage.storeScenario( scenarioState.scenarioData[ scenarioState.lastUpdatedScenarioId ] );
         break;
 
       case ScenarioStoreConstants.ACTION_TYPES.REMOVE_SCENARIO_BY_ID:
 
-        console.log( `scenarioStoreConsumer got removed scenario id ${scenarioState.lastUpdatedScenarioId}` );
+        console.log( `ScenarioStoreContext.Consumer got removed scenario id ${scenarioState.lastUpdatedScenarioId}` );
         SessionStorage.removeScenario( scenarioState.lastUpdatedScenarioId );
         break;
 

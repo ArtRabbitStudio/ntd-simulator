@@ -55,11 +55,13 @@ const SettingSpecificScenario = ({ inModal, label, classAdd, scenarioId }) => {
         value: specificScenarios[par]
       } );
 
-      dispatchScenarioStateUpdate( {
-        type: ScenarioStoreConstants.ACTION_TYPES.UPDATE_SCENARIO_LABEL_BY_ID,
-        id: scenarioId,
-        label: specificScenarios[par].label
-      } );
+      if( !scenarioState.scenarioData[ scenarioId ].labelChanged ) {
+        dispatchScenarioStateUpdate( {
+          type: ScenarioStoreConstants.ACTION_TYPES.UPDATE_SCENARIO_LABEL_BY_ID,
+          id: scenarioId,
+          label: specificScenarios[par].label
+        } );
+      }
 
 
     }

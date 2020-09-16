@@ -1,25 +1,28 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
 import { Box, CircularProgress, Grid, Tab, Tabs, Typography } from '@material-ui/core';
+import { v4 as uuidv4 } from 'uuid';
 import PropTypes from 'prop-types'
 
 import { useScenarioStore, ScenarioStoreConstants } from "../store/scenarioStore";
 
-import SessionStorage from './components/simulator/helpers/sessionStorage'
+import SessionStorage from './components/simulator/helpers/sessionStorage';
 import SimulatorDisplay from './SimulatorDisplay';
-import * as SimulatorEngine from './components/simulator/SimulatorEngine'
-import { useSimulatorStore } from './../store/simulatorStore'
-import useStyles from './components/simulator/styles'
-import { Layout } from '../layout'
-import HeadWithInputs from './components/HeadWithInputs'
-import SelectCountry from './components/SelectCountry'
-import ConfirmationDialog from './components/ConfirmationDialog'
-import SettingsDialog from './components/SettingsDialog'
+import * as SimulatorEngine from './components/simulator/SimulatorEngine';
+import { useSimulatorStore } from './../store/simulatorStore';
+import { useUIState } from '../hooks/stateHooks';
+import useStyles from './components/simulator/styles';
+import { Layout } from '../layout';
+import HeadWithInputs from './components/HeadWithInputs';
+import SelectCountry from './components/SelectCountry';
+import ConfirmationDialog from './components/ConfirmationDialog';
+import SettingsDialog from './components/SettingsDialog';
 
-import { generateMdaFutureFromDefaults, generateMdaFutureFromScenario, generateMdaFutureFromScenarioSettings } from './components/simulator/helpers/iuLoader'
-import { combineFullMda } from './components/simulator/helpers/combineFullMda'
-import { removeInactiveMDArounds } from './components/simulator/helpers/removeInactiveMDArounds'
-import { trimMdaHistory } from './components/simulator/helpers/trimMdaHistory'
+import { loadAllIUhistoricData } from './components/simulator/helpers/iuLoader'
+import { generateMdaFutureFromDefaults, generateMdaFutureFromScenario, generateMdaFutureFromScenarioSettings } from './components/simulator/helpers/iuLoader';
+import { combineFullMda } from './components/simulator/helpers/combineFullMda';
+import { removeInactiveMDArounds } from './components/simulator/helpers/removeInactiveMDArounds';
+import { trimMdaHistory } from './components/simulator/helpers/trimMdaHistory';
 
 const a11yProps = (index) => {
   return {
@@ -61,6 +64,7 @@ const SimulatorManager = ( props ) => {
 
   const { simState, dispatchSimState } = useSimulatorStore();
   const { scenarioState, dispatchScenarioStateUpdate } = useScenarioStore();
+  const { disease } = useUIState();
 
   const [ simInProgress, setSimInProgress ] = useState( false );
   const [ simulationProgress, setSimulationProgress ] = useState( 0 );
@@ -68,15 +72,13 @@ const SimulatorManager = ( props ) => {
   const [ newScenarioSettingsOpen, setNewScenarioSettingsOpen ] = useState( false );
   const [ newScenarioId, setNewScenarioId ] = useState( null );
 
-  const defaultTabIndex = (
-    () => {
-      const idx = scenarioState.scenarioKeys.findIndex( ( { id, label } ) => id === scenarioState.currentScenarioId );
-      const defaultIdx = idx < 0 ? 0 : idx;
-      return defaultIdx;
-    }
-  )();
+  const getDefaultTabIndex = () => {
+    const idx = scenarioState.scenarioKeys.findIndex( ( { id, label } ) => id === scenarioState.currentScenarioId );
+    const defaultIdx = idx < 0 ? 0 : idx;
+    return defaultIdx;
+  };
 
-  const [ tabIndex, setTabIndex ] = useState( defaultTabIndex );
+  const [ tabIndex, setTabIndex ] = useState( getDefaultTabIndex() );
 
   const runScenario = ( scenarioId ) => {
 
@@ -158,9 +160,16 @@ const SimulatorManager = ( props ) => {
 
   const createNewScenario = () => {
 
-    console.log( 'SimulatorManager creating new scenario on UI request' );
+    const label = new Date().toISOString().split('T').join(' ').replace(/\.\d{3}Z/, '');
+    const id = uuidv4();
+    const newScenarioData = {
+      id,
+      label,
+      settings: { ...simState.settings }
+    };
 
-    const newScenarioData = SimulatorEngine.simControler.createScenario( simState.settings );
+    console.log( `SimulatorManager created new scenario id ${newScenarioData.id} on UI request` );
+
     newScenarioData.mdaFuture = generateMdaFutureFromScenarioSettings( newScenarioData );
 
     /*
@@ -203,6 +212,7 @@ const SimulatorManager = ( props ) => {
     } );
 
     setNewScenarioId( null );
+    setTabIndex( getDefaultTabIndex() );
 
   };
 
@@ -334,6 +344,7 @@ const SimulatorManager = ( props ) => {
     
   };
 
+  // set tab index correctly when scenarioId is changed
   useEffect(
 
     () => {
@@ -341,8 +352,6 @@ const SimulatorManager = ( props ) => {
       if( !scenarioState.currentScenarioId ) {
         return;
       }
-
-   //   console.log( `SimulatorManager saw scenarioState.currentScenarioId changed to ${scenarioState.currentScenarioId}` );
 
       const currentScenarioIndexInKeys = scenarioState.scenarioKeys.findIndex( ( { id, label } ) => id === scenarioState.currentScenarioId );
 
@@ -359,26 +368,23 @@ const SimulatorManager = ( props ) => {
   useEffect(
     () => {
 
-      // try to load simulator state from storage
-      const simulatorState = SessionStorage.simulatorState;
+      if ( !( simState && simState.IUData && simState.IUData.id === props.match.params.iu ) ) {
 
-      // if it's got state for this IU cached
-      if( simulatorState && simulatorState.IUData && simulatorState.IUData.id === props.match.params.iu ) {
-
-        // set it in memory
-        if ( simulatorState ) {
-          dispatchSimState( {
-            type: 'everything',
-            payload: simulatorState
-          } );
-        }
-
-      }
-
-      // otherwise clear out the cache & any sceanrios
-      else {
+        console.log( `SimulatorManager found no stored simulator state` );
         SessionStorage.simulatorState = null;
-        SessionStorage.removeAllScenarios();
+
+        ( async () => {
+          console.log( `SimulatorManager calling loadAllIUhistoricData for ${props.match.params.iu} / ${disease} in ${props.match.params.country}` );
+          await loadAllIUhistoricData(
+            simState,
+            dispatchSimState,
+            props.match.params.iu, //implementationUnit,
+            disease
+          )
+          console.log( `SimulatorManager loaded historic data for ${props.match.params.iu} / ${disease} in ${props.match.params.country}` );
+        } )();
+
+        return;
       }
 
       const scenarioKeys = SessionStorage.scenarioKeys;
@@ -464,7 +470,7 @@ const SimulatorManager = ( props ) => {
                 { scenarioState.scenarioKeys.length < 5 && (
                   <Tab
                     key={ `tab-element-99` }
-                    label={ `+ Add one` }
+                    label={ `+ Add scenario` }
                     disabled={ simInProgress }
                     onClick={ createNewScenario }
                   />
