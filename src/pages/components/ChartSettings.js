@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Fab from '@material-ui/core/Fab';
@@ -10,6 +10,7 @@ import Icon from '../../images/settings.svg';
 //import IconHover from '../../images/settings-hover.svg';
 
 import CloseButton from './CloseButton';
+import { geoNaturalEarth1Raw } from 'd3';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -63,10 +64,10 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 // <button mat-button aria-label="settings" className={classes.icon} onClick={(event) => handleClickOpen(event)}></button>
-const ChartSettings = ({ title, buttonText, cancelText, cancel, action, onOpen, children, hideFab }) => {
+const ChartSettings = ({ title, buttonText, cancelText, cancel, action, onOpen, children, hideFab, newScenarioSettingsOpen, setScenarioSettingsOpen }) => {
 
   const classes = useStyles();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
 
   title = title ? title : 'Settings';
   buttonText = buttonText ? buttonText : 'Update graphs';
@@ -84,6 +85,9 @@ const ChartSettings = ({ title, buttonText, cancelText, cancel, action, onOpen, 
       cancel( event );
     }
     setOpen(false);
+    if ( setScenarioSettingsOpen != undefined ) {
+      setScenarioSettingsOpen(false)
+    }
   };
 
   const handleConfirm = (event) => {
@@ -91,16 +95,28 @@ const ChartSettings = ({ title, buttonText, cancelText, cancel, action, onOpen, 
       action(event);
     }
     setOpen(false);
+    if ( setScenarioSettingsOpen != undefined ) {
+      setScenarioSettingsOpen(false)
+    }
   };
 
   const igorsCheatStyle = {
     padding: "6px 25px"
   };
 
+  useEffect(() => {
+    if ( newScenarioSettingsOpen ) {
+      setOpen(true)
+    } else {
+      setOpen(false)
+    }
+  }, [newScenarioSettingsOpen]);
+
+
   return (
     <div className={classes.root}>
       { hideFab === true ? null : ( <Fab color="inherit" aria-label="settings" className={classes.icon} onClick={handleClickOpen}> </Fab> ) }
-      {open &&
+      { open &&
         <ClickAwayListener onClickAway={handleClickClose}>
           <Paper
             elevation={3}

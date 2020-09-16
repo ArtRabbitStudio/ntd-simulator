@@ -155,7 +155,6 @@ const SimulatorManager = ( props ) => {
   const createNewScenario = () => {
     console.log( 'SimulatorManager creating new scenario' );
     const newScenarioData = SimulatorEngine.simControler.createScenario( simState.settings );
-
     setNewScenarioData( newScenarioData );
     setNewScenarioSettingsOpen( true );
   };
@@ -377,6 +376,7 @@ const SimulatorManager = ( props ) => {
   );
   // debug
   //Scenario state last updated: {scenarioState.updated.toISOString()}
+
   return (
     <div id="SimulatorManager">
       <Layout>
@@ -465,7 +465,7 @@ const SimulatorManager = ( props ) => {
           </Grid>
         </section>
 
-        { newScenarioSettingsOpen ? <SettingsDialog scenarioData={ newScenarioData } /> : null }
+        { newScenarioSettingsOpen ? <SettingsDialog scenarioData={ newScenarioData } newScenarioSettingsOpen={newScenarioSettingsOpen} setScenarioSettingsOpen={(value)=>setNewScenarioSettingsOpen( value )} /> : null }
       </Layout>
 
     </div>
