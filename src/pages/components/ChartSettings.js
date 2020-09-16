@@ -63,7 +63,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 // <button mat-button aria-label="settings" className={classes.icon} onClick={(event) => handleClickOpen(event)}></button>
-const ChartSettings = ({ title, buttonText, cancelText, cancel, action, onOpen, children }) => {
+const ChartSettings = ({ title, buttonText, cancelText, cancel, action, onOpen, children, hideFab }) => {
 
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
@@ -99,7 +99,7 @@ const ChartSettings = ({ title, buttonText, cancelText, cancel, action, onOpen, 
 
   return (
     <div className={classes.root}>
-      <Fab color="inherit" aria-label="settings" className={classes.icon} onClick={handleClickOpen}> </Fab>
+      { hideFab === true ? null : ( <Fab color="inherit" aria-label="settings" className={classes.icon} onClick={handleClickOpen}> </Fab> ) }
       {open &&
         <ClickAwayListener onClickAway={handleClickClose}>
           <Paper

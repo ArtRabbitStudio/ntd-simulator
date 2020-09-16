@@ -985,6 +985,27 @@ export var simControler = {
     else return (values[half - 1] + values[half]) / 2.0
   },
 
+  createScenario: function ( settings ) {
+
+    const label = new Date().toISOString().split('T').join(' ').replace(/\.\d{3}Z/, '');
+    const id = uuidv4();
+
+    console.log( `SimulatorEngine creating new scenario (createScenario) ${id} / ${label}` );
+
+    return {
+      id,
+      label,
+      settings
+    };
+
+  },
+
+  runScenario: function ( paramsFromUI, existingScenario, callbacks ) {
+    console.log( `SimulatorEngine running ${ existingScenario ? 'scenario ' + existingScenario.id : 'new scenario' } with params:`, paramsFromUI );
+    this.params = { ...paramsFromUI }
+    this.runMapSimulation( existingScenario, callbacks )
+  },
+
   runMapSimulation: function ( existingScenario, { progressCallback, resultCallback } ) {
 
     console.log( `SimulatorEngine running map simulation with completed params for scenarioId ${ existingScenario ? existingScenario.id : null }:`, params );
@@ -1077,7 +1098,7 @@ export var simControler = {
           label = label ? label : new Date().toISOString().split('T').join(' ').replace(/\.\d{3}Z/, '');
           const id = uuidv4();
 
-          console.log( `SimulatorEngine creating new scenario ${id} / ${label}` );
+          console.log( `SimulatorEngine creating new scenario (inline) ${id} / ${label}` );
 
           return { id, label };
 
@@ -1231,11 +1252,6 @@ export var simControler = {
       minW: minW,
       minL: minL,
     }
-  },
-  runScenario: function ( paramsFromUI, existingScenario, callbacks ) {
-    console.log( `SimulatorEngine running ${ existingScenario ? 'scenario ' + existingScenario.id : 'new scenario' } with params:`, paramsFromUI );
-    this.params = { ...paramsFromUI }
-    this.runMapSimulation( existingScenario, callbacks )
   },
 
   fixInput: (fix_input) => {

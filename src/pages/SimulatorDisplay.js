@@ -140,6 +140,7 @@ const SimulatorDisplay = (props) => {
                     cancelText="Cancel Changes"
                     cancel={props.resetCurrentScenario}
                     action={props.runCurrentScenario}
+                    hideFab={false}
                   >
                     <TextContents>
                       <Typography paragraph variant="body1" component="p">

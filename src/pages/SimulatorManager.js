@@ -14,6 +14,7 @@ import { Layout } from '../layout'
 import HeadWithInputs from './components/HeadWithInputs'
 import SelectCountry from './components/SelectCountry'
 import ConfirmationDialog from './components/ConfirmationDialog'
+import SettingsDialog from './components/SettingsDialog'
 
 import { generateMdaFutureFromDefaults, generateMdaFutureFromScenario } from './components/simulator/helpers/iuLoader'
 import { combineFullMda } from './components/simulator/helpers/combineFullMda'
@@ -64,6 +65,8 @@ const SimulatorManager = ( props ) => {
   const [ simInProgress, setSimInProgress ] = useState( false );
   const [ simulationProgress, setSimulationProgress ] = useState( 0 );
   const [ confirmationOpen, setConfirmationOpen ] = useState( false );
+  const [ newScenarioSettingsOpen, setNewScenarioSettingsOpen ] = useState( false );
+  const [ newScenarioData, setNewScenarioData ] = useState( null );
 
   const defaultTabIndex = (
     () => {
@@ -147,6 +150,14 @@ const SimulatorManager = ( props ) => {
       SimulatorEngine.simControler.mdaObj2015 = trimMdaHistory( mdaHistory );
       SimulatorEngine.simControler.mdaObjFuture = mdaPrediction;
       SimulatorEngine.simControler.iuParams = IUData.params;
+  };
+
+  const createNewScenario = () => {
+    console.log( 'SimulatorManager creating new scenario' );
+    const newScenarioData = SimulatorEngine.simControler.createScenario( simState.settings );
+
+    setNewScenarioData( newScenarioData );
+    setNewScenarioSettingsOpen( true );
   };
 
   const runNewScenario = async () => {
@@ -370,90 +381,93 @@ const SimulatorManager = ( props ) => {
     <div id="SimulatorManager">
       <Layout>
 
-      <HeadWithInputs title="prevalence simulator" />
-
+        <HeadWithInputs title="prevalence simulator" />
       
-    
-      <SelectCountry selectIU={true} showConfirmation={true} showBack={true} />
+        <SelectCountry selectIU={true} showConfirmation={true} showBack={true} />
     
         <section className={classes.simulator}>
 
-        <Grid container spacing={0}>
+          <Grid container spacing={0}>
 
-          <Grid item xs={12} className={classes.tabs}>
+            <Grid item xs={12} className={classes.tabs}>
 
-            <Tabs
-              value={ tabIndex }
-              onChange={ handleTabChange }
-              aria-label="Available scenarios"
-              indicatorColor="secondary"
-              textColor="secondary"
-              variant="scrollable"
-              scrollButtons="auto"
-            >
-              { scenarioState.scenarioKeys.map(
-                ( { id, label }, idx ) => {
-                return (
-                  <Tab
-                    key={ id }
-                    label={ scenarioState.scenarioData[ id ].label }
-                    { ...a11yProps( idx ) }
-                  />
-                );
+              <Tabs
+                value={ tabIndex }
+                onChange={ handleTabChange }
+                aria-label="Available scenarios"
+                indicatorColor="secondary"
+                textColor="secondary"
+                variant="scrollable"
+                scrollButtons="auto"
+              >
+                {
+                  scenarioState.scenarioKeys.map(
+                    ( { id, label }, idx ) => {
+                    return (
+                      <Tab
+                        key={ id }
+                        label={ scenarioState.scenarioData[ id ].label }
+                        { ...a11yProps( idx ) }
+                      />
+                    );
+                    }
+                  )
                 }
-              ) }
 
-              { scenarioState.scenarioKeys.length < 5 && (
-                <Tab
-                  key={ `tab-element-99` }
-                  label={ `+ Add one` }
-                  disabled={ simInProgress }
-                  onClick={ runNewScenario }
-                />
-              ) }
-            </Tabs>
+                { scenarioState.scenarioKeys.length < 5 && (
+                  <Tab
+                    key={ `tab-element-99` }
+                    label={ `+ Add one` }
+                    disabled={ simInProgress }
+                    onClick={ createNewScenario }
+                  />
+                ) }
+              </Tabs>
+
+            </Grid>
 
           </Grid>
 
-        </Grid>
+          <Grid item md={12} xs={12} className={classes.chartContainer}>
+            <TabPanel
+              key={`scenario-result-${props.scenarioId}`}
+              value={tabIndex}
+              index={tabIndex}
+            >
+              <SimulatorDisplay
+                  scenarioKeys={scenarioState.scenarioKeys}
+                  resetCurrentScenario={resetCurrentScenario}
+                  runCurrentScenario={runCurrentScenario}
+                  simInProgress={simInProgress}
+                  confirmRemoveCurrentScenario={confirmRemoveCurrentScenario}
+                />
 
-    <Grid item md={12} xs={12} className={classes.chartContainer}>
-      <TabPanel
-        key={`scenario-result-${props.scenarioId}`}
-        value={tabIndex}
-        index={tabIndex}
-      >
-        <SimulatorDisplay
-            scenarioKeys={scenarioState.scenarioKeys}
-            resetCurrentScenario={resetCurrentScenario}
-            runCurrentScenario={runCurrentScenario}
-            simInProgress={simInProgress}
-            confirmRemoveCurrentScenario={confirmRemoveCurrentScenario}
-          />
+            </TabPanel>
 
-      </TabPanel>
+            <ConfirmationDialog
+              title="Do you want to delete this scenario?"
+              onClose={ () => {
+                setConfirmationOpen( false );
+              }}
+              onConfirm={ confirmedRemoveCurrentScenario }
+              open={ confirmationOpen }
+            />
 
-      <ConfirmationDialog
-        title="Do you want to delete this scenario?"
-        onClose={ () => {
-          setConfirmationOpen( false );
-        }}
-        onConfirm={ confirmedRemoveCurrentScenario }
-        open={ confirmationOpen }
-      />
-
-      { simulationProgress !== 0 && simulationProgress !== 100 && (
-        <div className={ classes.progress }>
-          <CircularProgress
-            variant="determinate"
-            value={ simulationProgress }
-            color="primary"
-          />
-        </div>
-      ) }
-    </Grid>
+            { simulationProgress !== 0 && simulationProgress !== 100 && (
+              <div className={ classes.progress }>
+                <CircularProgress
+                  variant="determinate"
+                  value={ simulationProgress }
+                  color="primary"
+                />
+              </div>
+            ) }
+          </Grid>
         </section>
+
+        { newScenarioSettingsOpen ? <SettingsDialog scenarioData={ newScenarioData } /> : null }
       </Layout>
+
     </div>
   );
 }
