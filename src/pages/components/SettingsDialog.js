@@ -42,7 +42,7 @@ const SettingsDialog = ( props ) => {
         action={()=> {console.log('runCurrentScenario??'); /*props.runCurrentScenario*/}}
         hideFab={true}
         newScenarioSettingsOpen={props.newScenarioSettingsOpen}
-        setScenarioSettingsOpen={props.setScenarioSettingsOpen}
+        closeCallback={props.closeCallback}
       >
         <TextContents>
           <Typography paragraph variant="body1" component="p">

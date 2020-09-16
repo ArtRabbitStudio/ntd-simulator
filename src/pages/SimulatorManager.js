@@ -465,7 +465,7 @@ const SimulatorManager = ( props ) => {
           </Grid>
         </section>
 
-        { newScenarioSettingsOpen ? <SettingsDialog scenarioData={ newScenarioData } newScenarioSettingsOpen={newScenarioSettingsOpen} setScenarioSettingsOpen={(value)=>setNewScenarioSettingsOpen( value )} /> : null }
+        { newScenarioSettingsOpen ? <SettingsDialog scenarioData={ newScenarioData } newScenarioSettingsOpen={newScenarioSettingsOpen} closeCallback={()=>setNewScenarioSettingsOpen( false )} /> : null }
       </Layout>
 
     </div>

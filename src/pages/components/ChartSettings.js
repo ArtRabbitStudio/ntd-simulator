@@ -64,7 +64,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 // <button mat-button aria-label="settings" className={classes.icon} onClick={(event) => handleClickOpen(event)}></button>
-const ChartSettings = ({ title, buttonText, cancelText, cancel, action, onOpen, children, hideFab, newScenarioSettingsOpen, setScenarioSettingsOpen }) => {
+const ChartSettings = ({ title, buttonText, cancelText, cancel, action, onOpen, children, hideFab, newScenarioSettingsOpen, closeCallback }) => {
 
   const classes = useStyles();
   const [open, setOpen] = useState(false);
@@ -85,8 +85,8 @@ const ChartSettings = ({ title, buttonText, cancelText, cancel, action, onOpen, 
       cancel( event );
     }
     setOpen(false);
-    if ( setScenarioSettingsOpen != undefined ) {
-      setScenarioSettingsOpen(false)
+    if ( closeCallback != undefined ) {
+      closeCallback()
     }
   };
 
@@ -95,8 +95,8 @@ const ChartSettings = ({ title, buttonText, cancelText, cancel, action, onOpen, 
       action(event);
     }
     setOpen(false);
-    if ( setScenarioSettingsOpen != undefined ) {
-      setScenarioSettingsOpen(false)
+    if ( closeCallback != undefined ) {
+      closeCallback()
     }
   };
 
