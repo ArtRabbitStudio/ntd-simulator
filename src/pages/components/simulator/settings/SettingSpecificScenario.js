@@ -15,12 +15,14 @@ import { useHistory } from 'react-router-dom'
 import { specificScenarios } from '../helpers/specificScenarios'
 import { useUIState } from '../../../../hooks/stateHooks'
 
-const SettingSpecificScenario = ({ inModal, label, classAdd }) => {
+const SettingSpecificScenario = ({ inModal, label, classAdd, scenarioId }) => {
   const classes = useStyles()
   const history = useHistory()
   const { dispatchSimState } = useSimulatorStore()
   const { scenarioState, dispatchScenarioStateUpdate } = useScenarioStore();
   const { country, implementationUnit } = useUIState()
+
+  scenarioId = scenarioId ? scenarioId : scenarioState.currentScenarioId;
 
   const handleChangeFromScenario = (event) => {
 
@@ -28,7 +30,7 @@ const SettingSpecificScenario = ({ inModal, label, classAdd }) => {
 
     dispatchScenarioStateUpdate( {
       type: ScenarioStoreConstants.ACTION_TYPES.UPDATE_SCENARIO_SETTING_BY_ID,
-      id: scenarioState.currentScenarioId,
+      id: scenarioId,
       key: 'specificPredictionIndex',
       value: par
     } );
@@ -37,7 +39,7 @@ const SettingSpecificScenario = ({ inModal, label, classAdd }) => {
 
       dispatchScenarioStateUpdate( {
         type: ScenarioStoreConstants.ACTION_TYPES.UPDATE_SCENARIO_SETTING_BY_ID,
-        id: scenarioState.currentScenarioId,
+        id: scenarioId,
         key: 'specificPrediction',
         value: null
       } );
@@ -48,14 +50,14 @@ const SettingSpecificScenario = ({ inModal, label, classAdd }) => {
 
       dispatchScenarioStateUpdate( {
         type: ScenarioStoreConstants.ACTION_TYPES.UPDATE_SCENARIO_SETTING_BY_ID,
-        id: scenarioState.currentScenarioId,
+        id: scenarioId,
         key: 'specificPrediction',
         value: specificScenarios[par]
       } );
 
       dispatchScenarioStateUpdate( {
         type: ScenarioStoreConstants.ACTION_TYPES.UPDATE_SCENARIO_LABEL_BY_ID,
-        id: scenarioState.currentScenarioId,
+        id: scenarioId,
         label: specificScenarios[par].label
       } );
 
@@ -129,7 +131,7 @@ const SettingSpecificScenario = ({ inModal, label, classAdd }) => {
         labelId="demo-simple-select-helper-label"
         id="demo-simple-select-helper"
         MenuProps={{ disablePortal: true }}
-        value={scenarioState.scenarioData[ scenarioState.currentScenarioId ].settings.specificPredictionIndex}
+        value={scenarioState.scenarioData[ scenarioId ].settings.specificPredictionIndex}
         onChange={handleChangeFromScenario}
       >
         <MenuItem value={-1}>No</MenuItem>

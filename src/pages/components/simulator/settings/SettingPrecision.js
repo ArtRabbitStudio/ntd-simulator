@@ -11,18 +11,20 @@ import {
   Fab
 } from "@material-ui/core";
 
-const SettingPrecision = ({ inModal, label, classAdd, setGraphTypeSimple,graphTypeSimple }) => {
+const SettingPrecision = ({ inModal, label, classAdd, setGraphTypeSimple,graphTypeSimple, scenarioId }) => {
 
   const classes = useStyles();
   const { dispatchSimState } = useSimulatorStore();
   const { scenarioState, dispatchScenarioStateUpdate } = useScenarioStore();
 
+  const updateSimState = scenarioId ? false : true;
+  scenarioId = scenarioId ? scenarioId : scenarioState.currentScenarioId;
 
   return (
     <FormControl className={`${classes.formControlPrecision} ${classAdd}`}>
       <Slider
         className={classes.precisionSlider}
-        value={ scenarioState.scenarioData[ scenarioState.currentScenarioId ].settings.runs }
+        value={ scenarioState.scenarioData[ scenarioId ].settings.runs }
         min={1}
         step={1}
         max={200}
@@ -30,18 +32,20 @@ const SettingPrecision = ({ inModal, label, classAdd, setGraphTypeSimple,graphTy
 
           dispatchScenarioStateUpdate( {
             type: ScenarioStoreConstants.ACTION_TYPES.UPDATE_SCENARIO_SETTING_BY_ID,
-            id: scenarioState.currentScenarioId,
+            id: scenarioId,
             key: 'runs',
             value: newValue
           } );
 
           dispatchScenarioStateUpdate( {
             type: ScenarioStoreConstants.ACTION_TYPES.MARK_SCENARIO_DIRTY_BY_ID,
-            id: scenarioState.currentScenarioId
+            id: scenarioId
           } );
 
-          // update overall simulator precision settings too
-          dispatchSimState({ type: "runs", payload: newValue });
+          if( updateSimState ) {
+            // update overall simulator precision settings too
+            dispatchSimState({ type: "runs", payload: newValue });
+          }
 
         }}
         aria-labelledby="slider"

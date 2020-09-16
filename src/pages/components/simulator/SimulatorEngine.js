@@ -995,7 +995,7 @@ export var simControler = {
     return {
       id,
       label,
-      settings
+      settings: { ...settings }
     };
 
   },
@@ -1110,8 +1110,8 @@ export var simControler = {
           results: runs,
           mda: simControler.mdaObj,
           mdaUI: simControler.mdaObjUI,
-          mda2015: existingScenario ? existingScenario.mda2015 : simControler.mdaObj2015,
-          mdaFuture: existingScenario ? existingScenario.mdaFuture : simControler.mdaObjFuture,
+          mda2015: ( existingScenario && existingScenario.mda2015 ) ? existingScenario.mda2015 : simControler.mdaObj2015,
+          mdaFuture: ( existingScenario && existingScenario.mdaFuture ) ? existingScenario.mdaFuture : simControler.mdaObjFuture,
         };
 
         // copy default per-IU settings into new per-scenario-object settings

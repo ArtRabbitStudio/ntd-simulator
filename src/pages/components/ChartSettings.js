@@ -10,7 +10,7 @@ import Icon from '../../images/settings.svg';
 //import IconHover from '../../images/settings-hover.svg';
 
 import CloseButton from './CloseButton';
-import { geoNaturalEarth1Raw } from 'd3';
+//import { geoNaturalEarth1Raw } from 'd3';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -85,7 +85,7 @@ const ChartSettings = ({ title, buttonText, cancelText, cancel, action, onOpen, 
       cancel( event );
     }
     setOpen(false);
-    if ( closeCallback != undefined ) {
+    if ( closeCallback !== undefined ) {
       closeCallback()
     }
   };
@@ -95,7 +95,7 @@ const ChartSettings = ({ title, buttonText, cancelText, cancel, action, onOpen, 
       action(event);
     }
     setOpen(false);
-    if ( closeCallback != undefined ) {
+    if ( closeCallback !== undefined ) {
       closeCallback()
     }
   };

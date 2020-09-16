@@ -12,13 +12,15 @@ import {
   Tooltip
 } from "@material-ui/core";
 
-const SettingFrequency = ({ inModal, label, value, classAdd }) => {
+const SettingFrequency = ({ inModal, label, value, classAdd, scenarioId }) => {
 
   const classes = useStyles();
   const { dispatchSimState } = useSimulatorStore();
   const { scenarioState, dispatchScenarioStateUpdate } = useScenarioStore();
 
   const isPerIUSetting = value !== null && typeof value !== 'undefined';
+
+  scenarioId = scenarioId ? scenarioId : scenarioState.currentScenarioId;
 
   /* TODO FIXME */
   const handleChange = (event) => {
@@ -28,7 +30,7 @@ const SettingFrequency = ({ inModal, label, value, classAdd }) => {
     else {
       dispatchScenarioStateUpdate( {
         type: ScenarioStoreConstants.ACTION_TYPES.UPDATE_SCENARIO_SETTING_BY_ID,
-        id: scenarioState.currentScenarioId,
+        id: scenarioId,
         key: 'mdaSixMonths',
         value: event.target.value
       } );
@@ -59,7 +61,7 @@ const SettingFrequency = ({ inModal, label, value, classAdd }) => {
         labelId="demo-simple-select-helper-label"
         id="demo-simple-select-helper"
         MenuProps={{ disablePortal: true }}
-        value={ isPerIUSetting ? value : scenarioState.scenarioData[ scenarioState.currentScenarioId ].settings.mdaSixMonths }
+        value={ isPerIUSetting ? value : scenarioState.scenarioData[ scenarioId ].settings.mdaSixMonths }
         onChange={handleChange}
       >
         <MenuItem value={12}>Annual</MenuItem>

@@ -12,12 +12,15 @@ const SettingSystematicAdherence = ({
   classAdd,
   value,
   onChange,
+  scenarioId,
 }) => {
   const classes = useStyles()
   const { dispatchSimState } = useSimulatorStore()
   const { scenarioState, dispatchScenarioStateUpdate } = useScenarioStore();
 
   const isPerIUSetting = value !== null && typeof value !== 'undefined';
+
+  scenarioId = scenarioId ? scenarioId : scenarioState.currentScenarioId;
 
   /* TODO FIXME */
   const handleChange = (event, newValue) => {
@@ -28,7 +31,7 @@ const SettingSystematicAdherence = ({
     else {
       dispatchScenarioStateUpdate( {
         type: ScenarioStoreConstants.ACTION_TYPES.UPDATE_SCENARIO_SETTING_BY_ID,
-        id: scenarioState.currentScenarioId,
+        id: scenarioId,
         key: 'rho',
         value: newValue
       } );
@@ -53,7 +56,7 @@ const SettingSystematicAdherence = ({
         </FormLabel>
       </Tooltip>
       <Slider
-        value={ isPerIUSetting ? value : scenarioState.scenarioData[ scenarioState.currentScenarioId ].settings.rho}
+        value={ isPerIUSetting ? value : scenarioState.scenarioData[ scenarioId ].settings.rho}
         min={0}
         step={0.1}
         max={1}

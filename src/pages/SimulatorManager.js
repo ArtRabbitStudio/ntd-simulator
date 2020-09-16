@@ -16,7 +16,7 @@ import SelectCountry from './components/SelectCountry'
 import ConfirmationDialog from './components/ConfirmationDialog'
 import SettingsDialog from './components/SettingsDialog'
 
-import { generateMdaFutureFromDefaults, generateMdaFutureFromScenario } from './components/simulator/helpers/iuLoader'
+import { generateMdaFutureFromDefaults, generateMdaFutureFromScenario, generateMdaFutureFromScenarioSettings } from './components/simulator/helpers/iuLoader'
 import { combineFullMda } from './components/simulator/helpers/combineFullMda'
 import { removeInactiveMDArounds } from './components/simulator/helpers/removeInactiveMDArounds'
 import { trimMdaHistory } from './components/simulator/helpers/trimMdaHistory'
@@ -66,7 +66,7 @@ const SimulatorManager = ( props ) => {
   const [ simulationProgress, setSimulationProgress ] = useState( 0 );
   const [ confirmationOpen, setConfirmationOpen ] = useState( false );
   const [ newScenarioSettingsOpen, setNewScenarioSettingsOpen ] = useState( false );
-  const [ newScenarioData, setNewScenarioData ] = useState( null );
+  const [ newScenarioId, setNewScenarioId ] = useState( null );
 
   const defaultTabIndex = (
     () => {
@@ -78,19 +78,21 @@ const SimulatorManager = ( props ) => {
 
   const [ tabIndex, setTabIndex ] = useState( defaultTabIndex );
 
-  const runScenario = ( isNewScenario ) => {
+  const runScenario = ( scenarioId ) => {
+
+    const isNewScenario = scenarioId ? false : true;
 
     if (!simInProgress) {
 
       setSimInProgress( true );
 
-      updateMDAAndIUData( isNewScenario );
+      updateMDAAndIUData( scenarioId );
 
       SimulatorEngine.simControler.newScenario = isNewScenario;
 
-      console.log( `SimulatorManager calling SimulatorEngine.simControler.runScenario( ${scenarioState.currentScenarioId}, isNewScenario: ${isNewScenario} ) in runCurrentScenario` );
+      console.log( `SimulatorManager calling SimulatorEngine.simControler.runScenario( ${scenarioState.currentScenarioId}, isNewScenario: ${isNewScenario} ) in runScenario` );
 
-      const currentScenarioData = scenarioState.currentScenarioId ? scenarioState.scenarioData[ scenarioState.currentScenarioId ] : null;
+      const currentScenarioData = scenarioId ? scenarioState.scenarioData[ scenarioId ] : null;
 
       const callbacks = { progressCallback, resultCallback };
 
@@ -114,10 +116,12 @@ const SimulatorManager = ( props ) => {
 
   };
 
-  const updateMDAAndIUData = ( isNewScenario ) => {
+  const updateMDAAndIUData = ( scenarioId ) => {
 
       // get MDA history
       const IUData = simState.IUData;
+
+      const isNewScenario = scenarioId ? false : true;
 
       if ( isNewScenario ) {
         SimulatorEngine.simControler.iuParams = IUData.params;
@@ -126,7 +130,7 @@ const SimulatorManager = ( props ) => {
       const mdaHistory = IUData.mdaObj;
 
       // generate MDA predictions
-      const scenarioData = scenarioState.scenarioData[ scenarioState.currentScenarioId ];
+      const scenarioData = scenarioState.scenarioData[ scenarioId ? scenarioId : scenarioState.currentScenarioId ];
 
       const specificPrediction = 
         ( scenarioData && isNewScenario === false )
@@ -139,7 +143,7 @@ const SimulatorManager = ( props ) => {
           : generateMdaFutureFromDefaults( simState );
 
       const mdaPrediction =
-        specificPrediction !== null
+        ( specificPrediction !== null )
           ? { ...generatedMda, ...specificPrediction }
           : generatedMda;
 
@@ -153,13 +157,56 @@ const SimulatorManager = ( props ) => {
   };
 
   const createNewScenario = () => {
-    console.log( 'SimulatorManager creating new scenario' );
+
+    console.log( 'SimulatorManager creating new scenario on UI request' );
+
     const newScenarioData = SimulatorEngine.simControler.createScenario( simState.settings );
-    setNewScenarioData( newScenarioData );
+    newScenarioData.mdaFuture = generateMdaFutureFromScenarioSettings( newScenarioData );
+
+    /*
+     * ADD_SCENARIO_DATA = just add to memory,
+     * don't save to storage or add to scenarioKeys
+     */
+    dispatchScenarioStateUpdate( {
+      type: ScenarioStoreConstants.ACTION_TYPES.ADD_SCENARIO_DATA,
+      scenario: newScenarioData
+    } );
+
+    setNewScenarioId( newScenarioData.id );
     setNewScenarioSettingsOpen( true );
   };
 
-  const runNewScenario = async () => {
+  const runCreatedScenario = () => {
+
+    console.log( `SimulatorManager running newly-UI-created scenario ${newScenarioId}` );
+    setNewScenarioSettingsOpen( false );
+
+    dispatchScenarioStateUpdate( {
+      type: ScenarioStoreConstants.ACTION_TYPES.SAVE_SCENARIO_BY_ID,
+      id: newScenarioId
+    } );
+
+    const scenarioData = scenarioState.scenarioData[ newScenarioId ];
+
+    setNewScenarioId( null );
+    runScenario( scenarioData.id );
+  };
+
+  const cancelCreatedScenario = () => {
+
+    console.log( `SimulatorManager cancelling newly-UI-created scenario ${newScenarioId}` );
+    setNewScenarioSettingsOpen( false );
+
+    dispatchScenarioStateUpdate( {
+      type: ScenarioStoreConstants.ACTION_TYPES.REMOVE_SCENARIO_BY_ID,
+      id: newScenarioId
+    } );
+
+    setNewScenarioId( null );
+
+  };
+
+  const runNewScenario = () => {
 
     console.log( 'SimulatorManager running new scenario' );
 
@@ -168,15 +215,15 @@ const SimulatorManager = ( props ) => {
       return;
     }
 
-    runScenario( true );
+    runScenario( false );
 
   };
 
-  const runCurrentScenario = async () => {
+  const runCurrentScenario = () => {
 
     console.log( `SimulatorManager re-running current scenario ${scenarioState.currentScenarioId}` );
 
-    runScenario( false );
+    runScenario( scenarioState.currentScenarioId );
 
   };
 
@@ -234,7 +281,7 @@ const SimulatorManager = ( props ) => {
         id: id
       } );
 
-      updateMDAAndIUData( false );
+      updateMDAAndIUData( id );
 
       console.log( `SimulatorManager switched scenario to ${newScenarioData.id}: "${newScenarioData.label}"` );
     }
@@ -366,7 +413,7 @@ const SimulatorManager = ( props ) => {
 
       // none loaded - make a new one
       else {
-        console.log( "SimulatorManager creating new scenario" );
+        console.log( "SimulatorManager found no stored scenarios" );
         runNewScenario();
       }
 
@@ -465,7 +512,16 @@ const SimulatorManager = ( props ) => {
           </Grid>
         </section>
 
-        { newScenarioSettingsOpen ? <SettingsDialog scenarioData={ newScenarioData } newScenarioSettingsOpen={newScenarioSettingsOpen} closeCallback={()=>setNewScenarioSettingsOpen( false )} /> : null }
+        {
+          ( newScenarioSettingsOpen && newScenarioId )
+            ? <SettingsDialog
+                scenarioId={ newScenarioId }
+                action={ runCreatedScenario }
+                cancel={ cancelCreatedScenario }
+                newScenarioSettingsOpen={newScenarioSettingsOpen}
+              />
+            : null
+         }
       </Layout>
 
     </div>

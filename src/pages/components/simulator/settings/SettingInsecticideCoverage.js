@@ -11,13 +11,15 @@ import {
   Tooltip
 } from "@material-ui/core";
 
-const SettingInsecticideCoverage = ({ inModal, label, value, classAdd }) => {
+const SettingInsecticideCoverage = ({ inModal, label, value, classAdd, scenarioId }) => {
 
   const classes = useStyles();
   const { dispatchSimState } = useSimulatorStore();
   const { scenarioState, dispatchScenarioStateUpdate } = useScenarioStore();
 
   const isPerIUSetting = value !== null && typeof value !== 'undefined';
+
+  scenarioId = scenarioId ? scenarioId : scenarioState.currentScenarioId;
 
   return (
     <FormControl fullWidth className={`${classes.formControl} ${classAdd}`}>
@@ -38,7 +40,7 @@ const SettingInsecticideCoverage = ({ inModal, label, value, classAdd }) => {
       </FormLabel>
       </Tooltip>
       <Slider
-        value={ isPerIUSetting ? value : scenarioState.scenarioData[ scenarioState.currentScenarioId ].settings.v_to_hR }
+        value={ isPerIUSetting ? value : scenarioState.scenarioData[ scenarioId ].settings.v_to_hR }
         id="v_to_hR"
         min={0}
         step={1}
@@ -52,7 +54,7 @@ const SettingInsecticideCoverage = ({ inModal, label, value, classAdd }) => {
           else {
             dispatchScenarioStateUpdate( {
               type: ScenarioStoreConstants.ACTION_TYPES.UPDATE_SCENARIO_SETTING_BY_ID,
-              id: scenarioState.currentScenarioId,
+              id: scenarioId,
               key: 'v_to_hR',
               value: newValue
             } );

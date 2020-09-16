@@ -6,7 +6,7 @@ import { useScenarioStore, ScenarioStoreConstants } from "../../../../store/scen
 
 import { FormControl, Select, FormLabel, MenuItem,Tooltip } from '@material-ui/core'
 
-const SettingDrugRegimen = ({ inModal, label, value, onChange, classAdd }) => {
+const SettingDrugRegimen = ({ inModal, label, value, onChange, classAdd, scenarioId }) => {
   const classes = useStyles()
   const { dispatchSimState } = useSimulatorStore()
   const { scenarioState, dispatchScenarioStateUpdate } = useScenarioStore();
@@ -14,6 +14,8 @@ const SettingDrugRegimen = ({ inModal, label, value, onChange, classAdd }) => {
   // console.log('in drop down simState.mdaRegimen', simState.mdaRegimen)
 
   const isPerIUSetting = value !== null && typeof value !== 'undefined';
+
+  scenarioId = scenarioId ? scenarioId : scenarioState.currentScenarioId;
 
   /* TODO FIXME */
   const handleChange = (event) => {
@@ -28,7 +30,7 @@ const SettingDrugRegimen = ({ inModal, label, value, onChange, classAdd }) => {
     else {
       dispatchScenarioStateUpdate( {
         type: ScenarioStoreConstants.ACTION_TYPES.UPDATE_SCENARIO_SETTING_BY_ID,
-        id: scenarioState.currentScenarioId,
+        id: scenarioId,
         key: 'mdaRegimen',
         value: event.target.value
       } );
@@ -66,7 +68,7 @@ const SettingDrugRegimen = ({ inModal, label, value, onChange, classAdd }) => {
       <Select
         labelId="demo-simple-select-helper-label"
         id="demo-simple-select-helper"
-        value={ isPerIUSetting ? value : scenarioState.scenarioData[ scenarioState.currentScenarioId ].settings.mdaRegimen }
+        value={ isPerIUSetting ? value : scenarioState.scenarioData[ scenarioId ].settings.mdaRegimen }
         onChange={onChange ? onChange : handleChange}
         MenuProps={{ disablePortal: true }}
       >

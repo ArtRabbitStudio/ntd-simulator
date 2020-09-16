@@ -405,3 +405,63 @@ export const generateMdaFutureFromScenario = ( scenario ) => {
 
   return newMDAs;
 }
+
+export const generateMdaFutureFromScenarioSettings = ( scenario ) => {
+
+  const numberOfYears = 11 * 2;
+
+  let MDAtime = [];
+
+  for ( let i = 0; i < numberOfYears; i++ ) {
+    // 246/12 = 2020
+    // 228/12 = 2019
+    MDAtime.push(6 * i + 246);
+  }
+
+  let MDAcoverage = [];
+  for ( let i = 0; i < numberOfYears; i++ ) {
+    MDAcoverage.push( scenario.settings.coverage );
+  }
+
+  let MDAadherence = [];
+  for ( let i = 0; i < numberOfYears; i++ ) {
+    MDAadherence.push( scenario.settings.adherence );
+  }
+
+  let MDAbednets = [];
+  for ( let i = 0; i < numberOfYears; i++ ) {
+    MDAbednets.push( scenario.settings.bednets );
+  }
+
+  let MDAregimen = [];
+  for ( let i = 0; i < numberOfYears; i++ ) {
+    MDAregimen.push( scenario.settings.regimen );
+  }
+
+  let MDAactive = [];
+  for ( let i = 0; i < numberOfYears; i++ ) {
+
+    let active;
+
+    if( i <= scenario.settings.specificPredictionIndex ) {
+      active = false;
+    }
+
+    else {
+      active = scenario.settings.mdaSixMonths === 6 ? true : ( i % 2 ? false : true );
+    }
+
+    MDAactive.push( active );
+  }
+
+  const newMDAs = {
+    time: [ ...MDAtime ],
+    coverage: [ ...MDAcoverage ],
+    adherence: [ ...MDAadherence ],
+    bednets: [ ...MDAbednets ],
+    regimen: [ ...MDAregimen ],
+    active: [ ...MDAactive ],
+  };
+
+  return newMDAs;
+}

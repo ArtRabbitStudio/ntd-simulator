@@ -13,13 +13,15 @@ import {
   Tooltip
 } from "@material-ui/core";
 
-const SettingMosquitoType = ({ inModal, value, label }) => {
+const SettingMosquitoType = ({ inModal, value, label, scenarioId }) => {
 
   const classes = useStyles();
   const { dispatchSimState } = useSimulatorStore();
   const { scenarioState, dispatchScenarioStateUpdate } = useScenarioStore();
 
   const isPerIUSetting = value !== null && typeof value !== 'undefined';
+
+  scenarioId = scenarioId ? scenarioId : scenarioState.currentScenarioId;
 
   /* TODO FIXME */
 
@@ -44,7 +46,7 @@ const SettingMosquitoType = ({ inModal, value, label }) => {
         row
         aria-label="Species"
         name="species"
-        value={ isPerIUSetting ? value : scenarioState.scenarioData[ scenarioState.currentScenarioId ].settings.species}
+        value={ isPerIUSetting ? value : scenarioState.scenarioData[ scenarioId ].settings.species}
         onChange={(event) => {
           if ( isPerIUSetting ) {
             dispatchSimState({
@@ -55,7 +57,7 @@ const SettingMosquitoType = ({ inModal, value, label }) => {
           else {
             dispatchScenarioStateUpdate( {
               type: ScenarioStoreConstants.ACTION_TYPES.UPDATE_SCENARIO_SETTING_BY_ID,
-              id: scenarioState.currentScenarioId,
+              id: scenarioId,
               key: 'species',
               value: Number(event.target.value),
             } );

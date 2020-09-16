@@ -11,13 +11,16 @@ const SettingTargetCoverage = ({
   label,
   classAdd,
   value,
-  onChange
+  onChange,
+  scenarioId,
 }) => {
   const classes = useStyles()
   const { dispatchSimState } = useSimulatorStore()
   const { scenarioState, dispatchScenarioStateUpdate } = useScenarioStore();
 
   const isPerIUSetting = value !== null && typeof value !== 'undefined';
+
+  scenarioId = scenarioId ? scenarioId : scenarioState.currentScenarioId;
 
   /* TODO FIXME */
   const handleChange = (event, newValue) => {
@@ -28,7 +31,7 @@ const SettingTargetCoverage = ({
     else {
       dispatchScenarioStateUpdate( {
         type: ScenarioStoreConstants.ACTION_TYPES.UPDATE_SCENARIO_SETTING_BY_ID,
-        id: scenarioState.currentScenarioId,
+        id: scenarioId,
         key: 'coverage',
         value: newValue
       } );
@@ -54,7 +57,7 @@ const SettingTargetCoverage = ({
       </FormLabel>
       </Tooltip>
       <Slider
-        value={ isPerIUSetting ? value : scenarioState.scenarioData[ scenarioState.currentScenarioId ].settings.coverage}
+        value={ isPerIUSetting ? value : scenarioState.scenarioData[ scenarioId ].settings.coverage}
         min={0}
         step={1}
         max={100}
