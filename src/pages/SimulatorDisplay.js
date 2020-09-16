@@ -252,7 +252,7 @@ const SimulatorDisplay = (props) => {
               />
             </div>
 
-            { props.simInProgress ? null : (
+            { props.simInProgress ? <div className={classes.mdaplaceholder}><span> </span></div> : (
               <React.Fragment>
 
                 <MdaRounds />

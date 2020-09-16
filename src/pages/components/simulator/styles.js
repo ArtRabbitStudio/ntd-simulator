@@ -316,6 +316,13 @@ const useStyles = makeStyles((theme) => ({
   scenarioGraph: {
     position: "relative",
   },
+  mdaplaceholder: {
+    height: 100,
+    marginTop: 5,
+    marginRight: 50,
+    marginBottom: 20,
+    marginLeft: 50,
+  },
   scenarioGraphLegend: {
     whiteSpace: "nowrap",
     marginBottom: -40,
