@@ -40,7 +40,7 @@ export const loadAllIUhistoricData = async (
     macrofilaricide: 65, // $("#Macrofilaricide").val(),
     mda: 2, // $("#inputMDARounds").val(),
     mdaRegimen: 'xIA', // $("input[name=mdaRegimenRadios]:checked").val(),
-    mdaSixMonths: 6, // $("input:radio[name=mdaSixMonths]:checked").val(),
+    mdaSixMonths: 12, // $("input:radio[name=mdaSixMonths]:checked").val(),
     microfilaricide: 65, // $("#Microfilaricide").val(),
     rho: 0.2, // $("#sysAdherence").val(),
     rhoBComp: 0, // $("#brMda").val(),
