@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
-import Typography from '@material-ui/core/Typography';
 
-import Arrow from '../../images/arrow-drop-down.svg';
-import ArrowHover from '../../images/arrow-drop-down-hover.svg';
+import Arrow from 'images/arrow-drop-down.svg';
+import ArrowHover from 'images/arrow-drop-down-hover.svg';
 
 const useStyles = makeStyles(theme => ({
   root: {

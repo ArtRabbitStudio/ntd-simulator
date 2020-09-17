@@ -12,15 +12,15 @@ import {
 } from '@material-ui/core'
 import RotateLeftIcon from '@material-ui/icons/RotateLeft'
 
-import SessionStorage from './components/simulator/helpers/sessionStorage'
+import SessionStorage from 'pages/components/simulator/helpers/sessionStorage'
 import PropTypes from 'prop-types'
 import React, { useEffect, useState } from 'react'
-import ScenarioGraph from '../components/ScenarioGraph'
-import { useUIState, useDataAPI } from '../hooks/stateHooks'
-import { useSimulatorStore } from './../store/simulatorStore'
-import { useScenarioStore } from './../store/scenarioStore'
-import ChartSettings from './components/ChartSettings'
-import MdaRounds from './components/simulator/MdaRounds'
+import ScenarioGraph from 'components/ScenarioGraph'
+import { useUIState, useDataAPI } from 'hooks/stateHooks'
+import { useSimulatorStore } from 'store/simulatorStore'
+import { useScenarioStore } from 'store/scenarioStore'
+import ChartSettings from 'pages/components/ChartSettings'
+import MdaRounds from 'pages/components/simulator/MdaRounds'
 
 // settings
 import {
@@ -34,10 +34,10 @@ import {
   SettingSpecificScenario,
   SettingSystematicAdherence,
   SettingTargetCoverage,
-} from './components/simulator/settings'
-import * as SimulatorEngine from './components/simulator/SimulatorEngine'
-import useStyles from './components/simulator/styles'
-import TextContents from './components/TextContents'
+} from 'pages/components/simulator/settings'
+import * as SimulatorEngine from 'pages/components/simulator/SimulatorEngine'
+import useStyles from 'pages/components/simulator/styles'
+import TextContents from 'pages/components/TextContents'
 
 SimulatorEngine.simControler.documentReady()
 

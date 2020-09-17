@@ -1,7 +1,7 @@
 import React from 'react'
-import useStyles from '../styles'
+import useStyles from 'pages/components/simulator/styles'
 
-import { useScenarioStore, ScenarioStoreConstants } from '../../../../store/scenarioStore'
+import { useScenarioStore, ScenarioStoreConstants } from 'store/scenarioStore'
 import { FormControl, TextField } from '@material-ui/core'
 
 const SettingName = ({ inModal, label, scenarioId, scenarioLabel }) => {

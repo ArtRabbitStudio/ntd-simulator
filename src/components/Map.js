@@ -6,7 +6,7 @@ import { Typography, Box, Paper } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import Tooltip from './Tooltip'
 import Legend from './Legend'
-import useMapReducer from '../hooks/useMapReducer'
+import useMapReducer from 'hooks/useMapReducer'
 import 'mapbox-gl/dist/mapbox-gl.css'
 
 const useStyles = makeStyles({

@@ -3,8 +3,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import ReadMore from './ReadMore'
 import { Box, Typography, Grid } from '@material-ui/core'
 
-import Arrow from '../../images/arrow-drop-down.svg';
-import ArrowHover from '../../images/arrow-drop-down-hover.svg';
+import Arrow from 'images/arrow-drop-down.svg';
+import ArrowHover from 'images/arrow-drop-down-hover.svg';
 
 const useStyles = makeStyles(theme => ({
 

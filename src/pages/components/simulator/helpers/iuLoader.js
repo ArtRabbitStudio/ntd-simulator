@@ -2,7 +2,7 @@ import Papa from 'papaparse'
 import { last, filter, forEach } from 'lodash'
 import {
   DISEASE_LIMF, DISEASE_TRACHOMA
-} from '../../../../constants'
+} from 'AppConstants'
 import SessionStorage from './sessionStorage';
 
 export const loadAllIUhistoricData = async (

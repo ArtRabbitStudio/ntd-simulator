@@ -1,5 +1,5 @@
 import { makeStyles } from '@material-ui/core/styles'
-import ReloadIcon from "../images/reload-icon.svg";
+import ReloadIcon from "images/reload-icon.svg";
 
 const useStyles = makeStyles(theme => ({
     root: {

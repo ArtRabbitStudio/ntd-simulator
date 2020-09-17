@@ -1,18 +1,18 @@
 import { Button, ClickAwayListener, Paper, Typography } from '@material-ui/core'
 import React, { useState } from 'react'
-import { useSimulatorStore } from '../../../store/simulatorStore'
-import { useScenarioStore, ScenarioStoreConstants } from '../../../store/scenarioStore'
-import CloseButton from '../CloseButton'
+import { useSimulatorStore } from 'store/simulatorStore'
+import { useScenarioStore, ScenarioStoreConstants } from 'store/scenarioStore'
+import CloseButton from 'pages/components/CloseButton'
 //setting
 import {
   SettingBedNetCoverage,
   SettingDrugRegimen,
   SettingSystematicAdherence,
   SettingTargetCoverage,
-} from './settings'
-import useStyles from './styles'
+} from 'pages/components/simulator/settings'
+import useStyles from 'pages/components/simulator/styles'
 
-//import ClickAway from "../../../hooks/clickAway";
+//import ClickAway from "hooks/clickAway";
 
 const MdaRounds = (props) => {
 

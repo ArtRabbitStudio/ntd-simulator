@@ -18,8 +18,8 @@ import {
   SettingSpecificScenario,
   SettingSystematicAdherence,
   SettingTargetCoverage,
-} from './simulator/settings';
-import { useScenarioStore } from '../../store/scenarioStore';
+} from 'pages/components/simulator/settings';
+import { useScenarioStore } from 'store/scenarioStore';
 
 const SettingsDialog = ( props ) => {
 

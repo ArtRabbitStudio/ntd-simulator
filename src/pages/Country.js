@@ -2,12 +2,12 @@ import React, { useState } from 'react'
 import { observer } from 'mobx-react'
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles'
-import SimpleDialog from './components/SimpleDialog'
-import { useDataAPI, useUIState } from '../hooks/stateHooks'
-import { Layout } from '../layout'
-import Map from '../components/Map'
-import HeadWithInputs from './components/HeadWithInputs'
-import SelectCountry from './components/SelectCountry'
+import SimpleDialog from 'pages/components/SimpleDialog'
+import { useDataAPI, useUIState } from 'hooks/stateHooks'
+import { Layout } from 'layout'
+import Map from 'components/Map'
+import HeadWithInputs from 'pages/components/HeadWithInputs'
+import SelectCountry from 'pages/components/SelectCountry'
 
 const useStyles = makeStyles(theme => ({
     headLeftColumn: {

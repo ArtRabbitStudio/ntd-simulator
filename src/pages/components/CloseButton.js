@@ -2,7 +2,7 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Fab from '@material-ui/core/Fab';
 
-import CloseIcon from '../../images/close.svg';
+import CloseIcon from 'images/close.svg';
 
 const useStyles = makeStyles(theme => ({
   root: {

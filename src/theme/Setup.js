@@ -1,5 +1,5 @@
 import { makeStyles } from '@material-ui/core/styles'
-import InfoIcon from "../images/info-24-px.svg";
+import InfoIcon from "images/info-24-px.svg";
 
 const useStyles = makeStyles((theme) => ({
   withSlider: {

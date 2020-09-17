@@ -1,13 +1,13 @@
 import { makeStyles } from "@material-ui/core/styles";
-import Random from "../../../images/systemic-random.svg";
-import Same from "../../../images/systemic-same.svg";
-import Anopheles from "../../../images/Anopheles.jpg";
-import Culex from "../../../images/Culex.jpg";
-import InfoIcon from "../../../images/info-24-px.svg";
-import RemoveIcon from "../../../images/delete-icon-blue.svg";
-import graphTypeIconSimple from "../../../images/graph-icon.svg";
-import graphTypeIconComplex from "../../../images/graph-complex-icon.svg";
-import SettingsIcon from '../../../images/settings.svg';
+import Random from "images/systemic-random.svg";
+import Same from "images/systemic-same.svg";
+import Anopheles from "images/Anopheles.jpg";
+import Culex from "images/Culex.jpg";
+import InfoIcon from "images/info-24-px.svg";
+import RemoveIcon from "images/delete-icon-blue.svg";
+import graphTypeIconSimple from "images/graph-icon.svg";
+import graphTypeIconComplex from "images/graph-complex-icon.svg";
+import SettingsIcon from 'images/settings.svg';
 
 const useStyles = makeStyles((theme) => ({
   title: {

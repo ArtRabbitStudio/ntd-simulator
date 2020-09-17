@@ -1,6 +1,6 @@
 import React from 'react'
 import { Tooltip as MuiTooltip } from '@material-ui/core'
-import { NO_DATA } from '../constants'
+import { NO_DATA } from 'AppConstants'
 
 export default function Tooltip({ feature, year, position }) {
   const { endemicity,name, performance, [`prev-${year}`]: prevalence } = feature.properties

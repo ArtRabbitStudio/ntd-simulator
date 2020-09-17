@@ -1,8 +1,8 @@
 import React from 'react'
-import useStyles from '../styles'
+import useStyles from 'pages/components/simulator/styles'
 
-import { useSimulatorStore } from '../../../../store/simulatorStore'
-import { useScenarioStore, ScenarioStoreConstants } from "../../../../store/scenarioStore";
+import { useSimulatorStore } from 'store/simulatorStore'
+import { useScenarioStore, ScenarioStoreConstants } from "store/scenarioStore";
 
 import { FormControl, Select, FormLabel, MenuItem,Tooltip } from '@material-ui/core'
 

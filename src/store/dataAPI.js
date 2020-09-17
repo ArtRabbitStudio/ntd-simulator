@@ -31,7 +31,7 @@ import {
 } from "lodash";
 import { color, extent, scaleSymlog, interpolateHcl } from "d3";
 
-import { DISEASE_LIMF, DISEASE_TRACHOMA } from "../constants";
+import { DISEASE_LIMF, DISEASE_TRACHOMA } from "AppConstants";
 
 //const seq5 = ["#BA455E", "#CB7386", "#DDA2AF", "#EED0D7", "#ffffff"];
 //const seq5b = ["#A91636", "#BA455E", "#CB7386", "#DDA2AF", "#FFFFFF"];

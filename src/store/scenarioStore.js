@@ -1,7 +1,7 @@
 // store.js
 import React, { createContext, useContext, useReducer } from 'react'
 
-import SessionStorage from '../pages/components/simulator/helpers/sessionStorage';
+import SessionStorage from 'pages/components/simulator/helpers/sessionStorage';
 
 export const ScenarioStoreConstants = {
   ACTION_TYPES: {

@@ -6,8 +6,8 @@ import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 
-import Icon from '../../images/settings.svg';
-//import IconHover from '../../images/settings-hover.svg';
+import Icon from 'images/settings.svg';
+//import IconHover from 'images/settings-hover.svg';
 
 import CloseButton from './CloseButton';
 //import { geoNaturalEarth1Raw } from 'd3';

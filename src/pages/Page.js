@@ -1,7 +1,7 @@
 import React from 'react';
-import Layout from '../layout/Layout';
+import Layout from 'layout/Layout';
 
-import Head from './components/Head';
+import Head from 'pages/components/Head';
 
 const Page = (props) => {
 

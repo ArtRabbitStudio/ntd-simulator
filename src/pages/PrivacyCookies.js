@@ -1,9 +1,9 @@
 import React from 'react';
-import Layout from '../layout/Layout';
+import Layout from 'layout/Layout';
 import Typography from '@material-ui/core/Typography';
 
-import Head from './components/Head';
-import TextContents from './components/TextContents'
+import Head from 'pages/components/Head';
+import TextContents from 'pages/components/TextContents'
 
 const PrivacyCookies = (props) => {
 

@@ -4,7 +4,7 @@ import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import { NavLink } from 'react-router-dom';
 
-import Logo from '../../images/ntd-logo.svg';
+import Logo from 'images/ntd-logo.svg';
 
 const useStyles = makeStyles(theme => ({
     card: {

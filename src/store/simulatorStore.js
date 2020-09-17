@@ -1,7 +1,7 @@
 // store.js
 import React, { createContext, useContext, useReducer } from 'react';
 
-import SessionStorage from '../pages/components/simulator/helpers/sessionStorage';
+import SessionStorage from 'pages/components/simulator/helpers/sessionStorage';
 
 const SimulatorStoreContext = createContext();
 

@@ -4,25 +4,25 @@ import { Box, CircularProgress, Grid, Tab, Tabs, Typography } from '@material-ui
 import { v4 as uuidv4 } from 'uuid';
 import PropTypes from 'prop-types'
 
-import { useScenarioStore, ScenarioStoreConstants } from "../store/scenarioStore";
+import { useScenarioStore, ScenarioStoreConstants } from "store/scenarioStore";
 
-import SessionStorage from './components/simulator/helpers/sessionStorage';
-import SimulatorDisplay from './SimulatorDisplay';
-import * as SimulatorEngine from './components/simulator/SimulatorEngine';
-import { useSimulatorStore } from './../store/simulatorStore';
-import { useUIState } from '../hooks/stateHooks';
-import useStyles from './components/simulator/styles';
-import { Layout } from '../layout';
-import HeadWithInputs from './components/HeadWithInputs';
-import SelectCountry from './components/SelectCountry';
-import ConfirmationDialog from './components/ConfirmationDialog';
-import SettingsDialog from './components/SettingsDialog';
+import SessionStorage from 'pages/components/simulator/helpers/sessionStorage';
+import SimulatorDisplay from 'pages/SimulatorDisplay';
+import * as SimulatorEngine from 'pages/components/simulator/SimulatorEngine';
+import { useSimulatorStore } from 'store/simulatorStore';
+import { useUIState } from 'hooks/stateHooks';
+import useStyles from 'pages/components/simulator/styles';
+import { Layout } from 'layout';
+import HeadWithInputs from 'pages/components/HeadWithInputs';
+import SelectCountry from 'pages/components/SelectCountry';
+import ConfirmationDialog from 'pages/components/ConfirmationDialog';
+import SettingsDialog from 'pages/components/SettingsDialog';
 
-import { loadAllIUhistoricData } from './components/simulator/helpers/iuLoader'
-import { generateMdaFutureFromDefaults, generateMdaFutureFromScenario, generateMdaFutureFromScenarioSettings } from './components/simulator/helpers/iuLoader';
-import { combineFullMda } from './components/simulator/helpers/combineFullMda';
-import { removeInactiveMDArounds } from './components/simulator/helpers/removeInactiveMDArounds';
-import { trimMdaHistory } from './components/simulator/helpers/trimMdaHistory';
+import { loadAllIUhistoricData } from 'pages/components/simulator/helpers/iuLoader'
+import { generateMdaFutureFromDefaults, generateMdaFutureFromScenario, generateMdaFutureFromScenarioSettings } from 'pages/components/simulator/helpers/iuLoader';
+import { combineFullMda } from 'pages/components/simulator/helpers/combineFullMda';
+import { removeInactiveMDArounds } from 'pages/components/simulator/helpers/removeInactiveMDArounds';
+import { trimMdaHistory } from 'pages/components/simulator/helpers/trimMdaHistory';
 
 const a11yProps = (index) => {
   return {

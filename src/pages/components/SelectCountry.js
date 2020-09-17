@@ -2,13 +2,13 @@ import React, { useState } from 'react'
 import { observer } from 'mobx-react'
 import { useRouteMatch } from 'react-router-dom'
 
-import { useDataAPI, useUIState } from '../../hooks/stateHooks'
+import { useDataAPI, useUIState } from 'hooks/stateHooks'
 import { useHistory } from 'react-router-dom'
 
 import ConfirmationDialog from "./ConfirmationDialog";
 import { Box, TextField,FormControl,Fab } from '@material-ui/core';
 import Autocomplete from '@material-ui/lab/Autocomplete'
-import useStyles from '../../theme/SelectCountry'
+import useStyles from 'theme/SelectCountry'
 
 
 const SelectCountry = ({ selectIU, showConfirmation, showBack }) => {

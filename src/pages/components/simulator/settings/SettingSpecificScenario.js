@@ -1,8 +1,8 @@
 import React from 'react'
-import useStyles from '../styles'
+import useStyles from 'pages/components/simulator/styles'
 
-import { useSimulatorStore } from '../../../../store/simulatorStore'
-import { useScenarioStore, ScenarioStoreConstants } from "../../../../store/scenarioStore";
+import { useSimulatorStore } from 'store/simulatorStore'
+import { useScenarioStore, ScenarioStoreConstants } from "store/scenarioStore";
 
 import {
   FormControl,
@@ -12,8 +12,8 @@ import {
   Button,
 } from '@material-ui/core'
 import { useHistory } from 'react-router-dom'
-import { specificScenarios } from '../helpers/specificScenarios'
-import { useUIState } from '../../../../hooks/stateHooks'
+import { specificScenarios } from 'pages/components/simulator/helpers/specificScenarios'
+import { useUIState } from 'hooks/stateHooks'
 
 const SettingSpecificScenario = ({ inModal, label, classAdd, scenarioId }) => {
   const classes = useStyles()

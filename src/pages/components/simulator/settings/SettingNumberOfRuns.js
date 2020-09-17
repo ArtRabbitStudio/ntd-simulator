@@ -1,7 +1,7 @@
 import React from 'react';
-import useStyles from "../styles";
+import useStyles from "pages/components/simulator/styles";
 
-import { useSimulatorStore } from "../../../../store/simulatorStore";
+import { useSimulatorStore } from "store/simulatorStore";
 
 import {
   FormControl,

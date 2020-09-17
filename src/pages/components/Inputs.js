@@ -2,7 +2,7 @@ import React from 'react'
 import { observer } from 'mobx-react'
 
 import { makeStyles } from '@material-ui/core/styles'
-import { useDataAPI, useUIState } from '../../hooks/stateHooks'
+import { useDataAPI, useUIState } from 'hooks/stateHooks'
 
 import Box from '@material-ui/core/Box'
 import MenuItem from '@material-ui/core/MenuItem'
@@ -11,7 +11,7 @@ import Select from '@material-ui/core/Select'
 
 import {
   DISEASE_LABELS
-} from '../../constants'
+} from 'AppConstants'
 
 const useStyles = makeStyles(theme => ({
   root: {

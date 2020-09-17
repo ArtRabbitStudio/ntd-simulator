@@ -1,14 +1,14 @@
 import React, { useEffect } from 'react';
 import { Typography, Link } from '@material-ui/core';
-import { useUIState } from '../hooks/stateHooks'
+import { useUIState } from 'hooks/stateHooks'
 
-import { Layout } from '../layout';
+import { Layout } from 'layout';
 import { makeStyles } from '@material-ui/core/styles';
 
-import HeadWithInputs from './components/HeadWithInputs';
-import TextContents from './components/TextContents';
-import SelectCountry from './components/SelectCountry';
-import Logo from '../images/ntd-logo.svg';
+import HeadWithInputs from 'pages/components/HeadWithInputs';
+import TextContents from 'pages/components/TextContents';
+import SelectCountry from 'pages/components/SelectCountry';
+import Logo from 'images/ntd-logo.svg';
 
 const useStyles = makeStyles(theme => ({
   section: {
