@@ -87,7 +87,7 @@ export var Person = function (a, b) {
   this.repRate = function () {
     if (params.nu === 0) {
       if (this.WM > 0) {
-        return this.WF
+        return params.alpha * this.WF
       } else {
         return 0.0
       }
