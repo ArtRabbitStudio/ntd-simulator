@@ -64,39 +64,33 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 // <button mat-button aria-label="settings" className={classes.icon} onClick={(event) => handleClickOpen(event)}></button>
-const ChartSettings = ({ title, buttonText, cancelText, cancel, action, onOpen, children, hideFab, newScenarioSettingsOpen, closeCallback }) => {
+const ChartSettings = ({ title, buttonText, cancelText, cancel, action, onOpen, children, hideFab, newScenarioSettingsOpen }) => {
 
   const classes = useStyles();
-  const [open, setOpen] = useState(false);
+  const [ open, setOpen ] = useState(false);
 
   title = title ? title : 'Settings';
   buttonText = buttonText ? buttonText : 'Update graphs';
 
   const handleClickOpen = () => {
-    setOpen(true);
-    if (onOpen) {
+    setOpen( true );
+    if ( onOpen ) {
       onOpen();
     }
   };
 
-  const handleClickClose = (event) => {
+  const handleClickClose = ( event ) => {
 
+    setOpen( false );
     if( cancel ) {
       cancel( event );
     }
-    setOpen(false);
-    if ( closeCallback !== undefined ) {
-      closeCallback()
-    }
   };
 
-  const handleConfirm = (event) => {
-    if (action) {
-      action(event);
-    }
-    setOpen(false);
-    if ( closeCallback !== undefined ) {
-      closeCallback()
+  const handleConfirm = ( event ) => {
+    setOpen( false );
+    if ( action ) {
+      action( event );
     }
   };
 
@@ -106,11 +100,11 @@ const ChartSettings = ({ title, buttonText, cancelText, cancel, action, onOpen, 
 
   useEffect(() => {
     if ( newScenarioSettingsOpen ) {
-      setOpen(true)
+      setOpen( true )
     } else {
-      setOpen(false)
+      setOpen( false )
     }
-  }, [newScenarioSettingsOpen]);
+  }, [ newScenarioSettingsOpen ]);
 
 
   return (

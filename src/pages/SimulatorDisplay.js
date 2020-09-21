@@ -21,6 +21,7 @@ import { useSimulatorStore } from 'store/simulatorStore'
 import { useScenarioStore } from 'store/scenarioStore'
 import ChartSettings from 'pages/components/ChartSettings'
 import MdaRounds from 'pages/components/simulator/MdaRounds'
+import DiseaseModels from 'pages/components/simulator/models/DiseaseModels';
 
 // settings
 import {
@@ -35,11 +36,8 @@ import {
   SettingSystematicAdherence,
   SettingTargetCoverage,
 } from 'pages/components/simulator/settings'
-import * as SimulatorEngine from 'pages/components/simulator/SimulatorEngine'
 import useStyles from 'pages/components/simulator/styles'
 import TextContents from 'pages/components/TextContents'
-
-SimulatorEngine.simControler.documentReady()
 
 window.SessionStorage = SessionStorage;
 
@@ -86,10 +84,15 @@ const SimulatorDisplay = (props) => {
   const { implementationUnit } = useUIState();
   const { selectedIUData } = useDataAPI();
 
+  const { disease } = useUIState();
+  const diseaseModel = DiseaseModels[ disease ];
+
   // 2nd-arg empty array makes this a componentDidMount equivalent - only re-run if {nothing} changes
   useEffect(
 
     () => {
+      console.log( `SimulatorDisplay mounting, calling diseaseModel.documentReady for disease ${disease}` );
+      diseaseModel.documentReady();
     },
 
     // eslint-disable-next-line

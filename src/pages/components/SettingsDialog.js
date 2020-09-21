@@ -39,7 +39,6 @@ const SettingsDialog = ( props ) => {
         cancel={props.cancel}
         hideFab={true}
         newScenarioSettingsOpen={props.newScenarioSettingsOpen}
-        closeCallback={props.closeCallback}
       >
         <TextContents>
           <Typography paragraph variant="body1" component="p">

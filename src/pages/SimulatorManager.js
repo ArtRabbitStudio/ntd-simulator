@@ -8,7 +8,6 @@ import { useScenarioStore, ScenarioStoreConstants } from "store/scenarioStore";
 
 import SessionStorage from 'pages/components/simulator/helpers/sessionStorage';
 import SimulatorDisplay from 'pages/SimulatorDisplay';
-import * as SimulatorEngine from 'pages/components/simulator/SimulatorEngine';
 import { useSimulatorStore } from 'store/simulatorStore';
 import { useUIState } from 'hooks/stateHooks';
 import useStyles from 'pages/components/simulator/styles';
@@ -18,11 +17,9 @@ import SelectCountry from 'pages/components/SelectCountry';
 import ConfirmationDialog from 'pages/components/ConfirmationDialog';
 import SettingsDialog from 'pages/components/SettingsDialog';
 
+import DiseaseModels from 'pages/components/simulator/models/DiseaseModels';
+
 import { loadAllIUhistoricData } from 'pages/components/simulator/helpers/iuLoader'
-import { generateMdaFutureFromDefaults, generateMdaFutureFromScenario, generateMdaFutureFromScenarioSettings } from 'pages/components/simulator/helpers/iuLoader';
-import { combineFullMda } from 'pages/components/simulator/helpers/combineFullMda';
-import { removeInactiveMDArounds } from 'pages/components/simulator/helpers/removeInactiveMDArounds';
-import { trimMdaHistory } from 'pages/components/simulator/helpers/trimMdaHistory';
 
 const a11yProps = (index) => {
   return {
@@ -66,6 +63,8 @@ const SimulatorManager = ( props ) => {
   const { scenarioState, dispatchScenarioStateUpdate } = useScenarioStore();
   const { disease } = useUIState();
 
+  const diseaseModel = DiseaseModels[ disease ];
+
   const [ simInProgress, setSimInProgress ] = useState( false );
   const [ simulationProgress, setSimulationProgress ] = useState( 0 );
   const [ confirmationOpen, setConfirmationOpen ] = useState( false );
@@ -80,97 +79,20 @@ const SimulatorManager = ( props ) => {
 
   const [ tabIndex, setTabIndex ] = useState( getDefaultTabIndex() );
 
-  const runScenario = ( scenarioId ) => {
-
-    const isNewScenario = scenarioId ? false : true;
-
-    if (!simInProgress) {
-
-      setSimInProgress( true );
-
-      updateMDAAndIUData( scenarioId );
-
-      SimulatorEngine.simControler.newScenario = isNewScenario;
-
-      console.log( `SimulatorManager calling SimulatorEngine.simControler.runScenario( ${scenarioState.currentScenarioId}, isNewScenario: ${isNewScenario} ) in runScenario` );
-
-      const currentScenarioData = scenarioId ? scenarioState.scenarioData[ scenarioId ] : null;
-
-      const callbacks = { progressCallback, resultCallback };
-
-      if ( isNewScenario ) {
-        SimulatorEngine.simControler.runScenario(
-          simState.settings, // use default params
-          null, // create a new ID & scenario
-          callbacks
-        );
-      }
-
-      else {
-        SimulatorEngine.simControler.runScenario(
-          currentScenarioData.settings,  // use per-scenario params
-          currentScenarioData,  // use existing scenario
-          callbacks
-        );
-      }
-
-    }
-
-  };
-
-  const updateMDAAndIUData = ( scenarioId ) => {
-
-      // get MDA history
-      const IUData = simState.IUData;
-
-      const isNewScenario = scenarioId ? false : true;
-
-      if ( isNewScenario ) {
-        SimulatorEngine.simControler.iuParams = IUData.params;
-      }
-
-      const mdaHistory = IUData.mdaObj;
-
-      // generate MDA predictions
-      const scenarioData = scenarioState.scenarioData[ scenarioId ? scenarioId : scenarioState.currentScenarioId ];
-
-      const specificPrediction = 
-        ( scenarioData && isNewScenario === false )
-          ? scenarioData.settings.specificPrediction
-          : simState.specificPrediction;
-
-      const generatedMda =
-        ( scenarioData && isNewScenario === false )
-          ? generateMdaFutureFromScenario( scenarioData )
-          : generateMdaFutureFromDefaults( simState );
-
-      const mdaPrediction =
-        ( specificPrediction !== null )
-          ? { ...generatedMda, ...specificPrediction }
-          : generatedMda;
-
-      const fullMDA = combineFullMda( mdaHistory, mdaPrediction );
-
-      SimulatorEngine.simControler.mdaObj = removeInactiveMDArounds( fullMDA );
-      SimulatorEngine.simControler.mdaObjUI = fullMDA;
-      SimulatorEngine.simControler.mdaObj2015 = trimMdaHistory( mdaHistory );
-      SimulatorEngine.simControler.mdaObjFuture = mdaPrediction;
-      SimulatorEngine.simControler.iuParams = IUData.params;
-  };
-
   const createNewScenario = () => {
 
     const label = new Date().toISOString().split('T').join(' ').replace(/\.\d{3}Z/, '');
     const id = uuidv4();
+
     const newScenarioData = {
       id,
       label,
-      settings: { ...simState.settings }
+      settings: { ...simState.settings } // should this be here or in the initScenario?
     };
 
     console.log( `SimulatorManager created new scenario id ${newScenarioData.id} on UI request` );
 
-    newScenarioData.mdaFuture = generateMdaFutureFromScenarioSettings( newScenarioData );
+    const initedScenarioData = diseaseModel.initScenario( newScenarioData );
 
     /*
      * ADD_SCENARIO_DATA = just add to memory,
@@ -178,16 +100,58 @@ const SimulatorManager = ( props ) => {
      */
     dispatchScenarioStateUpdate( {
       type: ScenarioStoreConstants.ACTION_TYPES.ADD_SCENARIO_DATA,
-      scenario: newScenarioData
+      scenario: initedScenarioData
     } );
 
-    setNewScenarioId( newScenarioData.id );
+    setNewScenarioId( initedScenarioData.id );
     setNewScenarioSettingsOpen( true );
+  };
+
+  const callbacks = {
+
+    progressCallback: ( progress ) => {
+      setSimulationProgress( progress );
+    },
+
+    resultCallback: ( resultScenario, isNewScenario ) => {
+
+      delete resultScenario.isDirty;
+
+      setSimInProgress( false );
+
+      if( isNewScenario ) {
+        console.log( `SimulatorManager received new result scenario data from '${disease}' model, storing in scenario id ${resultScenario.id}` );
+
+        dispatchScenarioStateUpdate( {
+          type: ScenarioStoreConstants.ACTION_TYPES.SET_NEW_SCENARIO_DATA,
+          scenario: resultScenario
+        } );
+
+      }
+
+      else {
+        console.log( `SimulatorManager received updated result scenario data from '${disease}' model, storing in scenario id ${resultScenario.id}` );
+
+        dispatchScenarioStateUpdate( {
+          type: ScenarioStoreConstants.ACTION_TYPES.UPDATE_SCENARIO_DATA,
+          scenario: resultScenario
+        } );
+      }
+
+      dispatchScenarioStateUpdate( {
+        type: ScenarioStoreConstants.ACTION_TYPES.SET_SCENARIO_KEYS,
+        keys: SessionStorage.scenarioKeys // will have been internally updated by SessionStorage
+      } );
+
+      switchScenario( resultScenario.id );
+
+    }
+
   };
 
   const runCreatedScenario = () => {
 
-    console.log( `SimulatorManager running newly-UI-created scenario ${newScenarioId}` );
+    console.log( `SimulatorManager running newly-UI-created scenario ${newScenarioId} for disease ${disease}` );
     setNewScenarioSettingsOpen( false );
 
     dispatchScenarioStateUpdate( {
@@ -198,12 +162,25 @@ const SimulatorManager = ( props ) => {
     const scenarioData = scenarioState.scenarioData[ newScenarioId ];
 
     setNewScenarioId( null );
-    runScenario( scenarioData.id );
+
+    if ( !simInProgress ) {
+
+      setSimInProgress( true );
+
+      diseaseModel.runScenario( {
+        scenarioId: scenarioData.id,
+        scenarioState,
+        simState,
+        simInProgress,
+        setSimInProgress,
+        callbacks
+      } );
+    }
   };
 
   const cancelCreatedScenario = () => {
 
-    console.log( `SimulatorManager cancelling newly-UI-created scenario ${newScenarioId}` );
+    console.log( `SimulatorManager cancelling newly-UI-created scenario ${newScenarioId} for disease ${disease}` );
     setNewScenarioSettingsOpen( false );
 
     dispatchScenarioStateUpdate( {
@@ -218,14 +195,26 @@ const SimulatorManager = ( props ) => {
 
   const runNewScenario = () => {
 
-    console.log( 'SimulatorManager running new scenario' );
+    console.log( `SimulatorManager running new scenario for disease ${disease}` );
 
     if ( scenarioState.scenarioKeys.length > 5 && !simInProgress ) {
       alert( 'Sorry, maximum number of Scenarios is 5.' );
       return;
     }
 
-    runScenario( false );
+    if ( !simInProgress ) {
+
+      setSimInProgress( true );
+
+      diseaseModel.runScenario( {
+        scenarioId: false,
+        scenarioState,
+        simState,
+        simInProgress,
+        setSimInProgress,
+        callbacks
+       } );
+    }
 
   };
 
@@ -233,7 +222,20 @@ const SimulatorManager = ( props ) => {
 
     console.log( `SimulatorManager re-running current scenario ${scenarioState.currentScenarioId}` );
 
-    runScenario( scenarioState.currentScenarioId );
+    if ( !simInProgress ) {
+
+      setSimInProgress( true );
+
+      diseaseModel.runScenario( {
+        scenarioId: scenarioState.currentScenarioId,
+        scenarioState,
+        simState,
+        simInProgress,
+        setSimInProgress,
+        callbacks
+      } );
+
+    }
 
   };
 
@@ -241,57 +243,18 @@ const SimulatorManager = ( props ) => {
     resetScenario( scenarioState.currentScenarioId );
   };
 
-  const progressCallback = ( progress ) => {
-    setSimulationProgress( progress );
-  };
-
-  const resultCallback = ( resultScenario, isNewScenario ) => {
-
-
-    delete resultScenario.isDirty;
-
-    setSimInProgress( false );
-
-    if( isNewScenario ) {
-      console.log( `SimulatorManager received new result scenario from SimulatorEngine, storing in scenario id ${resultScenario.id}` );
-
-      dispatchScenarioStateUpdate( {
-        type: ScenarioStoreConstants.ACTION_TYPES.SET_NEW_SCENARIO_DATA,
-        scenario: resultScenario
-      } );
-
-    }
-
-    else {
-      console.log( `SimulatorManager received updated result scenario from SimulatorEngine, storing in scenario id ${resultScenario.id}` );
-
-      dispatchScenarioStateUpdate( {
-        type: ScenarioStoreConstants.ACTION_TYPES.UPDATE_SCENARIO_DATA,
-        scenario: resultScenario
-      } );
-    }
-
-    dispatchScenarioStateUpdate( {
-      type: ScenarioStoreConstants.ACTION_TYPES.SET_SCENARIO_KEYS,
-      keys: SessionStorage.scenarioKeys // will have been internally updated by SessionStorage
-    } );
-
-    switchScenario( resultScenario.id );
-
-  };
-
-  const switchScenario = ( id ) => {
+  const switchScenario = ( scenarioId ) => {
 
     try {
 
-      const newScenarioData = scenarioState.scenarioData[ scenarioState.currentScenarioId ];
+      const newScenarioData = scenarioState.scenarioData[ scenarioId ];
 
       dispatchScenarioStateUpdate( {
         type: ScenarioStoreConstants.ACTION_TYPES.SWITCH_SCENARIO_BY_ID,
-        id: id
+        id: scenarioId
       } );
 
-      updateMDAAndIUData( id );
+      diseaseModel.prepScenarioAndParams( scenarioId, scenarioState, simState );
 
       console.log( `SimulatorManager switched scenario to ${newScenarioData.id}: "${newScenarioData.label}"` );
     }

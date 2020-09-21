@@ -1,7 +1,8 @@
-import { Random } from './helpers/sim'
 import { subtract } from 'mathjs'
 import { v4 as uuidv4 } from 'uuid';
-import SessionStorage from './helpers/sessionStorage';
+
+import { Random } from 'pages/components/simulator/helpers/sim'
+import SessionStorage from 'pages/components/simulator/helpers/sessionStorage';
 
 export var s = new Random();
 
