@@ -363,7 +363,8 @@ class DataAPI {
     const { relations } = this.dataStore;
 
     if (ius && country && relations) {
-      return flow(groupBy((x) => x.relatedCountries[0] === country))(ius);
+      const countryIUs = flow(groupBy((x) => x.relatedCountries[0] === country))(ius);
+      return countryIUs;
     }
     return null;
   }

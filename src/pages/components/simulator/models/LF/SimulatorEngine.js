@@ -426,7 +426,7 @@ export var Model = function (n) {
     }
 
     //double currentL3 = 0.5;
-    // console.log("mosquito species: ", params.mosquitoSpecies, "\n");
+    console.log("mosquito species: ", params.mosquitoSpecies, "\n");
     params.L3 = 5.0
     // console.log("0----------100\n-");
     while (t < tot_t * 12.0) {
@@ -723,6 +723,9 @@ export var statFunctions = {
   setPropMDA: function (regimen) {
     // var ps = simControler.modelParams();
     var ps = simControler.params
+    //TODO: regimen is NaN seems odd
+    console.log('setPropMDA',regimen,ps)
+
     var chis = [0.99, 0.95, 0.99, 1.0, Number(ps.microfilaricide) / 100, 0.99]
     var taus = [0.35, 0.55, 0.1, 1.0, Number(ps.macrofilaricide) / 100, 0.1]
     params.mfPropMDA = 1 - chis[Number(regimen) - 1]
@@ -876,6 +879,8 @@ export var statFunctions = {
   setInputParams: function (dict, i) {
     // var ps = simControler.modelParams();
     var ps = simControler.params
+    console.log('ps',ps)
+    console.log('simControler',simControler)
     params.v_to_h = simControler.iuParams.v_to_h[i]
     params.shapeRisk = simControler.iuParams.shapeRisk[i]
     params.aImp = simControler.iuParams.aImp[i]
@@ -988,6 +993,7 @@ export var simControler = {
 
   runScenario: function ( paramsFromUI, existingScenario, callbacks ) {
     console.log( `SimulatorEngine running ${ existingScenario ? 'scenario ' + existingScenario.id : 'new scenario' } with params:`, paramsFromUI );
+    console.log('paramsFromUI',paramsFromUI)
     this.params = { ...paramsFromUI }
     this.runMapSimulation( existingScenario, callbacks )
   },
@@ -995,6 +1001,8 @@ export var simControler = {
   runMapSimulation: function ( existingScenario, { progressCallback, resultCallback } ) {
 
     console.log( `SimulatorEngine running map simulation with completed params for scenarioId ${ existingScenario ? existingScenario.id : null }:`, params );
+    console.log('params',params)
+    
     //statFunctions.setInputParams({ nMDA: 60 })
     //max number of mda rounds even if doing it six monthly.
 
@@ -1121,7 +1129,9 @@ export var simControler = {
             species: this.params.species,
             runs: this.params.runs,
             specificPrediction: this.params.specificPrediction,
-            specificPredictionIndex: this.params.specificPredictionIndex
+            specificPredictionIndex: this.params.specificPredictionIndex,
+            macrofilaricide: this.params.macrofilaricide,
+            microfilaricide: this.params.microfilaricide
 
           };
 
