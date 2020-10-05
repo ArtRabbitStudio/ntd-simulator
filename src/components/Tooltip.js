@@ -20,6 +20,10 @@ export default function Tooltip({ feature, year, position }) {
     title = `${name} ${prevalence}% [${endemicity}]`
   }
 
+  if ( feature.source === 'africa-countries' && prevalence === 'null' ) {
+    title = name
+  }
+
   return (
     <MuiTooltip title={title} open placement="top">
       <span
