@@ -119,7 +119,7 @@ export const loadAllIUhistoricData = async (
 
 export const loadMdaHistory = async (implementationUnit) => {
   const IUid = implementationUnit ? implementationUnit : 'AGO02107'
-  const mdaResponse = await fetch(`/data/mda-history/${IUid}.csv`)
+  const mdaResponse = await fetch(`/diseases/lf/mda-history/${IUid}.csv`)
   let reader = mdaResponse.body.getReader()
 
   // Step 3: read the data
@@ -180,8 +180,8 @@ export const loadMdaHistory = async (implementationUnit) => {
 
 export const loadIUParams = async (implementationUnit) => {
   const IUid = implementationUnit ? implementationUnit : 'AGO02107'
-  const IUParamsResponse = await fetch(`/data/iu-params/${IUid}.csv`)
-  //console.log(`/data/iu-params/${IUid}.csv`);
+  const IUParamsResponse = await fetch(`/diseases/lf/iu-params/${IUid}.csv`)
+  //console.log(`/lf/iu-params/${IUid}.csv`);
   //console.log(IUParamsResponse);
   // populate iuParams
   // const IUParamsResponse = await fetch('/data/iu-params/AGO02107.csv')

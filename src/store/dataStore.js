@@ -38,9 +38,9 @@ class DataStore {
             return sink(collection)
         })
 
-    countryLevelLoader = DataStore.loadCSV('/diseases/trachoma/country-level.csv')
-    stateLevelLoader = DataStore.loadCSV('/diseases/trachoma/state-level.csv')
-    iuLevelLoader = DataStore.loadCSV('/diseases/trachoma/iu-level.csv')
+    countryLevelLoader = DataStore.loadCSV('/diseases/lf/country-level.csv')
+    stateLevelLoader = DataStore.loadCSV('/diseases/lf/state-level.csv')
+    iuLevelLoader = DataStore.loadCSV('/diseases/lf/iu-level.csv')
 
     relationsLoader = DataStore.loadCSV('/geo/relations.csv')
     level0Loader = DataStore.loadGeojson('/geo/africa_country_ms_0.1.json')
