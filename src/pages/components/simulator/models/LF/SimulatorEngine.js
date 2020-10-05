@@ -999,8 +999,9 @@ export var simControler = {
     //max number of mda rounds even if doing it six monthly.
 
 
-    var mdaJSON = simControler.mdaObj //generateMDAFromForm()
-    var maxN = simControler.params.runs // Number($("#runs").val());
+    var mdaJSON = existingScenario ? existingScenario.mdaFuture : simControler.mdaObj //generateMDAFromForm()
+    console.log( 'SimulatorEngine using mdaJSON', mdaJSON );
+    var maxN = existingScenario ? existingScenario.settings.runs : simControler.params.runs // Number($("#runs").val());
     var parDict = []; // create an empty array
 
 

@@ -9,10 +9,14 @@ export default {
 
   initScenario: function( newScenarioData ) {
     
-    return {
+    const newScenario =  {
       ...newScenarioData,
       mdaFuture: generateMdaFutureFromScenarioSettings( newScenarioData )
     };
+
+    console.log( 'created new scenario', newScenario );
+
+    return newScenario;
 
   },
 
@@ -64,7 +68,9 @@ export default {
 
     SimulatorEngine.simControler.newScenario = isNewScenario;
 
-    console.log( `LFModel.runScenario calling SimulatorEngine.simControler.runScenario( ${scenarioState.currentScenarioId}, isNewScenario: ${isNewScenario} )` );
+    console.log( `LFModel.runScenario calling SimulatorEngine.simControler.runScenario( ${
+      isNewScenario ? null : scenarioState.scenarioData[ scenarioId ].id
+    }, isNewScenario: ${isNewScenario} )` );
 
     const currentScenarioData = scenarioId ? scenarioState.scenarioData[ scenarioId ] : null;
 

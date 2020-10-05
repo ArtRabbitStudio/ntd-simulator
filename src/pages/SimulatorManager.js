@@ -20,6 +20,7 @@ import SettingsDialog from 'pages/components/SettingsDialog';
 import DiseaseModels from 'pages/components/simulator/models/DiseaseModels';
 
 import { loadAllIUhistoricData } from 'pages/components/simulator/helpers/iuLoader'
+import { generateMdaFutureFromScenarioSettings } from 'pages/components/simulator/helpers/iuLoader';
 
 const a11yProps = (index) => {
   return {
@@ -92,18 +93,16 @@ const SimulatorManager = ( props ) => {
 
     console.log( `SimulatorManager created new scenario id ${newScenarioData.id} on UI request` );
 
-    const initedScenarioData = diseaseModel.initScenario( newScenarioData );
-
     /*
      * ADD_SCENARIO_DATA = just add to memory,
      * don't save to storage or add to scenarioKeys
      */
     dispatchScenarioStateUpdate( {
       type: ScenarioStoreConstants.ACTION_TYPES.ADD_SCENARIO_DATA,
-      scenario: initedScenarioData
+      scenario: newScenarioData
     } );
 
-    setNewScenarioId( initedScenarioData.id );
+    setNewScenarioId( newScenarioData.id );
     setNewScenarioSettingsOpen( true );
   };
 
@@ -154,13 +153,24 @@ const SimulatorManager = ( props ) => {
     console.log( `SimulatorManager running newly-UI-created scenario ${newScenarioId} for disease ${disease}` );
     setNewScenarioSettingsOpen( false );
 
+    // generate the MDAs from the settings
+    const newMdaFuture = generateMdaFutureFromScenarioSettings( scenarioState.scenarioData[ newScenarioId ] );
+    dispatchScenarioStateUpdate( {
+      type: ScenarioStoreConstants.ACTION_TYPES.SET_SCENARIO_MDA_FUTURE_BY_ID,
+      id: newScenarioId,
+      mdaFuture: newMdaFuture
+    } );
+
+    // save the scenario
     dispatchScenarioStateUpdate( {
       type: ScenarioStoreConstants.ACTION_TYPES.SAVE_SCENARIO_BY_ID,
       id: newScenarioId
     } );
 
+    // snag the data & id
     const scenarioData = scenarioState.scenarioData[ newScenarioId ];
 
+    // tell the UI we're not in 'new scenario' any more
     setNewScenarioId( null );
 
     if ( !simInProgress ) {

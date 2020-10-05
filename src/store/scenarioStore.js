@@ -13,6 +13,7 @@ export const ScenarioStoreConstants = {
     UPDATE_SCENARIO_LABEL_BY_ID: 'updateScenarioLabelById',
     UPDATE_SCENARIO_SETTING_BY_ID: 'updateScenarioSettingById',
     UPDATE_SCENARIO_MDA_FUTURE_SETTING_BY_ID_AND_IDX: 'updateScenarioMdaFutureSettingByIdAndIdx',
+    SET_SCENARIO_MDA_FUTURE_BY_ID: 'setScenarioMdaFutureById',
     SWITCH_SCENARIO_BY_ID: 'switchScenarioById',
     MARK_SCENARIO_DIRTY_BY_ID: 'markScenarioDirtyById',
     REMOVE_SCENARIO_BY_ID: 'removeScenarioById',
@@ -148,7 +149,6 @@ const reducer = ( scenarioState, action ) => {
 
         }
 
-
         newState.lastUpdatedScenarioId = action.id;
         break;
 
@@ -157,6 +157,11 @@ const reducer = ( scenarioState, action ) => {
         newState.scenarioData[ action.id ].mdaFuture[ action.key ][ action.idx ] = action.value;
         newState.lastUpdatedScenarioId = action.id;
         newState.scenarioData[ action.id ].isDirty = true;
+        break;
+
+
+      case ScenarioStoreConstants.ACTION_TYPES.SET_SCENARIO_MDA_FUTURE_BY_ID:
+        newState.scenarioData[ action.id ].mdaFuture = action.mdaFuture;
         break;
 
 

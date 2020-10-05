@@ -212,6 +212,7 @@ const SimulatorDisplay = (props) => {
               </Grid>
             </Grid>
 
+            { /* this is the update button that pops up after a precision or MDA change */ }
             <div className={classes.scenarioGraph}>
               { scenarioState.scenarioData[ scenarioState.currentScenarioId ].isDirty  && (
                 <div className={classes.updateScenario}>

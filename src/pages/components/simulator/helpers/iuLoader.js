@@ -425,17 +425,17 @@ export const generateMdaFutureFromScenarioSettings = ( scenario ) => {
 
   let MDAadherence = [];
   for ( let i = 0; i < numberOfYears; i++ ) {
-    MDAadherence.push( scenario.settings.adherence );
+    MDAadherence.push( scenario.settings.rho );
   }
 
   let MDAbednets = [];
   for ( let i = 0; i < numberOfYears; i++ ) {
-    MDAbednets.push( scenario.settings.bednets );
+    MDAbednets.push( scenario.settings.covN );
   }
 
   let MDAregimen = [];
   for ( let i = 0; i < numberOfYears; i++ ) {
-    MDAregimen.push( scenario.settings.regimen );
+    MDAregimen.push( scenario.settings.mdaRegimen );
   }
 
   let MDAactive = [];

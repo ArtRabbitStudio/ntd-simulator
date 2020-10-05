@@ -26,10 +26,10 @@ const MdaRounds = (props) => {
 
   const closeRoundModal = (event) => {
     setDoseSettingsOpen(false)
-    setCurMDARound(-1)
+//    setCurMDARound(-1)
   }
   const closeRoundTooltip = (event) => {
-    setCurMDARound(-1)
+//    setCurMDARound(-1)
   }
 
   const [curMDARound, setCurMDARound] = useState(-1)
