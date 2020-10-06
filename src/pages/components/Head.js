@@ -1,7 +1,7 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
-import Typography from '@material-ui/core/Typography';
+import { Typography, Grid } from '@material-ui/core';
 import { NavLink } from 'react-router-dom';
 
 import Logo from 'images/ntd-logo.svg';
@@ -27,6 +27,9 @@ const useStyles = makeStyles(theme => ({
             display: 'none'
         }
     },
+    bottomMargin: {
+        marginBottom: 80
+    },
     title: {
         margin: theme.spacing(0, 0, 1, 0),
         textTransform: 'uppercase',
@@ -35,20 +38,30 @@ const useStyles = makeStyles(theme => ({
     },
     pageHeader: {
         textDecoration: 'none',
-        color: theme.palette.text.primary
+        color: theme.palette.text.primary,
+    },
+    head: {
+        marginTop: 30,
+        marginBottom: 40
     }
 }));
 
-const Head = ({ title, classAdd }) => {
+const Head = ({ title, classAdd, intro }) => {
 
     const classes = useStyles();
     classAdd = classAdd ? classAdd : '';
 
     return (
-        <Box className={`${classes.card}  ${classAdd}`}>
+        <Box className={`${classes.card}  ${classAdd} ${!intro && classes.bottomMargin}`}>
 
             <NavLink to='/' className={classes.pageHeader} >
                 <Typography variant="h1" component="h2">NTD Prevalence Simulator </Typography>
+                <Typography variant="h6" component="h6" className={classes.headline} >Africa</Typography>
+                {intro && 
+                    <Grid item md={6} xs={12} className={classes.head}>
+                        <Typography paragraph variant="body1" component="p">{intro}</Typography>
+                    </Grid>
+                }
             </NavLink>
 
             

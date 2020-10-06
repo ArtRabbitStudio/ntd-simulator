@@ -105,7 +105,7 @@ const Setup = (props) => {
       payload: null,
     })
     // pass params to simulator ..
-    history.push({ pathname: `/simulator/${country}/${implementationUnit}` })
+    history.push({ pathname: `/${disease}/simulator/${country}/${implementationUnit}` })
   }
 
   return (

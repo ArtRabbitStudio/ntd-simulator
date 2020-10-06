@@ -45,7 +45,6 @@ const HeadWithInputs = ({ title, disableInputs, disableClear, classAdd }) => {
 
   return (
     <div className={classes.headContainer}>
-      <div style={{ marginBottom: 80 }}>
         <Grid item md={6} xs={12} className={classes.head}>
           <Head title={title} classAdd={classAdd} />
         </Grid>
@@ -53,7 +52,6 @@ const HeadWithInputs = ({ title, disableInputs, disableClear, classAdd }) => {
           {disableInputs !== true && <Inputs />}
         </Grid>
         {disableClear !== true && <div className={classes.clear}></div>}
-      </div>
     </div>
   )
 }

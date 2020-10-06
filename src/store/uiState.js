@@ -3,7 +3,7 @@ import { DISEASE_LIMF } from 'AppConstants'
 
 class UiState {
     country = null
-    disease = DISEASE_LIMF
+    disease = null
     implementationUnit = null
 
     constructor(rootStore) {
@@ -18,8 +18,8 @@ class UiState {
         this.implementationUnit = implementationUnit
     }
 
-    setDisease(event) {
-        this.disease = event.target.value
+    setDisease(id) {
+        this.disease = id
     }
 
 

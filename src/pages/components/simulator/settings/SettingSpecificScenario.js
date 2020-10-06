@@ -20,7 +20,7 @@ const SettingSpecificScenario = ({ inModal, label, classAdd, scenarioId }) => {
   const history = useHistory()
   const { dispatchSimState } = useSimulatorStore()
   const { scenarioState, dispatchScenarioStateUpdate } = useScenarioStore();
-  const { country, implementationUnit } = useUIState()
+  const { disease, country, implementationUnit } = useUIState()
 
   scenarioId = scenarioId ? scenarioId : scenarioState.currentScenarioId;
 
@@ -80,7 +80,7 @@ const SettingSpecificScenario = ({ inModal, label, classAdd, scenarioId }) => {
         type: 'specificPrediction',
         payload: specificScenarios[par],
       })
-      history.push({ pathname: `/simulator/${country}/${implementationUnit}` })
+      history.push({ pathname: `/${disease}/simulator/${country}/${implementationUnit}` })
     }
   }
 

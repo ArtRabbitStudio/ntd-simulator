@@ -1,9 +1,9 @@
-export const DISEASE_LIMF = 'Lymphatic filariasis'
-export const DISEASE_TRACHOMA = 'Trachoma'
+export const DISEASE_LIMF = 'lf'
+export const DISEASE_TRACHOMA = 'trachoma'
 
 export const DISEASE_LABELS = {
-  'Lymphatic filariasis': 'Lymphatic filariasis',
-  'Trachoma': 'Trachoma'
+  'lf': 'Lymphatic filariasis',
+  'trachoma': 'Trachoma'
 }
 
 export const NO_DATA = '[no data]'

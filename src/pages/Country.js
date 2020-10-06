@@ -56,9 +56,8 @@ const Country = props => {
         //iuData,
     } = useDataAPI()
 
-    const { country } = useUIState()
+    const { country, disease } = useUIState()
         
-
     // output csv with included and excluded data
     /*
     if ( iuData != undefined ) {
@@ -103,6 +102,7 @@ const Country = props => {
                         trendMode={false}
                         disableZoom={true}
                         country={country}
+                        disease={disease}
                         showNotAvailable={(value)=>{
                             setAlertText(value)
                             setnotAvaliableAlert(true)

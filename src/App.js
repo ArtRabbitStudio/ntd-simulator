@@ -6,6 +6,7 @@ import ScrollToTop from "./pages/components/ScrollToTop";
 import Home from "./pages/Home";
 import Page from "./pages/Page";
 import Country from "./pages/Country";
+import Disease from "./pages/Disease";
 import Setup from "./pages/Setup";
 import SimulatorManager from "./pages/SimulatorManager";
 import DataMethodolgy from "./pages/DataMethodology";
@@ -233,15 +234,16 @@ function App() {
           <SimulatorStoreProvider>
             <ScrollToTop>
               <Switch>
-                <Route exact path="/" component={Home} />
-                <Route exact path="/country/:country" component={Country} />
-                <Route exact path="/setup/:country/:iu" component={Setup} />
                 <Route exact path="/data-and-methodolgy" component={DataMethodolgy} />
                 <Route exact path="/about" component={About} />
                 <Route exact path="/privacy-cookies" component={PrivacyCookies} />
+                <Route exact path="/" component={Home} />
+                <Route exact path="/:disease" component={Disease} />
+                <Route exact path="/:disease/country/:country" component={Country} />
+                <Route exact path="/:disease/setup/:country/:iu" component={Setup} />
                 <Route
                   exact
-                  path="/simulator/:country?/:iu?"
+                  path="/:disease/simulator/:country?/:iu?"
                   component={SimulatorManager}
                 />
                 <Route exact path="**" component={Page} />
