@@ -43,12 +43,12 @@ export default {
 
     const generatedMda =
       ( scenarioData && isNewScenario === false )
-        ? generateMdaFutureFromScenario( scenarioData )
+        ? scenarioData.mdaFuture
         : generateMdaFutureFromDefaults( simState );
 
     const mdaPrediction =
       ( specificPrediction !== null )
-        ? { ...generatedMda, ...specificPrediction }
+        ? { ...specificPrediction, ...generatedMda }
         : generatedMda;
 
     const fullMDA = combineFullMda( mdaHistory, mdaPrediction );
