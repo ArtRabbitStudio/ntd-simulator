@@ -7,7 +7,7 @@ import Home from "./pages/Home";
 import Page from "./pages/Page";
 import Country from "./pages/Country";
 import Disease from "./pages/Disease";
-import SetupTrachoma from "./pages/SetupTrachoma";
+import Setup from "./pages/Setup";
 import SimulatorManager from "./pages/SimulatorManager";
 import DataMethodolgy from "./pages/DataMethodology";
 import About from "./pages/About";
@@ -240,7 +240,7 @@ function App() {
                 <Route exact path="/" component={Home} />
                 <Route exact path="/:disease" component={Disease} />
                 <Route exact path="/:disease/country/:country" component={Country} />
-                <Route exact path="/:disease/setup/:country/:iu" component={SetupTrachoma} />
+                <Route exact path="/:disease/setup/:country/:iu" component={Setup} />
                 <Route
                   exact
                   path="/:disease/simulator/:country?/:iu?"
