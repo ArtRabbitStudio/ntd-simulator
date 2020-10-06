@@ -123,6 +123,7 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up('md')]: {
       maxWidth: 460,
       margin: 'auto',
+      textAlign: 'center'
       //display: "inline-block",
     },
   },

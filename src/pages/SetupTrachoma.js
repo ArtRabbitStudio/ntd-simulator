@@ -27,7 +27,7 @@ import {
 
 
 
-const Setup = (props) => {
+const SetupTrachoma = (props) => {
   const [isLoading, setIsLoading] = useState(false)
 
   const history = useHistory()
@@ -201,34 +201,23 @@ const Setup = (props) => {
 
         <TextContents>
           <Typography paragraph variant="body1" component="p">
-            Set up your simulation scenario by selecting environmental factors and MDA settings. <br></br>then click "Predictions" or one of the disruption buttons to simulate potential outcomes. <br></br>You can edit your setup at any time or create a new scenario.
+            Set up your simulation scenario by selecting MDA settings. <br></br>then click "Predictions" or one of the disruption buttons to simulate potential outcomes. <br></br>You can edit your setup at any time or create a new scenario.
           </Typography>
         </TextContents>
 
 
 
         <div className={classes.settings}>
-          <div className={classes.formControlWrap}>
+          <div className={`${classes.formControlWrap} fullwidth`}>
             <div className={classes.setupFormControl}>
               <Typography paragraph variant="h3" component="p">
-                Environmental factors
+                MDA Settings
                 </Typography>
             </div>
           </div>
-          <div className={classes.formControlWrap}>
-            <div className={classes.setupFormControl}>
-              <Typography paragraph variant="h3" component="p">
-                MDA settings
-                </Typography>
-            </div>
-          </div>
+        
 
 
-          <div className={classes.formControlWrap}>
-            <div className={classes.setupFormControl}>
-              <SettingBedNetCoverage inModal={false} label="Bed Net Coverage" value={simState.settings.covN} />
-            </div>
-          </div>
 
           <div className={classes.formControlWrap}>
             <div className={classes.setupFormControl}>
@@ -240,11 +229,7 @@ const Setup = (props) => {
             </div>
           </div>
 
-          <div className={classes.formControlWrap}>
-            <div className={classes.setupFormControl}>
-              <SettingMosquitoType inModal={false} label="Type of Mosquito" value={simState.settings.species} />
-            </div>
-          </div>
+       
 
           <div className={classes.formControlWrap}>
             <div className={classes.setupFormControl}>
@@ -256,22 +241,8 @@ const Setup = (props) => {
             </div>
           </div>
 
-          <div className={classes.formControlWrap}>
-            <div className={classes.setupFormControl}>
-              <SettingInsecticideCoverage inModal={false} label="Inseticide Coverage" value={simState.settings.v_to_hR} />
-            </div>
-          </div>
 
 
-          <div className={classes.formControlWrap}>
-            <div className={classes.setupFormControl}>
-              <SettingDrugRegimen
-                inModal={false}
-                label="MDA Drug Regimen"
-                value={simState.settings.mdaRegimen}
-              />
-            </div>
-          </div>
 
 
 
@@ -312,4 +283,4 @@ const Setup = (props) => {
     </Layout>
   )
 }
-export default observer(Setup)
+export default observer(SetupTrachoma)
