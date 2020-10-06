@@ -14,7 +14,7 @@ export default {
       mdaFuture: generateMdaFutureFromScenarioSettings( newScenarioData )
     };
 
-    console.log( 'created new scenario', newScenario );
+    console.log( 'LFModel inited MDA future from new scenario settings', newScenario );
 
     return newScenario;
 

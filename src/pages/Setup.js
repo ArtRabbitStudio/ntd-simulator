@@ -35,7 +35,7 @@ const Setup = (props) => {
   const { simState, dispatchSimState } = useSimulatorStore()
   const { country, implementationUnit, disease } = useUIState()
 
-  console.log( country, implementationUnit, disease );
+  console.log( `Setup rendering for ${country}, ${implementationUnit}, ${disease}` );
 
   const {
     selectedIUData

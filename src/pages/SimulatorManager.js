@@ -20,7 +20,6 @@ import SettingsDialog from 'pages/components/SettingsDialog';
 import DiseaseModels from 'pages/components/simulator/models/DiseaseModels';
 
 import { loadAllIUhistoricData } from 'pages/components/simulator/helpers/iuLoader'
-import { generateMdaFutureFromScenarioSettings } from 'pages/components/simulator/helpers/iuLoader';
 
 const a11yProps = (index) => {
   return {
@@ -93,16 +92,18 @@ const SimulatorManager = ( props ) => {
 
     console.log( `SimulatorManager created new scenario id ${newScenarioData.id} on UI request` );
 
+    const initedScenarioData = diseaseModel.initScenario( newScenarioData );
+
     /*
      * ADD_SCENARIO_DATA = just add to memory,
      * don't save to storage or add to scenarioKeys
      */
     dispatchScenarioStateUpdate( {
       type: ScenarioStoreConstants.ACTION_TYPES.ADD_SCENARIO_DATA,
-      scenario: newScenarioData
+      scenario: initedScenarioData
     } );
 
-    setNewScenarioId( newScenarioData.id );
+    setNewScenarioId( initedScenarioData.id );
     setNewScenarioSettingsOpen( true );
   };
 
@@ -153,14 +154,6 @@ const SimulatorManager = ( props ) => {
     console.log( `SimulatorManager running newly-UI-created scenario ${newScenarioId} for disease ${disease}` );
     setNewScenarioSettingsOpen( false );
 
-    // generate the MDAs from the settings
-    const newMdaFuture = generateMdaFutureFromScenarioSettings( scenarioState.scenarioData[ newScenarioId ] );
-    dispatchScenarioStateUpdate( {
-      type: ScenarioStoreConstants.ACTION_TYPES.SET_SCENARIO_MDA_FUTURE_BY_ID,
-      id: newScenarioId,
-      mdaFuture: newMdaFuture
-    } );
-
     // save the scenario
     dispatchScenarioStateUpdate( {
       type: ScenarioStoreConstants.ACTION_TYPES.SAVE_SCENARIO_BY_ID,
@@ -169,6 +162,8 @@ const SimulatorManager = ( props ) => {
 
     // snag the data & id
     const scenarioData = scenarioState.scenarioData[ newScenarioId ];
+
+    console.log( 'SimulatorManager BEFORE running CREATED scenario:', scenarioData );
 
     // tell the UI we're not in 'new scenario' any more
     setNewScenarioId( null );
@@ -231,6 +226,11 @@ const SimulatorManager = ( props ) => {
   const runCurrentScenario = () => {
 
     console.log( `SimulatorManager re-running current scenario ${scenarioState.currentScenarioId}` );
+
+    // snag the data & id
+    const scenarioData = scenarioState.scenarioData[ scenarioState.currentScenarioId ];
+
+    console.log( 'SimulatorManager BEFORE running CURRENT scenario:', scenarioData );
 
     if ( !simInProgress ) {
 
