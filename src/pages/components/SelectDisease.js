@@ -5,14 +5,13 @@ import { useRouteMatch } from 'react-router-dom'
 import { useDataAPI, useUIState } from 'hooks/stateHooks'
 import { useHistory } from 'react-router-dom'
 
-import ConfirmationDialog from "./ConfirmationDialog";
 import { Box, TextField,FormControl,Fab } from '@material-ui/core';
 import Autocomplete from '@material-ui/lab/Autocomplete'
 import useStyles from 'theme/SelectCountry'
 import { DISEASE_LABELS } from '../../AppConstants'
 
 
-const SelectDisease = ({ selectIU, showConfirmation, showBack }) => {
+const SelectDisease = ({ selectIU, showBack }) => {
   const classes = useStyles()
   const history = useHistory()
 
@@ -32,9 +31,9 @@ const SelectDisease = ({ selectIU, showConfirmation, showBack }) => {
     //TODO: add alert prompt and ask the user if they want to reset before this chagne is mae
     // useRouteMatch
     // ConfirmationDialog
+
+
     
-
-
     if (value === null ) {
       return false
     }
@@ -89,6 +88,7 @@ const SelectDisease = ({ selectIU, showConfirmation, showBack }) => {
         
 
       </Box>
+       
     </React.Fragment>
   )
 }
