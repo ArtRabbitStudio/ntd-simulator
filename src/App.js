@@ -234,13 +234,13 @@ function App() {
           <SimulatorStoreProvider>
             <ScrollToTop>
               <Switch>
+                <Route exact path="/data-and-methodolgy" component={DataMethodolgy} />
+                <Route exact path="/about" component={About} />
+                <Route exact path="/privacy-cookies" component={PrivacyCookies} />
                 <Route exact path="/" component={Home} />
                 <Route exact path="/:disease" component={Disease} />
                 <Route exact path="/:disease/country/:country" component={Country} />
                 <Route exact path="/:disease/setup/:country/:iu" component={Setup} />
-                <Route exact path="/data-and-methodolgy" component={DataMethodolgy} />
-                <Route exact path="/about" component={About} />
-                <Route exact path="/privacy-cookies" component={PrivacyCookies} />
                 <Route
                   exact
                   path="/:disease/simulator/:country?/:iu?"
