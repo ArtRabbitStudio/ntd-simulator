@@ -3,7 +3,7 @@ import * as SimulatorEngine from './SimulatorEngine';
 import { combineFullMda } from 'pages/components/simulator/helpers/combineFullMda';
 import { trimMdaHistory } from 'pages/components/simulator/helpers/trimMdaHistory';
 import { removeInactiveMDArounds } from 'pages/components/simulator/helpers/removeInactiveMDArounds';
-import { generateMdaFutureFromDefaults, generateMdaFutureFromScenario, generateMdaFutureFromScenarioSettings } from 'pages/components/simulator/helpers/iuLoader';
+import { generateMdaFutureFromDefaults, generateMdaFutureFromScenarioSettings } from 'pages/components/simulator/helpers/iuLoader';
 
 export default {
 

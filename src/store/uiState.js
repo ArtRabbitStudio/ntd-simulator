@@ -1,5 +1,4 @@
 import { observable, action, decorate } from 'mobx'
-import { DISEASE_LIMF } from 'AppConstants'
 
 class UiState {
     country = null

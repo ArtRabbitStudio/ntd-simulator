@@ -14,10 +14,8 @@ import useStyles from 'theme/SelectCountry'
 const SelectCountry = ({ selectIU, showConfirmation, showBack }) => {
   const classes = useStyles()
   const history = useHistory()
-  const matchSection = useRouteMatch('/disease/:disease/:section/')
-
-  console.log('matchSection',matchSection)
-
+  const matchSection = useRouteMatch('/:disease/:section/')
+  
   const { countrySuggestions, iusByCountrySuggestions,  } = useDataAPI()
   const { disease, country, implementationUnit } = useUIState()
 

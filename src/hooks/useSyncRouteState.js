@@ -1,12 +1,13 @@
 import { useEffect } from 'react'
 import { useRouteMatch } from 'react-router-dom'
-import { useUIState } from './stateHooks'
+import { useDataAPI, useUIState } from 'hooks/stateHooks'
 
 export default function () {
     const matchSub = useRouteMatch('/:disease/:section/:country')
     const matchIU = useRouteMatch('/:disaese/:section/:country/:iu')
     const matchTop = useRouteMatch('/:section')
-    const { country: currentCountry, implementationUnit: currentImplementationUnit, setImplementationUnit, setCountry } = useUIState()
+    const { country: currentCountry, implementationUnit: currentImplementationUnit, setImplementationUnit, setCountry, setDisease } = useUIState()
+    const { diseases } = useDataAPI()
 
     useEffect(() => {
         if (matchIU) {
@@ -29,6 +30,10 @@ export default function () {
             if (currentImplementationUnit) {
                 setImplementationUnit(null)
             }
+            if ( diseases.includes(matchTop.params.section) ) {
+                setDisease(matchTop.params.section)
+            } 
+                
         }
-    }, [matchSub, matchTop, setCountry, currentCountry, currentImplementationUnit, matchIU, setImplementationUnit])
+    }, [diseases, setDisease, matchSub, matchTop, setCountry, currentCountry, currentImplementationUnit, matchIU, setImplementationUnit])
 }

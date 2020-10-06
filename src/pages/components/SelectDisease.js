@@ -15,14 +15,12 @@ import { DISEASE_LABELS } from '../../AppConstants'
 const SelectDisease = ({ selectIU, showConfirmation, showBack }) => {
   const classes = useStyles()
   const history = useHistory()
-  const matchSection = useRouteMatch('/disease/:disease/:section/')
-
-  console.log('matchSection',matchSection)
 
   const { diseases } = useDataAPI()
   const { disease, setDisease } = useUIState()
 
   const [goTo, setGoTo] = useState(false);
+
 
   const navigate = (url) => {
     let u = url ? url : goTo;
@@ -31,13 +29,18 @@ const SelectDisease = ({ selectIU, showConfirmation, showBack }) => {
   
 
   const handleChange = (event, value) => {
+    //TODO: add alert prompt and ask the user if they want to reset before this chagne is mae
+    // useRouteMatch
+    // ConfirmationDialog
+    
+
+
     if (value === null ) {
       return false
     }
 
     if (DISEASE_LABELS[value.id]) {
       const url = `/${value.id}`;
-      setDisease(value.id)
       navigate(url)
     }
 

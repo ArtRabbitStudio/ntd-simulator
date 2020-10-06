@@ -42,12 +42,11 @@ const Inputs = props => {
   const history = useHistory()
 
   const { diseases } = useDataAPI()
-  const { disease, setDisease } = useUIState()
+  const { disease } = useUIState()
 
 
   const handleDiseaseChange = (event, value) => {
     if (value.props.value !== 'other') {
-      setDisease(value.props.value);
       history.push(`/${value.props.value}`)
     }
   }
@@ -58,7 +57,7 @@ const Inputs = props => {
         <Select
           labelId="disease-label"
           id="disease"
-          value={disease}
+          value={disease ? disease : 'other'}
           variant="outlined"
           onChange={handleDiseaseChange}
           MenuProps={{ disablePortal: true }}

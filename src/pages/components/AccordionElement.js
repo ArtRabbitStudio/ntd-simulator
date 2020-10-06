@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { makeStyles, withStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles'
 
 import { Grid, Box, Typography, AccordionDetails, Accordion, AccordionSummary } from '@material-ui/core'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
@@ -10,15 +10,8 @@ const useStyles = makeStyles(theme => ({
   root: {
     backgroundColor: theme.palette.secondary.dark,
     marginBottom: '10px !important',
-    '&$expanded': {
-      marginTop: 12,
-      marginBottom: 20
-    },
   },
-  heading: {
 
-
-  }
 
 }))
 
