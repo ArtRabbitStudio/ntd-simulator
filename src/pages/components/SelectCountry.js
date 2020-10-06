@@ -14,10 +14,12 @@ import useStyles from 'theme/SelectCountry'
 const SelectCountry = ({ selectIU, showConfirmation, showBack }) => {
   const classes = useStyles()
   const history = useHistory()
-  const matchSection = useRouteMatch('/:section')
+  const matchSection = useRouteMatch('/disease/:disease/:section/')
+
+  console.log('matchSection',matchSection)
 
   const { countrySuggestions, iusByCountrySuggestions,  } = useDataAPI()
-  const { country, implementationUnit } = useUIState()
+  const { disease, country, implementationUnit } = useUIState()
 
   const [goTo, setGoTo] = useState(false);
 
@@ -28,7 +30,7 @@ const SelectCountry = ({ selectIU, showConfirmation, showBack }) => {
   
   const handleBackToCountry = () => {
     const section = 'country'
-    const url = `/${section}/${country}`;
+    const url = `/${disease}/${section}/${country}`;
     if (showConfirmation) {
       setGoTo(url)
       setConfirmatonOpen(true);
@@ -47,7 +49,7 @@ const SelectCountry = ({ selectIU, showConfirmation, showBack }) => {
     }
 
     if (value) {
-      const url = `/${section}/${value.id}`;
+      const url = `/${disease}/${section}/${value.id}`;
       if (showConfirmation) {
         setGoTo(url)
         setConfirmatonOpen(true);
@@ -61,7 +63,7 @@ const SelectCountry = ({ selectIU, showConfirmation, showBack }) => {
   const handleIUChange = (event, value) => {
     let section = 'setup'
     if (value) {
-      let url = `/${section}/${country}/${value.id}`
+      let url = `/${disease}/${section}/${country}/${value.id}`
       if (showConfirmation) {
         setGoTo(url)
         setConfirmatonOpen(true);

@@ -3,8 +3,8 @@ import { useRouteMatch } from 'react-router-dom'
 import { useUIState } from './stateHooks'
 
 export default function () {
-    const matchSub = useRouteMatch('/:section/:country')
-    const matchIU = useRouteMatch('/:section/:country/:iu')
+    const matchSub = useRouteMatch('/:disease/:section/:country')
+    const matchIU = useRouteMatch('/:disaese/:section/:country/:iu')
     const matchTop = useRouteMatch('/:section')
     const { country: currentCountry, implementationUnit: currentImplementationUnit, setImplementationUnit, setCountry } = useUIState()
 

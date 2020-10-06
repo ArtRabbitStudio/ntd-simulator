@@ -35,7 +35,7 @@ const Setup = (props) => {
   const { simState, dispatchSimState } = useSimulatorStore()
   const { country, implementationUnit, disease } = useUIState()
 
-  console.log( country, implementationUnit, disease );
+  console.log( disease, country, implementationUnit, disease );
 
   const {
     selectedIUData
@@ -105,7 +105,7 @@ const Setup = (props) => {
       payload: null,
     })
     // pass params to simulator ..
-    history.push({ pathname: `/simulator/${country}/${implementationUnit}` })
+    history.push({ pathname: `/${disease}/simulator/${country}/${implementationUnit}` })
   }
 
   return (

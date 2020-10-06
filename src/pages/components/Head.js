@@ -13,6 +13,7 @@ const useStyles = makeStyles(theme => ({
         position: "relative",
         float: 'left',
         backgroundColor: '#fff',
+        marginBottom: 80
     },
     logo: {
         display: 'block',
@@ -35,7 +36,7 @@ const useStyles = makeStyles(theme => ({
     },
     pageHeader: {
         textDecoration: 'none',
-        color: theme.palette.text.primary
+        color: theme.palette.text.primary,
     }
 }));
 

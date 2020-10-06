@@ -5,9 +5,9 @@ import { useUIState } from 'hooks/stateHooks'
 import { Layout } from 'layout';
 import { makeStyles } from '@material-ui/core/styles';
 
-import Head from 'pages/components/Head';
+import HeadWithInputs from 'pages/components/HeadWithInputs';
 import TextContents from 'pages/components/TextContents';
-import SelectDisease from 'pages/components/SelectDisease';
+import SelectCountry from 'pages/components/SelectCountry';
 import Logo from 'images/ntd-logo.svg';
 
 const useStyles = makeStyles(theme => ({
@@ -43,32 +43,31 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
-const Home = (props) => {
+const Disease = (props) => {
 
   const classes = useStyles();
-  const { disease: currentDisease, setImplementationUnit, setCountry, setDisease } = useUIState()
+  const { country: currentCountry, setImplementationUnit, setCountry } = useUIState()
 
 
   useEffect(() => {
     setImplementationUnit(null);
     setCountry(null);
-    //setDisease(null);
-  }, [currentDisease, setDisease, setCountry, setImplementationUnit])
+  }, [currentCountry, setCountry, setImplementationUnit])
 
 
 
   return (
     <Layout /* classAdd="full-height"*/ >
-      <Head
+      <HeadWithInputs
         title="prevalence simulator"
       />
 
 
 
       <TextContents>
-        <Typography paragraph variant="body1" component="p">HOME Select a disease</Typography>
+        <Typography paragraph variant="body1" component="p">DISEASE Select a country to simulate outcome scenarios</Typography>
       </TextContents>
-      <SelectDisease />
+      <SelectCountry />
 
       <section className={classes.section}>
         <Typography variant="h3" component="h6" className={classes.headline}>
@@ -130,4 +129,4 @@ const Home = (props) => {
     </Layout >
   )
 }
-export default Home;
+export default Disease;

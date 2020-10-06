@@ -14,6 +14,7 @@ const useStyles = makeStyles({
 
 function Map({
     country,
+    disease,
     countryFeatures,
     stateFeatures,
     iuFeatures,
@@ -82,7 +83,6 @@ function Map({
 
     const handleClick = event => {
         const feature = event.features[0]
-
         if (feature && feature.properties) {
             if (feature.properties.ADMIN0ISO3) {
                 //console.log('country click',feature.properties.ADMIN0ISO3)
@@ -90,7 +90,6 @@ function Map({
             }
 
             if (feature.properties.IU_ID) {
-        
                 if ( feature.properties.endemicity === 'Non-endemic' ) {
                     showNotAvailable('Non-endemic')
                     dispatch({ type: 'HOVEROUT' })
@@ -98,7 +97,7 @@ function Map({
                     showNotAvailable('Not enough data available')
                     dispatch({ type: 'HOVEROUT' })
                 } else {
-                    history.push(`/setup/${country}/${feature.properties.IU_ID}`)
+                    history.push(`/${disease}/setup/${country}/${feature.properties.IU_ID}`)
                 }
 
             }
