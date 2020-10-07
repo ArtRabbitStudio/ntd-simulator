@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Typography } from '@material-ui/core';
 import { observer } from 'mobx-react'
 import { useRouteMatch,useHistory } from 'react-router-dom'
@@ -57,8 +57,10 @@ const useStyles = makeStyles(theme => ({
 
 const Disease = (props) => {
 
+  console.log( 'constructing Disease', props.match.params.disease );
+
   const classes = useStyles();
-  const { country: currentCountry, disease, setImplementationUnit, setCountry } = useUIState()
+  const { disease } = useUIState()
   const { diseases } = useDataAPI()
   const matchTop = useRouteMatch('/:section')
   const history = useHistory()
@@ -67,12 +69,6 @@ const Disease = (props) => {
   if ( !diseases.includes(matchTop.params.section) ) {
     history.replace(`/`)
   }
-
-  useEffect(() => {
-    setImplementationUnit(null);
-    setCountry(null);
-  }, [currentCountry, setCountry, setImplementationUnit, disease])
-
 
 
   return (

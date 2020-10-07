@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
 import { observer } from 'mobx-react'
-import { useRouteMatch } from 'react-router-dom'
+//import { useRouteMatch } from 'react-router-dom'
 
 import { useDataAPI, useUIState } from 'hooks/stateHooks'
 import { useHistory } from 'react-router-dom'
 
-import ConfirmationDialog from "./ConfirmationDialog";
+//import ConfirmationDialog from "./ConfirmationDialog";
 import { Box, TextField,FormControl,Fab } from '@material-ui/core';
 import Autocomplete from '@material-ui/lab/Autocomplete'
 import useStyles from 'theme/SelectCountry'
@@ -17,16 +17,14 @@ const SelectDisease = ({ selectIU, showConfirmation, showBack }) => {
   const history = useHistory()
 
   const { diseases } = useDataAPI()
-  const { disease, setDisease } = useUIState()
+  const { disease } = useUIState()
 
-  const [goTo, setGoTo] = useState(false);
-
+  const [ goTo ] = useState(false);
 
   const navigate = (url) => {
     let u = url ? url : goTo;
     history.push({ pathname: u })
   }
-  
 
   const handleChange = (event, value) => {
     //TODO: add alert prompt and ask the user if they want to reset before this chagne is mae
