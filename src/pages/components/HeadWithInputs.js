@@ -1,9 +1,11 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import Grid from '@material-ui/core/Grid'
+import ConfirmationDialog from "./ConfirmationDialog";
 
 import Head from './Head'
 import Inputs from './Inputs'
+import { useHistory } from 'react-router-dom'
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -42,17 +44,41 @@ const useStyles = makeStyles((theme) => ({
 
 const HeadWithInputs = ({ title, disableInputs, disableClear, classAdd }) => {
   const classes = useStyles()
+  const [showConfirmation, setshowConfirmation] = useState(false);
+  const [selectedValue,setSelectedValue ] = useState(null)
+  const history = useHistory()
+
+  const handleChange = (value)=>{
+    setSelectedValue(value)
+    setshowConfirmation(true);
+  }
+  const doChange = () => {
+    setshowConfirmation(false)
+    if (selectedValue !== 'other' && selectedValue != null) {
+      history.push(`/${selectedValue}`)
+    }
+  }
 
   return (
+    <React.Fragment>
     <div className={classes.headContainer}>
         <Grid item md={6} xs={12} className={classes.head}>
           <Head title={title} classAdd={classAdd} />
         </Grid>
         <Grid item md={6} xs={12} className={classes.inputs}>
-          {disableInputs !== true && <Inputs />}
+          {disableInputs !== true && <Inputs onChange={handleChange} />}
         </Grid>
         {disableClear !== true && <div className={classes.clear}></div>}
     </div>
+    <ConfirmationDialog
+          title="Do you want to leave this scenario?"
+          onClose={() => {
+            setshowConfirmation(false);
+          }}
+          onConfirm={doChange}
+          open={showConfirmation}
+        />
+    </React.Fragment>
   )
 }
 export default HeadWithInputs

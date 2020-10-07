@@ -9,9 +9,13 @@ import Country from "./pages/Country";
 import Disease from "./pages/Disease";
 import Setup from "./pages/Setup";
 import SimulatorManager from "./pages/SimulatorManager";
-import DataMethodolgy from "./pages/DataMethodology";
-import About from "./pages/About";
-import PrivacyCookies from "./pages/PrivacyCookies";
+
+import DataMethodolgy from "./pages/content/DataMethodology";
+import About from "./pages/content/About";
+import PrivacyCookies from "./pages/content/PrivacyCookies";
+
+import LF from "./pages/content/LF";
+import Trachoma from "./pages/content/Trachoma";
 
 // index.js
 import { SimulatorStoreProvider } from "./store/simulatorStore";
@@ -237,6 +241,8 @@ function App() {
                 <Route exact path="/data-and-methodolgy" component={DataMethodolgy} />
                 <Route exact path="/about" component={About} />
                 <Route exact path="/privacy-cookies" component={PrivacyCookies} />
+                <Route exact path="/lymphatic-filariasis-data-methodoloy" component={LF} />
+                <Route exact path="/trachoma-data-methodoloy" component={Trachoma} />
                 <Route exact path="/" component={Home} />
                 <Route exact path="/:disease" component={Disease} />
                 <Route exact path="/:disease/:section/:country" component={Country} />

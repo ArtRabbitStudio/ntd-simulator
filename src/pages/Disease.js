@@ -70,7 +70,6 @@ const Disease = (props) => {
     history.replace(`/`)
   }
 
-
   return (
     <Layout /* classAdd="full-height"*/ >
       <HeadWithInputs

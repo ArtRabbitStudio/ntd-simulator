@@ -53,23 +53,23 @@ const Footer = (props) => {
                     <Grid container spacing={0}>
                         <Grid item md={3} sm={6} xs={12} className={classes.column}>
 
-                            <Typography variant="h6" component="h6" className={classes.headline} >Site sections</Typography>
+                            <Typography variant="h6" component="h6" className={classes.headline} >Data and Methodology</Typography>
 
                             <ul className={classes.menu}>
-                                <Typography component="li" variant="body2"><Link component={RouterLink} to="/" color="inherit">Introduction</Link></Typography>
-                                <Typography component="li" variant="body2"><Link component={RouterLink} to="/simulator" color="inherit">Simulator</Link></Typography>
+                                <Typography component="li" variant="body2"><Link component={RouterLink} to="/data-and-methodolgy" color="inherit">Overview</Link></Typography>
+                                <Typography component="li" variant="body2"><Link component={RouterLink} to="/lymphatic-filariasis-data-methodoloy" color="inherit">Lymphatic filariasis</Link></Typography>
+                                <Typography component="li" variant="body2"><Link component={RouterLink} to="/trachoma-data-methodoloy" color="inherit">Trachoma</Link></Typography>
                             </ul>
 
                         </Grid>
 
                         <Grid item md={3} sm={6} xs={12} className={classes.column}>
 
-                            <Typography variant="h6" component="h6" className={classes.headline} >Further information</Typography>
+                            <Typography variant="h6" component="h6" className={classes.headline} >NTD Modelling Consortium</Typography>
 
                             <ul className={classes.menu}>
                                 <Typography component="li" variant="body2"><Link component={RouterLink} to="/about" color="inherit">About</Link></Typography>
-                                <Typography component="li" variant="body2"><Link component={RouterLink} to="/data-and-methodolgy" color="inherit">Data and Methodology</Link></Typography>
-                                <Typography component="li" variant="body2"><Link href="https://www.ntdmodelling.org/" rel="noopener" target="_blank" color="inherit" variant="body2">NTD Modelling Consortium</Link></Typography>
+                                <Typography component="li" variant="body2"><Link href="https://www.ntdmodelling.org/" rel="noopener" target="_blank" color="inherit" variant="body2">www.ntdmodelling.org</Link></Typography>
                                 <Typography component="li" variant="body2"><Link component={RouterLink} to="/privacy-cookies" color="inherit">Privacy & Cookies</Link></Typography>
                             </ul>
 
@@ -87,7 +87,7 @@ const Footer = (props) => {
 
                         <Grid item xs={12} className={classes.column}>
                             <Typography variant="h6" component="h6" className={classes.headline} >designed and made by</Typography>
-                            <Link href="https://www.artrabbit.studio/" rel="noopener" target="_blank" color="inherit" variant="body2">ArtRabbit Studio</Link>
+                            <Link href="https://opencultu.re" rel="noopener" target="_blank" color="inherit" variant="body2">Open Cultu.re</Link>
                         </Grid>
 
                     </Grid>
