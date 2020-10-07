@@ -5,7 +5,7 @@ import Typography from '@material-ui/core/Typography';
 import Head from 'pages/components/Head';
 import TextContents from 'pages/components/TextContents'
 
-const DataMethodology = (props) => {
+const LF = (props) => {
 
   return (
     <Layout>
@@ -14,8 +14,9 @@ const DataMethodology = (props) => {
         
       />
       <TextContents>
-      <Typography gutterBottom variant="h2">Data & Methodology </Typography>
+      <Typography gutterBottom variant="h2">Lymphatic filariasis</Typography>
         <Typography paragraph variant="body1" component="p">
+        <Typography gutterBottom variant="h3"><br />About Lymphatic filariasis</Typography>
         Lymphatic filariasis is due to filarial parasites which are transmitted to humans through mosquitoes. 
         </Typography>
         <Typography paragraph variant="body1" component="p">
@@ -84,4 +85,4 @@ const DataMethodology = (props) => {
     </Layout>
   )
 }
-export default DataMethodology;
+export default LF;
