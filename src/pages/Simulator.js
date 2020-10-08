@@ -43,7 +43,7 @@ const Simulator = ( props ) => {
         selectIU={ country ? true : false }
         showCountryConfirmation={ country && implementationUnit ? true : false }
         showIUConfirmation={ country && implementationUnit && section ? true : false }
-        showBack={true}
+        showBack={ disease && country && implementationUnit ? true : false }
       />
 
       { disease && ( !country ) && <IntroComponent/> }
