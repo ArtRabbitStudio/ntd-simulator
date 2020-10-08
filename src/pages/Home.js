@@ -62,7 +62,7 @@ const Home = (props) => {
   useEffect(() => {
     setImplementationUnit(null);
     setCountry(null);
-    //setDisease(null);
+    setDisease(null);
   }, [currentDisease, setDisease, setCountry, setImplementationUnit])
 
 
