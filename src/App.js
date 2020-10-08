@@ -242,17 +242,6 @@ function App() {
                 <Route exact path="/trachoma-data-methodoloy" component={Trachoma} />
                 <Route exact path="/" component={Home} />
 
-                { /*
-                <Route exact path="/:disease" component={Disease} />
-                <Route exact path="/:disease/:section/:country" component={Country} />
-                <Route exact path="/:disease/setup/:country/:iu" component={Setup} />
-                <Route
-                  exact
-                  path="/:disease/simulator/:country?/:iu?"
-                  component={SimulatorManager}
-                />
-                */ }
-
                 <Route exact path="/:disease" component={Simulator} />
                 <Route exact path="/:disease/:country" component={Simulator} />
                 <Route exact path="/:disease/:country/:iu" component={Simulator} />
