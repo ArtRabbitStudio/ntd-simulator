@@ -11,13 +11,11 @@ import SimulatorDisplay from 'pages/SimulatorDisplay';
 import { useSimulatorStore } from 'store/simulatorStore';
 import { useUIState } from 'hooks/stateHooks';
 import useStyles from 'pages/components/simulator/styles';
-import { Layout } from 'layout';
-import HeadWithInputs from 'pages/components/HeadWithInputs';
-import SelectCountry from 'pages/components/SelectCountry';
 import ConfirmationDialog from 'pages/components/ConfirmationDialog';
 import SettingsDialog from 'pages/components/SettingsDialog';
 
 import DiseaseModels from 'pages/components/simulator/models/DiseaseModels';
+import { DISEASE_LABELS } from 'AppConstants';
 
 import { loadAllIUhistoricData } from 'pages/components/simulator/helpers/iuLoader'
 
@@ -57,11 +55,13 @@ TabPanel.propTypes = {
  */
 const SimulatorManager = ( props ) => {
 
+  console.info( '===>>> SimulatorManager' );
+
   const classes = useStyles();
 
   const { simState, dispatchSimState } = useSimulatorStore();
   const { scenarioState, dispatchScenarioStateUpdate } = useScenarioStore();
-  const { disease } = useUIState();
+  const { disease, country, implementationUnit: iu, section } = useUIState();
 
   const diseaseModel = DiseaseModels[ disease ];
 
@@ -341,20 +341,24 @@ const SimulatorManager = ( props ) => {
   useEffect(
     () => {
 
-      if ( !( simState && simState.IUData && simState.IUData.id === props.match.params.iu ) ) {
+      if( !diseaseModel ) {
+        return;
+      }
+
+      if ( !( simState && simState.IUData && simState.IUData.id === iu ) ) {
 
         console.log( `SimulatorManager found no stored simulator state` );
         SessionStorage.simulatorState = null;
 
         ( async () => {
-          console.log( `SimulatorManager calling loadAllIUhistoricData for ${props.match.params.iu} / ${disease} in ${props.match.params.country}` );
+          console.log( `SimulatorManager calling loadAllIUhistoricData for ${iu} / ${disease} in ${country}` );
           await loadAllIUhistoricData(
             simState,
             dispatchSimState,
-            props.match.params.iu, //implementationUnit,
+            iu, //implementationUnit,
             disease
           )
-          console.log( `SimulatorManager loaded historic data for ${props.match.params.iu} / ${disease} in ${props.match.params.country}` );
+          console.log( `SimulatorManager loaded historic data for ${iu} / ${disease} in ${country}` );
         } )();
 
         return;
@@ -403,14 +407,12 @@ const SimulatorManager = ( props ) => {
   // debug
   //Scenario state last updated: {scenarioState.updated.toISOString()}
 
+  if( !diseaseModel ) {
+    return ( <div>No model for {DISEASE_LABELS[ disease ]}</div> );
+  }
+
   return (
     <div id="SimulatorManager">
-      <Layout>
-
-        <HeadWithInputs title="prevalence simulator" />
-      
-        <SelectCountry selectIU={true} showConfirmation={true} showBack={true} />
-    
         <section className={classes.simulator}>
 
           <Grid container spacing={0}>
@@ -501,8 +503,6 @@ const SimulatorManager = ( props ) => {
               />
             : null
          }
-      </Layout>
-
     </div>
   );
 }

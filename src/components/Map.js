@@ -97,7 +97,7 @@ function Map({
                     showNotAvailable('Not enough data available')
                     dispatch({ type: 'HOVEROUT' })
                 } else {
-                    history.push(`/${disease}/setup/${country}/${feature.properties.IU_ID}`)
+                    history.push(`/${disease}/${country}/${feature.properties.IU_ID}`)
                 }
 
             }

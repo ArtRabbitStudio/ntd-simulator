@@ -5,10 +5,7 @@ import { useHistory } from 'react-router-dom'
 import { map } from 'lodash'
 import PrevalenceMiniGraph from 'components/PrevalenceMiniGraph'
 import { useDataAPI, useUIState } from 'hooks/stateHooks'
-import { Layout } from 'layout'
 import { useSimulatorStore } from 'store/simulatorStore'
-import HeadWithInputs from 'pages/components/HeadWithInputs'
-import SelectCountry from 'pages/components/SelectCountry'
 import TextContents from 'pages/components/TextContents'
 import { loadAllIUhistoricData } from 'pages/components/simulator/helpers/iuLoader'
 import useStyles from 'theme/Setup'
@@ -17,17 +14,12 @@ import useStyles from 'theme/Setup'
 import {
   SettingFrequency,
   SettingTargetCoverage,
-  SettingDrugRegimen,
-  SettingMosquitoType,
-  SettingBedNetCoverage,
-  SettingInsecticideCoverage,
   SettingSystematicAdherence,
   SettingSpecificScenario,
-} from './components/simulator/settings'
-
-
+} from 'pages/components/simulator/settings'
 
 const SetupTrachoma = (props) => {
+
   const [isLoading, setIsLoading] = useState(false)
 
   const history = useHistory()
@@ -62,16 +54,14 @@ const SetupTrachoma = (props) => {
 
   if (isLoading) {
     return (
-      <Layout>
-        <HeadWithInputs title="prevalence simulator" />
         <section className={classes.section}>
           <Typography variant="h3" component="h6" className={classes.headline}>
             Loading setup
           </Typography>
         </section>
-      </Layout>
     )
   }
+
   let mdaObjTimeFiltered = null
   if (simState.IUData.mdaObj) {
     const startYear = 2008
@@ -97,7 +87,7 @@ const SetupTrachoma = (props) => {
     })
   }
 
-  const selecteIUName = selectedIUData[0] ? selectedIUData[0]['name'] : ''
+  const selectedIUName = selectedIUData[0] ? selectedIUData[0]['name'] : ''
 
   const submitSetup = (event) => {
     dispatchSimState({
@@ -105,21 +95,17 @@ const SetupTrachoma = (props) => {
       payload: null,
     })
     // pass params to simulator ..
-    history.push({ pathname: `/${disease}/simulator/${country}/${implementationUnit}` })
+    history.push({ pathname: `/${disease}/${country}/${implementationUnit}/run` })
   }
 
   return (
-    <Layout>
-      <HeadWithInputs title="prevalence simulator" />
-      <SelectCountry selectIU={true} showBack={true} />
-
       <section className={classes.section}>
         <Typography variant="h3" component="h6" className={classes.headline}>
           Setup
         </Typography>
         <TextContents>
           <Typography paragraph variant="body1" component="p">
-            {`We hold the following information for ${selecteIUName}.`}
+            {`We hold the following information for ${selectedIUName}.`}
             <br />
           </Typography>
         </TextContents>
@@ -280,7 +266,6 @@ const SetupTrachoma = (props) => {
           Predictions
         </Button>
       </section>
-    </Layout>
   )
 }
 export default observer(SetupTrachoma)

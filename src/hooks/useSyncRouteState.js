@@ -4,64 +4,131 @@ import { useDataAPI, useUIState } from 'hooks/stateHooks'
 
 export default function () {
 
-    const matchIU = useRouteMatch('/:disease/:section/:country/:iu')
-    const matchCountry = useRouteMatch('/:disease/:section/:country')
-    const matchDisease = useRouteMatch('/:disease')
+    const matchSection = useRouteMatch('/:disease/:country/:iu/:section');
+    const matchIU = useRouteMatch('/:disease/:country/:iu');
+    const matchCountry = useRouteMatch('/:disease/:country');
+    const matchDisease = useRouteMatch('/:disease');
 
-    const { country: currentCountry, implementationUnit: currentImplementationUnit, setImplementationUnit, setCountry, disease: currentDisease, setDisease } = useUIState()
-    const { diseases } = useDataAPI()
+    const { diseases } = useDataAPI();
+
+    const {
+      country: currentCountry,
+      disease: currentDisease,
+      section: currentSection,
+      implementationUnit: currentImplementationUnit,
+      setCountry,
+      setSection,
+      setDisease,
+      setImplementationUnit
+    } = useUIState();
 
     useEffect(() => {
 
-        if (matchIU) {
-            console.log( 'useSyncRouteState matched IU' );
+        if ( matchSection ) {
+
+            const { disease, country, iu, section } = matchSection.params;
+
+            console.log( `useSyncRouteState matched section ${disease}/${country}/${iu}/${section}` );
+
+            if ( disease !== currentDisease && diseases.includes( disease ) ) {
+                setDisease( disease );
+            }
+
+            if ( country !== currentCountry ) {
+                setCountry( country );
+            }
+
+            if ( iu !== currentImplementationUnit ) {
+                setImplementationUnit( iu );
+            }
+
+            if( section !== currentSection ) {
+                setSection( section );
+            }
+        }
+
+        else if (matchIU) {
 
             const { disease, country, iu } = matchIU.params
 
+            console.log( `useSyncRouteState matched IU ${disease}/${country}/${iu}` );
+
             if ( disease !== currentDisease && diseases.includes( disease ) ) {
-                setDisease( disease )
+                setDisease( disease );
             }
 
-            if (country !== currentCountry) {
-                setCountry(country)
+            if ( country !== currentCountry ) {
+                setCountry( country );
             }
 
-            if (iu !== currentImplementationUnit) {
-                setImplementationUnit(iu)
+            if ( iu !== currentImplementationUnit ) {
+                setImplementationUnit( iu );
+            }
+
+            if ( currentSection ) {
+                setSection( null );
             }
         }
 
-        else if (matchCountry) {
-            console.log( 'useSyncRouteState matched country' );
+        else if ( matchCountry ) {
 
             const { disease, country } = matchCountry.params
 
+            console.log( `useSyncRouteState matched country ${disease}/${country}` );
+
             if ( disease !== currentDisease && diseases.includes( disease ) ) {
-                setDisease( disease )
+                setDisease( disease );
             }
 
-            if (country !== currentCountry) {
-                setCountry(country)
+            if ( country !== currentCountry ) {
+                setCountry( country );
+            }
+
+            if ( currentImplementationUnit ) {
+                setImplementationUnit( null );
+            }
+
+            if ( currentSection ) {
+                setSection( null );
             }
         }
 
-        else if (matchDisease) {
-            console.log( 'useSyncRouteState matched disease' );
+        else if ( matchDisease ) {
 
             const { disease } = matchDisease.params;
 
-            if (currentCountry) {
-                setCountry(null)
+            console.log( `useSyncRouteState matched disease ${disease}` );
+
+            if ( disease !== currentDisease && diseases.includes( disease ) ) {
+                setDisease( disease );
             }
 
-            if (currentImplementationUnit) {
-                setImplementationUnit(null)
+            if ( currentCountry ) {
+                setCountry( null );
             }
 
-            if ( diseases.includes( disease ) ) {
-                setDisease( disease )
+            if ( currentImplementationUnit ) {
+                setImplementationUnit( null );
             }
 
+            if ( currentSection ) {
+                setSection( null );
+            }
         }
-    }, [diseases, setDisease, matchCountry, matchDisease, setCountry, currentCountry, currentImplementationUnit, currentDisease, matchIU, setImplementationUnit])
+    },
+    [
+      diseases,
+      currentCountry,
+      currentSection,
+      currentImplementationUnit,
+      currentDisease,
+      matchCountry,
+      matchSection,
+      matchDisease,
+      matchIU,
+      setDisease,
+      setSection,
+      setCountry,
+      setImplementationUnit
+    ]);
 }

@@ -11,6 +11,7 @@ import {
   Tooltip
 } from '@material-ui/core'
 import RotateLeftIcon from '@material-ui/icons/RotateLeft'
+import { observer } from 'mobx-react'
 
 import SessionStorage from 'pages/components/simulator/helpers/sessionStorage'
 import PropTypes from 'prop-types'
@@ -91,8 +92,12 @@ const SimulatorDisplay = (props) => {
   useEffect(
 
     () => {
-      console.log( `SimulatorDisplay mounting, calling diseaseModel.documentReady for disease ${disease}` );
-      diseaseModel.documentReady();
+      console.log( `SimulatorDisplay mounting` );
+
+      if ( diseaseModel ) {
+        console.log( `calling diseaseModel.documentReady for disease ${disease}` );
+        diseaseModel.documentReady();
+      }
     },
 
     // eslint-disable-next-line
@@ -291,4 +296,4 @@ const SimulatorDisplay = (props) => {
   );
 }
 
-export default SimulatorDisplay;
+export default observer( SimulatorDisplay );
