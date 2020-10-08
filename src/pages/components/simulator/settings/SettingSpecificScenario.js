@@ -80,7 +80,7 @@ const SettingSpecificScenario = ({ inModal, label, classAdd, scenarioId }) => {
         type: 'specificPrediction',
         payload: specificScenarios[par],
       })
-      history.push({ pathname: `/${disease}/simulator/${country}/${implementationUnit}` })
+      history.push({ pathname: `/${disease}/${country}/${implementationUnit}/run` })
     }
   }
 
