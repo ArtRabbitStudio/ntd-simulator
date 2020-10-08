@@ -185,21 +185,7 @@ const PerDiseaseSetup = (props) => {
 
 
         <div className={classes.settings}>
-          <div className={classes.formControlWrap}>
-            <div className={classes.setupFormControl}>
-              <Typography paragraph variant="h3" component="p">
-                Environmental factors
-                </Typography>
-            </div>
-          </div>
-          <div className={classes.formControlWrap}>
-            <div className={classes.setupFormControl}>
-              <Typography paragraph variant="h3" component="p">
-                MDA settings
-                </Typography>
-            </div>
-          </div>
-
+        
           {props.children}
 
         </div>
