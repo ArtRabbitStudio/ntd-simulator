@@ -23,8 +23,6 @@ const PerDiseaseSetup = (props) => {
   const { country, implementationUnit, disease } = useUIState()
   const { selectedIUData } = useDataAPI();
 
-  console.log( `PerDiseaseSetup rendering for ${country}, ${implementationUnit}, ${disease}` );
-
   const doWeHaveData = simState.IUData.id === implementationUnit
   const loadData = async () => {
     await loadAllIUhistoricData(
@@ -47,13 +45,20 @@ const PerDiseaseSetup = (props) => {
 
   useEffect(
     () => {
+      console.log( `PerDiseaseSetup rendered for ${country}, ${implementationUnit}, ${disease}` );
+    },
+    [ country, implementationUnit, disease]
+  );
+
+  useEffect(
+    () => {
+      // reset scenario state in reducer
       const action = {
         type: ScenarioStoreConstants.ACTION_TYPES.RESET_SCENARIO_STATE,
       };
-      console.log( `PerDiseaseSetup dispatching ${ScenarioStoreConstants.ACTION_TYPES.RESET_SCENARIO_STATE} action`, action );
       dispatchScenarioStateUpdate( action );
 
-      // TODO work out why this doesn't get done in the reducer
+      // TODO work out why this doesn't get done in the reducer store-context-consumer
       SessionStorage.simulatorState = null;
       SessionStorage.removeAllScenarios();
     },
