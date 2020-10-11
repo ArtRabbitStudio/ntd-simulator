@@ -75,7 +75,6 @@ const SettingSpecificScenario = ({ inModal, label, classAdd, scenarioId }) => {
     })
 
     if (specificScenarios.length > par) {
-      console.log('updating specificPrediction')
       dispatchSimState({
         type: 'specificPrediction',
         payload: specificScenarios[par],

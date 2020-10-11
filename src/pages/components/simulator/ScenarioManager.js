@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
+import { observer } from 'mobx-react'
 import { Box, CircularProgress, Grid, Tab, Tabs, Typography } from '@material-ui/core';
-import { v4 as uuidv4 } from 'uuid';
 import PropTypes from 'prop-types'
 
 import { useScenarioStore, ScenarioStoreConstants } from "store/scenarioStore";
@@ -12,12 +12,18 @@ import { useSimulatorStore } from 'store/simulatorStore';
 import { useUIState } from 'hooks/stateHooks';
 import useStyles from 'pages/components/simulator/styles';
 import ConfirmationDialog from 'pages/components/ConfirmationDialog';
-import SettingsDialog from 'pages/components/SettingsDialog';
 
 import DiseaseModels from 'pages/components/simulator/models/DiseaseModels';
 import { DISEASE_LABELS } from 'AppConstants';
 
 import { loadAllIUhistoricData } from 'pages/components/simulator/helpers/iuLoader'
+import { NewSettingsDialogLF } from 'pages/components/diseases/lf';
+import { NewSettingsDialogTrachoma } from 'pages/components/diseases/trachoma';
+
+const settingsDialogComponents = {
+  lf: NewSettingsDialogLF,
+  trachoma: NewSettingsDialogTrachoma
+};
 
 const a11yProps = (index) => {
   return {
@@ -55,8 +61,6 @@ TabPanel.propTypes = {
  */
 const ScenarioManager = ( props ) => {
 
-  console.info( '===>>> ScenarioManager' );
-
   const classes = useStyles();
 
   const { simState, dispatchSimState } = useSimulatorStore();
@@ -81,18 +85,9 @@ const ScenarioManager = ( props ) => {
 
   const createNewScenario = () => {
 
-    const label = new Date().toISOString().split('T').join(' ').replace(/\.\d{3}Z/, '');
-    const id = uuidv4();
+    const newScenarioData = diseaseModel.createNewScenario( simState.settings );
 
-    const newScenarioData = {
-      id,
-      label,
-      settings: { ...simState.settings } // should this be here or in the initScenario?
-    };
-
-    console.log( `ScenarioManager created new scenario id ${newScenarioData.id} on UI request` );
-
-    const initedScenarioData = diseaseModel.initScenario( newScenarioData );
+    console.log( `ScenarioManager created new ${disease} scenario with id ${newScenarioData.id} on UI request` );
 
     /*
      * ADD_SCENARIO_DATA = just add to memory,
@@ -100,10 +95,10 @@ const ScenarioManager = ( props ) => {
      */
     dispatchScenarioStateUpdate( {
       type: ScenarioStoreConstants.ACTION_TYPES.ADD_SCENARIO_DATA,
-      scenario: initedScenarioData
+      scenario: newScenarioData
     } );
 
-    setNewScenarioId( initedScenarioData.id );
+    setNewScenarioId( newScenarioData.id );
     setNewScenarioSettingsOpen( true );
   };
 
@@ -120,7 +115,7 @@ const ScenarioManager = ( props ) => {
       setSimInProgress( false );
 
       if( isNewScenario ) {
-        console.log( `ScenarioManager received new result scenario data from '${disease}' model, storing in scenario id ${resultScenario.id}` );
+        console.log( `ScenarioManager received new result scenario data from '${disease}' model, storing in scenario id ${resultScenario.id}`, resultScenario );
 
         dispatchScenarioStateUpdate( {
           type: ScenarioStoreConstants.ACTION_TYPES.SET_NEW_SCENARIO_DATA,
@@ -163,8 +158,6 @@ const ScenarioManager = ( props ) => {
     // snag the data & id
     const scenarioData = scenarioState.scenarioData[ newScenarioId ];
 
-    console.log( 'ScenarioManager BEFORE running CREATED scenario:', scenarioData );
-
     // tell the UI we're not in 'new scenario' any more
     setNewScenarioId( null );
 
@@ -200,7 +193,7 @@ const ScenarioManager = ( props ) => {
 
   const runNewScenario = () => {
 
-    console.log( `ScenarioManager running new scenario for disease ${disease}` );
+    console.log( `ScenarioManager auto-running new scenario for disease ${disease}` );
 
     if ( scenarioState.scenarioKeys.length > 5 && !simInProgress ) {
       alert( 'Sorry, maximum number of Scenarios is 5.' );
@@ -226,11 +219,6 @@ const ScenarioManager = ( props ) => {
   const runCurrentScenario = () => {
 
     console.log( `ScenarioManager re-running current scenario ${scenarioState.currentScenarioId}` );
-
-    // snag the data & id
-    const scenarioData = scenarioState.scenarioData[ scenarioState.currentScenarioId ];
-
-    console.log( 'ScenarioManager BEFORE running CURRENT scenario:', scenarioData );
 
     if ( !simInProgress ) {
 
@@ -411,6 +399,8 @@ const ScenarioManager = ( props ) => {
     return ( <div>No model for {DISEASE_LABELS[ disease ]}</div> );
   }
 
+  const SettingsDialogComponent = ( disease !== null ) ? settingsDialogComponents[ disease ] : null;
+
   return (
     <div id="ScenarioManager">
         <section className={classes.simulator}>
@@ -495,8 +485,8 @@ const ScenarioManager = ( props ) => {
 
         {
           ( newScenarioSettingsOpen && newScenarioId )
-            ? <SettingsDialog
-                scenarioId={ newScenarioId }
+            ? <SettingsDialogComponent
+                scenarioData={ scenarioState.scenarioData[ newScenarioId ] }
                 action={ runCreatedScenario }
                 cancel={ cancelCreatedScenario }
                 newScenarioSettingsOpen={newScenarioSettingsOpen}
@@ -507,4 +497,4 @@ const ScenarioManager = ( props ) => {
   );
 }
 
-export default ScenarioManager;
+export default observer( ScenarioManager );

@@ -14,22 +14,18 @@ class UiState {
 
     setCountry(id) {
         this.country = id
-        console.log( 'UiState setting country', this.country );
     }
 
     setSection( id ) {
         this.section = id
-        console.log( 'UiState setting section', this.section );
     }
 
     setImplementationUnit(implementationUnit) {
         this.implementationUnit = implementationUnit
-        console.log( 'UiState setting implementationUnit', this.implementationUnit );
     }
 
     setDisease(id) {
         this.disease = id
-        console.log( 'UiState setting disease', this.disease );
     }
 
 }
