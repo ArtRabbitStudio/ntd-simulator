@@ -10,7 +10,7 @@ import SelectCountry from 'pages/components/SelectCountry';
 import Country from 'pages/Country';
 import { IntroLF, SetupLF } from 'pages/components/diseases/lf';
 import { IntroTrachoma, SetupTrachoma } from 'pages/components/diseases/trachoma';
-import SimulatorManager from 'pages/SimulatorManager';
+import ScenarioManager from 'pages/components/simulator/ScenarioManager';
 
 const introComponents = {
   lf: IntroLF,
@@ -52,7 +52,7 @@ const Simulator = ( props ) => {
 
       { disease && country && implementationUnit && ( !section ) && <SetupComponent/> }
 
-      { disease && country && implementationUnit && section && <SimulatorManager/> }
+      { disease && country && implementationUnit && section && <ScenarioManager/> }
 
     </Layout>
 
