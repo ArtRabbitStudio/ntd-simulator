@@ -252,7 +252,9 @@ const ScenarioManager = ( props ) => {
         id: scenarioId
       } );
 
-      diseaseModel.prepScenarioAndParams( scenarioId, scenarioState, simState );
+      if( diseaseModel.prepScenarioAndParams ) {
+        diseaseModel.prepScenarioAndParams( scenarioId, scenarioState, simState );
+      }
 
       console.log( `ScenarioManager switched scenario to ${newScenarioData.id}: "${newScenarioData.label}"` );
     }

@@ -16,7 +16,6 @@ export default {
       const newScenarioData = {
         id,
         label,
-        hiddenValue: `HIDDEN LF VALUE ${new Date()}`,
         settings: { ...settings } // should this be here or in the initScenario?
       };
 

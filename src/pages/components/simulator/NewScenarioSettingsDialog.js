@@ -59,13 +59,15 @@ const NewScenarioSettingsDialog = ( props ) => {
           inModal={true}
         />
 
-        <SettingPrecision
-          scenarioId={ props.scenarioData.id }
-          classAdd={classes.precision}
-          inModal={true}
-          label="Precision (runs)"
-          setGraphTypeSimple={()=>{console.log('handling graph type simple');}}
-        />
+        { props.showPrecision &&
+          <SettingPrecision
+            scenarioId={ props.scenarioData.id }
+            classAdd={classes.precision}
+            inModal={true}
+            label="Precision (runs)"
+            setGraphTypeSimple={()=>{console.log('handling graph type simple');}}
+          />
+        }
 
       </ChartSettings>
 

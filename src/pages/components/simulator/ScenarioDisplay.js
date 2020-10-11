@@ -109,8 +109,11 @@ const ScenarioDisplay = (props) => {
   const scenarioData = scenarioState.scenarioData[ scenarioId ];
 
   const scenarioDisplay = scenarioData ? (
+
     <div className={classes.simulatorBody}>
+
       <div className={classes.simulatorInnerBody}>
+
         <Grid container spacing={0}>
           <Grid item md={6} xs={12}>
             <Typography
@@ -120,16 +123,21 @@ const ScenarioDisplay = (props) => {
             >
               {scenarioData.label}
             </Typography>
-            <SettingPrecision
-              classAdd={classes.precision}
-              inModal={true}
-              label="Precision (runs)"
-              setGraphTypeSimple={handleGraphTypeChange}
-              graphTypeSimple={graphTypeSimpleLocal}
-            />
+
+            { disease === DISEASE_LIMF &&
+              <SettingPrecision
+                classAdd={classes.precision}
+                inModal={true}
+                label="Precision (runs)"
+                setGraphTypeSimple={handleGraphTypeChange}
+                graphTypeSimple={graphTypeSimpleLocal}
+              />
+            }
+
           </Grid>
 
           <Grid item md={6} xs={12}>
+
             <div className={classes.rightControls}>
               <Fab
                 color="inherit"
@@ -161,35 +169,55 @@ const ScenarioDisplay = (props) => {
                   scenarioId={scenarioId}
                   scenarioLabel={ scenarioData.label }
                 />
-                <SettingBedNetCoverage
-                  inModal={true}
-                  label="Bed Net Coverage"
-                />
+
+                { disease === DISEASE_LIMF &&
+                  <SettingBedNetCoverage
+                    inModal={true}
+                    label="Bed Net Coverage"
+                  />
+                }
+
                 <SettingFrequency inModal={true} label="Treatment frequency" />
-                <SettingDrugRegimen inModal={true} label="Drug regimen" />
+
+                { disease === DISEASE_LIMF &&
+                  <SettingDrugRegimen inModal={true} label="Drug regimen" />
+                }
+
                 <SettingTargetCoverage
                   inModal={true}
                   label="Treatment target coverage"
                 />
+
                 <SettingSystematicAdherence
                   inModal={true}
                   label="Systematic adherence"
                 />
-                {/* no longer in use <SettingBasePrevalence inModal={true} label="Base prevalence" /> */}
-                {/* no longer in use <SettingNumberOfRuns inModal={true} label="Number of runs" /> */}
-                <SettingInsecticideCoverage
-                  inModal={true}
-                  label="Insecticide Coverage"
-                />
-                <SettingMosquitoType inModal={true} label="Mosquito type" />
+
+                { disease === DISEASE_LIMF &&
+                  <SettingInsecticideCoverage
+                    inModal={true}
+                    label="Insecticide Coverage"
+                  />
+                }
+
+                { disease === DISEASE_LIMF &&
+                  <SettingMosquitoType
+                    inModal={true}
+                    label="Mosquito type"
+                  />
+                }
+
                 <TextContents>
                   <Typography paragraph variant="body1" component="p">
                     Are you interested in a specific scenario? { scenarioState.scenarioData[ scenarioState.currentScenarioId ].specificPredictionIndex }
                   </Typography>
                 </TextContents>
+
                 <SettingSpecificScenario inModal={true} />
+
               </ChartSettings>
 
+              { disease === DISEASE_LIMF && (
               <FormControl
                 variant="outlined"
                 className={classes.formControlPrevalence}
@@ -212,6 +240,7 @@ const ScenarioDisplay = (props) => {
                   </MenuItem>
                 </Select>
               </FormControl>
+              ) }
             </div>
           </Grid>
         </Grid>
@@ -247,7 +276,7 @@ const ScenarioDisplay = (props) => {
             </div>
           )}
 
-          { disease === DISEASE_LIMF ? 
+          { disease === DISEASE_LIMF ?
 
           <ScenarioGraph
             data={scenarioData}
@@ -262,7 +291,8 @@ const ScenarioDisplay = (props) => {
             IUData={selectedIUData}
           />
 
-          : scenarioData.hiddenValue }
+          /* HERE'S WHERE WE PUT THE TRACHOMA RESULT GRAPH COMPONENT WHEN IT'S READY */
+          : scenarioData.trachomaPayload }
 
         </div>
 
@@ -270,7 +300,7 @@ const ScenarioDisplay = (props) => {
           <React.Fragment>
 
             <MdaRounds />
-        
+
             <Tooltip
               title="White bars show no intervention;  blue bars show intervention, the height of the blue colour shows coverage. Historic interventions before 2019 are greyed out."
               aria-label="info"

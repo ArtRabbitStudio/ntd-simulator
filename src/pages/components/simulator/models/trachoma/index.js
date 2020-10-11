@@ -11,7 +11,7 @@ export default {
       const newScenarioData = {
         id,
         label,
-        hiddenValue: `HIDDEN TRACHOMA VALUE ${new Date()}`,
+        trachomaPayload: 'TRACHOMA PAYLOAD',
         settings: { ...settings } // should this be here or in the initScenario?
       };
 
@@ -35,7 +35,7 @@ export default {
   },
 
   prepScenarioAndParams: function ( scenarioId, scenarioState, simState ) {
-    console.log( 'TrachomaModel prepping scenario and params' );
+    console.log( 'TrachomaModel pretending to prep scenario and params' );
   },
 
   runScenario: function ( { scenarioId, scenarioState, simState, callbacks } ) {
@@ -62,14 +62,15 @@ export default {
      *
      * this must mean that either:
      *
-     * (a) there's something weird with mobx and hooks that messes with
-     *    the run loop/queue/call stack/whatever
+     * (a) there's something weird with the combination of mobx + hooks
+     *    that messes with the runloop/queue/call stack/whatever
      *
-     * (b) mobx and hooks are fine but something in the way they're set
-     *    up in this app is not fine
+     * (b) mobx and hooks are fine together but something in the way
+     *    they're set up in this app is not fine
      *
      * (c) there's something really bad about the way the SimulatorEngine
-     *    callback stuff works
+     *    callback stuff works (unlikely because consumer updates
+     *    also don't happen in other situations)
      *
      * (d) i'm really missing something in one or more of the above
      *
@@ -80,11 +81,24 @@ export default {
      * - probably strip out mobx and other stuff
      */
 
-    const callCallback = () => {
+    const callResultCallback = () => {
       callbacks.resultCallback( scenarioData, isNewScenario );
     };
 
-    setTimeout( callCallback, 0 );
+    const fakeProgressTimeInMs = 1000;
+    const numberSteps = 10;
+    const progressIntervalInMs = fakeProgressTimeInMs / numberSteps;
+
+    for( let i = progressIntervalInMs; i <= fakeProgressTimeInMs; i += progressIntervalInMs ) {
+      setTimeout(
+        () => {
+          callbacks.progressCallback( i / fakeProgressTimeInMs * 100 );
+        },
+        i
+      );
+    }
+
+    setTimeout( callResultCallback, fakeProgressTimeInMs + progressIntervalInMs );
 
   },
 

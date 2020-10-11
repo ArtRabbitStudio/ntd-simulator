@@ -16,7 +16,9 @@ const NewSettingsDialogTrachoma = ( { scenarioData, action, cancel, newScenarioS
       action={ action }
       cancel={ cancel }
       scenarioData={ scenarioData }
-      newScenarioSettingsOpen={ newScenarioSettingsOpen }>
+      newScenarioSettingsOpen={ newScenarioSettingsOpen }
+      showPrecision={ false }
+    >
 
       <SettingFrequency
         scenarioId={ scenarioData.id }
