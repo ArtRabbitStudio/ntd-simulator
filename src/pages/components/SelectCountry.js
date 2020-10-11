@@ -27,7 +27,6 @@ const SelectCountry = ({ selectIU, showCountryConfirmation, showIUConfirmation, 
   }
   
   const handleBackToCountry = () => {
-    const section = 'country'
     const url = `/${disease}/${country}`;
     if (showCountryConfirmation || showIUConfirmation) {
       setGoTo(url)

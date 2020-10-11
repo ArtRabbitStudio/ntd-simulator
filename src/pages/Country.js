@@ -41,7 +41,7 @@ const useStyles = makeStyles(theme => ({
 
 const Country = props => {
 
-    const [notAvaliableAlert, setnotAvaliableAlert] = useState(false)
+    const [notAvailableAlert, setnotAvailableAlert] = useState(false)
     const [alertText, setAlertText] = useState('')
 
     const classes = useStyles()
@@ -97,20 +97,20 @@ const Country = props => {
                         disease={disease}
                         showNotAvailable={(value)=>{
                             setAlertText(value)
-                            setnotAvaliableAlert(true)
+                            setnotAvailableAlert(true)
                         }}
                     />
                 </div>
                 <Typography component="h6" variant="h6" className={classes.legend}>Prevalence map and trends since 2010.</Typography>
             </section>
             
-            {notAvaliableAlert &&
+            {notAvailableAlert &&
                 <SimpleDialog
                 title={alertText}
                 onClose={() => {
-                    setnotAvaliableAlert(false)
+                    setnotAvailableAlert(false)
                 }}
-                open={notAvaliableAlert}
+                open={notAvailableAlert}
                 />
             }
         
