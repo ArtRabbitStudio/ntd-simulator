@@ -129,6 +129,6 @@ export default function () {
       setDisease,
       setSection,
       setCountry,
-      setImplementationUnit
+      setImplementationUnit,
     ]);
 }

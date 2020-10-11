@@ -1,15 +1,17 @@
 import { Button, Typography, Tooltip } from '@material-ui/core';
 import { observer } from 'mobx-react';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { map } from 'lodash';
 import PrevalenceMiniGraph from 'components/PrevalenceMiniGraph';
 import { useDataAPI, useUIState } from 'hooks/stateHooks';
 import { useSimulatorStore } from 'store/simulatorStore';
+import { useScenarioStore, ScenarioStoreConstants } from "store/scenarioStore";
 import TextContents from 'pages/components/TextContents';
 import useStyles from 'theme/Setup';
 import { SettingSpecificScenario } from 'pages/components/simulator/settings';
 import { loadAllIUhistoricData } from 'pages/components/simulator/helpers/iuLoader';
+import SessionStorage from 'pages/components/simulator/helpers/sessionStorage';
 
 const PerDiseaseSetup = (props) => {
   const [isLoading, setIsLoading] = useState(false)
@@ -17,14 +19,11 @@ const PerDiseaseSetup = (props) => {
   const history = useHistory()
   const classes = useStyles()
   const { simState, dispatchSimState } = useSimulatorStore()
+  const { dispatchScenarioStateUpdate } = useScenarioStore();
   const { country, implementationUnit, disease } = useUIState()
+  const { selectedIUData } = useDataAPI();
 
   console.log( `PerDiseaseSetup rendering for ${country}, ${implementationUnit}, ${disease}` );
-
-  const {
-    selectedIUData
-  } = useDataAPI()
-
 
   const doWeHaveData = simState.IUData.id === implementationUnit
   const loadData = async () => {
@@ -45,6 +44,21 @@ const PerDiseaseSetup = (props) => {
   }
 
   const selectedIUName = selectedIUData[0] ? selectedIUData[0]['name'] : ''
+
+  useEffect(
+    () => {
+      const action = {
+        type: ScenarioStoreConstants.ACTION_TYPES.RESET_SCENARIO_STATE,
+      };
+      console.log( `PerDiseaseSetup dispatching ${ScenarioStoreConstants.ACTION_TYPES.RESET_SCENARIO_STATE} action`, action );
+      dispatchScenarioStateUpdate( action );
+
+      // TODO work out why this doesn't get done in the reducer
+      SessionStorage.simulatorState = null;
+      SessionStorage.removeAllScenarios();
+    },
+    [ dispatchScenarioStateUpdate ]
+  );
 
   if (isLoading) {
     return (

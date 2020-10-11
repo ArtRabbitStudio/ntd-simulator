@@ -328,6 +328,7 @@ const ScenarioManager = ( props ) => {
   // 2nd-arg empty array makes this a componentDidMount equivalent - only re-run if {nothing} changes
   useEffect(
     () => {
+      console.log( "ScenarioManager mounting" );
 
       if( !diseaseModel ) {
         return;
