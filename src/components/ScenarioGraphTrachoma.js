@@ -29,7 +29,7 @@ function ScenarioGraphTrachoma({
   IU,
   IUData
 }) {
-  console.log(data)
+
   const [activeInfo, setActiveInfo] = useState(null)
 
   metrics = ['p']
@@ -175,7 +175,7 @@ function ScenarioGraphTrachoma({
 
   const y = scaleLinear().domain(domainY).range([height, 0]).nice()
 
-  const ticksX = x.ticks(22)
+  const ticksX = x.ticks(12)
   const ticksY = y.ticks()
 
   const renderResult = (d, main) => {
@@ -305,7 +305,6 @@ function ScenarioGraphTrachoma({
     )
   }
   const renderRange = (d,dMax,dts, main) => {
-    console.log('renderRange',d)
 
     if (simInProgress) return
 
