@@ -1,5 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
 import { generateMdaFutureFromScenarioSettings } from 'pages/components/simulator/helpers/iuLoader';
+import { csv } from 'd3';
+import { DISEASE_TRACHOMA } from 'AppConstants';
 
 export default {
 
@@ -11,7 +13,7 @@ export default {
       const newScenarioData = {
         id,
         label,
-        trachomaPayload: 'TRACHOMA PAYLOAD',
+        type: DISEASE_TRACHOMA,
         settings: { ...settings } // should this be here or in the initScenario?
       };
 
@@ -49,38 +51,33 @@ export default {
 
     this.prepScenarioAndParams( scenarioData.id, scenarioState, simState );
 
-    console.log( 'TrachomaModel returning prepped scenarioData', scenarioData );
+    console.log( 'TrachomaModel fetching prepped scenarioData', scenarioData );
 
-    /*
-     * NOTE IC 20201011
-     *
-     * there is something really suspicious going on that makes this
-     * setTimeout necessary - if this code doesn't wrap resultCallback
-     * in a setTimeout then the ScenarioStoreContext.Consumer doesn't
-     * get all the updates dispatched in sequence & therefore doesn't
-     * process them, so data doesn't get saved, so nothing works.
-     *
-     * this must mean that either:
-     *
-     * (a) there's something weird with the combination of mobx + hooks
-     *    that messes with the runloop/queue/call stack/whatever
-     *
-     * (b) mobx and hooks are fine together but something in the way
-     *    they're set up in this app is not fine
-     *
-     * (c) there's something really bad about the way the SimulatorEngine
-     *    callback stuff works (unlikely because consumer updates
-     *    also don't happen in other situations)
-     *
-     * (d) i'm really missing something in one or more of the above
-     *
-     * (e) something else completely
-     *
-     * so, TODO:
-     * - work out what's going on
-     * - probably strip out mobx and other stuff
-     */
+    let csvPromise = new Promise(
+      ( resolve, reject ) => {
+        csv( "/data/Trachoma200/output/scenario-56/coverage-0.6/56-0.6-12-202001.csv" )
+        .then( ( results ) => {
+          const result = {
+            ...scenarioData,
+            results
+          };
+          resolve( { result, isNewScenario } );
+        } );
+      }
+    );
 
+    // race in case we want to call progressCallback
+    Promise.race( [ csvPromise ] )
+      .then(
+        ( resolve_result ) => {
+          callbacks.resultCallback( resolve_result.result, resolve_result.isNewScenario );
+        },
+        ( reject_result ) => {
+          console.log( 'reject', reject_result );
+        }
+      );
+
+/*
     const callResultCallback = () => {
       callbacks.resultCallback( scenarioData, isNewScenario );
     };
@@ -99,6 +96,7 @@ export default {
     }
 
     setTimeout( callResultCallback, fakeProgressTimeInMs + progressIntervalInMs );
+*/
 
   },
 
