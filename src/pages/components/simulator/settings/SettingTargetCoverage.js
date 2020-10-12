@@ -13,11 +13,17 @@ const SettingTargetCoverage = ({
   value,
   onChange,
   scenarioId,
+  min,
+  max,
+  step
 }) => {
   const classes = useStyles()
   const { dispatchSimState } = useSimulatorStore()
   const { scenarioState, dispatchScenarioStateUpdate } = useScenarioStore();
 
+  const minVal = min ? min : 0
+  const maxVal = max ? max : 100
+  const stepVal = step ? step : 1
   const isPerIUSetting = value !== null && typeof value !== 'undefined';
 
   scenarioId = scenarioId ? scenarioId : scenarioState.currentScenarioId;
@@ -58,14 +64,14 @@ const SettingTargetCoverage = ({
       </Tooltip>
       <Slider
         value={ isPerIUSetting ? value : scenarioState.scenarioData[ scenarioId ].settings.coverage}
-        min={0}
-        step={1}
-        max={100}
+        min={minVal}
+        step={stepVal}
+        max={maxVal}
         onChange={onChange ? onChange : handleChange}
         aria-labelledby="slider"
         marks={[
-          { value: 0, label: '0' },
-          { value: 100, label: '100' },
+          { value: minVal, label: `${minVal}` },
+          { value: maxVal, label: `${maxVal}` },
         ]}
         valueLabelDisplay={inModal ? 'auto' : 'on'}
       />

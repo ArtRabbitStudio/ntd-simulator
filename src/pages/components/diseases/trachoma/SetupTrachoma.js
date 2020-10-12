@@ -9,13 +9,12 @@ import PerDiseaseSetup from 'pages/components/PerDiseaseSetup';
 import {
   SettingFrequency,
   SettingTargetCoverage,
-  SettingSystematicAdherence,
 } from 'pages/components/simulator/settings';
 
 const SetupTrachoma = (props) => {
 
   const classes = useStyles();
-  const { simState, dispatchSimState } = useSimulatorStore();
+  const { simState } = useSimulatorStore();
 
   return (
 
@@ -44,6 +43,9 @@ const SetupTrachoma = (props) => {
           <SettingTargetCoverage
             inModal={false}
             label="MDA Target Coverage"
+            min={60}
+            max={90}
+            step={10}
             value={simState.settings.coverage}
           />
         </div>

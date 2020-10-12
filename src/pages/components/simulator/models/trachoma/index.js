@@ -14,7 +14,15 @@ const convertDateIndex = ( key ) => {
 };
 
 const combineData = ( historicalData, futureData ) => {
-  return [ ...historicalData, ...futureData ]
+
+  const combined = historicalData.map( ( item, i ) => {
+    if( item.id === futureData[ i ].id ) {
+      //merging two objects
+      return Object.assign( {}, item, futureData[ i ] )
+    }
+  } );
+
+  return combined
     .map(
       // remove redundant columns
       ( row ) => {
@@ -73,7 +81,7 @@ const combineData = ( historicalData, futureData ) => {
 const convertSummary = ( s ) => {
   return Object.keys( s.median ).reduce(
 
-    (acc, k ) => {
+    ( acc, k ) => {
 
       const ts = convertDateIndex( k );
 
@@ -188,6 +196,9 @@ export default {
     Promise.all( [ historicalDataPromise, futureDataPromise, jsonPromise ] )
       .then(
         ( [ historicalData, futureData, summaryData ] ) => {
+
+          console.log(historicalData[0]['Random Generator'])
+
           const combinedData = combineData( historicalData, futureData );
           const convertedSummary = convertSummary( summaryData );
           const result = {

@@ -5,7 +5,6 @@ import NewScenarioSettingsDialog from 'pages/components/simulator/NewScenarioSet
 import {
   SettingFrequency,
   SettingTargetCoverage,
-  SettingSystematicAdherence,
 } from 'pages/components/simulator/settings';
 
 const NewSettingsDialogTrachoma = ( { scenarioData, action, cancel, newScenarioSettingsOpen } ) => {
@@ -29,6 +28,9 @@ const NewSettingsDialogTrachoma = ( { scenarioData, action, cancel, newScenarioS
       <SettingTargetCoverage
         scenarioId={ scenarioData.id }
         inModal={true}
+        min={60}
+        max={90}
+        step={10}
         label="Treatment target coverage"
       />
 

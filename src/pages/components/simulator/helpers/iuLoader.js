@@ -12,9 +12,14 @@ export const loadAllIUhistoricData = async (
   disease
 ) => {
 
+  let mdaData = null
+  let params = null
+  
   // TODO new param diesase
   switch (disease) {
     case DISEASE_LIMF:
+      mdaData = await loadMdaHistoryLF(implementationUnit)
+      params = await loadIUParamsLF(implementationUnit)
       break;
 
     case DISEASE_TRACHOMA:
@@ -28,8 +33,6 @@ export const loadAllIUhistoricData = async (
   SessionStorage.simulatorState = null;
   SessionStorage.removeAllScenarios();
 
-  const mdaData = await loadMdaHistory(implementationUnit)
-  const params = await loadIUParams(implementationUnit)
 
   // set default values
   const defaultSimParams = {
@@ -87,24 +90,26 @@ export const loadAllIUhistoricData = async (
     },
   }
 
-  const bednets = last(mdaData.bednets)
-  if (bednets) {
-    defaults.settings.covN = bednets
-  }
+  if ( disease === DISEASE_LIMF ) {
+    const bednets = last(mdaData.bednets)
+    if (bednets) {
+      defaults.settings.covN = bednets
+    }
 
-  const mdaRegimen = last(filter(mdaData.regimen, (x) => x !== 'xxx'))
-  if (mdaRegimen) {
-    defaults.settings.mdaRegimen = mdaRegimen
-  }
+    const mdaRegimen = last(filter(mdaData.regimen, (x) => x !== 'xxx'))
+    if (mdaRegimen) {
+      defaults.settings.mdaRegimen = mdaRegimen
+    }
 
-  const adherence = last(mdaData.adherence)
-  if (adherence) {
-    defaults.settings.rho = adherence
-  }
+    const adherence = last(mdaData.adherence)
+    if (adherence) {
+      defaults.settings.rho = adherence
+    }
 
-  const coverage = last(filter(mdaData.coverage, (x) => x !== 0))
-  if (coverage) {
-    defaults.settings.coverage = coverage
+    const coverage = last(filter(mdaData.coverage, (x) => x !== 0))
+    if (coverage) {
+      defaults.settings.coverage = coverage
+    }
   }
 
   console.log( "iuLoader creating simState defaults:", defaults );
@@ -117,7 +122,11 @@ export const loadAllIUhistoricData = async (
 //  SessionStorage.simulatorState = defaults;
 }
 
-export const loadMdaHistory = async (implementationUnit) => {
+export const loadMdaHistoryLF = async (implementationUnit) => {
+
+  console.log( "iuLoader loadMdaHistory:", implementationUnit );
+
+
   const IUid = implementationUnit ? implementationUnit : 'AGO02107'
   const mdaResponse = await fetch(`/diseases/lf/mda-history/${IUid}.csv`)
   let reader = mdaResponse.body.getReader()
@@ -178,7 +187,7 @@ export const loadMdaHistory = async (implementationUnit) => {
 
 
 
-export const loadIUParams = async (implementationUnit) => {
+export const loadIUParamsLF = async (implementationUnit) => {
   const IUid = implementationUnit ? implementationUnit : 'AGO02107'
   const IUParamsResponse = await fetch(`/diseases/lf/iu-params/${IUid}.csv`)
   //console.log(`/lf/iu-params/${IUid}.csv`);
