@@ -21,9 +21,8 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
-export default function Intro(props) {
+export default function IntroLF(props) {
   const classes = useStyles();
-  console.log('yes')
   return (
 
     <section className={classes.section}>

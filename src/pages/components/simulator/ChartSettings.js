@@ -9,7 +9,7 @@ import Typography from '@material-ui/core/Typography';
 import Icon from 'images/settings.svg';
 //import IconHover from 'images/settings-hover.svg';
 
-import CloseButton from './CloseButton';
+import CloseButton from 'pages/components/CloseButton';
 //import { geoNaturalEarth1Raw } from 'd3';
 
 const useStyles = makeStyles(theme => ({

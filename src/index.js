@@ -1,6 +1,8 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { Provider } from 'mobx-react'
+// TODO work out what the hell's going on with this
+import 'mobx-react-lite/batchingForReactDom'
 import { BrowserRouter as Router } from 'react-router-dom'
 import RootStore from './store/rootStore'
 import App from './App'

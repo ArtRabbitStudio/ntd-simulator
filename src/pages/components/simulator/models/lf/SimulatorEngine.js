@@ -1,8 +1,9 @@
 import { subtract } from 'mathjs'
-import { v4 as uuidv4 } from 'uuid';
 
 import { Random } from 'pages/components/simulator/helpers/sim'
 import SessionStorage from 'pages/components/simulator/helpers/sessionStorage';
+import DiseaseModels from 'pages/components/simulator/models/DiseaseModels';
+import { DISEASE_LIMF } from 'AppConstants';
 
 export var s = new Random();
 
@@ -1085,19 +1086,15 @@ export var simControler = {
 
         clearInterval(progress)
 
-        const createNewScenario = ( label = null ) => {
-
-          label = label ? label : new Date().toISOString().split('T').join(' ').replace(/\.\d{3}Z/, '');
-          const id = uuidv4();
-
-          console.log( `SimulatorEngine creating new scenario (inline) ${id} / ${label}` );
-
-          return { id, label };
-
-        };
-
         const newScenario = {
-          ...( existingScenario ? existingScenario : createNewScenario() ),
+          ...(
+            existingScenario
+              ? existingScenario
+              : ( () => {
+                  console.log( 'SimulatorEngine requesting new scenario from LFModel' );
+                  return DiseaseModels[ DISEASE_LIMF ].createNewScenario();
+                } )()
+          ),
           params: params,
           results: runs,
           mda: simControler.mdaObj,

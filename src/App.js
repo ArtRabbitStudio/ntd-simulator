@@ -5,10 +5,7 @@ import useSyncRouteState from "./hooks/useSyncRouteState";
 import ScrollToTop from "./pages/components/ScrollToTop";
 import Home from "./pages/Home";
 import Page from "./pages/Page";
-import Country from "./pages/Country";
-import Disease from "./pages/Disease";
-import Setup from "./pages/Setup";
-import SimulatorManager from "./pages/SimulatorManager";
+import Simulator from "./pages/Simulator";
 
 import DataMethodolgy from "./pages/content/DataMethodology";
 import About from "./pages/content/About";
@@ -244,14 +241,12 @@ function App() {
                 <Route exact path="/lymphatic-filariasis-data-methodoloy" component={LF} />
                 <Route exact path="/trachoma-data-methodoloy" component={Trachoma} />
                 <Route exact path="/" component={Home} />
-                <Route exact path="/:disease" component={Disease} />
-                <Route exact path="/:disease/:section/:country" component={Country} />
-                <Route exact path="/:disease/setup/:country/:iu" component={Setup} />
-                <Route
-                  exact
-                  path="/:disease/simulator/:country?/:iu?"
-                  component={SimulatorManager}
-                />
+
+                <Route exact path="/:disease" component={Simulator} />
+                <Route exact path="/:disease/:country" component={Simulator} />
+                <Route exact path="/:disease/:country/:iu" component={Simulator} />
+                <Route exact path="/:disease/:country/:iu/run" component={Simulator} />
+
                 <Route exact path="**" component={Page} />
               </Switch>
             </ScrollToTop>

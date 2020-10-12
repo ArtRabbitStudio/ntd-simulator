@@ -1,46 +1,27 @@
-import { Button, Typography, Tooltip } from '@material-ui/core'
-import { observer } from 'mobx-react'
-import React, { useState } from 'react'
-import { useHistory } from 'react-router-dom'
-import { map } from 'lodash'
-import PrevalenceMiniGraph from 'components/PrevalenceMiniGraph'
-import { useDataAPI, useUIState } from 'hooks/stateHooks'
-import { Layout } from 'layout'
-import { useSimulatorStore } from 'store/simulatorStore'
-import HeadWithInputs from 'pages/components/HeadWithInputs'
-import SelectCountry from 'pages/components/SelectCountry'
-import TextContents from 'pages/components/TextContents'
-import { loadAllIUhistoricData } from 'pages/components/simulator/helpers/iuLoader'
-import useStyles from 'theme/Setup'
+import { Button, Typography, Tooltip } from '@material-ui/core';
+import { observer } from 'mobx-react';
+import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
+import { map } from 'lodash';
+import PrevalenceMiniGraph from 'components/PrevalenceMiniGraph';
+import { useDataAPI, useUIState } from 'hooks/stateHooks';
+import { useSimulatorStore } from 'store/simulatorStore';
+import { useScenarioStore, ScenarioStoreConstants } from "store/scenarioStore";
+import TextContents from 'pages/components/TextContents';
+import useStyles from 'theme/Setup';
+import { SettingSpecificScenario } from 'pages/components/simulator/settings';
+import { loadAllIUhistoricData } from 'pages/components/simulator/helpers/iuLoader';
+import SessionStorage from 'pages/components/simulator/helpers/sessionStorage';
 
-// settings
-import {
-  SettingFrequency,
-  SettingTargetCoverage,
-  SettingDrugRegimen,
-  SettingMosquitoType,
-  SettingBedNetCoverage,
-  SettingInsecticideCoverage,
-  SettingSystematicAdherence,
-  SettingSpecificScenario,
-} from './components/simulator/settings'
-
-
-
-const Setup = (props) => {
+const PerDiseaseSetup = (props) => {
   const [isLoading, setIsLoading] = useState(false)
 
   const history = useHistory()
   const classes = useStyles()
   const { simState, dispatchSimState } = useSimulatorStore()
+  const { dispatchScenarioStateUpdate } = useScenarioStore();
   const { country, implementationUnit, disease } = useUIState()
-
-  console.log( `Setup rendering for ${country}, ${implementationUnit}, ${disease}` );
-
-  const {
-    selectedIUData
-  } = useDataAPI()
-
+  const { selectedIUData } = useDataAPI();
 
   const doWeHaveData = simState.IUData.id === implementationUnit
   const loadData = async () => {
@@ -60,16 +41,37 @@ const Setup = (props) => {
     }
   }
 
+  const selectedIUName = selectedIUData[0] ? selectedIUData[0]['name'] : ''
+
+  useEffect(
+    () => {
+      console.log( `PerDiseaseSetup rendered for ${country}, ${implementationUnit}, ${disease}` );
+    },
+    [ country, implementationUnit, disease]
+  );
+
+  useEffect(
+    () => {
+      // reset scenario state in reducer
+      const action = {
+        type: ScenarioStoreConstants.ACTION_TYPES.RESET_SCENARIO_STATE,
+      };
+      dispatchScenarioStateUpdate( action );
+
+      // TODO work out why this doesn't get done in the reducer store-context-consumer
+      SessionStorage.simulatorState = null;
+      SessionStorage.removeAllScenarios();
+    },
+    [ dispatchScenarioStateUpdate ]
+  );
+
   if (isLoading) {
     return (
-      <Layout>
-        <HeadWithInputs title="prevalence simulator" />
         <section className={classes.section}>
           <Typography variant="h3" component="h6" className={classes.headline}>
-            Loading setup
+            Loading setup for {selectedIUName}
           </Typography>
         </section>
-      </Layout>
     )
   }
   let mdaObjTimeFiltered = null
@@ -97,29 +99,23 @@ const Setup = (props) => {
     })
   }
 
-  const selecteIUName = selectedIUData[0] ? selectedIUData[0]['name'] : ''
-
   const submitSetup = (event) => {
     dispatchSimState({
       type: 'specificPrediction',
       payload: null,
     })
     // pass params to simulator ..
-    history.push({ pathname: `/${disease}/simulator/${country}/${implementationUnit}` })
+    history.push({ pathname: `/${disease}/${country}/${implementationUnit}/run` })
   }
 
   return (
-    <Layout>
-      <HeadWithInputs title="prevalence simulator" />
-      <SelectCountry selectIU={true} showBack={true} />
-
       <section className={classes.section}>
         <Typography variant="h3" component="h6" className={classes.headline}>
           Setup
         </Typography>
         <TextContents>
           <Typography paragraph variant="body1" component="p">
-            {`We hold the following information for ${selecteIUName}.`}
+            {`We hold the following information for ${selectedIUName}.`}
             <br />
           </Typography>
         </TextContents>
@@ -208,85 +204,9 @@ const Setup = (props) => {
 
 
         <div className={classes.settings}>
-          <div className={classes.formControlWrap}>
-            <div className={classes.setupFormControl}>
-              <Typography paragraph variant="h3" component="p">
-                Environmental factors
-                </Typography>
-            </div>
-          </div>
-          <div className={classes.formControlWrap}>
-            <div className={classes.setupFormControl}>
-              <Typography paragraph variant="h3" component="p">
-                MDA settings
-                </Typography>
-            </div>
-          </div>
+        
+          {props.children}
 
-
-          <div className={classes.formControlWrap}>
-            <div className={classes.setupFormControl}>
-              <SettingBedNetCoverage inModal={false} label="Bed Net Coverage" value={simState.settings.covN} />
-            </div>
-          </div>
-
-          <div className={classes.formControlWrap}>
-            <div className={classes.setupFormControl}>
-              <SettingFrequency
-                inModal={false}
-                label="MDA Frequency"
-                value={simState.settings.mdaSixMonths}
-              />
-            </div>
-          </div>
-
-          <div className={classes.formControlWrap}>
-            <div className={classes.setupFormControl}>
-              <SettingMosquitoType inModal={false} label="Type of Mosquito" value={simState.settings.species} />
-            </div>
-          </div>
-
-          <div className={classes.formControlWrap}>
-            <div className={classes.setupFormControl}>
-              <SettingTargetCoverage
-                inModal={false}
-                label="MDA Target Coverage"
-                value={simState.settings.coverage}
-              />
-            </div>
-          </div>
-
-          <div className={classes.formControlWrap}>
-            <div className={classes.setupFormControl}>
-              <SettingInsecticideCoverage inModal={false} label="Inseticide Coverage" value={simState.settings.v_to_hR} />
-            </div>
-          </div>
-
-
-          <div className={classes.formControlWrap}>
-            <div className={classes.setupFormControl}>
-              <SettingDrugRegimen
-                inModal={false}
-                label="MDA Drug Regimen"
-                value={simState.settings.mdaRegimen}
-              />
-            </div>
-          </div>
-
-
-
-          <div className={`${classes.formControlWrap} fullwidth`}>
-            <div className={classes.setupFormControl}>
-              <SettingSystematicAdherence
-                inModal={false}
-                label="Systematic adherence"
-                onChange={(event, newValue) => {
-                  dispatchSimState({ type: 'rho', payload: newValue })
-                }}
-                value={simState.settings.rho}
-              />
-            </div>
-          </div>
         </div>
 
         <TextContents>
@@ -299,6 +219,7 @@ const Setup = (props) => {
             You will be able to change this later.
           </Typography>
         </TextContents>
+
         <div className={classes.scenariosWrap}>
           <div className={`${classes.buttonsControl}`}>
             <SettingSpecificScenario inModal={false} />
@@ -309,7 +230,6 @@ const Setup = (props) => {
           Predictions
         </Button>
       </section>
-    </Layout>
   )
 }
-export default observer(Setup)
+export default observer( PerDiseaseSetup );

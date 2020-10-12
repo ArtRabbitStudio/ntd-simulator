@@ -75,12 +75,11 @@ const SettingSpecificScenario = ({ inModal, label, classAdd, scenarioId }) => {
     })
 
     if (specificScenarios.length > par) {
-      console.log('updating specificPrediction')
       dispatchSimState({
         type: 'specificPrediction',
         payload: specificScenarios[par],
       })
-      history.push({ pathname: `/${disease}/simulator/${country}/${implementationUnit}` })
+      history.push({ pathname: `/${disease}/${country}/${implementationUnit}/run` })
     }
   }
 

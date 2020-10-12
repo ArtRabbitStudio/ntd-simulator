@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from 'uuid';
 import * as SimulatorEngine from './SimulatorEngine';
 
 import { combineFullMda } from 'pages/components/simulator/helpers/combineFullMda';
@@ -6,6 +7,23 @@ import { removeInactiveMDArounds } from 'pages/components/simulator/helpers/remo
 import { generateMdaFutureFromDefaults, generateMdaFutureFromScenarioSettings } from 'pages/components/simulator/helpers/iuLoader';
 
 export default {
+
+  createNewScenario: function ( settings ) {
+
+      const label = new Date().toISOString().split('T').join(' ').replace(/\.\d{3}Z/, '');
+      const id = uuidv4();
+
+      const newScenarioData = {
+        id,
+        label,
+        settings: { ...settings } // should this be here or in the initScenario?
+      };
+
+      console.log( `LFModel auto-created new scenario id ${newScenarioData.id}` );
+
+      return this.initScenario( newScenarioData );
+
+  },
 
   initScenario: function( newScenarioData ) {
     

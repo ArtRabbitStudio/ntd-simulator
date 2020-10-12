@@ -18,18 +18,23 @@ export const ScenarioStoreConstants = {
     MARK_SCENARIO_DIRTY_BY_ID: 'markScenarioDirtyById',
     REMOVE_SCENARIO_BY_ID: 'removeScenarioById',
     SET_NEW_SCENARIO_DATA: 'setNewScenarioData',
-    SET_SCENARIO_KEYS: 'setScenarioKeys'
+    SET_SCENARIO_KEYS: 'setScenarioKeys',
+    RESET_SCENARIO_STATE: 'resetScenarioState',
   }
 };
 
 const ScenarioStoreContext = createContext();
 
-const initialState = {
-  updated: new Date(),
-  scenarioKeys: [],
-  scenarioData: {},
-  currentScenarioId: null
+const getInitState = () => {
+  return {
+    updated: new Date(),
+    scenarioKeys: [],
+    scenarioData: {},
+    currentScenarioId: null
+  };
 };
+
+const initialState = getInitState();
 
 const settingToMdaFutureMap = {
   coverage: 'coverage',
@@ -209,6 +214,11 @@ const reducer = ( scenarioState, action ) => {
         break;
 
 
+      case ScenarioStoreConstants.ACTION_TYPES.RESET_SCENARIO_STATE:
+        newState = getInitState();
+        break;
+
+
       default:
      //   console.log( `=> scenarioStore got OOB update type ${action.type}:`, action );
         break;
@@ -259,6 +269,13 @@ const scenarioStoreConsumer = ( { scenarioState } ) => {
 
         console.log( `ScenarioStoreContext.Consumer got removed scenario id ${scenarioState.lastUpdatedScenarioId}` );
         SessionStorage.removeScenario( scenarioState.lastUpdatedScenarioId );
+        break;
+
+      // TODO work out why this doesn't get triggered
+      case ScenarioStoreConstants.ACTION_TYPES.RESET_SCENARIO_STATE:
+        console.log( `ScenarioStoreContext.Consumer resetting scenario state in storage` );
+        SessionStorage.simulatorState = null;
+        SessionStorage.removeAllScenarios();
         break;
 
       default:

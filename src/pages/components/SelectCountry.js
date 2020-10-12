@@ -11,7 +11,7 @@ import Autocomplete from '@material-ui/lab/Autocomplete'
 import useStyles from 'theme/SelectCountry'
 
 
-const SelectCountry = ({ selectIU, showConfirmation, showBack }) => {
+const SelectCountry = ({ selectIU, showCountryConfirmation, showIUConfirmation, showBack }) => {
   const classes = useStyles()
   const history = useHistory()
   const matchSection = useRouteMatch('/:disease/:section/')
@@ -27,9 +27,8 @@ const SelectCountry = ({ selectIU, showConfirmation, showBack }) => {
   }
   
   const handleBackToCountry = () => {
-    const section = 'country'
-    const url = `/${disease}/${section}/${country}`;
-    if (showConfirmation) {
+    const url = `/${disease}/${country}`;
+    if (showCountryConfirmation || showIUConfirmation) {
       setGoTo(url)
       setConfirmatonOpen(true);
     } else {
@@ -38,17 +37,16 @@ const SelectCountry = ({ selectIU, showConfirmation, showBack }) => {
   }
 
 
-  const handleCountryChange = (event, value) => {
-    const section = 'country'
+  const handleCountryChange = (event, newCountry) => {
     if (matchSection) {
       if (matchSection.params.section !== 'simulator') { // keep the page, not for simulator
         //section = matchSection.params.section
       }
     }
 
-    if (value) {
-      const url = `/${disease}/${section}/${value.id}`;
-      if (showConfirmation) {
+    if (newCountry) {
+      const url = `/${disease}/${newCountry.id}`;
+      if (showCountryConfirmation) {
         setGoTo(url)
         setConfirmatonOpen(true);
       } else {
@@ -58,11 +56,10 @@ const SelectCountry = ({ selectIU, showConfirmation, showBack }) => {
 
   }
 
-  const handleIUChange = (event, value) => {
-    let section = 'setup'
-    if (value) {
-      let url = `/${disease}/${section}/${country}/${value.id}`
-      if (showConfirmation) {
+  const handleIUChange = (event, newIU) => {
+    if (newIU) {
+      const url = `/${disease}/${country}/${newIU.id}`;
+      if (showIUConfirmation) {
         setGoTo(url)
         setConfirmatonOpen(true);
       } else {
@@ -117,7 +114,7 @@ const SelectCountry = ({ selectIU, showConfirmation, showBack }) => {
         
 
         {selectIU &&
-          <FormControl className={`${classes.formControl} ius` }>
+          <FormControl className={`${classes.formControl} ius`}>
             <Autocomplete
               id="iu"
               options={activeIUs}
@@ -133,7 +130,7 @@ const SelectCountry = ({ selectIU, showConfirmation, showBack }) => {
         }
       </Box>
 
-      {showConfirmation &&
+      {showCountryConfirmation &&
         <ConfirmationDialog
           title="Do you want to leave this scenario?"
           onClose={() => {

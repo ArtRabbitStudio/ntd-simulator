@@ -1,25 +1,29 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
+import { observer } from 'mobx-react'
 import { Box, CircularProgress, Grid, Tab, Tabs, Typography } from '@material-ui/core';
-import { v4 as uuidv4 } from 'uuid';
 import PropTypes from 'prop-types'
 
 import { useScenarioStore, ScenarioStoreConstants } from "store/scenarioStore";
 
 import SessionStorage from 'pages/components/simulator/helpers/sessionStorage';
-import SimulatorDisplay from 'pages/SimulatorDisplay';
+import ScenarioDisplay from 'pages/components/simulator/ScenarioDisplay';
 import { useSimulatorStore } from 'store/simulatorStore';
 import { useUIState } from 'hooks/stateHooks';
 import useStyles from 'pages/components/simulator/styles';
-import { Layout } from 'layout';
-import HeadWithInputs from 'pages/components/HeadWithInputs';
-import SelectCountry from 'pages/components/SelectCountry';
 import ConfirmationDialog from 'pages/components/ConfirmationDialog';
-import SettingsDialog from 'pages/components/SettingsDialog';
 
 import DiseaseModels from 'pages/components/simulator/models/DiseaseModels';
+import { DISEASE_LABELS } from 'AppConstants';
 
 import { loadAllIUhistoricData } from 'pages/components/simulator/helpers/iuLoader'
+import { NewSettingsDialogLF } from 'pages/components/diseases/lf';
+import { NewSettingsDialogTrachoma } from 'pages/components/diseases/trachoma';
+
+const settingsDialogComponents = {
+  lf: NewSettingsDialogLF,
+  trachoma: NewSettingsDialogTrachoma
+};
 
 const a11yProps = (index) => {
   return {
@@ -55,13 +59,13 @@ TabPanel.propTypes = {
  * this is a Routed component so we have
  * history, location, match { params { country, iu } }
  */
-const SimulatorManager = ( props ) => {
+const ScenarioManager = ( props ) => {
 
   const classes = useStyles();
 
   const { simState, dispatchSimState } = useSimulatorStore();
   const { scenarioState, dispatchScenarioStateUpdate } = useScenarioStore();
-  const { disease } = useUIState();
+  const { disease, country, implementationUnit: iu, section } = useUIState();
 
   const diseaseModel = DiseaseModels[ disease ];
 
@@ -81,18 +85,9 @@ const SimulatorManager = ( props ) => {
 
   const createNewScenario = () => {
 
-    const label = new Date().toISOString().split('T').join(' ').replace(/\.\d{3}Z/, '');
-    const id = uuidv4();
+    const newScenarioData = diseaseModel.createNewScenario( simState.settings );
 
-    const newScenarioData = {
-      id,
-      label,
-      settings: { ...simState.settings } // should this be here or in the initScenario?
-    };
-
-    console.log( `SimulatorManager created new scenario id ${newScenarioData.id} on UI request` );
-
-    const initedScenarioData = diseaseModel.initScenario( newScenarioData );
+    console.log( `ScenarioManager created new ${disease} scenario with id ${newScenarioData.id} on UI request` );
 
     /*
      * ADD_SCENARIO_DATA = just add to memory,
@@ -100,10 +95,10 @@ const SimulatorManager = ( props ) => {
      */
     dispatchScenarioStateUpdate( {
       type: ScenarioStoreConstants.ACTION_TYPES.ADD_SCENARIO_DATA,
-      scenario: initedScenarioData
+      scenario: newScenarioData
     } );
 
-    setNewScenarioId( initedScenarioData.id );
+    setNewScenarioId( newScenarioData.id );
     setNewScenarioSettingsOpen( true );
   };
 
@@ -120,7 +115,7 @@ const SimulatorManager = ( props ) => {
       setSimInProgress( false );
 
       if( isNewScenario ) {
-        console.log( `SimulatorManager received new result scenario data from '${disease}' model, storing in scenario id ${resultScenario.id}` );
+        console.log( `ScenarioManager received new result scenario data from '${disease}' model, storing in scenario id ${resultScenario.id}`, resultScenario );
 
         dispatchScenarioStateUpdate( {
           type: ScenarioStoreConstants.ACTION_TYPES.SET_NEW_SCENARIO_DATA,
@@ -130,7 +125,7 @@ const SimulatorManager = ( props ) => {
       }
 
       else {
-        console.log( `SimulatorManager received updated result scenario data from '${disease}' model, storing in scenario id ${resultScenario.id}` );
+        console.log( `ScenarioManager received updated result scenario data from '${disease}' model, storing in scenario id ${resultScenario.id}` );
 
         dispatchScenarioStateUpdate( {
           type: ScenarioStoreConstants.ACTION_TYPES.UPDATE_SCENARIO_DATA,
@@ -151,7 +146,7 @@ const SimulatorManager = ( props ) => {
 
   const runCreatedScenario = () => {
 
-    console.log( `SimulatorManager running newly-UI-created scenario ${newScenarioId} for disease ${disease}` );
+    console.log( `ScenarioManager running newly-UI-created scenario ${newScenarioId} for disease ${disease}` );
     setNewScenarioSettingsOpen( false );
 
     // save the scenario
@@ -162,8 +157,6 @@ const SimulatorManager = ( props ) => {
 
     // snag the data & id
     const scenarioData = scenarioState.scenarioData[ newScenarioId ];
-
-    console.log( 'SimulatorManager BEFORE running CREATED scenario:', scenarioData );
 
     // tell the UI we're not in 'new scenario' any more
     setNewScenarioId( null );
@@ -185,7 +178,7 @@ const SimulatorManager = ( props ) => {
 
   const cancelCreatedScenario = () => {
 
-    console.log( `SimulatorManager cancelling newly-UI-created scenario ${newScenarioId} for disease ${disease}` );
+    console.log( `ScenarioManager cancelling newly-UI-created scenario ${newScenarioId} for disease ${disease}` );
     setNewScenarioSettingsOpen( false );
 
     dispatchScenarioStateUpdate( {
@@ -200,7 +193,7 @@ const SimulatorManager = ( props ) => {
 
   const runNewScenario = () => {
 
-    console.log( `SimulatorManager running new scenario for disease ${disease}` );
+    console.log( `ScenarioManager auto-running new scenario for disease ${disease}` );
 
     if ( scenarioState.scenarioKeys.length > 5 && !simInProgress ) {
       alert( 'Sorry, maximum number of Scenarios is 5.' );
@@ -225,12 +218,7 @@ const SimulatorManager = ( props ) => {
 
   const runCurrentScenario = () => {
 
-    console.log( `SimulatorManager re-running current scenario ${scenarioState.currentScenarioId}` );
-
-    // snag the data & id
-    const scenarioData = scenarioState.scenarioData[ scenarioState.currentScenarioId ];
-
-    console.log( 'SimulatorManager BEFORE running CURRENT scenario:', scenarioData );
+    console.log( `ScenarioManager re-running current scenario ${scenarioState.currentScenarioId}` );
 
     if ( !simInProgress ) {
 
@@ -264,9 +252,11 @@ const SimulatorManager = ( props ) => {
         id: scenarioId
       } );
 
-      diseaseModel.prepScenarioAndParams( scenarioId, scenarioState, simState );
+      if( diseaseModel.prepScenarioAndParams ) {
+        diseaseModel.prepScenarioAndParams( scenarioId, scenarioState, simState );
+      }
 
-      console.log( `SimulatorManager switched scenario to ${newScenarioData.id}: "${newScenarioData.label}"` );
+      console.log( `ScenarioManager switched scenario to ${newScenarioData.id}: "${newScenarioData.label}"` );
     }
 
     catch ( e ) {
@@ -289,7 +279,7 @@ const SimulatorManager = ( props ) => {
   };
 
   const resetScenario = ( scenarioId ) => {
-    console.log( `SimulatorManager resetting scenario ${scenarioId}` );
+    console.log( `ScenarioManager resetting scenario ${scenarioId}` );
     const scenario = SessionStorage.fetchScenario( scenarioId );
     dispatchScenarioStateUpdate( {
       type: ScenarioStoreConstants.ACTION_TYPES.SET_LOADED_SCENARIO_DATA,
@@ -340,21 +330,26 @@ const SimulatorManager = ( props ) => {
   // 2nd-arg empty array makes this a componentDidMount equivalent - only re-run if {nothing} changes
   useEffect(
     () => {
+      console.log( "ScenarioManager mounting" );
 
-      if ( !( simState && simState.IUData && simState.IUData.id === props.match.params.iu ) ) {
+      if( !diseaseModel ) {
+        return;
+      }
 
-        console.log( `SimulatorManager found no stored simulator state` );
+      if ( !( simState && simState.IUData && simState.IUData.id === iu ) ) {
+
+        console.log( `ScenarioManager found no stored simulator state` );
         SessionStorage.simulatorState = null;
 
         ( async () => {
-          console.log( `SimulatorManager calling loadAllIUhistoricData for ${props.match.params.iu} / ${disease} in ${props.match.params.country}` );
+          console.log( `ScenarioManager calling loadAllIUhistoricData for ${iu} / ${disease} in ${country}` );
           await loadAllIUhistoricData(
             simState,
             dispatchSimState,
-            props.match.params.iu, //implementationUnit,
+            iu, //implementationUnit,
             disease
           )
-          console.log( `SimulatorManager loaded historic data for ${props.match.params.iu} / ${disease} in ${props.match.params.country}` );
+          console.log( `ScenarioManager loaded historic data for ${iu} / ${disease} in ${country}` );
         } )();
 
         return;
@@ -392,7 +387,7 @@ const SimulatorManager = ( props ) => {
 
       // none loaded - make a new one
       else {
-        console.log( "SimulatorManager found no stored scenarios" );
+        console.log( "ScenarioManager found no stored scenarios" );
         runNewScenario();
       }
 
@@ -403,14 +398,14 @@ const SimulatorManager = ( props ) => {
   // debug
   //Scenario state last updated: {scenarioState.updated.toISOString()}
 
-  return (
-    <div id="SimulatorManager">
-      <Layout>
+  if( !diseaseModel ) {
+    return ( <div>No model for {DISEASE_LABELS[ disease ]}</div> );
+  }
 
-        <HeadWithInputs title="prevalence simulator" />
-      
-        <SelectCountry selectIU={true} showConfirmation={true} showBack={true} />
-    
+  const SettingsDialogComponent = ( disease !== null ) ? settingsDialogComponents[ disease ] : null;
+
+  return (
+    <div id="ScenarioManager">
         <section className={classes.simulator}>
 
           <Grid container spacing={0}>
@@ -460,7 +455,7 @@ const SimulatorManager = ( props ) => {
               value={tabIndex}
               index={tabIndex}
             >
-              <SimulatorDisplay
+              <ScenarioDisplay
                   scenarioKeys={scenarioState.scenarioKeys}
                   resetCurrentScenario={resetCurrentScenario}
                   runCurrentScenario={runCurrentScenario}
@@ -493,18 +488,16 @@ const SimulatorManager = ( props ) => {
 
         {
           ( newScenarioSettingsOpen && newScenarioId )
-            ? <SettingsDialog
-                scenarioId={ newScenarioId }
+            ? <SettingsDialogComponent
+                scenarioData={ scenarioState.scenarioData[ newScenarioId ] }
                 action={ runCreatedScenario }
                 cancel={ cancelCreatedScenario }
                 newScenarioSettingsOpen={newScenarioSettingsOpen}
               />
             : null
          }
-      </Layout>
-
     </div>
   );
 }
 
-export default SimulatorManager;
+export default observer( ScenarioManager );

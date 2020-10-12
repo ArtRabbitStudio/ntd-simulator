@@ -4,10 +4,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles'
 import SimpleDialog from 'pages/components/SimpleDialog'
 import { useDataAPI, useUIState } from 'hooks/stateHooks'
-import { Layout } from 'layout'
 import Map from 'components/Map'
-import HeadWithInputs from 'pages/components/HeadWithInputs'
-import SelectCountry from 'pages/components/SelectCountry'
 
 const useStyles = makeStyles(theme => ({
     headLeftColumn: {
@@ -43,7 +40,8 @@ const useStyles = makeStyles(theme => ({
 
 
 const Country = props => {
-    const [notAvaliableAlert, setnotAvaliableAlert] = useState(false)
+
+    const [notAvailableAlert, setnotAvailableAlert] = useState(false)
     const [alertText, setAlertText] = useState('')
 
     const classes = useStyles()
@@ -57,6 +55,7 @@ const Country = props => {
     } = useDataAPI()
 
     const { country, disease } = useUIState()
+    console.log( `Country: ${disease}/${country}` );
         
     // output csv with included and excluded data
     /*
@@ -83,14 +82,7 @@ const Country = props => {
     }*/
 
     return (
-        <Layout>
-            <HeadWithInputs
-                title="prevalence simulator"
-            />
-
-
-            <SelectCountry selectIU={true} />
-
+      <React.Fragment>
             <section className={classes.section}>
                 <div className={classes.settings}>
                     <Map
@@ -105,26 +97,24 @@ const Country = props => {
                         disease={disease}
                         showNotAvailable={(value)=>{
                             setAlertText(value)
-                            setnotAvaliableAlert(true)
+                            setnotAvailableAlert(true)
                         }}
                     />
                 </div>
                 <Typography component="h6" variant="h6" className={classes.legend}>Prevalence map and trends since 2010.</Typography>
             </section>
             
-            {notAvaliableAlert &&
+            {notAvailableAlert &&
                 <SimpleDialog
                 title={alertText}
                 onClose={() => {
-                    setnotAvaliableAlert(false)
+                    setnotAvailableAlert(false)
                 }}
-                open={notAvaliableAlert}
+                open={notAvailableAlert}
                 />
             }
-
-
-        </Layout>
         
+      </React.Fragment>
     )
 }
 export default observer(Country)
