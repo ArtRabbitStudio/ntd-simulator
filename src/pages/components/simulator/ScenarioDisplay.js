@@ -17,6 +17,7 @@ import SessionStorage from 'pages/components/simulator/helpers/sessionStorage'
 import PropTypes from 'prop-types'
 import React, { useEffect, useState } from 'react'
 import ScenarioGraph from 'components/ScenarioGraph'
+import ScenarioGraphTrachoma from 'components/ScenarioGraphTrachoma'
 import { useUIState, useDataAPI } from 'hooks/stateHooks'
 import { useSimulatorStore } from 'store/simulatorStore'
 import { useScenarioStore } from 'store/scenarioStore'
@@ -312,8 +313,19 @@ const ScenarioDisplay = (props) => {
           />
 
           /* HERE'S WHERE WE PUT THE TRACHOMA RESULT GRAPH COMPONENT WHEN IT'S READY */
-          : scenarioData.trachomaPayload }
-
+          : 
+          
+          <ScenarioGraphTrachoma
+              data={scenarioData}
+              graphTypeSimple={graphTypeSimpleLocal}
+              showAllResults={false}
+              simInProgress={props.simInProgress}
+              simNeedsRerun={ scenarioState.scenarioData[ scenarioState.currentScenarioId ].isDirty }
+              classes={classes}
+              IU={implementationUnit}
+              IUData={selectedIUData}
+          />
+          }
         </div>
 
         { props.simInProgress ? <div className={classes.mdaplaceholder}><span> </span></div> : (
