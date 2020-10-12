@@ -160,7 +160,7 @@ export default {
 
     const historicalDataPromise = new Promise(
       ( resolve, reject ) => {
-        csv( "/data/Trachoma200/output/group-56/56-historical-prevalence.csv" )
+        csv( "/diseases/trachoma/data/group-56/56-historical-prevalence.csv" )
         .then( ( results ) => {
           resolve( results );
         } );
@@ -169,7 +169,7 @@ export default {
 
     const futureDataPromise = new Promise(
       ( resolve, reject ) => {
-        csv( "/data/Trachoma200/output/group-56/coverage-0.6/56-0.6-12-202001.csv" )
+        csv( "/diseases/trachoma/data/group-56/coverage-0.6/56-0.6-12-202001.csv" )
         .then( ( results ) => {
           resolve( results );
         } );
@@ -178,7 +178,7 @@ export default {
 
     const jsonPromise = new Promise(
       ( resolve, reject ) => {
-        fetch( "/data/Trachoma200/output/group-56/coverage-0.6/56-0.6-12-202001-summary.json" )
+        fetch( "/diseases/trachoma/data/group-56/coverage-0.6/56-0.6-12-202001-summary.json" )
         .then( ( response ) => { return response; } )
         .then( ( res ) => { return res.json(); } )
         .then( ( json ) => { resolve( json ); } )
