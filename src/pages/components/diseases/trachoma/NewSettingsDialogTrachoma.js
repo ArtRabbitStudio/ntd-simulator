@@ -32,11 +32,6 @@ const NewSettingsDialogTrachoma = ( { scenarioData, action, cancel, newScenarioS
         label="Treatment target coverage"
       />
 
-      <SettingSystematicAdherence
-        scenarioId={ scenarioData.id }
-        inModal={true}
-        label="Systematic adherence"
-      />
 
     </NewScenarioSettingsDialog>
 

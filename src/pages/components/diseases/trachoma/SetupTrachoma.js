@@ -49,19 +49,7 @@ const SetupTrachoma = (props) => {
         </div>
       </div>
 
-      <div className={`${classes.formControlWrap} fullwidth`}>
-        <div className={classes.setupFormControl}>
-          <SettingSystematicAdherence
-            inModal={false}
-            label="Systematic adherence"
-            onChange={(event, newValue) => {
-              dispatchSimState({ type: 'rho', payload: newValue })
-            }}
-            value={simState.settings.rho}
-          />
-        </div>
-      </div>
-
+  
     </PerDiseaseSetup>
   );
 }

@@ -11,7 +11,7 @@ import {
   Fab
 } from "@material-ui/core";
 
-const SettingPrecision = ({ inModal, label, classAdd, setGraphTypeSimple,graphTypeSimple, scenarioId }) => {
+const SettingPrecision = ({ inModal, label, classAdd,showPrecisionSlider, setGraphTypeSimple,graphTypeSimple, scenarioId }) => {
 
   const classes = useStyles();
   const { dispatchSimState } = useSimulatorStore();
@@ -22,7 +22,7 @@ const SettingPrecision = ({ inModal, label, classAdd, setGraphTypeSimple,graphTy
 
   return (
     <FormControl className={`${classes.formControlPrecision} ${classAdd}`}>
-      <Slider
+      {showPrecisionSlider && <Slider
         className={classes.precisionSlider}
         value={ scenarioState.scenarioData[ scenarioId ].settings.runs }
         min={1}
@@ -50,9 +50,9 @@ const SettingPrecision = ({ inModal, label, classAdd, setGraphTypeSimple,graphTy
         }}
         aria-labelledby="slider"
         valueLabelDisplay={inModal ? "auto" : "on"}
-      />
+      />}
       <FormLabel component="legend" htmlFor="precision" className={classes.precisionLabel}>
-        {label}
+        {showPrecisionSlider && label}
         <Fab
           color="inherit"
           aria-label="SET GRAPH TYPE"

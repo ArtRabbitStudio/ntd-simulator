@@ -81,7 +81,6 @@ const ScenarioDisplay = (props) => {
     }
 
   }
-  const { simState } = useSimulatorStore();
   const { scenarioState, /*dispatchScenarioStateUpdate*/ } = useScenarioStore();
 
   const { implementationUnit } = useUIState();
@@ -124,11 +123,21 @@ const ScenarioDisplay = (props) => {
               {scenarioData.label}
             </Typography>
 
-            { disease === DISEASE_LIMF &&
+            { disease === DISEASE_LIMF ?
+              <SettingPrecision
+                classAdd={classes.precision}
+                inModal={true}
+                showPrecisionSlider={true}
+                label="Precision (runs)"
+                setGraphTypeSimple={handleGraphTypeChange}
+                graphTypeSimple={graphTypeSimpleLocal}
+              />
+            : 
               <SettingPrecision
                 classAdd={classes.precision}
                 inModal={true}
                 label="Precision (runs)"
+                showPrecisionSlider={false}
                 setGraphTypeSimple={handleGraphTypeChange}
                 graphTypeSimple={graphTypeSimpleLocal}
               />
@@ -188,10 +197,12 @@ const ScenarioDisplay = (props) => {
                   label="Treatment target coverage"
                 />
 
-                <SettingSystematicAdherence
-                  inModal={true}
-                  label="Systematic adherence"
-                />
+                {disease === DISEASE_LIMF && 
+                  <SettingSystematicAdherence
+                    inModal={true}
+                    label="Systematic adherence"
+                  />
+                }
 
                 { disease === DISEASE_LIMF &&
                   <SettingInsecticideCoverage
@@ -285,7 +296,6 @@ const ScenarioDisplay = (props) => {
             metrics={[graphMetric]}
             simInProgress={props.simInProgress}
             simNeedsRerun={ scenarioState.scenarioData[ scenarioState.currentScenarioId ].isDirty }
-            simState={simState}
             classes={classes}
             IU={implementationUnit}
             IUData={selectedIUData}
