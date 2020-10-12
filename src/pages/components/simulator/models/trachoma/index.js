@@ -53,50 +53,35 @@ export default {
 
     console.log( 'TrachomaModel fetching prepped scenarioData', scenarioData );
 
-    let csvPromise = new Promise(
+    const csvPromise = new Promise(
       ( resolve, reject ) => {
         csv( "/data/Trachoma200/output/scenario-56/coverage-0.6/56-0.6-12-202001.csv" )
         .then( ( results ) => {
-          const result = {
-            ...scenarioData,
-            results
-          };
-          resolve( { result, isNewScenario } );
+          resolve( results );
         } );
       }
     );
 
-    // race in case we want to call progressCallback
-    Promise.race( [ csvPromise ] )
+    const jsonPromise = new Promise(
+      ( resolve, reject ) => {
+        fetch( "/data/Trachoma200/output/scenario-56/coverage-0.6/56-0.6-12-202001-summary.json" )
+        .then( ( response ) => { return response; } )
+        .then( ( res ) => { return res.json(); } )
+        .then( ( json ) => { resolve( json ); } )
+      }
+    );
+
+    Promise.all( [ csvPromise, jsonPromise ] )
       .then(
-        ( resolve_result ) => {
-          callbacks.resultCallback( resolve_result.result, resolve_result.isNewScenario );
-        },
-        ( reject_result ) => {
-          console.log( 'reject', reject_result );
+        ( [ results, summary ] ) => {
+          const result = {
+            ...scenarioData,
+            results,
+            summary
+          };
+          callbacks.resultCallback( result, isNewScenario );
         }
       );
-
-/*
-    const callResultCallback = () => {
-      callbacks.resultCallback( scenarioData, isNewScenario );
-    };
-
-    const fakeProgressTimeInMs = 1000;
-    const numberSteps = 10;
-    const progressIntervalInMs = fakeProgressTimeInMs / numberSteps;
-
-    for( let i = progressIntervalInMs; i <= fakeProgressTimeInMs; i += progressIntervalInMs ) {
-      setTimeout(
-        () => {
-          callbacks.progressCallback( i / fakeProgressTimeInMs * 100 );
-        },
-        i
-      );
-    }
-
-    setTimeout( callResultCallback, fakeProgressTimeInMs + progressIntervalInMs );
-*/
 
   },
 
