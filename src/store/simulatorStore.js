@@ -21,7 +21,7 @@ const initialState = ( () => {
        * via dispatchSimState( type: 'everything', defaults )
        *
        *	covN: 0
-       *	coverage: 90
+       *	coverage: 80
        *	endemicity: 10
        *	macrofilaricide: 65
        *	mda: 2
@@ -40,7 +40,7 @@ const initialState = ( () => {
       */
       settings: {
         covN: 0, // $("#bedNetCoverage").val(),
-        coverage: 90, // $("#MDACoverage").val(),
+        coverage: 80, // $("#MDACoverage").val(),
         endemicity: 10, // $("#endemicity").val(),
         macrofilaricide: 65, // $("#Macrofilaricide").val(),
         mda: 2, // $("#inputMDARounds").val(),

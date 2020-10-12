@@ -192,10 +192,20 @@ const ScenarioDisplay = (props) => {
                   <SettingDrugRegimen inModal={true} label="Drug regimen" />
                 }
 
-                <SettingTargetCoverage
-                  inModal={true}
-                  label="Treatment target coverage"
-                />
+                { disease === DISEASE_LIMF ?
+                  <SettingTargetCoverage
+                    inModal={true}
+                    label="Treatment target coverage"
+                  />
+                :
+                  <SettingTargetCoverage
+                    inModal={true}
+                    min={60}
+                    max={90}
+                    step={10}
+                    label="Treatment target coverage"
+                  />
+                }
 
                 {disease === DISEASE_LIMF && 
                   <SettingSystematicAdherence

@@ -29,6 +29,9 @@ const NewSettingsDialogTrachoma = ( { scenarioData, action, cancel, newScenarioS
       <SettingTargetCoverage
         scenarioId={ scenarioData.id }
         inModal={true}
+        min={60}
+        max={90}
+        step={10}
         label="Treatment target coverage"
       />
 

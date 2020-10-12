@@ -44,6 +44,9 @@ const SetupTrachoma = (props) => {
           <SettingTargetCoverage
             inModal={false}
             label="MDA Target Coverage"
+            min={60}
+            max={90}
+            step={10}
             value={simState.settings.coverage}
           />
         </div>
