@@ -17,13 +17,11 @@ const combineData = ( historicalData, futureData ) => {
 
   const combined = historicalData.map( ( item, i ) => {
     if( item[ 'Random Generator' ] === futureData[ i ][ 'Random Generator' ]) {
-      //merging two objects
-      return Object.assign( {}, item, futureData[ i ] )
+      // merging two objects
+      return Object.assign( {}, item, futureData[ i ] );
     }
-    return null
+    return null;
   } );
-
-  console.log('combined',combined)
 
   return combined
     .map(
@@ -60,6 +58,17 @@ const combineData = ( historicalData, futureData ) => {
 
       }
     );
+};
+
+const combineSummaries = ( historicalSummary, futureSummary ) => {
+  const history = convertSummary( historicalSummary );
+  const future = convertSummary( futureSummary );
+  return {
+    ts: history.ts.concat( future.ts ),
+    median: history.median.concat( future.median ),
+    min: history.min.concat( future.min ),
+    max: history.max.concat( future.max ),
+  };
 };
 
 /*
@@ -163,12 +172,14 @@ export default {
 
     const urlPath = `/diseases/trachoma/data/group-${group}/coverage-${coverage}/${group}`;
     const historicalDataUrl = `${urlPath}-historical-prevalence.csv`;
+    const historicalSummaryUrl = `${urlPath}-historical-prevalence-summary.json`;
     const futureDataUrl = `${urlPath}-${coverage}-${mdaSixMonths}-${mdaRoundsString}.csv`;
-    const summaryDataUrl = `${urlPath}-${coverage}-${mdaSixMonths}-${mdaRoundsString}-summary.json`;
+    const futureSummaryUrl = `${urlPath}-${coverage}-${mdaSixMonths}-${mdaRoundsString}-summary.json`;
 
     console.log( historicalDataUrl );
+    console.log( historicalSummaryUrl );
     console.log( futureDataUrl );
-    console.log( summaryDataUrl );
+    console.log( futureSummaryUrl );
 
     const historicalDataPromise = new Promise(
       ( resolve, reject ) => {
@@ -176,6 +187,15 @@ export default {
         .then( ( results ) => {
           resolve( results );
         } );
+      }
+    );
+
+    const historicalSummaryPromise = new Promise(
+      ( resolve, reject ) => {
+        fetch( "/diseases/trachoma/data/group-56/56-historical-prevalence-summary.json" )
+        .then( ( response ) => { return response; } )
+        .then( ( res ) => { return res.json(); } )
+        .then( ( json ) => { resolve( json ); } )
       }
     );
 
@@ -188,7 +208,7 @@ export default {
       }
     );
 
-    const jsonPromise = new Promise(
+    const futureSummaryPromise = new Promise(
       ( resolve, reject ) => {
         fetch( "/diseases/trachoma/data/group-56/coverage-0.6/56-0.6-12-202001-summary.json" )
         .then( ( response ) => { return response; } )
@@ -197,18 +217,17 @@ export default {
       }
     );
 
-    Promise.all( [ historicalDataPromise, futureDataPromise, jsonPromise ] )
+    Promise.all( [ historicalDataPromise, historicalSummaryPromise, futureDataPromise, futureSummaryPromise ] )
       .then(
-        ( [ historicalData, futureData, summaryData ] ) => {
-
-          console.log(historicalData[0]['Random Generator'])
+        ( [ historicalData, historicalSummary, futureData, futureSummary ] ) => {
 
           const combinedData = combineData( historicalData, futureData );
-          const convertedSummary = convertSummary( summaryData );
+          const combinedSummary = combineSummaries( historicalSummary, futureSummary );
+
           const result = {
             ...scenarioData,
             results: combinedData,
-            summary: convertedSummary
+            summary: combinedSummary
           };
           callbacks.resultCallback( result, isNewScenario );
         }
