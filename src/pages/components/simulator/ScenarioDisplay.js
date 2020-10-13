@@ -16,8 +16,8 @@ import { observer } from 'mobx-react'
 import SessionStorage from 'pages/components/simulator/helpers/sessionStorage'
 import PropTypes from 'prop-types'
 import React, { useEffect, useState } from 'react'
-import ScenarioGraph from 'components/ScenarioGraph'
-import ScenarioGraphTrachoma from 'components/ScenarioGraphTrachoma'
+import { ScenarioGraphLF } from 'pages/components/diseases/lf';
+import { ScenarioGraphTrachoma } from 'pages/components/diseases/trachoma';
 import { useUIState, useDataAPI } from 'hooks/stateHooks'
 import { useScenarioStore } from 'store/scenarioStore'
 import ChartSettings from 'pages/components/simulator/ChartSettings'
@@ -299,7 +299,7 @@ const ScenarioDisplay = (props) => {
 
           { disease === DISEASE_LIMF ?
 
-          <ScenarioGraph
+          <ScenarioGraphLF
             data={scenarioData}
             graphTypeSimple={graphTypeSimpleLocal}
             showAllResults={false}

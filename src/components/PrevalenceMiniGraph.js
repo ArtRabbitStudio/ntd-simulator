@@ -2,6 +2,7 @@ import React from 'react'
 import { map, max, filter } from 'lodash'
 import { scaleLinear, line } from 'd3'
 import AutoSizer from 'react-virtualized-auto-sizer'
+import { DISEASE_LIMF } from 'AppConstants';
 
 function Path({ data, x, y, color, start }) {
   const coords = data.map((d,index) => [x(start+index), y(d)])
@@ -12,8 +13,8 @@ function Path({ data, x, y, color, start }) {
 function PrevalenceMiniGraph({
   data,
   width = 600,
-  height = 150
-
+  height = 150,
+  disease = 'lf'
 }) {
   if ( data === undefined ) return null
   const lPad = 30
@@ -22,8 +23,8 @@ function PrevalenceMiniGraph({
   const yPad = 32
   const svgHeight = height + yPad * 2
   const svgWidth = width
-  const start = 2010
-  const end = 2019
+  const start = disease === DISEASE_LIMF ? 2010 : 2017
+  const end = disease === DISEASE_LIMF ? 2019 : 2019
   const cleanedPrevalence = map(data.prevalence,(x)=>{
     x = x === null ? 0 : x
     return x
@@ -33,11 +34,13 @@ function PrevalenceMiniGraph({
   .domain([start, end])
   .range([0, width - (rPad + lPad)])
 
+  console.log('data',data)
   
   const yScale = scaleLinear()
     .domain([0, domain])
     .range([height-tPad, 0])
 
+  const xTicks = xScale.ticks(end-start)
   const yTicks = yScale.ticks(4)
   const yearWidth = xScale(start + 1) - xScale(start)
   const seriesObj = filter(cleanedPrevalence,(value,index)=>{
@@ -56,8 +59,7 @@ function PrevalenceMiniGraph({
       <rect width={width-lPad-rPad} height={height} fill={'#ffffff'} />
 
         {/* lable start and end years */}
-        {xScale.ticks().map(year => {
-          
+        {xTicks.map(year => {
             const yearOutput = '‘' + year.toString().substr(-2)
             return (
               <g key={year}>

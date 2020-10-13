@@ -137,7 +137,7 @@ const PerDiseaseSetup = (props) => {
               {selectedIUData[0] && selectedIUData[0].endemicity})
             </Typography>
           </Tooltip>
-            <PrevalenceMiniGraph data={selectedIUData[0]} />
+            <PrevalenceMiniGraph data={selectedIUData[0]} disease={props.disease} />
           </div>
           {props.disease === DISEASE_LIMF && <div className={classes.chart}>
           <Tooltip

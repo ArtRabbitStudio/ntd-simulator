@@ -15,7 +15,7 @@ function Path({ data, prop, x, y, color }) {
   return <path d={l} stroke={color} fill="none" strokeWidth="2" />
 }
 
-function ScenarioGraph({
+function ScenarioGraphLF({
   data,
   width = 600,
   height = 400,
@@ -443,6 +443,6 @@ function ScenarioGraph({
 
 export default (props) => (
   <AutoSizer disableHeight>
-    {({ width }) => <ScenarioGraph {...props} width={width} />}
+    {({ width }) => <ScenarioGraphLF {...props} width={width} />}
   </AutoSizer>
 )
