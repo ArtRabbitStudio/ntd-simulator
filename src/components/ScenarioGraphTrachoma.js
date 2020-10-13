@@ -348,10 +348,10 @@ function ScenarioGraphTrachoma({
   return (
     <React.Fragment>
       <div className={classes.scenarioGraphLegend}>
-        <Typography className={classes.scenarioGraphLegendHistoric} style={{ width: x(ticksX[futureYear - 15]) }} variant="h6" component="h6">
+        <Typography className={classes.scenarioGraphLegendHistoric} style={{ width: x(ticksX[futureYear - startYear]) }} variant="h6" component="h6">
           Historic
         </Typography>
-        <Typography className={classes.scenarioGraphLegendPrediction} variant="h6" component="h6">
+        <Typography className={`${classes.scenarioGraphLegendPrediction}`} variant="h6" component="h6">
           Prediction
         </Typography>
       </div>
@@ -362,7 +362,7 @@ function ScenarioGraphTrachoma({
       >
         <g transform={`translate(${lPad},${yPad})`}>
           
-          <rect x={x(ticksX[0])} width={x(ticksX[futureYear - 15])} height={svgHeight - yPad - 32 - tPad} fill="#f9f9f9" />
+          <rect x={x(ticksX[0])} width={x(ticksX[futureYear - startYear])} height={svgHeight - yPad - 32 - tPad} fill="#f9f9f9" />
           {ticksX.map((t, i) => {
             const xt = x(t)
             const yearLabel = 2000 + t
@@ -377,8 +377,8 @@ function ScenarioGraphTrachoma({
                   {...(i === 0 || i === ticksX.length - 1
                     ? {}
                     : { strokeDasharray: '10 2' })}
-                  {...(15 + i === futureYear ? { strokeWidth: "2" } : {})}
-                  {...(15 + i === futureYear ? { stroke: "#ddd" } : { stroke: "#ddd" })}
+                  {...(startYear + i === futureYear ? { strokeWidth: "2" } : {})}
+                  {...(startYear + i === futureYear ? { stroke: "#ddd" } : { stroke: "#ddd" })}
                 ></line>
                 <text x={xt} y={height + yPad - 20} fontSize={12} textAnchor="middle" fill="#2c3f4d">
                   {yearLabel}
@@ -421,7 +421,7 @@ function ScenarioGraphTrachoma({
           {graphTypeSimple && data.results &&
             <g key={`results1-stats`}>{renderRange( data.summary['min'],  data.summary['max'], data.summary['ts'], false, x, y)}</g>
           }
-          <line
+          {/*<line
             key={`WHO target`}
             x1={0}
             x2={width - lPad - rPad}
@@ -429,7 +429,7 @@ function ScenarioGraphTrachoma({
             y2={y(1)}
             stroke="#03D386"
             strokeDasharray='10 2'
-          ></line>
+          ></line>*/}
           {!graphTypeSimple && data.results &&
             data.results.map((result, i) => (
               <g key={`results1-${i}`}>{renderResult(result, false, x, y)}</g>

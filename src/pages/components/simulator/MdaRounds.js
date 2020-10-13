@@ -154,7 +154,7 @@ const MdaRounds = (props) => {
             title={outputTitle(future.time[i],future.coverage[i],future.adherence[i],future.bednets[i],future.regimen[i],future.active[i])}
           >
             <span
-              className={ (i === curMDARound || (curMDARound !== -1 && props.disease !== DISEASE_LIMF && i > curMDARound) ) ? 'current' : ''}
+              className={ (i === curMDARound ) ? 'current' : ''}
               style={{
                 height: future.coverage[i],
               }}
@@ -183,15 +183,6 @@ const MdaRounds = (props) => {
                         setDoseSettingsOpen(true)
                       }}
                     ></span> )}
-                  {future.active[curMDARound] === false && props.disease !== DISEASE_LIMF && (
-                    <span
-                      className="i halt"
-                      title="No further MDA"
-                      onClick={(a) => {
-                        console.log('halt')
-                      }}
-                    ></span>
-                  )}
                   {future.active[curMDARound] !== false && props.disease === DISEASE_LIMF && (
                     <span
                       className="i edit"
@@ -212,15 +203,6 @@ const MdaRounds = (props) => {
                       } }
                     ></span>
                     )}
-                    {future.active[curMDARound] !== false && props.disease !== DISEASE_LIMF && (
-                    <span
-                      className="i halt"
-                      title="No further MDA"
-                      onClick={(a) => {
-                        console.log('halt')
-                      }}
-                    ></span>
-                  )}
                 </div>
               </ClickAwayListener>
             )}
