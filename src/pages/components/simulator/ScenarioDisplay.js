@@ -330,7 +330,7 @@ const ScenarioDisplay = (props) => {
         { props.simInProgress ? <div className={classes.mdaplaceholder}><span> </span></div> : (
           <React.Fragment>
 
-            <MdaRounds />
+            <MdaRounds disease={disease} />
 
             <Tooltip
               title="White bars show no intervention;  blue bars show intervention, the height of the blue colour shows coverage. Historic interventions before 2019 are greyed out."

@@ -23,6 +23,8 @@ const combineData = ( historicalData, futureData ) => {
     return null
   } );
 
+  console.log('combined',combined)
+
   return combined
     .map(
       // remove redundant columns
@@ -122,7 +124,8 @@ export default {
     
     const newScenario =  {
       ...newScenarioData,
-      mdaFuture: generateMdaFutureFromScenarioSettings( newScenarioData )
+      mdaFuture: generateMdaFutureFromScenarioSettings( newScenarioData ),
+      mda2015: {time:[204,216,228]}
     };
 
     console.log( 'TrachomaModel inited MDA future from new scenario settings', newScenario );

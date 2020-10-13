@@ -51,7 +51,7 @@ function ScenarioGraphTrachoma({
 
   const IndexToStartForOutput = (flatten(map(dataSelection, 'ts')).findIndex(isStartYear))
   const IndexForPrediction = (flatten(map(dataSelection, 'ts')).findIndex(isPrediction))
-  const domainX = [startYear, max(flatten(map(dataSelection, 'ts'))) + 1]
+  const domainX = [startYear, max(flatten(map(dataSelection, 'ts'))) + .9 ]
 
   let dataToOutput = [];
   forEach(data.results,(r)=>{

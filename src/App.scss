@@ -58,6 +58,9 @@ tspan {
   justify-content: space-around;
   // margin: 30px 20px 20px 55px;
   margin: 5px 50px 20px 50px;
+  &.trachoma {
+    margin: 5px 51px 20px 65px;
+  }
   &.setup {
     margin-left: 0;
     height: 150px;
@@ -227,6 +230,11 @@ tspan {
 
     &.remove {
       background: url(./images/delete-icon.svg) no-repeat center center;
+      background-size: contain;
+    }
+
+    &.halt {
+      background: url(./images/halt-icon.svg) no-repeat center center;
       background-size: contain;
     }
   }

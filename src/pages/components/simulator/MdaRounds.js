@@ -12,6 +12,7 @@ import {
 } from 'pages/components/simulator/settings'
 import useStyles from 'pages/components/simulator/styles'
 
+import { DISEASE_LIMF } from 'AppConstants';
 //import ClickAway from "hooks/clickAway";
 
 const MdaRounds = (props) => {
@@ -21,6 +22,8 @@ const MdaRounds = (props) => {
   const history = scenarioState.scenarioData[ scenarioState.currentScenarioId ].mda2015;
   const future = scenarioState.scenarioData[ scenarioState.currentScenarioId ].mdaFuture;
 
+
+
   const { simState } = useSimulatorStore()
   const classes = useStyles()
 
@@ -28,12 +31,16 @@ const MdaRounds = (props) => {
     setDoseSettingsOpen(false)
 //    setCurMDARound(-1)
   }
-  const closeRoundTooltip = (event) => {
-//    setCurMDARound(-1)
-  }
+  
 
   const [curMDARound, setCurMDARound] = useState(-1)
   const [doseSettingsOpen, setDoseSettingsOpen] = useState(false)
+ // const [toolTipOpen, setToolTipOpen] = useState(false)
+
+  const closeRoundTooltip = (event) => {
+    setCurMDARound(-1)
+    //setToolTipOpen(false)
+  }
 
   const setMDAProperty = ( key, idx, newValue ) => {
 
@@ -105,7 +112,7 @@ const MdaRounds = (props) => {
         <Typography className={classes.legendText} variant="h5" component="h5">0%</Typography>
         <Typography className={`${classes.legendText} ${classes.legendTextBottom}`} variant="h5" component="h5">100%</Typography>
       </div>
-      <div className="bars">
+      <div className={`bars ${props.disease}`}>
         {/* history */}
         {history &&
           history.time &&
@@ -113,21 +120,21 @@ const MdaRounds = (props) => {
             <React.Fragment key={`bar-hist-${i}`}>
               <div
                 className={`bar history`}
-                title={outputTitle(history.time[i],history.coverage[i],history.adherence[i],history.bednets[i],history.regimen[i],true)}
+                title={history.coverage ? outputTitle(history.time[i],history.coverage[i],history.adherence[i],history.bednets[i],history.regimen[i],true) : outputTitle(history.time[i]) }
               >
                 <span
                   style={{
-                    height: history.coverage[i],
+                    height: history.coverage ? history.coverage[i] : 0,
                   }}
                 ></span>
               </div>
               <div
                 className={`bar history`}
-                title={outputTitle(history.time[i],history.coverage[i],history.adherence[i],history.bednets[i],history.regimen[i],true)}
+                title={history.coverage ?  outputTitle(history.time[i],history.coverage[i],history.adherence[i],history.bednets[i],history.regimen[i],true) : outputTitle(history.time[i]) }
               >
                 <span
                   style={{
-                    height: history.coverage[i],
+                    height: history.coverage ? history.coverage[i] : 0,
                   }}
                 ></span>
               </div>
@@ -147,7 +154,7 @@ const MdaRounds = (props) => {
             title={outputTitle(future.time[i],future.coverage[i],future.adherence[i],future.bednets[i],future.regimen[i],future.active[i])}
           >
             <span
-              className={i === curMDARound ? 'current' : ''}
+              className={ (i === curMDARound || (curMDARound !== -1 && props.disease !== DISEASE_LIMF && i > curMDARound) ) ? 'current' : ''}
               style={{
                 height: future.coverage[i],
               }}
@@ -156,41 +163,62 @@ const MdaRounds = (props) => {
             {i === curMDARound && (
               <ClickAwayListener onClickAway={closeRoundTooltip}>
                 <div className="bar-tooltip">
-                  {future.active[curMDARound] !==
-                    false && (
+                  {future.active[curMDARound] !== false && props.disease === DISEASE_LIMF && (
+                    <span className="t">
+                      {future.coverage[i]}% coverage
+                    </span>
+                  )}
+                  {future.active[curMDARound] !== false && props.disease !== DISEASE_LIMF && (
                     <span className="t">
                       {future.coverage[i]}% coverage
                     </span>
                   )}
                   {future.active[curMDARound] ===
                     false && <span className="t">No MDA</span>}
-                  {future.active[curMDARound] ===
-                    false && (
+                  {future.active[curMDARound] === false && props.disease === DISEASE_LIMF && (
                     <span
                       className="i plus"
+                      title="Activate MDA"
                       onClick={(a) => {
                         setDoseSettingsOpen(true)
                       }}
+                    ></span> )}
+                  {future.active[curMDARound] === false && props.disease !== DISEASE_LIMF && (
+                    <span
+                      className="i halt"
+                      title="No further MDA"
+                      onClick={(a) => {
+                        console.log('halt')
+                      }}
                     ></span>
                   )}
-                  {future.active[curMDARound] !==
-                    false && (
+                  {future.active[curMDARound] !== false && props.disease === DISEASE_LIMF && (
                     <span
                       className="i edit"
+                      title="Edit MDA"
                       onClick={(a) => {
                         setDoseSettingsOpen(true)
                       }}
                     ></span>
                   )}
-                  {future.active[curMDARound] !==
-                    false && (
+                  {future.active[curMDARound] !== false && props.disease === DISEASE_LIMF && (
                     <span
                       className="i remove"
+                      title="Remove MDA"
                       onClick={ () => {
                         setMDAProperty( 'active', curMDARound, false );
                         /* TODO FIXME */
                         closeRoundModal();
                       } }
+                    ></span>
+                    )}
+                    {future.active[curMDARound] !== false && props.disease !== DISEASE_LIMF && (
+                    <span
+                      className="i halt"
+                      title="No further MDA"
+                      onClick={(a) => {
+                        console.log('halt')
+                      }}
                     ></span>
                   )}
                 </div>
