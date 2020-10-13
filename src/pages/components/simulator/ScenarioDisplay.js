@@ -329,22 +329,29 @@ const ScenarioDisplay = (props) => {
 
         { props.simInProgress ? <div className={classes.mdaplaceholder}><span> </span></div> : (
           <React.Fragment>
-
-            <MdaRounds disease={disease} />
+            <div className={classes.scenarioGraph}>
+              <MdaRounds disease={disease} />
+            </div>
+            
 
             <Tooltip
-              title="White bars show no intervention;  blue bars show intervention, the height of the blue colour shows coverage. Historic interventions before 2019 are greyed out."
+              title={disease === DISEASE_LIMF ? "White bars show no intervention;  blue bars show intervention, the height of the blue colour shows coverage. Historic interventions before 2019 are greyed out." 
+              :
+              "White bars show no intervention;  blue bars show intervention, the height of the blue colour shows coverage. Historic interventions before 2020 are greyed out. Use the slider to adjust interruption and when MDA is discontinued."
+              }
               aria-label="info"
             >
 
             <Typography
               className={`${classes.scenarioGraphLegendInterventions} ${classes.withHelp}`}
               variant="h6"
+              id="interventions-label"
               component="h6"
             >
               Interventions
             </Typography>
             </Tooltip>
+          
 
           </React.Fragment>
         ) }

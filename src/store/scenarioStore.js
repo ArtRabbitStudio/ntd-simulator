@@ -13,6 +13,7 @@ export const ScenarioStoreConstants = {
     UPDATE_SCENARIO_LABEL_BY_ID: 'updateScenarioLabelById',
     UPDATE_SCENARIO_SETTING_BY_ID: 'updateScenarioSettingById',
     UPDATE_SCENARIO_MDA_FUTURE_SETTING_BY_ID_AND_IDX: 'updateScenarioMdaFutureSettingByIdAndIdx',
+    UPDATE_SCENARIO_MDA_FUTURE_SETTING_BY_ID_AND_START_END: 'updateScenarioMdaFutureSettingsByIdAndStartEnd',
     SET_SCENARIO_MDA_FUTURE_BY_ID: 'setScenarioMdaFutureById',
     SWITCH_SCENARIO_BY_ID: 'switchScenarioById',
     MARK_SCENARIO_DIRTY_BY_ID: 'markScenarioDirtyById',
@@ -160,6 +161,34 @@ const reducer = ( scenarioState, action ) => {
 
       case ScenarioStoreConstants.ACTION_TYPES.UPDATE_SCENARIO_MDA_FUTURE_SETTING_BY_ID_AND_IDX:
         newState.scenarioData[ action.id ].mdaFuture[ action.key ][ action.idx ] = action.value;
+        newState.lastUpdatedScenarioId = action.id;
+        newState.scenarioData[ action.id ].isDirty = true;
+        break;
+
+      case ScenarioStoreConstants.ACTION_TYPES.UPDATE_SCENARIO_MDA_FUTURE_SETTING_BY_ID_AND_START_END:
+        const mdaSixMonthsValue = newState.scenarioData[ action.id ].settings.mdaSixMonths;
+        newState.scenarioData[ action.id ].mdaFuture.active = newState.scenarioData[ action.id ].mdaFuture.active.map(
+            ( v, idx ) => {
+              let active;
+              active = mdaSixMonthsValue === 6 ? true : ( idx % 2 ? false : true );
+              return active;
+            }
+        )
+
+        const startIndex = newState.scenarioData[ action.id ].mdaFuture['time'].indexOf(action.start)
+        let endIndex = newState.scenarioData[ action.id ].mdaFuture['time'].indexOf(action.end)
+        // endIndex can be -1 if we are including everything
+        const timeLength = newState.scenarioData[ action.id ].mdaFuture['time'].length
+        endIndex = endIndex === -1 ? timeLength : endIndex
+
+
+        for (let index = 0; index < startIndex; index++) {
+          newState.scenarioData[ action.id ].mdaFuture['active'][index] = false
+        }
+        for (let index = endIndex; index <= timeLength; index++) {
+          newState.scenarioData[ action.id ].mdaFuture['active'][index] = false
+        }
+
         newState.lastUpdatedScenarioId = action.id;
         newState.scenarioData[ action.id ].isDirty = true;
         break;

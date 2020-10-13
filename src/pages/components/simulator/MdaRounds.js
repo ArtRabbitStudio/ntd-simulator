@@ -1,8 +1,9 @@
-import { Button, ClickAwayListener, Paper, Typography } from '@material-ui/core'
+import { Button, ClickAwayListener, Paper, Typography, Slider } from '@material-ui/core'
 import React, { useState } from 'react'
 import { useSimulatorStore } from 'store/simulatorStore'
 import { useScenarioStore, ScenarioStoreConstants } from 'store/scenarioStore'
 import CloseButton from 'pages/components/CloseButton'
+import MdaRoundsSlider from 'pages/components/simulator/MdaRoundsSlider'
 //setting
 import {
   SettingBedNetCoverage,
@@ -50,6 +51,17 @@ const MdaRounds = (props) => {
       idx: idx,
       key: key,
       value: newValue
+    } );
+
+  };
+
+  const setMDARange = ( start, end  ) => {
+
+    dispatchScenarioStateUpdate( {
+      type: ScenarioStoreConstants.ACTION_TYPES.UPDATE_SCENARIO_MDA_FUTURE_SETTING_BY_ID_AND_START_END,
+      id: scenarioState.currentScenarioId,
+      start: start,
+      end: end
     } );
 
   };
@@ -106,6 +118,16 @@ const MdaRounds = (props) => {
   }
 
 
+  const numberOfHistoryBars = (history.time.length + 1)*2
+  const numberOfFutreTimeBars = future.time.length + 1
+  const numberOfBars = numberOfHistoryBars + numberOfFutreTimeBars;
+  const barWidth = 101.5 / numberOfBars
+  const actualBar = 10
+  const rightMargin = 50
+  const areaOffset = rightMargin - actualBar
+  const initialOffset = props.disease === DISEASE_LIMF ? barWidth/2 : barWidth
+
+
   return (
     <React.Fragment>
       <div className={classes.legend}>
@@ -119,6 +141,7 @@ const MdaRounds = (props) => {
           history.time.map((e, i) => (
             <React.Fragment key={`bar-hist-${i}`}>
               <div
+                style={{left: `calc( ${areaOffset}px + ${initialOffset}% + ${barWidth*((i*2) - 1)+barWidth}%)` }}
                 className={`bar history`}
                 title={history.coverage ? outputTitle(history.time[i],history.coverage[i],history.adherence[i],history.bednets[i],history.regimen[i],true) : outputTitle(history.time[i]) }
               >
@@ -129,6 +152,7 @@ const MdaRounds = (props) => {
                 ></span>
               </div>
               <div
+                style={{left: `calc( ${areaOffset}px + ${initialOffset}% + ${barWidth*(i*2)+barWidth}%)` }}
                 className={`bar history`}
                 title={history.coverage ?  outputTitle(history.time[i],history.coverage[i],history.adherence[i],history.bednets[i],history.regimen[i],true) : outputTitle(history.time[i]) }
               >
@@ -141,13 +165,14 @@ const MdaRounds = (props) => {
             </React.Fragment>
           )
         )}
-
+        
         { future.time.map( ( e, i ) => (
           <div
             key={`bar-${i}`}
             onClick={(a) => {
               setCurMDARound(i)
             }}
+            style={{left: `calc( ${areaOffset}px + ${initialOffset}% + ${barWidth*i+((numberOfHistoryBars*barWidth)-barWidth*2)}%)`}}
             className={`bar ${
               future.active[i] === false ? 'removed' : ''
             } ${i === curMDARound ? 'current' : ''}`}
@@ -208,7 +233,21 @@ const MdaRounds = (props) => {
             )}
           </div>
         ))}
+        
       </div>
+      {props.disease !== DISEASE_LIMF && (
+        <MdaRoundsSlider 
+          disease={props.disease} 
+          numberOfHistoryBars={numberOfHistoryBars}
+          numberOfFutreTimeBars={numberOfFutreTimeBars}
+          numberOfBars={numberOfBars}
+          barWidth={barWidth}
+          areaOffset={areaOffset}
+          initialOffset={initialOffset}
+          onChange={setMDARange}
+          intialMonthValues={[future.time[future.active.indexOf(true)],future.time[future.active.lastIndexOf(true)+1]]}
+        />
+      )}
 
       { doseSettingsOpen && (
         <ClickAwayListener onClickAway={closeRoundModal}>

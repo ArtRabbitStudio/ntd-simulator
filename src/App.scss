@@ -51,15 +51,16 @@ tspan {
   user-select: none;
 }
 
+.future-slider {
+  margin:0;
+}
+
 // ScenarioGraph bars
 .bars {
-  display: flex;
-  height: 100px;
-  justify-content: space-around;
+  display: relative;
+  height: 120px;
   // margin: 30px 20px 20px 55px;
-  margin: 5px 50px 20px 50px;
   &.trachoma {
-    margin: 5px 51px 20px 65px;
   }
   &.setup {
     margin-left: 0;
@@ -68,10 +69,12 @@ tspan {
     height: auto;
     margin-bottom: 7px;
     justify-content: flex-start;
+    display: flex;
+    position: relative
   }
   .bar {
     //background: #b09aff;
-    position: relative;
+    position: absolute;
     z-index: 9;
     height: 110px;
     min-width: 1px;
@@ -104,6 +107,7 @@ tspan {
     &.setup {
       border: 1px solid #cce8f4;
       cursor: auto;
+      position: relative;
       margin-right: 15px;
       background-image: linear-gradient(
         to bottom,
