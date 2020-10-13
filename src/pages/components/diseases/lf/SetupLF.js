@@ -24,7 +24,7 @@ const SetupLF = (props) => {
 
   return (
 
-    <PerDiseaseSetup>
+    <PerDiseaseSetup disease={props.disease}>
 
       <div className={classes.formControlWrap}>
         <div className={classes.setupFormControl}>

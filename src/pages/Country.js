@@ -55,8 +55,8 @@ const Country = props => {
     } = useDataAPI()
 
     const { country, disease } = useUIState()
-    console.log( `Country: ${disease}/${country}` );
-        
+
+    
     // output csv with included and excluded data
     /*
     if ( iuData != undefined ) {

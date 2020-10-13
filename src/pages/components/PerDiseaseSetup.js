@@ -12,6 +12,7 @@ import useStyles from 'theme/Setup';
 import { SettingSpecificScenario } from 'pages/components/simulator/settings';
 import { loadAllIUhistoricData } from 'pages/components/simulator/helpers/iuLoader';
 import SessionStorage from 'pages/components/simulator/helpers/sessionStorage';
+import { DISEASE_LIMF } from 'AppConstants';
 
 const PerDiseaseSetup = (props) => {
   const [isLoading, setIsLoading] = useState(false)
@@ -107,6 +108,7 @@ const PerDiseaseSetup = (props) => {
     // pass params to simulator ..
     history.push({ pathname: `/${disease}/${country}/${implementationUnit}/run` })
   }
+  console.log(props.disease)
 
   return (
       <section className={classes.section}>
@@ -137,7 +139,7 @@ const PerDiseaseSetup = (props) => {
           </Tooltip>
             <PrevalenceMiniGraph data={selectedIUData[0]} />
           </div>
-          <div className={classes.chart}>
+          {props.disease === DISEASE_LIMF && <div className={classes.chart}>
           <Tooltip
               title="White bars show no intervention;  blue bars show intervention, the height of the blue colour shows coverage."
               aria-label="info"
@@ -192,7 +194,7 @@ const PerDiseaseSetup = (props) => {
                   </Typography>
                 ))}
             </div>
-          </div>
+          </div>}
         </div>
 
         <TextContents>

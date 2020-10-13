@@ -506,11 +506,16 @@ class DataAPI {
   get countryFeatures() {
     const featureCollection = this.dataStore.featuresLevel0;
     const countries = this.countriesCurrentRegime;
+    const IUs = this.IUsCurrentRegime;
     const scales = this.countryScales;
 
-    if (featureCollection && countries) {
+    if (featureCollection && countries && IUs) {
+        const IUCountries = [...new Set(IUs.map(item => item.relatedCountries[0]))];
+        const IUCountryResults = flow(
+          filter(({id})=> IUCountries.includes(id)),
+        )(countries);
       return mergeFeatures({
-        data: countries,
+        data: IUCountryResults,
         featureCollection,
         key: "ADMIN0ISO3",
         scales,
@@ -642,10 +647,12 @@ class DataAPI {
 
   get countrySuggestions() {
     const countries = this.countriesCurrentRegime;
-    // console.log('countries',countries);
-
-    if (countries) {
+    const IUs = this.IUsCurrentRegime;
+    
+    if (countries && IUs) {
+      const IUCountries = [...new Set(IUs.map(item => item.relatedCountries[0]))];
       const result = flow(
+        filter(({id})=> IUCountries.includes(id)),
         map(({ id, name }) => ({ id, name })),
         sortByFP("name")
       )(countries);

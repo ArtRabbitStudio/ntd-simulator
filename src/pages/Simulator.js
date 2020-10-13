@@ -50,7 +50,7 @@ const Simulator = ( props ) => {
 
       { disease && country && ( !implementationUnit ) && <Country/> }
 
-      { disease && country && implementationUnit && ( !section ) && <SetupComponent/> }
+      { disease && country && implementationUnit && ( !section ) && <SetupComponent disease={disease} /> }
 
       { disease && country && implementationUnit && section && <ScenarioManager/> }
 

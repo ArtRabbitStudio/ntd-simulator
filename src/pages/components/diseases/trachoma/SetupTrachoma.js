@@ -18,7 +18,7 @@ const SetupTrachoma = (props) => {
 
   return (
 
-    <PerDiseaseSetup>
+    <PerDiseaseSetup disease={props.disease}>
 
       <div className={`${classes.formControlWrap} fullwidth`}>
         <div className={classes.setupFormControl}>
