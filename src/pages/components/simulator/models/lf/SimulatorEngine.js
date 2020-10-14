@@ -185,7 +185,7 @@ export var Person = function (a, b) {
       // based on the value of aImp. Is this what you want?
       this.WM = (0.5 * params.xi * this.biteRate() * 10.0) / params.mu
       this.WF = (0.5 * params.xi * this.biteRate() * 10.0) / params.mu
-
+      this.M = 0
     }
 
     //simulate event where host dies and is replaced by a new host.
@@ -449,6 +449,7 @@ export var Model = function (n) {
       } else {
         params.L3 = this.L3()
       }
+      params.L3 = this.L3()
       if (t % 2 == 0 && t < Math.floor(t) + params.dt) {
         //cout << "t = " << (double) t/12.0 << "\n";
         this.saveOngoing(
