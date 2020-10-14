@@ -158,7 +158,7 @@ export default {
     console.log( 'TrachomaModel fetching prepped scenarioData', scenarioData );
 
     // work out the data file path from the scenario settings
-    const group = window.ntd.iuGroupMapping[ simState.IUData.id ];   // TODO temporary - to be generated from full IU list and loaded into simState in iuLoader
+    const group = 103;//window.ntd.iuGroupMapping[ simState.IUData.id ];   // TODO temporary - to be generated from full IU list and loaded into simState in iuLoader
     const coverage = scenarioData.settings.coverage / 100;    // 0.9 in model vs 90 in UI
     const mdaSixMonths = scenarioData.settings.mdaSixMonths;  // 6=biannual, 12=annual
     const mdaRoundsString = scenarioData.mdaFuture.time
