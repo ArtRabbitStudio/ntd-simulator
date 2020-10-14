@@ -13,7 +13,6 @@ import {
 import RotateLeftIcon from '@material-ui/icons/RotateLeft'
 import { observer } from 'mobx-react'
 
-import SessionStorage from 'pages/components/simulator/helpers/sessionStorage'
 import PropTypes from 'prop-types'
 import React, { useEffect, useState } from 'react'
 import { ScenarioGraphLF } from 'pages/components/diseases/lf';
@@ -41,8 +40,6 @@ import {
 } from 'pages/components/simulator/settings'
 import useStyles from 'pages/components/simulator/styles'
 import TextContents from 'pages/components/TextContents'
-
-window.SessionStorage = SessionStorage;
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props

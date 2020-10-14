@@ -1,4 +1,4 @@
-import { Button, ClickAwayListener, Paper, Typography, Slider } from '@material-ui/core'
+import { Button, ClickAwayListener, Paper, Typography } from '@material-ui/core'
 import React, { useState } from 'react'
 import { useSimulatorStore } from 'store/simulatorStore'
 import { useScenarioStore, ScenarioStoreConstants } from 'store/scenarioStore'

@@ -3,9 +3,6 @@ import { generateMdaFutureFromScenarioSettings } from 'pages/components/simulato
 import { csv } from 'd3';
 import { DISEASE_TRACHOMA } from 'AppConstants';
 
-// TODO temporary - to be generated from full IU list and loaded into simState in iuLoader
-import iuGroupMapping from 'pages/components/simulator/models/iuGroupMapping';
-
 // convert '02-2020' to 20.16666666666666666
 const convertDateIndex = ( key ) => {
   const [ month, year ] = key.split('-' );
@@ -61,8 +58,11 @@ const combineData = ( historicalData, futureData ) => {
 };
 
 const combineSummaries = ( historicalSummary, futureSummary ) => {
+  console.log( 'converting history' );
   const history = convertSummary( historicalSummary );
+  console.log( 'converting future' );
   const future = convertSummary( futureSummary );
+  console.log( 'converted future' );
   return {
     ts: history.ts.concat( future.ts ),
     median: history.median.concat( future.median ),
@@ -161,8 +161,8 @@ export default {
     console.log( 'TrachomaModel fetching prepped scenarioData', scenarioData );
 
     // work out the data file path from the scenario settings
-    const group = iuGroupMapping[ simState.IUData.id ];
-    const coverage = scenarioData.settings.coverage / 100;  // 0.9 in model vs 90 in UI
+    const group = window.ntd.iuGroupMapping[ simState.IUData.id ];   // TODO temporary - to be generated from full IU list and loaded into simState in iuLoader
+    const coverage = scenarioData.settings.coverage / 100;    // 0.9 in model vs 90 in UI
     const mdaSixMonths = scenarioData.settings.mdaSixMonths;  // 6=biannual, 12=annual
     const mdaRoundsString = scenarioData.mdaFuture.time
       .map( t => 2000 + ( t - 6 ) / 12 )
@@ -170,11 +170,19 @@ export default {
       .filter( ( t, idx ) => { return scenarioData.mdaFuture.active[ idx ]; } )
       .join( '-' );
 
-    const urlPath = `/diseases/trachoma/data/group-${group}/coverage-${coverage}/${group}`;
-    const historicalDataUrl = `${urlPath}-historical-prevalence.csv`;
-    const historicalSummaryUrl = `${urlPath}-historical-prevalence-summary.json`;
-    const futureDataUrl = `${urlPath}-${coverage}-${mdaSixMonths}-${mdaRoundsString}.csv`;
-    const futureSummaryUrl = `${urlPath}-${coverage}-${mdaSixMonths}-${mdaRoundsString}-summary.json`;
+	/*
+	 *	/diseases/trachoma/data/group-103/103-historical-prevalence.csv
+	 *	/diseases/trachoma/data/group-103/103-historical-prevalence-summary.json
+	 *	/diseases/trachoma/data/group-103/coverage-0.6/mdatype-12/103-0.6-12-202001.csv
+	 *	/diseases/trachoma/data/group-103/coverage-0.6/mdatype-12/103-0.6-12-202101-summary.json
+	 */
+    const groupUrlPath = `/diseases/trachoma/data/group-${group}`;
+    const mdaUrlPath = `${groupUrlPath}/coverage-${coverage}/mdatype-${scenarioData.settings.mdaSixMonths}`;
+
+    const historicalDataUrl = `${groupUrlPath}/${group}-historical-prevalence.csv`;
+    const historicalSummaryUrl = `${groupUrlPath}/${group}-historical-prevalence-summary.json`;
+    const futureDataUrl = `${mdaUrlPath}/${group}-${coverage}-${mdaSixMonths}-${mdaRoundsString}.csv`;
+    const futureSummaryUrl = `${mdaUrlPath}/${group}-${coverage}-${mdaSixMonths}-${mdaRoundsString}-summary.json`;
 
     console.log( historicalDataUrl );
     console.log( historicalSummaryUrl );
@@ -183,7 +191,8 @@ export default {
 
     const historicalDataPromise = new Promise(
       ( resolve, reject ) => {
-        csv( "/diseases/trachoma/data/group-56/56-historical-prevalence.csv" )
+       // csv( "/diseases/trachoma/data/group-56/56-historical-prevalence.csv" )
+        csv( historicalDataUrl )
         .then( ( results ) => {
           resolve( results );
         } );
@@ -192,7 +201,8 @@ export default {
 
     const historicalSummaryPromise = new Promise(
       ( resolve, reject ) => {
-        fetch( "/diseases/trachoma/data/group-56/56-historical-prevalence-summary.json" )
+       // fetch( "/diseases/trachoma/data/group-56/56-historical-prevalence-summary.json" )
+        fetch( historicalSummaryUrl )
         .then( ( response ) => { return response; } )
         .then( ( res ) => { return res.json(); } )
         .then( ( json ) => { resolve( json ); } )
@@ -201,7 +211,8 @@ export default {
 
     const futureDataPromise = new Promise(
       ( resolve, reject ) => {
-        csv( "/diseases/trachoma/data/group-56/coverage-0.6/56-0.6-12-202001.csv" )
+       // csv( "/diseases/trachoma/data/group-56/coverage-0.6/56-0.6-12-202001.csv" )
+        csv( futureDataUrl )
         .then( ( results ) => {
           resolve( results );
         } );
@@ -210,7 +221,8 @@ export default {
 
     const futureSummaryPromise = new Promise(
       ( resolve, reject ) => {
-        fetch( "/diseases/trachoma/data/group-56/coverage-0.6/56-0.6-12-202001-summary.json" )
+       // fetch( "/diseases/trachoma/data/group-56/coverage-0.6/56-0.6-12-202001-summary.json" )
+        fetch( futureSummaryUrl )
         .then( ( response ) => { return response; } )
         .then( ( res ) => { return res.json(); } )
         .then( ( json ) => { resolve( json ); } )

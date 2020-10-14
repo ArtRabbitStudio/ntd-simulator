@@ -43,7 +43,6 @@ return (
             <Slider 
                 value={value} 
                 onChange={handleChange}
-                valueLabelDisplay="auto"
                 min={1}
                 stepo={1}
                 max={props.numberOfFutreTimeBars}

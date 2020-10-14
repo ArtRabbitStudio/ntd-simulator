@@ -28,7 +28,6 @@ const sessionStorage = {
   },
 
   set scenarioKeys( newKeys ) {
-    console.log( 'SessionStorage setting scenarioKeys', newKeys );
     if( newKeys === [] ) {
       localStorage.removeItem( STORAGE_KEY_SCENARIO_KEYS );
       return;

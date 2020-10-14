@@ -10,6 +10,16 @@ import './index.css'
 
 import * as serviceWorker from './serviceWorker'
 
+/* FOR DEVELOPMENT */
+import iuGroupMapping from 'pages/components/simulator/helpers/iuGroupMapping';
+import SessionStorage from 'pages/components/simulator/helpers/sessionStorage';
+
+window.ntd = {
+  iuGroupMapping,
+  SessionStorage
+};
+/* END FOR DEVELOPMENT */
+
 const { dataAPI, uiState } = new RootStore()
 
 ReactDOM.render(
