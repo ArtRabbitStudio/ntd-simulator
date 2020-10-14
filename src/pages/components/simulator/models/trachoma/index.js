@@ -58,11 +58,8 @@ const combineData = ( historicalData, futureData ) => {
 };
 
 const combineSummaries = ( historicalSummary, futureSummary ) => {
-  console.log( 'converting history' );
   const history = convertSummary( historicalSummary );
-  console.log( 'converting future' );
   const future = convertSummary( futureSummary );
-  console.log( 'converted future' );
   return {
     ts: history.ts.concat( future.ts ),
     median: history.median.concat( future.median ),
@@ -184,14 +181,9 @@ export default {
     const futureDataUrl = `${mdaUrlPath}/${group}-${coverage}-${mdaSixMonths}-${mdaRoundsString}.csv`;
     const futureSummaryUrl = `${mdaUrlPath}/${group}-${coverage}-${mdaSixMonths}-${mdaRoundsString}-summary.json`;
 
-    console.log( historicalDataUrl );
-    console.log( historicalSummaryUrl );
-    console.log( futureDataUrl );
-    console.log( futureSummaryUrl );
-
     const historicalDataPromise = new Promise(
       ( resolve, reject ) => {
-       // csv( "/diseases/trachoma/data/group-56/56-historical-prevalence.csv" )
+        console.log( `TrachomaModel loading historical data ${historicalDataUrl}` );
         csv( historicalDataUrl )
         .then( ( results ) => {
           resolve( results );
@@ -201,7 +193,7 @@ export default {
 
     const historicalSummaryPromise = new Promise(
       ( resolve, reject ) => {
-       // fetch( "/diseases/trachoma/data/group-56/56-historical-prevalence-summary.json" )
+        console.log( `TrachomaModel loading historical summary ${historicalSummaryUrl}` );
         fetch( historicalSummaryUrl )
         .then( ( response ) => { return response; } )
         .then( ( res ) => { return res.json(); } )
@@ -211,7 +203,7 @@ export default {
 
     const futureDataPromise = new Promise(
       ( resolve, reject ) => {
-       // csv( "/diseases/trachoma/data/group-56/coverage-0.6/56-0.6-12-202001.csv" )
+        console.log( `TrachomaModel loading future data ${futureDataUrl}` );
         csv( futureDataUrl )
         .then( ( results ) => {
           resolve( results );
@@ -221,7 +213,7 @@ export default {
 
     const futureSummaryPromise = new Promise(
       ( resolve, reject ) => {
-       // fetch( "/diseases/trachoma/data/group-56/coverage-0.6/56-0.6-12-202001-summary.json" )
+        console.log( `TrachomaModel loading future summary ${futureSummaryUrl}` );
         fetch( futureSummaryUrl )
         .then( ( response ) => { return response; } )
         .then( ( res ) => { return res.json(); } )
