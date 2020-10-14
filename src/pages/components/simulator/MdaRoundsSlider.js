@@ -8,14 +8,12 @@ const startValue =  props.intialMonthValues[0] ? ( ( props.intialMonthValues[0] 
 const endValue =  props.intialMonthValues[1] ? ( ( props.intialMonthValues[1] - 246 ) / 6 ) + 1 : props.numberOfFutreTimeBars
 const [value, setValue] = useState([startValue,endValue]);
 const handleChange = (event, newValue) => {
-    //console.log('newValue',newValue)
     setValue(newValue);
 
     // 240 is 2019 last month
     // we're going in steps of 6 month
     const start = 246 + (newValue[0]-1) * 6
     const end = 246 + (newValue[1]-1) * 6
-
     props.onChange(start,end)
 
 }

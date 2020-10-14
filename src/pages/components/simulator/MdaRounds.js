@@ -14,6 +14,7 @@ import {
 import useStyles from 'pages/components/simulator/styles'
 
 import { DISEASE_LIMF } from 'AppConstants';
+import { FunctionsRounded } from '@material-ui/icons'
 //import ClickAway from "hooks/clickAway";
 
 const MdaRounds = (props) => {
@@ -127,6 +128,12 @@ const MdaRounds = (props) => {
   const areaOffset = rightMargin - actualBar
   const initialOffset = props.disease === DISEASE_LIMF ? barWidth/2 : barWidth
 
+  const mapActiveToTime = future.active.filter((val,index)=>{
+    if ( future.time[index] !== undefined ) {
+      return true
+    }
+    return false
+  })
 
   return (
     <React.Fragment>
@@ -245,7 +252,7 @@ const MdaRounds = (props) => {
           areaOffset={areaOffset}
           initialOffset={initialOffset}
           onChange={setMDARange}
-          intialMonthValues={[future.time[future.active.indexOf(true)],future.time[future.active.lastIndexOf(true)+1]]}
+          intialMonthValues={[future.time[future.active.indexOf(true)],future.time[mapActiveToTime.lastIndexOf(true)]+6]}
         />
       )}
 

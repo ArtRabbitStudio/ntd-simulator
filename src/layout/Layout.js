@@ -9,12 +9,15 @@ const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
     flexDirection: 'column',
-    background: 'white',
     minHeight: '100vh',
-
+    
     [theme.breakpoints.up('lg')]: {
     }
   },
+  "@global": {
+		body: { 
+      background:'white'
+    }},
   main: {
     //paddingTop: theme.spacing(4),
     padding: theme.spacing(4, 6),
@@ -25,8 +28,7 @@ const useStyles = makeStyles(theme => ({
       display: 'table',
       clear: 'both'
     },
-
-
+    
 
     [theme.breakpoints.up('md')]: {
       '&.full-height': {

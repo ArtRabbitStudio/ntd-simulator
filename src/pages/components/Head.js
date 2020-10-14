@@ -47,9 +47,10 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Head = ({ title, classAdd, intro }) => {
-
+    console.log('classAdd',classAdd)
     const classes = useStyles();
     classAdd = classAdd ? classAdd : '';
+    
 
     return (
         <Box className={`${classes.card}  ${classAdd} ${!intro && classes.bottomMargin}`}>

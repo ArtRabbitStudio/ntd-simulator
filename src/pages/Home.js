@@ -10,6 +10,7 @@ import TextContents from 'pages/components/TextContents';
 import AccordionElement from 'pages/components/AccordionElement';
 import SelectDisease from 'pages/components/SelectDisease';
 import Logo from 'images/ntd-logo.svg';
+import BG from 'images/africa.png';
 
 const useStyles = makeStyles(theme => ({
   section: {
@@ -22,6 +23,15 @@ const useStyles = makeStyles(theme => ({
   marginBottom: {
     marginBottom: theme.spacing(2)
   },
+  "@global": {
+		body: { 
+      background:'white',
+      backgroundImage: `url(${BG})`,
+      backgroundRepeat: 'no-repeat',
+      backgroundPosition: 'right top',
+      backgroundSize: '70% auto'
+
+    }},
   marginTop: {
     marginTop: theme.spacing(6)
   },
@@ -50,6 +60,9 @@ const useStyles = makeStyles(theme => ({
   white: {
     backgroundColor: '#ffffff'
   },
+  cardTransparent: {
+    opacity: 0.85
+  },
 }));
 
 
@@ -68,8 +81,8 @@ const Home = (props) => {
 
 
   return (
-    <Layout /* classAdd="full-height"*/ >
-      <Head
+    <Layout className={classes.homeimage} /* classAdd="full-height"*/ >
+      <Head classAdd={classes.cardTransparent}
         title="prevalence simulator"
         intro="The projections on this website provide guidance on the impact of more frequent, longer or higher coverage treatment strategies on achieving elimination as a public health problem."
       />
@@ -78,7 +91,7 @@ const Home = (props) => {
 
       <SelectDisease />
 
-      <section className={classes.section}>
+      <section className={`${classes.section} ${classes.cardTransparent}`}>
         <Typography variant="h3" component="h6" className={`${classes.headline} ${classes.marginBottom}`}>Before you start</Typography>
         <AccordionElement title="How it works">
         The projections on this website provide guidance on the impact of more frequent, longer or higher coverage treatment strategies on achieving elimination as a public health problem.
@@ -112,7 +125,6 @@ const Home = (props) => {
           </div>
         </div>
       </section>
-
     </Layout >
   )
 }
