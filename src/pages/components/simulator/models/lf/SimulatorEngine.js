@@ -83,7 +83,7 @@ export var Person = function (a, b) {
   this.bednet = 0
   this.t = 0
   this.u = s.normal(params.u0, Math.sqrt(params.sigma))
-
+  this.a = s.random() * 100 * 12
   //}
 
   this.repRate = function () {
