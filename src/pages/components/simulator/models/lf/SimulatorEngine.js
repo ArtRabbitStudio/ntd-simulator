@@ -195,7 +195,6 @@ export var Person = function (a, b) {
     ) {
       //if over age 100
       this.initialise()
-      this.a = 0 //birth event so age is 0.
     }
   }
 
@@ -208,6 +207,7 @@ export var Person = function (a, b) {
     this.bedNet = 0
     this.u = s.normal(params.u0, Math.sqrt(params.sigma))
     this.treated = 0
+    this.a = 0 //birth event so age is 0.
   }
 }
 export var Model = function (n) {
