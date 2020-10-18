@@ -14,7 +14,6 @@ import {
 import useStyles from 'pages/components/simulator/styles'
 
 import { DISEASE_LIMF } from 'AppConstants';
-import { FunctionsRounded } from '@material-ui/icons'
 //import ClickAway from "hooks/clickAway";
 
 const MdaRounds = (props) => {
