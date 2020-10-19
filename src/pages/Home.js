@@ -25,7 +25,7 @@ const useStyles = makeStyles(theme => ({
   },
   "@global": {
 		body: { 
-      background:'white',
+      backgroundColor:'white',
       backgroundImage: `url(${BG})`,
       backgroundRepeat: 'no-repeat',
       backgroundPosition: 'right top',

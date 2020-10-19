@@ -16,8 +16,9 @@ const useStyles = makeStyles(theme => ({
   },
   "@global": {
 		body: { 
-      background:'white'
-    }},
+      backgroundColor:'white !important'
+    }
+  },
   main: {
     //paddingTop: theme.spacing(4),
     padding: theme.spacing(4, 6),

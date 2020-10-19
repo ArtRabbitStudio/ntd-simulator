@@ -183,7 +183,6 @@ function addRanking(data) {
 // creates data entries for countries, states, and UIs
 function createEntries({ data, relations, key }) {
   const groupRelByKey = groupBy(key)(relations);
-
   const entr = flow(
     map((row) => {
       const { [key]: id, Population } = row;

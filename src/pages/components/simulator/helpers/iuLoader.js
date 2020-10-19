@@ -38,7 +38,7 @@ export const loadAllIUhistoricData = async (
   const defaultSimParams = {
     settings: {
     covN: 0, // $("#bedNetCoverage").val(),
-    coverage: 90, // $("#MDACoverage").val(),
+    coverage: 80, // $("#MDACoverage").val(),
     endemicity: 10, // $("#endemicity").val(),
     macrofilaricide: 65, // $("#Macrofilaricide").val(),
     mda: 2, // $("#inputMDARounds").val(),
