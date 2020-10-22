@@ -72,8 +72,8 @@ const combineSummaries = ( historicalSummary, futureSummary ) => {
  * comes in as
  * {
  *   "median": { "02-2020": 0.0526236376, },
- *   "percentile_25": { "02-2020": 0.0269567667, },
- *   "percentile_75": { "02-2020": 0.1019832762, }
+ *   "lower": { "02-2020": 0.0269567667, },
+ *   "upper": { "02-2020": 0.1019832762, }
  * }
  *
  * goes out as
@@ -96,8 +96,8 @@ const convertSummary = ( s ) => {
 
       acc.ts.push( ts );
       acc.median.push( s.median[ k ] );
-      acc.min.push( s.percentile_25[ k ] );
-      acc.max.push( s.percentile_75[ k ] );
+      acc.min.push( s.lower[ k ] );
+      acc.max.push( s.upper[ k ] );
 
       return acc;
     },
@@ -140,10 +140,6 @@ export default {
 
   },
 
-  prepScenarioAndParams: function ( scenarioId, scenarioState, simState ) {
-    console.log( 'TrachomaModel pretending to prep scenario and params' );
-  },
-
   runScenario: function ( { scenarioId, scenarioState, simState, callbacks } ) {
 
     const isNewScenario = scenarioId ? false : true;
@@ -152,8 +148,6 @@ export default {
       isNewScenario
         ? this.createNewScenario( simState.settings )
         : scenarioState.scenarioData[ scenarioId ];
-
-    this.prepScenarioAndParams( scenarioData.id, scenarioState, simState );
 
     console.log( 'TrachomaModel fetching prepped scenarioData', scenarioData );
 
@@ -174,12 +168,13 @@ export default {
 	 *	/diseases/trachoma/data/group-103/coverage-0.6/mdatype-12/103-0.6-12-202001.csv
 	 *	/diseases/trachoma/data/group-103/coverage-0.6/mdatype-12/103-0.6-12-202101-summary.json
 	 */
-    const groupUrlPath = `/diseases/trachoma/data/group-${group}`;
+    const storagePath = `https://storage.googleapis.com/ntd-disease-simulator-data`;
+    const groupUrlPath = `${storagePath}/diseases/trachoma/data/group-${group}`;
     const mdaUrlPath = `${groupUrlPath}/coverage-${coverage}/mdatype-${scenarioData.settings.mdaSixMonths}`;
 
     const historicalDataUrl = `${groupUrlPath}/${group}-historical-prevalence.csv`;
     const historicalSummaryUrl = `${groupUrlPath}/${group}-historical-prevalence-summary.json`;
-    const futureDataUrl = `${mdaUrlPath}/${group}-${coverage}-${mdaSixMonths}-${mdaRoundsString}.csv`;
+    const futureDataUrl = `${mdaUrlPath}/${group}-${coverage}-${mdaSixMonths}-${mdaRoundsString}-prev.csv`;
     const futureSummaryUrl = `${mdaUrlPath}/${group}-${coverage}-${mdaSixMonths}-${mdaRoundsString}-summary.json`;
 
     const historicalDataPromise = new Promise(
