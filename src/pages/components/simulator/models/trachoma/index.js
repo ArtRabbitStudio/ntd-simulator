@@ -43,7 +43,9 @@ const combineData = ( historicalData, futureData ) => {
 
             // append the prevalence value to the array of prevalences
             const p = parseFloat( row[ key ] );
-            acc.p.push( p );
+
+            // convert decimal to actual percentage * 100
+            acc.p.push( p*100 );
 
             return acc;
           },
@@ -95,9 +97,10 @@ const convertSummary = ( s ) => {
       const ts = convertDateIndex( k );
 
       acc.ts.push( ts );
-      acc.median.push( s.median[ k ] );
-      acc.min.push( s.lower[ k ] );
-      acc.max.push( s.upper[ k ] );
+      // convert decimal to actual percentage * 100
+      acc.median.push( s.median[ k ]*100 );
+      acc.min.push( s.lower[ k ]*100 );
+      acc.max.push( s.upper[ k ]*100 );
 
       return acc;
     },

@@ -82,8 +82,13 @@ const SelectCountry = ({ selectIU, showCountryConfirmation, showIUConfirmation, 
 
   const countrySuggestionsWithDefault = [ defaultCountrySuggestionOption ].concat( countrySuggestions );
   const selected = countrySuggestionsWithDefault.find(x => x.id === country)
-  const activeIUs = [ defaultIUSuggestionOption ].concat( iusByCountrySuggestions.filter(x => (x.prevalence !== null && x.endemicity !== "Non-endemic") ) )
+  let activeIUs =  iusByCountrySuggestions.filter(x => (x.prevalence !== null && x.endemicity !== "Non-endemic") ) 
   const selectedIU = activeIUs.find(x => x.id === implementationUnit)
+
+  if ( !selectIU ) {
+    activeIUs = [ defaultIUSuggestionOption ].concat( activeIUs )
+  }
+
 
   return (
     <React.Fragment>

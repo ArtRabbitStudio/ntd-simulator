@@ -42,9 +42,9 @@ function ScenarioGraphTrachoma({
   const yPad = 32 + 20
   const svgHeight = height + yPad * 2
   const svgWidth = width
+  
 
   const dataSelection = showAllResults ? data.results : [data.results[0]]
-
 
   const isStartYear = (element) => element >= startYear;
   const isPrediction = (element) => element >= futureYear;
@@ -61,9 +61,13 @@ function ScenarioGraphTrachoma({
     })
   })
 
+
   let domainY = extent(
     flattenDeep(map(dataToOutput, (x) => values(pick(x, metrics))))
   )
+
+
+
   domainY[0] = 0;
 
   const ShowActivePoint = ({ active, coord, mode }) => {
