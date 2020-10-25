@@ -175,10 +175,14 @@ export default {
     const groupUrlPath = `${storagePath}/diseases/trachoma/data/group-${group}`;
     const mdaUrlPath = `${groupUrlPath}/coverage-${coverage}/mdatype-${scenarioData.settings.mdaSixMonths}`;
 
+
+
     const historicalDataUrl = `${groupUrlPath}/${group}-historical-prevalence.csv`;
     const historicalSummaryUrl = `${groupUrlPath}/${group}-historical-prevalence-summary.json`;
-    const futureDataUrl = `${mdaUrlPath}/${group}-${coverage}-${mdaSixMonths}-${mdaRoundsString}-prev.csv`;
-    const futureSummaryUrl = `${mdaUrlPath}/${group}-${coverage}-${mdaSixMonths}-${mdaRoundsString}-summary.json`;
+    const scenarioSpecifier = `${group}-${coverage}-${mdaSixMonths}-${mdaRoundsString}`;
+    const futureDataUrl = `${mdaUrlPath}/${scenarioSpecifier}-prev.csv`;
+    const futureSummaryUrl = `${mdaUrlPath}/${scenarioSpecifier}-summary.json`;
+    // TODO add -infect.csv
 
     const historicalDataPromise = new Promise(
       ( resolve, reject ) => {
