@@ -5,6 +5,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import SimpleDialog from 'pages/components/SimpleDialog'
 import { useDataAPI, useUIState } from 'hooks/stateHooks'
 import Map from 'components/Map'
+import { DISEASE_LIMF } from "AppConstants";
 
 const useStyles = makeStyles(theme => ({
     headLeftColumn: {
@@ -81,6 +82,9 @@ const Country = props => {
 
     }*/
 
+    const legend = disease === DISEASE_LIMF ? 'Prevalence map and trends since 2010.' : 'Prevalence map and trends since 2017'
+
+
     return (
       <React.Fragment>
             <section className={classes.section}>
@@ -101,7 +105,7 @@ const Country = props => {
                         }}
                     />
                 </div>
-                <Typography component="h6" variant="h6" className={classes.legend}>Prevalence map and trends since 2010.</Typography>
+                <Typography component="h6" variant="h6" className={classes.legend}>{legend}</Typography>
             </section>
             
             {notAvailableAlert &&

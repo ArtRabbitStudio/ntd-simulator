@@ -10,7 +10,7 @@ import TextContents from 'pages/components/TextContents';
 import AccordionElement from 'pages/components/AccordionElement';
 import SelectDisease from 'pages/components/SelectDisease';
 import Logo from 'images/ntd-logo.svg';
-import BG from 'images/africa.png';
+import BG from 'images/africa.jpg';
 
 const useStyles = makeStyles(theme => ({
   section: {
@@ -84,7 +84,7 @@ const Home = (props) => {
     <Layout className={classes.homeimage} /* classAdd="full-height"*/ >
       <Head classAdd={classes.cardTransparent}
         title="prevalence simulator"
-        intro="The projections on this website provide guidance on the impact of more frequent, longer or higher coverage treatment strategies on achieving elimination as a public health problem."
+        intro="The projections on this website provide guidance on the impact of more frequent, longer or higher coverage treatment strategies on achieving 2030 goals"
       />
 
 
@@ -94,8 +94,10 @@ const Home = (props) => {
       <section className={`${classes.section} ${classes.cardTransparent}`}>
         <Typography variant="h3" component="h6" className={`${classes.headline} ${classes.marginBottom}`}>Before you start</Typography>
         <AccordionElement title="How it works">
-        The projections on this website provide guidance on the impact of more frequent, longer or higher coverage treatment strategies on achieving elimination as a public health problem.
-        The projections are based on models. Please note that the models used have only been validated against a certain number of settings.
+        The projections on this website provide guidance on the 
+        impact of more frequent, longer or higher coverage treatment 
+        strategies on achieving 2030 goals.   
+        The projections are model based. Please note that the models used have only been validated against a certain number of settings.
         A full description of the models can be found in the About section.
         </AccordionElement>
 
