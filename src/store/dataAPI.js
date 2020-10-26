@@ -110,7 +110,7 @@ function generateStats(data,disease) {
       values,
       map(({ prevalence }) => {
         const pValues = values(prevalence);
-        return [pValues[17], pValues[18]];
+        return [pValues[17], pValues[19]];
       })
     )(data);
   }
