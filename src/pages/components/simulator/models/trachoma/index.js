@@ -156,7 +156,7 @@ export default {
 
     // work out the data file path from the scenario settings
     const mappedGroup = window.ntd.iuGroupMapping[ simState.IUData.id ];  // TODO temporary - to be generated from full IU list and loaded into simState in iuLoader
-    const group = [ 99, 124, 126, 128, 132, 142 ].includes( mappedGroup ) ? mappedGroup : 103;
+    const group = [ 59,60,61,62 ].includes( mappedGroup ) ? 103 : mappedGroup;
     const coverage = scenarioData.settings.coverage / 100;    // 0.9 in model vs 90 in UI
     const mdaSixMonths = scenarioData.settings.mdaSixMonths;  // 6=biannual, 12=annual
     const mdaRoundsString = scenarioData.mdaFuture.time
