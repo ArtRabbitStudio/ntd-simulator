@@ -10,7 +10,7 @@ import TextContents from 'pages/components/TextContents';
 import AccordionElement from 'pages/components/AccordionElement';
 import SelectDisease from 'pages/components/SelectDisease';
 import Logo from 'images/ntd-logo.svg';
-import BG from 'images/africa.png';
+import BG from 'images/africa.jpg';
 
 const useStyles = makeStyles(theme => ({
   section: {

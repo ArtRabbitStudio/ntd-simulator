@@ -425,15 +425,15 @@ function ScenarioGraphTrachoma({
           {graphTypeSimple && data.results &&
             <g key={`results1-stats`}>{renderRange( data.summary['min'],  data.summary['max'], data.summary['ts'], false, x, y)}</g>
           }
-          {/*<line
+          {<line
             key={`WHO target`}
             x1={0}
             x2={width - lPad - rPad}
-            y1={y(1)}
-            y2={y(1)}
+            y1={y(5)}
+            y2={y(5)}
             stroke="#03D386"
             strokeDasharray='10 2'
-          ></line>*/}
+          ></line>}
           {!graphTypeSimple && data.results &&
             data.results.map((result, i) => (
               <g key={`results1-${i}`}>{renderResult(result, false, x, y)}</g>

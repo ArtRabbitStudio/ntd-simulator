@@ -94,16 +94,28 @@ const defaultScales = {
 };
 
 // calculates min/max values for prevalence and performance
-function generateStats(data) {
-  const prevExtent = flow(
-    values,
-    map(({ prevalence }) => {
-      const pValues = values(prevalence);
-      return [min(pValues), max(pValues)];
-    })
-  )(data);
+function generateStats(data,disease) {
 
+  let prevExtent = []
+  if ( disease === DISEASE_LIMF ) {
+    prevExtent = flow(
+      values,
+      map(({ prevalence }) => {
+        const pValues = values(prevalence);
+        return [min(pValues), max(pValues)];
+      })
+    )(data);
+  } else {
+    prevExtent = flow(
+      values,
+      map(({ prevalence }) => {
+        const pValues = values(prevalence);
+        return [pValues[17], pValues[18]];
+      })
+    )(data);
+  }
   const [minN, maxN] = zip(...prevExtent);
+
 
   // create performance stats
   const performances = flow(map("performance"))(data);
@@ -181,7 +193,7 @@ function addRanking(data) {
 }
 
 // creates data entries for countries, states, and UIs
-function createEntries({ data, relations, key }) {
+function createEntries({ data, relations, key, disease }) {
   const groupRelByKey = groupBy(key)(relations);
   const entr = flow(
     map((row) => {
@@ -199,7 +211,13 @@ function createEntries({ data, relations, key }) {
       const prevalence = mapValuesFP(roundPrevalence)(groupProps(row, "Prev_"));
       const prevValues = values(prevalence);
       // take specific value depending on data we're assuming it's supplied from 2010 - 2019
-      const performance = round(last(prevValues) - prevValues[9]*100)/100;
+      let performance = 0
+      if ( disease === DISEASE_LIMF ) {
+        performance = round(last(prevValues) - prevValues[9]*100)/100;
+      } else {
+        performance = round(last(prevValues) - prevValues[17]*100)/100;
+      }
+      
       // this looks at the entire range from 2000 - 2019 or first and last
       //const performance = last(prevValues) - first(prevValues);
 
@@ -335,9 +353,10 @@ class DataAPI {
   get countriesCurrentRegime() {
     const countries = this.filteredCountryRows;
     const { relations } = this.dataStore;
+    const { disease } = this.uiState;
 
     if (countries && relations) {
-      return createEntries({ data: countries, relations, key: "Country" });
+      return createEntries({ data: countries, relations, key: "Country", disease:disease });
     }
 
     return null;
@@ -347,9 +366,10 @@ class DataAPI {
   get statesCurrentRegime() {
     const states = this.filteredStateRows;
     const { relations } = this.dataStore;
+    const { disease } = this.uiState;
 
     if (states && relations) {
-      return createEntries({ data: states, relations, key: "StateCode" });
+      return createEntries({ data: states, relations, key: "StateCode",disease:disease });
     }
 
     return null;
@@ -372,9 +392,10 @@ class DataAPI {
   get IUsCurrentRegime() {
     const ius = this.filteredIURows;
     const { relations } = this.dataStore;
+    const { disease } = this.uiState;
 
     if (ius && relations) {
-      return createEntries({ data: ius, relations, key: "IUID" });
+      return createEntries({ data: ius, relations, key: "IUID",disease:disease });
     }
 
     return null;
@@ -422,12 +443,12 @@ class DataAPI {
   // for each country, states are ranked by prevalence over years, and stats are added
   get stateByCountryData() {
     const states = this.statesCurrentRegime;
-
+    const { disease } = this.uiState;
     if (states) {
       return flow(
         groupBy((x) => x.relatedCountries[0]),
         mapValuesFP((s) => {
-          const stats = generateStats(s);
+          const stats = generateStats(s,disease);
           const data = addRanking(s);
           return { data: keyBy("id")(data), stats };
         })
@@ -441,14 +462,14 @@ class DataAPI {
   // each group is ranked by prevalence over years, and stats are added
   get iuByStateData() {
     const IUs = this.IUsCurrentRegime;
-    const { country } = this.uiState;
+    const { country,disease } = this.uiState;
 
     if (IUs) {
       return flow(
         filter((x) => x.relatedCountries[0] === country),
         groupBy((x) => x.relatedStates[0]),
         mapValuesFP((ius) => {
-          const stats = generateStats(ius);
+          const stats = generateStats(ius,disease);
           const data = addRanking(ius);
           return { data: keyBy("id")(data), stats };
         })
@@ -622,24 +643,27 @@ class DataAPI {
 
   get countryStats() {
     const countries = this.countriesCurrentRegime;
+    const { disease } = this.uiState;
     if (countries) {
-      return generateStats(countries);
+      return generateStats(countries,disease);
     }
     return null;
   }
 
   get stateStats() {
     const states = this.statesCurrentRegime;
+    const { disease } = this.uiState;
     if (states) {
-      return generateStats(states);
+      return generateStats(states,disease);
     }
     return null;
   }
 
   get IUStats() {
     const IUs = this.IUsCurrentRegime;
+    const { disease } = this.uiState;
     if (IUs) {
-      return generateStats(IUs);
+      return generateStats(IUs,disease);
     }
     return null;
   }
