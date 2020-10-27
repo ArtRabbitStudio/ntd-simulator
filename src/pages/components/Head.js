@@ -43,6 +43,10 @@ const useStyles = makeStyles(theme => ({
     head: {
         marginTop: 30,
         marginBottom: 40
+    },
+    beta: {
+        backgroundColor: '#ffc914',
+        padding: 5
     }
 }));
 
@@ -57,7 +61,7 @@ const Head = ({ title, classAdd, intro }) => {
 
             <NavLink to='/' className={classes.pageHeader} >
                 <Typography variant="h1" component="h2">NTD Prevalence Simulator </Typography>
-                <Typography variant="h6" component="h6" className={classes.headline} >Africa</Typography>
+                <Typography variant="h6" component="h6" className={`${classes.headline}`} >Africa <span className={classes.beta}>Beta version</span></Typography>
                 {intro && 
                     <Grid item md={6} xs={12} className={classes.head}>
                         <Typography paragraph variant="body1" component="p">{intro}</Typography>
