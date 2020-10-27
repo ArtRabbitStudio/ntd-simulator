@@ -108,7 +108,6 @@ const PerDiseaseSetup = (props) => {
     // pass params to simulator ..
     history.push({ pathname: `/${disease}/${country}/${implementationUnit}/run` })
   }
-  console.log(props.disease)
 
   return (
       <section className={classes.section}>
