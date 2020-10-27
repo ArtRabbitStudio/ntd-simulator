@@ -68,6 +68,7 @@ const Footer = (props) => {
                             <Typography variant="h6" component="h6" className={classes.headline} >NTD Modelling Consortium</Typography>
 
                             <ul className={classes.menu}>
+                                <Typography component="li" variant="body2"><Link href="mailto:NTDModelling@Gmail.com" rel="noopener" color="inherit" variant="body2">Send us feedback</Link></Typography>
                                 <Typography component="li" variant="body2"><Link component={RouterLink} to="/about" color="inherit">About</Link></Typography>
                                 <Typography component="li" variant="body2"><Link href="https://www.ntdmodelling.org/" rel="noopener" target="_blank" color="inherit" variant="body2">www.ntdmodelling.org</Link></Typography>
                                 <Typography component="li" variant="body2"><Link component={RouterLink} to="/privacy-cookies" color="inherit">Privacy & Cookies</Link></Typography>
