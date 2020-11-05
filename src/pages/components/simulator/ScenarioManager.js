@@ -19,10 +19,12 @@ import { DISEASE_LABELS } from 'AppConstants';
 import { loadAllIUhistoricData } from 'pages/components/simulator/helpers/iuLoader'
 import { NewSettingsDialogLF } from 'pages/components/diseases/lf';
 import { NewSettingsDialogTrachoma } from 'pages/components/diseases/trachoma';
+import { NewSettingsDialogSTHRoundworm } from 'pages/components/diseases/sth-roundworm';
 
 const settingsDialogComponents = {
   lf: NewSettingsDialogLF,
-  trachoma: NewSettingsDialogTrachoma
+  trachoma: NewSettingsDialogTrachoma,
+  'sth-roundworm': NewSettingsDialogSTHRoundworm
 };
 
 const a11yProps = (index) => {
@@ -403,6 +405,9 @@ const ScenarioManager = ( props ) => {
   }
 
   const SettingsDialogComponent = ( disease !== null ) ? settingsDialogComponents[ disease ] : null;
+
+
+
 
   return (
     <div id="ScenarioManager">

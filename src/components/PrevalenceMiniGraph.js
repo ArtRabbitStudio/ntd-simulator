@@ -2,7 +2,7 @@ import React from 'react'
 import { map, max, filter } from 'lodash'
 import { scaleLinear, line } from 'd3'
 import AutoSizer from 'react-virtualized-auto-sizer'
-import { DISEASE_LIMF } from 'AppConstants';
+import { DISEASE_LIMF, DISEASE_TRACHOMA, DISEASE_STH_ROUNDWORM } from 'AppConstants';
 
 function Path({ data, x, y, color, start }) {
   const coords = data.map((d,index) => [x(start+index), y(d)])
@@ -23,8 +23,26 @@ function PrevalenceMiniGraph({
   const yPad = 32
   const svgHeight = height + yPad * 2
   const svgWidth = width
-  const start = disease === DISEASE_LIMF ? 2010 : 2017
-  const end = disease === DISEASE_LIMF ? 2019 : 2019
+  let start = 2010
+  let end = 2019
+  switch (disease) {
+    case DISEASE_LIMF:
+      start = 2010
+      end = 2019
+      break
+    case DISEASE_TRACHOMA:
+      start = 2017
+      end = 2019
+      break
+    case DISEASE_STH_ROUNDWORM:
+      start = 2010
+      end = 2019
+      break
+    default: 
+      start = 2010
+      end = 2019
+  }
+  
   const cleanedPrevalence = map(data.prevalence,(x)=>{
     x = x === null ? 0 : x
     return x
@@ -33,8 +51,6 @@ function PrevalenceMiniGraph({
   const xScale = scaleLinear()
   .domain([start, end])
   .range([0, width - (rPad + lPad)])
-
-  console.log('data',data)
   
   const yScale = scaleLinear()
     .domain([0, domain])

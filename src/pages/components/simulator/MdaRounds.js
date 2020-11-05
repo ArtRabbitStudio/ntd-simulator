@@ -13,11 +13,11 @@ import {
 } from 'pages/components/simulator/settings'
 import useStyles from 'pages/components/simulator/styles'
 
-import { DISEASE_LIMF } from 'AppConstants';
+import { DISEASE_LIMF, DISEASE_TRACHOMA, DISEASE_STH_ROUNDWORM } from 'AppConstants';
 //import ClickAway from "hooks/clickAway";
 
 const MdaRounds = (props) => {
-
+  const disease = props.disease
   const { scenarioState, dispatchScenarioStateUpdate } = useScenarioStore();
 
   const history = scenarioState.scenarioData[ scenarioState.currentScenarioId ].mda2015;
@@ -39,12 +39,13 @@ const MdaRounds = (props) => {
  // const [toolTipOpen, setToolTipOpen] = useState(false)
 
   const closeRoundTooltip = (event) => {
+    console.log('close round tooltip called setting mda round to -1')
     setCurMDARound(-1)
     //setToolTipOpen(false)
   }
 
   const setMDAProperty = ( key, idx, newValue ) => {
-
+    console.log('dispatchScenarioStateUpdate',key,idx,newValue)
     dispatchScenarioStateUpdate( {
       type: ScenarioStoreConstants.ACTION_TYPES.UPDATE_SCENARIO_MDA_FUTURE_SETTING_BY_ID_AND_IDX,
       id: scenarioState.currentScenarioId,
@@ -70,11 +71,17 @@ const MdaRounds = (props) => {
    // dispatchSimState({ type: 'tweakedActive', payload: array })
   }
 
-  const outputTitle = (time,coverage,adherence,bednets,regimen,active) => {
+  const outputTitle = (time,coverage,adherence,bednets,regimen,active,coverageInfants,coveragePreSAC,coverageSAC,coverageAdults) => {
     if ( !active || coverage === 0 ) {
         return `${calculateTime(time)}: no intervention`
     } else {
-      return `${calculateTime(time)}: coverage ${coverage}%`
+      switch ( disease ) {
+        case DISEASE_STH_ROUNDWORM:
+          return `${calculateTime(time)}: coverage ${coverageInfants}% - ${coveragePreSAC}% - ${coverageSAC}% - ${coverageAdults}%`
+        default:
+          return `${calculateTime(time)}: coverage ${coverage}%`
+      }
+      
     }
     
   }
@@ -125,7 +132,7 @@ const MdaRounds = (props) => {
   const actualBar = 10
   const rightMargin = 50
   const areaOffset = rightMargin - actualBar
-  const initialOffset = props.disease === DISEASE_LIMF ? barWidth/2 : barWidth
+  const initialOffset = disease === DISEASE_LIMF ? barWidth/2 : barWidth
 
   const mapActiveToTime = future.active.filter((val,index)=>{
     if ( future.time[index] !== undefined ) {
@@ -134,13 +141,16 @@ const MdaRounds = (props) => {
     return false
   })
 
+  const LFandSTHRoundworm = ( disease === DISEASE_LIMF || disease === DISEASE_STH_ROUNDWORM )
+  const LFandTrachoma = ( disease === DISEASE_LIMF || disease === DISEASE_TRACHOMA )
+
   return (
     <React.Fragment>
       <div className={classes.legend}>
         <Typography className={classes.legendText} variant="h5" component="h5">0%</Typography>
         <Typography className={`${classes.legendText} ${classes.legendTextBottom}`} variant="h5" component="h5">100%</Typography>
       </div>
-      <div className={`bars ${props.disease}`}>
+      <div className={`bars ${disease}`}>
         {/* history */}
         {history &&
           history.time &&
@@ -149,7 +159,7 @@ const MdaRounds = (props) => {
               <div
                 style={{left: `calc( ${areaOffset}px + ${initialOffset}% + ${barWidth*((i*2) - 1)+barWidth}%)` }}
                 className={`bar history`}
-                title={history.coverage ? outputTitle(history.time[i],history.coverage[i],history.adherence[i],history.bednets[i],history.regimen[i],true) : outputTitle(history.time[i]) }
+                title={history.coverage ? outputTitle(history.time[i],history.coverage[i],history.adherence[i],history.bednets[i],history.regimen[i],true,future.coverageInfants[i],future.coveragePreSAC[i],future.coverageSAC[i],future.coverageAdults[i]) : outputTitle(history.time[i]) }
               >
                 <span
                   style={{
@@ -160,7 +170,7 @@ const MdaRounds = (props) => {
               <div
                 style={{left: `calc( ${areaOffset}px + ${initialOffset}% + ${barWidth*(i*2)+barWidth}%)` }}
                 className={`bar history`}
-                title={history.coverage ?  outputTitle(history.time[i],history.coverage[i],history.adherence[i],history.bednets[i],history.regimen[i],true) : outputTitle(history.time[i]) }
+                title={history.coverage ?  outputTitle(history.time[i],history.coverage[i],history.adherence[i],history.bednets[i],history.regimen[i],true,future.coverageInfants[i],future.coveragePreSAC[i],future.coverageSAC[i],future.coverageAdults[i]) : outputTitle(history.time[i]) }
               >
                 <span
                   style={{
@@ -182,31 +192,43 @@ const MdaRounds = (props) => {
             className={`bar ${
               future.active[i] === false ? 'removed' : ''
             } ${i === curMDARound ? 'current' : ''}`}
-            title={outputTitle(future.time[i],future.coverage[i],future.adherence[i],future.bednets[i],future.regimen[i],future.active[i])}
+            title={outputTitle(future.time[i],future.coverage[i],future.adherence[i],future.bednets[i],future.regimen[i],future.active[i],future.coverageInfants[i],future.coveragePreSAC[i],future.coverageSAC[i],future.coverageAdults[i])}
           >
-            <span
+            {LFandTrachoma && <span
               className={ (i === curMDARound ) ? 'current' : ''}
               style={{
                 height: future.coverage[i],
               }}
-            ></span>
+            ></span>}
+
+            {disease === DISEASE_STH_ROUNDWORM && <span
+              className={ (i === curMDARound ) ? 'current' : ''}
+              style={{
+                height: ( ( ( future.coverageInfants[i]+future.coveragePreSAC[i]+future.coverageSAC[i]+future.coverageAdults[i] ) / 400 ) * 100 ),
+              }}
+            ></span>}
 
             {i === curMDARound && (
-              <ClickAwayListener onClickAway={closeRoundTooltip}>
+              <ClickAwayListener onClickAway={(event)=>{if ( !doseSettingsOpen ) closeRoundTooltip(event)}}>
                 <div className="bar-tooltip">
-                  {future.active[curMDARound] !== false && props.disease === DISEASE_LIMF && (
+                  {future.active[curMDARound] !== false && disease === DISEASE_LIMF && (
                     <span className="t">
                       {future.coverage[i]}% coverage
                     </span>
                   )}
-                  {future.active[curMDARound] !== false && props.disease !== DISEASE_LIMF && (
+                  {future.active[curMDARound] !== false && disease === DISEASE_TRACHOMA && (
                     <span className="t">
                       {future.coverage[i]}% coverage
+                    </span>
+                  )}
+                  {future.active[curMDARound] !== false && disease === DISEASE_STH_ROUNDWORM && (
+                    <span className="t">
+                      {`${future.coverageInfants[i]}% - ${future.coveragePreSAC[i]}% - ${future.coverageSAC[i]}% - ${future.coverageAdults[i]}%  coverage`}
                     </span>
                   )}
                   {future.active[curMDARound] ===
                     false && <span className="t">No MDA</span>}
-                  {future.active[curMDARound] === false && props.disease === DISEASE_LIMF && (
+                  {future.active[curMDARound] === false &&  LFandSTHRoundworm  && (
                     <span
                       className="i plus"
                       title="Activate MDA"
@@ -214,7 +236,7 @@ const MdaRounds = (props) => {
                         setDoseSettingsOpen(true)
                       }}
                     ></span> )}
-                  {future.active[curMDARound] !== false && props.disease === DISEASE_LIMF && (
+                  {future.active[curMDARound] !== false && LFandSTHRoundworm && (
                     <span
                       className="i edit"
                       title="Edit MDA"
@@ -223,7 +245,7 @@ const MdaRounds = (props) => {
                       }}
                     ></span>
                   )}
-                  {future.active[curMDARound] !== false && props.disease === DISEASE_LIMF && (
+                  {future.active[curMDARound] !== false && LFandSTHRoundworm && (
                     <span
                       className="i remove"
                       title="Remove MDA"
@@ -241,9 +263,9 @@ const MdaRounds = (props) => {
         ))}
         
       </div>
-      {props.disease !== DISEASE_LIMF && (
+      {disease === DISEASE_TRACHOMA && (
         <MdaRoundsSlider 
-          disease={props.disease} 
+          disease={disease} 
           numberOfHistoryBars={numberOfHistoryBars}
           numberOfFutreTimeBars={numberOfFutreTimeBars}
           numberOfBars={numberOfBars}
@@ -255,7 +277,7 @@ const MdaRounds = (props) => {
         />
       )}
 
-      { doseSettingsOpen && (
+      { (doseSettingsOpen && disease === DISEASE_LIMF) && (
         <ClickAwayListener onClickAway={closeRoundModal}>
           <Paper
             elevation={3}
@@ -343,6 +365,7 @@ const MdaRounds = (props) => {
                   variant="contained"
                   color="primary"
                   onClick={() => {
+                    console.log('confirm clicked')
                     setCurMDARound(-1)
                     setDoseSettingsOpen(false)
                   }}
@@ -354,6 +377,124 @@ const MdaRounds = (props) => {
           </Paper>
         </ClickAwayListener>
       ) }
+
+      { (doseSettingsOpen && disease === DISEASE_STH_ROUNDWORM) && (
+        <ClickAwayListener onClickAway={closeRoundModal}>
+          <Paper
+            elevation={3}
+            className={classes.roundModal}
+            style={{ zIndex: 999 }}
+          >
+            <CloseButton action={closeRoundModal} />
+            {future.active[curMDARound] === false && (
+              <Button
+                className={classes.modalButton}
+                variant="contained"
+                color="primary"
+                style={{
+                  position: 'absolute',
+                  zIndex: 9999,
+                  marginLeft: '3rem',
+                  marginTop: '13rem',
+                }}
+                onClick={ () => { setMDAProperty( 'active', curMDARound, true ); } }
+              >
+                Activate
+              </Button>
+            )}
+            <div
+              style={{
+                opacity:
+                  future.active[curMDARound] === false
+                    ? 0.2
+                    : 1,
+              }}
+            >
+              <Typography className={classes.title} variant="h4" component="h4">
+                {/* MDA round #  */}
+                {outputMDATime(curMDARound)}
+                {/*simState.mdaSixMonths === 6
+                  ? curMDARound % 2
+                    ? new Date().getFullYear() + Math.floor(curMDARound / 2)
+                    : new Date().getFullYear() + curMDARound / 2
+                  : new Date().getFullYear() + curMDARound}
+                {curMDARound % 2 ? ' - round 2' : ''*/}
+              </Typography>
+
+              <SettingTargetCoverage
+                value={future.coverageInfants[curMDARound]}
+                onChange={( event, newValue ) => { setMDAProperty( 'coverageInfants', curMDARound, newValue ); }}
+                inModal={true}
+                label="Coverage Infants"
+                min={0}
+                max={100}
+                step={5}
+                valueKey="coverageInfants"
+                title="Proportion of infants that will be treated."
+              />
+          
+              <SettingTargetCoverage
+                value={future.coveragePreSAC[curMDARound]}
+                onChange={( event, newValue ) => { setMDAProperty( 'coveragePreSAC', curMDARound, newValue ); }}
+                inModal={true}
+                label="Coverage Preschool Children"
+                min={0}
+                max={100}
+                step={5}
+                valueKey="coveragePreSAC"
+                title="Proportion of preschool children that will be treated."
+              />
+          
+              <SettingTargetCoverage
+                value={future.coverageSAC[curMDARound]}
+                onChange={( event, newValue ) => { setMDAProperty( 'coverageSAC', curMDARound, newValue ); }}
+                inModal={true}
+                label="Coverage School-Age Children "
+                min={0}
+                max={100}
+                step={5}
+                valueKey="coverageSAC"
+                title="Proportion of school-age children that will be treated."
+              />
+            
+              <SettingTargetCoverage
+                value={future.coverageAdults[curMDARound]}
+                onChange={( event, newValue ) => { setMDAProperty( 'coverageAdults', curMDARound, newValue ); }}
+                inModal={true}
+                label="Coverage Adults"
+                min={0}
+                max={100}
+                step={5}
+                valueKey="coverageAdults"
+                title="Proportion of adults that will be treated."
+              />
+
+              <div className={classes.modalButtons}>
+                <Button
+                  className={`${classes.modalButton} light`}
+                  variant="contained"
+                  onClick={ () => { setMDAProperty( 'active', curMDARound, false ); } }
+                >
+                  DEACTIVATE
+                </Button>
+                <Button
+                  className={classes.modalButton}
+                  variant="contained"
+                  color="primary"
+                  onClick={() => {
+                    console.log('confirm clicked')
+                    setCurMDARound(-1)
+                    setDoseSettingsOpen(false)
+                  }}
+                >
+                  CONFIRM
+                </Button>
+              </div>
+            </div>
+          </Paper>
+        </ClickAwayListener>
+      ) } 
+
     </React.Fragment>
   )
 }

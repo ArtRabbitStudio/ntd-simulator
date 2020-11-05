@@ -54,6 +54,8 @@ const SelectDisease = ({ selectIU, showBack }) => {
       name: DISEASE_LABELS[d]
     }
   })
+
+
   const diseasesSelectWithDefault = [ defaultSuggestionOption ].concat( diseasesSelect );
 
   const selected = diseasesSelectWithDefault.find(x => x.id === disease)

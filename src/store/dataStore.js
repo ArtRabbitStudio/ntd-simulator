@@ -2,9 +2,14 @@ import { computed, decorate } from 'mobx'
 import { lazyObservable } from 'mobx-utils'
 import { csv, autoType } from 'd3'
 import { merge } from 'lodash'
+import { DISEASE_LABELS } from '../AppConstants'
 
 // could be moved to config file, disease must match directory name in public
-const diseases = ['lf', 'trachoma']
+
+let diseases = []
+for ( const [key, value] of Object.entries( DISEASE_LABELS ) ) {
+  diseases.push(key)
+}
 const levels = ['country', 'state', 'iu']
 
 class DataStore {

@@ -8,18 +8,25 @@ import { Layout } from 'layout';
 import HeadWithInputs from 'pages/components/HeadWithInputs';
 import SelectCountry from 'pages/components/SelectCountry';
 import Country from 'pages/Country';
+
 import { IntroLF, SetupLF } from 'pages/components/diseases/lf';
 import { IntroTrachoma, SetupTrachoma } from 'pages/components/diseases/trachoma';
+import { IntroSTHRoundworm  , SetupSTHRoundworm } from 'pages/components/diseases/sth-roundworm';
+
 import ScenarioManager from 'pages/components/simulator/ScenarioManager';
+
+
 
 const introComponents = {
   lf: IntroLF,
-  trachoma: IntroTrachoma
+  trachoma: IntroTrachoma,
+  'sth-roundworm': IntroSTHRoundworm
 };
 
 const setupComponents = {
   lf: SetupLF,
-  trachoma: SetupTrachoma
+  trachoma: SetupTrachoma,
+  'sth-roundworm': SetupSTHRoundworm
 };
 
 const Simulator = ( props ) => {

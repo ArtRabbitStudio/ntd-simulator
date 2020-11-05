@@ -1,8 +1,7 @@
 import Papa from 'papaparse'
 import { last, filter, forEach } from 'lodash'
-import {
-  DISEASE_LIMF, DISEASE_TRACHOMA
-} from 'AppConstants'
+import { DISEASE_LIMF, DISEASE_TRACHOMA, DISEASE_STH_ROUNDWORM } from 'AppConstants';
+
 import SessionStorage from './sessionStorage';
 
 export const loadAllIUhistoricData = async (
@@ -11,12 +10,12 @@ export const loadAllIUhistoricData = async (
   implementationUnit,
   disease
 ) => {
-
+  console.log('loadAllIUhistoricData for', disease)
   let mdaData = null
   let params = null
   
   // TODO new param diesase
-  switch (disease) {
+  switch ( disease ) {
     case DISEASE_LIMF:
       mdaData = await loadMdaHistoryLF(implementationUnit)
       params = await loadIUParamsLF(implementationUnit)
@@ -24,7 +23,9 @@ export const loadAllIUhistoricData = async (
 
     case DISEASE_TRACHOMA:
       break;
-
+    case DISEASE_STH_ROUNDWORM:
+      mdaData = await loadMdaHistorySTHRoundworm(implementationUnit)
+      break
     default:
       break;
   }
@@ -56,6 +57,16 @@ export const loadAllIUhistoricData = async (
     vecCap: 0, // $("#vectorialCapacity").val(),
     vecComp: 0, //$("#vectorialCompetence").val(),
     vecD: 0, //$("#vectorialDeathRate").val(),
+
+
+    // additions for sth roundworm
+    // "cov_infants","cov_preSAC","cov_SAC","cov_adults"
+    coverageInfants: 0,
+    coveragePreSAC: 0,
+    coverageSAC: 75, // who guidelines
+    coverageAdults: 0,  
+
+
     /*
       coverage: 65, // $("#MDACoverage").val(),
       mda: 1, // $("#inputMDARounds").val(), TODO: what do we do here?
@@ -90,27 +101,39 @@ export const loadAllIUhistoricData = async (
     },
   }
 
-  if ( disease === DISEASE_LIMF ) {
-    const bednets = last(mdaData.bednets)
-    if (bednets) {
-      defaults.settings.covN = bednets
-    }
+  switch ( disease ) {
+    case DISEASE_LIMF:
+      const bednets = last(mdaData.bednets)
+      if (bednets) {
+        defaults.settings.covN = bednets
+      }
 
-    const mdaRegimen = last(filter(mdaData.regimen, (x) => x !== 'xxx'))
-    if (mdaRegimen) {
-      defaults.settings.mdaRegimen = mdaRegimen
-    }
+      const mdaRegimen = last(filter(mdaData.regimen, (x) => x !== 'xxx'))
+      if (mdaRegimen) {
+        defaults.settings.mdaRegimen = mdaRegimen
+      }
 
-    const adherence = last(mdaData.adherence)
-    if (adherence) {
-      defaults.settings.rho = adherence
-    }
+      const adherence = last(mdaData.adherence)
+      if (adherence) {
+        defaults.settings.rho = adherence
+      }
 
-    const coverage = last(filter(mdaData.coverage, (x) => x !== 0))
-    if (coverage) {
-      defaults.settings.coverage = coverage
-    }
+      const coverage = last(filter(mdaData.coverage, (x) => x !== 0))
+      if (coverage) {
+        defaults.settings.coverage = coverage
+      }
+      break
+    case DISEASE_STH_ROUNDWORM:
+      defaults.settings.coverageInfants = last(mdaData.coverageInfants)
+      defaults.settings.coveragePreSAC = last(mdaData.coveragePreSAC)
+      defaults.settings.coverageSAC = last(mdaData.coverageSAC)
+      defaults.settings.coverageAdults = last(mdaData.coverageAdults)
+      break
+    default:
+      break
   }
+
+
 
   console.log( "iuLoader creating simState defaults:", defaults );
 
@@ -122,9 +145,82 @@ export const loadAllIUhistoricData = async (
 //  SessionStorage.simulatorState = defaults;
 }
 
+
+export const loadMdaHistorySTHRoundworm = async (implementationUnit) => {
+  console.log( "iuLoader loadMdaHistorySTHRoundworm:", implementationUnit );
+
+  const IUid = implementationUnit ? implementationUnit : 'AGO02107'
+  const mdaResponse = await fetch(`/diseases/sth-roundworm/mda-history/${IUid}.csv`)
+  let reader = mdaResponse.body.getReader()
+
+  // Step 3: read the data
+  let receivedLength = 0; // received that many bytes at the moment
+  let chunks = []; // array of received binary chunks (comprises the body)
+  while (true) {
+    const { done, value } = await reader.read();
+
+    if (done) {
+      break;
+    }
+
+    chunks.push(value);
+    receivedLength += value.length;
+
+    //console.log(`Received ${receivedLength}`)
+  }
+
+  // Step 4: concatenate chunks into single Uint8Array
+  let chunksAll = new Uint8Array(receivedLength); // (4.1)
+  let position = 0;
+  for ( let chunk of chunks) {
+    chunksAll.set(chunk, position); // (4.2)
+    position += chunk.length;
+  }
+
+  let decoder = new TextDecoder('utf-8')
+  const mdaCSV = decoder.decode(chunksAll);
+  // console.log(mdaCSV);
+  const mdaJSON = Papa.parse(mdaCSV, { header: true })
+
+  // this mdaObject only goes to 2018 (I don't know why I only have this data up to this year, ask Swati)
+  // question is do I need to create two empty time stamps or how does this work?
+  // check in LF
+  let newMdaObj = {
+    time: mdaJSON.data.reduce((filtered,item) => { if ( item.adjusted_years != null ) { filtered.push(Number((item.adjusted_years)*12)) } return filtered },[] ),
+    coverage: mdaJSON.data.map((item) => 0),
+    coverageInfants: mdaJSON.data.map((item) => Number(item.cov_infants)),
+    coveragePreSAC: mdaJSON.data.map((item) => Number(item.cov_preSAC)),
+    coverageSAC: mdaJSON.data.map((item) => Number(item.cov_SAC)), 
+    coverageAdults: mdaJSON.data.map((item) => Number(item.cov_adults)),  
+    regimen: mdaJSON.data.map((item) => ''),
+    bednets: mdaJSON.data.map((item) => 0),
+    adherence: mdaJSON.data.map((item) => 0),
+    active: mdaJSON.data.map((item) => {
+      if (item.cov_infants + item.cov_preSAC + item.cov_SAC + item.cov_adults !== 0) {
+        return true
+      }
+      return false
+    }),
+  }
+  newMdaObj.coverage.length = newMdaObj.time.length
+  newMdaObj.coverageInfants.length = newMdaObj.time.length
+  newMdaObj.coveragePreSAC.length = newMdaObj.time.length
+  newMdaObj.coverageSAC.length = newMdaObj.time.length
+  newMdaObj.coverageAdults.length = newMdaObj.time.length
+  newMdaObj.regimen.length = newMdaObj.time.length
+  newMdaObj.bednets.length = newMdaObj.time.length
+  newMdaObj.adherence.length = newMdaObj.time.length
+  newMdaObj.active.length = newMdaObj.time.length
+
+
+  return newMdaObj
+
+}
+
+
 export const loadMdaHistoryLF = async (implementationUnit) => {
 
-  console.log( "iuLoader loadMdaHistory:", implementationUnit );
+  console.log( "iuLoader loadMdaHistoryLF:", implementationUnit );
 
 
   const IUid = implementationUnit ? implementationUnit : 'AGO02107'
@@ -341,6 +437,27 @@ export const generateMdaFutureFromDefaults = (simState) => {
     MDAactive.push( active );
   }
 
+  let MDAcoverageInfants = [];
+  for ( let i = 0; i < numberOfYears; i++ ) {
+    MDAcoverageInfants.push( simState.settings.coverageInfants)
+  }
+
+  let MDAcoveragePreSAC = [];
+  for ( let i = 0; i < numberOfYears; i++ ) {
+    MDAcoveragePreSAC.push( simState.settings.coveragePreSAC)
+  }
+
+  let MDAcoverageSAC = [];
+  for ( let i = 0; i < numberOfYears; i++ ) {
+    MDAcoverageSAC.push( simState.settings.coverageSAC)
+  }
+
+  let MDAcoverageAdults = [];
+  for ( let i = 0; i < numberOfYears; i++ ) {
+    MDAcoverageAdults.push( simState.settings.coverageAdults)
+  }
+
+
   const newMDAs = {
     time: [ ...MDAtime ],
     coverage: [ ...MDAcoverage ],
@@ -348,6 +465,10 @@ export const generateMdaFutureFromDefaults = (simState) => {
     bednets: [ ...MDAbednets ],
     regimen: [ ...MDAregimen ],
     active: [ ...MDAactive ],
+    coverageInfants: [ ...MDAcoverageInfants ],
+    coveragePreSAC: [ ...MDAcoveragePreSAC ],
+    coverageSAC: [ ...MDAcoverageSAC ],
+    coverageAdults: [ ...MDAcoverageAdults ],  
   };
 
   return newMDAs;
@@ -403,6 +524,27 @@ export const generateMdaFutureFromScenario = ( scenario ) => {
     MDAactive.push( active );
   }
 
+  let MDAcoverageInfants = [];
+  for ( let i = 0; i < numberOfYears; i++ ) {
+    MDAcoverageInfants.push( scenario.settings.coverageInfants[i])
+  }
+
+  let MDAcoveragePreSAC = [];
+  for ( let i = 0; i < numberOfYears; i++ ) {
+    MDAcoveragePreSAC.push( scenario.settings.coveragePreSAC[i])
+  }
+
+  let MDAcoverageSAC = [];
+  for ( let i = 0; i < numberOfYears; i++ ) {
+    MDAcoverageSAC.push( scenario.settings.coverageSAC[i])
+  }
+
+  let MDAcoverageAdults = [];
+  for ( let i = 0; i < numberOfYears; i++ ) {
+    MDAcoverageAdults.push( scenario.settings.coverageAdults[i])
+  }
+
+
   const newMDAs = {
     time: [ ...MDAtime ],
     coverage: [ ...MDAcoverage ],
@@ -410,6 +552,10 @@ export const generateMdaFutureFromScenario = ( scenario ) => {
     bednets: [ ...MDAbednets ],
     regimen: [ ...MDAregimen ],
     active: [ ...MDAactive ],
+    coverageInfants: [ ...MDAcoverageInfants ],
+    coveragePreSAC: [ ...MDAcoveragePreSAC ],
+    coverageSAC: [ ...MDAcoverageSAC ],
+    coverageAdults: [ ...MDAcoverageAdults ],  
   };
 
   return newMDAs;
@@ -463,6 +609,27 @@ export const generateMdaFutureFromScenarioSettings = ( scenario ) => {
     MDAactive.push( active );
   }
 
+  let MDAcoverageInfants = [];
+  for ( let i = 0; i < numberOfYears; i++ ) {
+    MDAcoverageInfants.push( scenario.settings.coverageInfants)
+  }
+
+  let MDAcoveragePreSAC = [];
+  for ( let i = 0; i < numberOfYears; i++ ) {
+    MDAcoveragePreSAC.push( scenario.settings.coveragePreSAC)
+  }
+
+  let MDAcoverageSAC = [];
+  for ( let i = 0; i < numberOfYears; i++ ) {
+    MDAcoverageSAC.push( scenario.settings.coverageSAC)
+  }
+
+  let MDAcoverageAdults = [];
+  for ( let i = 0; i < numberOfYears; i++ ) {
+    MDAcoverageAdults.push( scenario.settings.coverageAdults)
+  }
+
+
   const newMDAs = {
     time: [ ...MDAtime ],
     coverage: [ ...MDAcoverage ],
@@ -470,6 +637,10 @@ export const generateMdaFutureFromScenarioSettings = ( scenario ) => {
     bednets: [ ...MDAbednets ],
     regimen: [ ...MDAregimen ],
     active: [ ...MDAactive ],
+    coverageInfants: [ ...MDAcoverageInfants ],
+    coveragePreSAC: [ ...MDAcoveragePreSAC ],
+    coverageSAC: [ ...MDAcoverageSAC ],
+    coverageAdults: [ ...MDAcoverageAdults ],  
   };
 
   return newMDAs;

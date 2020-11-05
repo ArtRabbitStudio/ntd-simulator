@@ -25,8 +25,8 @@ const SettingPrecision = ({ inModal, label, classAdd,showPrecisionSlider, setGra
       {showPrecisionSlider && <Slider
         className={classes.precisionSlider}
         value={ scenarioState.scenarioData[ scenarioId ].settings.runs }
-        min={1}
-        step={1}
+        min={10}
+        step={5}
         max={200}
         onChange={(event, newValue) => {
 

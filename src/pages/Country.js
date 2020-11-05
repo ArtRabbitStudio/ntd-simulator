@@ -5,7 +5,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import SimpleDialog from 'pages/components/SimpleDialog'
 import { useDataAPI, useUIState } from 'hooks/stateHooks'
 import Map from 'components/Map'
-import { DISEASE_LIMF } from "AppConstants";
+import { DISEASE_LIMF, DISEASE_TRACHOMA, DISEASE_STH_ROUNDWORM } from 'AppConstants';
 
 const useStyles = makeStyles(theme => ({
     headLeftColumn: {
@@ -82,8 +82,21 @@ const Country = props => {
 
     }*/
 
-    const legend = disease === DISEASE_LIMF ? 'Prevalence map and trends since 2010.' : 'Prevalence map and trends since 2017'
-
+    let legend = ''
+    switch ( disease ) {
+        case DISEASE_LIMF:
+            legend = 'Prevalence map and trends since 2010.'
+            break
+        case DISEASE_TRACHOMA:
+            legend = 'Prevalence map and trends since 2017'
+            break
+        case DISEASE_STH_ROUNDWORM:
+            legend = 'Prevalence map and trends since 2017'
+            break
+        default: 
+            legend = 'Prevalence map and trends since 2010.'
+    }
+    
 
     return (
       <React.Fragment>

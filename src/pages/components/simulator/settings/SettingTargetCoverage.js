@@ -15,7 +15,9 @@ const SettingTargetCoverage = ({
   scenarioId,
   min,
   max,
-  step
+  step,
+  title,
+  valueKey
 }) => {
   const classes = useStyles()
   const { dispatchSimState } = useSimulatorStore()
@@ -26,19 +28,23 @@ const SettingTargetCoverage = ({
   const stepVal = step ? step : 1
   const isPerIUSetting = value !== null && typeof value !== 'undefined';
 
+  // make title and key a parameter to pass in so we can utilise this slider instead of making new ones
+  const titleVal = title ? title : "Proportion of the eligible population that will be treated."
+  const keyVal = valueKey ? valueKey : 'coverage'
+
   scenarioId = scenarioId ? scenarioId : scenarioState.currentScenarioId;
 
   /* TODO FIXME */
   const handleChange = (event, newValue) => {
     // this used to be a special occastion. If nothing changes we can use the handleSlerChanges handler instead.
     if ( isPerIUSetting ) {
-      dispatchSimState({ type: 'coverage', payload: newValue })
+      dispatchSimState({ type: keyVal, payload: newValue })
     }
     else {
       dispatchScenarioStateUpdate( {
         type: ScenarioStoreConstants.ACTION_TYPES.UPDATE_SCENARIO_SETTING_BY_ID,
         id: scenarioId,
-        key: 'coverage',
+        key: keyVal,
         value: newValue
       } );
     }
@@ -47,7 +53,7 @@ const SettingTargetCoverage = ({
   return (
     <FormControl fullWidth className={`${classes.formControl} ${classAdd}`}>
        <Tooltip
-        title="Proportion of the eligible population that will be treated."
+        title={titleVal}
         aria-label="info"
       >
       <FormLabel
@@ -63,7 +69,7 @@ const SettingTargetCoverage = ({
       </FormLabel>
       </Tooltip>
       <Slider
-        value={ isPerIUSetting ? value : scenarioState.scenarioData[ scenarioId ].settings.coverage}
+        value={ isPerIUSetting ? value : scenarioState.scenarioData[ scenarioId ].settings[ keyVal ]}
         min={minVal}
         step={stepVal}
         max={maxVal}

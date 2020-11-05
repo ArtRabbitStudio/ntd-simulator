@@ -12,7 +12,7 @@ import useStyles from 'theme/Setup';
 import { SettingSpecificScenario } from 'pages/components/simulator/settings';
 import { loadAllIUhistoricData } from 'pages/components/simulator/helpers/iuLoader';
 import SessionStorage from 'pages/components/simulator/helpers/sessionStorage';
-import { DISEASE_LIMF } from 'AppConstants';
+import { DISEASE_LIMF, DISEASE_TRACHOMA, DISEASE_STH_ROUNDWORM } from 'AppConstants';
 
 const PerDiseaseSetup = (props) => {
   const [isLoading, setIsLoading] = useState(false)
@@ -26,6 +26,7 @@ const PerDiseaseSetup = (props) => {
 
   const doWeHaveData = simState.IUData.id === implementationUnit
   const loadData = async () => {
+    console.log('loadiing historical data in PerDisease setup')
     await loadAllIUhistoricData(
       simState,
       dispatchSimState,

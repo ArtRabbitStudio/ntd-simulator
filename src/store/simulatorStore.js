@@ -58,6 +58,12 @@ const initialState = ( () => {
         vecCap: 0, // $("#vectorialCapacity").val(),
         vecComp: 0, //$("#vectorialCompetence").val(),
         vecD: 0, //$("#vectorialDeathRate").val(),
+        // additions for sth roundworm
+        // "cov_infants","cov_preSAC","cov_SAC","cov_adults"
+        coverageInfants: 0,
+        coveragePreSAC: 0,
+        coverageSAC: 75, // who guidelines
+        coverageAdults: 0, 
       },
 
       IUData: {
@@ -209,6 +215,26 @@ const reducer = ( incomingSimState, action ) => {
         ...simState,
         settings: { ...simState.settings, runs: action.payload }
       }
+    case 'coverageInfants':
+      return {
+        ...simState,
+        settings: { ...simState.settings, coverageInfants: action.payload }
+      }
+      case 'coveragePreSAC':
+    return {
+      ...simState,
+      settings: { ...simState.settings, coveragePreSAC: action.payload }
+    }
+    case 'coverageSAC':
+    return {
+      ...simState,
+      settings: { ...simState.settings, coverageSAC: action.payload }
+    }
+    case 'coverageAdults':
+    return {
+      ...simState,
+      settings: { ...simState.settings, coverageAdults: action.payload }
+    }
     default:
       throw new Error(`Unhandled action type: ${action.type}`)
   }

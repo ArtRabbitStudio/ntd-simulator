@@ -31,7 +31,7 @@ import {
 } from "lodash";
 import { color, extent, scaleSymlog, interpolateHcl } from "d3";
 
-import { DISEASE_LIMF, DISEASE_TRACHOMA } from "AppConstants";
+import { DISEASE_LIMF, DISEASE_TRACHOMA, DISEASE_STH_ROUNDWORM } from 'AppConstants';
 
 //const seq5 = ["#BA455E", "#CB7386", "#DDA2AF", "#EED0D7", "#ffffff"];
 //const seq5b = ["#A91636", "#BA455E", "#CB7386", "#DDA2AF", "#FFFFFF"];
@@ -97,23 +97,40 @@ const defaultScales = {
 function generateStats(data,disease) {
 
   let prevExtent = []
-  if ( disease === DISEASE_LIMF ) {
-    prevExtent = flow(
-      values,
-      map(({ prevalence }) => {
-        const pValues = values(prevalence);
-        return [min(pValues), max(pValues)];
-      })
-    )(data);
-  } else {
-    prevExtent = flow(
-      values,
-      map(({ prevalence }) => {
-        const pValues = values(prevalence);
-        return [pValues[17], pValues[19]];
-      })
-    )(data);
+  switch ( disease ) {
+    case DISEASE_LIMF:
+      prevExtent = flow(
+        values,
+        map(({ prevalence }) => {
+          const pValues = values(prevalence);
+          return [min(pValues), max(pValues)];
+        })
+      )(data);
+      break
+    case DISEASE_TRACHOMA:
+      prevExtent = flow(
+        values,
+        map(({ prevalence }) => {
+          const pValues = values(prevalence);
+          return [pValues[17], pValues[19]];
+        })
+      )(data);
+      break
+    case DISEASE_STH_ROUNDWORM:
+      prevExtent = flow(
+        values,
+        map(({ prevalence }) => {
+          const pValues = values(prevalence);
+          return [pValues[17], pValues[19]];
+        })
+      )(data);
+      break
+    default:
+      prevExtent = []
+      break
   }
+
+
   const [minN, maxN] = zip(...prevExtent);
 
 
@@ -212,10 +229,18 @@ function createEntries({ data, relations, key, disease }) {
       const prevValues = values(prevalence);
       // take specific value depending on data we're assuming it's supplied from 2010 - 2019
       let performance = 0
-      if ( disease === DISEASE_LIMF ) {
-        performance = round(last(prevValues) - prevValues[9]*100)/100;
-      } else {
-        performance = round(last(prevValues) - prevValues[17]*100)/100;
+      switch ( disease ) {
+        case DISEASE_LIMF:
+          performance = round(last(prevValues) - prevValues[9]*100)/100;
+          break
+        case DISEASE_TRACHOMA:
+          performance = round(last(prevValues) - prevValues[17]*100)/100;
+          break
+        case DISEASE_STH_ROUNDWORM:
+          performance = round(last(prevValues) - prevValues[17]*100)/100;
+          break
+        default:
+          break
       }
       
       // this looks at the entire range from 2000 - 2019 or first and last
@@ -711,7 +736,7 @@ class DataAPI {
     return null;
   }
   get diseases() {
-    return [DISEASE_LIMF, DISEASE_TRACHOMA];
+    return [DISEASE_LIMF, DISEASE_TRACHOMA, DISEASE_STH_ROUNDWORM];
   }
 
   get regimes() {

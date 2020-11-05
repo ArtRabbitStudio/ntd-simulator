@@ -14,7 +14,7 @@ import RotateLeftIcon from '@material-ui/icons/RotateLeft'
 import { observer } from 'mobx-react'
 
 import PropTypes from 'prop-types'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, Fragment } from 'react'
 import { ScenarioGraphLF } from 'pages/components/diseases/lf';
 import { ScenarioGraphTrachoma } from 'pages/components/diseases/trachoma';
 import { useUIState, useDataAPI } from 'hooks/stateHooks'
@@ -23,7 +23,7 @@ import ChartSettings from 'pages/components/simulator/ChartSettings'
 import MdaRounds from 'pages/components/simulator/MdaRounds'
 import DiseaseModels from 'pages/components/simulator/models/DiseaseModels';
 
-import { DISEASE_LIMF } from 'AppConstants';
+import { DISEASE_LIMF, DISEASE_TRACHOMA, DISEASE_STH_ROUNDWORM } from 'AppConstants';
 
 // settings
 import {
@@ -40,6 +40,7 @@ import {
 } from 'pages/components/simulator/settings'
 import useStyles from 'pages/components/simulator/styles'
 import TextContents from 'pages/components/TextContents'
+import { ScenarioGraphSTHRoundworm } from '../diseases/sth-roundworm'
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props
@@ -120,7 +121,7 @@ const ScenarioDisplay = (props) => {
               {scenarioData.label}
             </Typography>
 
-            { disease === DISEASE_LIMF ?
+            { (disease === DISEASE_LIMF || disease === DISEASE_STH_ROUNDWORM) &&
               <SettingPrecision
                 classAdd={classes.precision}
                 inModal={true}
@@ -129,7 +130,8 @@ const ScenarioDisplay = (props) => {
                 setGraphTypeSimple={handleGraphTypeChange}
                 graphTypeSimple={graphTypeSimpleLocal}
               />
-            : 
+            }
+            { disease === DISEASE_TRACHOMA &&
               <SettingPrecision
                 classAdd={classes.precision}
                 inModal={true}
@@ -189,12 +191,13 @@ const ScenarioDisplay = (props) => {
                   <SettingDrugRegimen inModal={true} label="Drug regimen" />
                 }
 
-                { disease === DISEASE_LIMF ?
+                { disease === DISEASE_LIMF &&
                   <SettingTargetCoverage
                     inModal={true}
                     label="Treatment target coverage"
                   />
-                :
+                }
+                { disease === DISEASE_TRACHOMA &&
                   <SettingTargetCoverage
                     inModal={true}
                     min={60}
@@ -202,6 +205,56 @@ const ScenarioDisplay = (props) => {
                     step={10}
                     label="Treatment target coverage"
                   />
+                }
+
+                { disease === DISEASE_STH_ROUNDWORM &&
+                <Fragment>
+                  <SettingTargetCoverage
+                    scenarioId={ scenarioData.id }
+                    inModal={true}
+                    label="MDA Coverage Infants"
+                    min={0}
+                    max={100}
+                    step={5}
+                    valueKey="coverageInfants"
+                    title="Proportion of infants that will be treated."
+                  />
+              
+                  <SettingTargetCoverage
+                    scenarioId={ scenarioData.id }
+                    inModal={true}
+                    label="MDA Coverage Preschool Children"
+                    min={0}
+                    max={100}
+                    step={5}
+                    valueKey="coveragePreSAC"
+                    title="Proportion of preschool age children that will be treated."
+                  />
+              
+                  <SettingTargetCoverage
+                    scenarioId={ scenarioData.id }
+                    inModal={true}
+                    label="MDA Coverage School-Age Children "
+                    min={0}
+                    max={100}
+                    step={5}
+                    valueKey="coverageSAC"
+                    title="Proportion of school-age children that will be treated."
+                  />
+                
+                  <SettingTargetCoverage
+                    scenarioId={ scenarioData.id }
+                    inModal={true}
+                    label="MDA Coverage Adults"
+                    min={0}
+                    max={100}
+                    step={5}
+                    valueKey="coverageAdults"
+                    title="Proportion of adults that will be treated."
+                  />
+                </Fragment>
+                
+                
                 }
 
                 {disease === DISEASE_LIMF && 
@@ -294,24 +347,38 @@ const ScenarioDisplay = (props) => {
             </div>
           )}
 
-          { disease === DISEASE_LIMF ?
+          { disease === DISEASE_LIMF &&
 
-          <ScenarioGraphLF
-            data={scenarioData}
-            graphTypeSimple={graphTypeSimpleLocal}
-            showAllResults={false}
-            metrics={[graphMetric]}
-            simInProgress={props.simInProgress}
-            simNeedsRerun={ scenarioState.scenarioData[ scenarioState.currentScenarioId ].isDirty }
-            classes={classes}
-            IU={implementationUnit}
-            IUData={selectedIUData}
-          />
-
-          /* HERE'S WHERE WE PUT THE TRACHOMA RESULT GRAPH COMPONENT WHEN IT'S READY */
-          : 
+            <ScenarioGraphLF
+              data={scenarioData}
+              graphTypeSimple={graphTypeSimpleLocal}
+              showAllResults={false}
+              metrics={[graphMetric]}
+              simInProgress={props.simInProgress}
+              simNeedsRerun={ scenarioState.scenarioData[ scenarioState.currentScenarioId ].isDirty }
+              classes={classes}
+              IU={implementationUnit}
+              IUData={selectedIUData}
+            />
+        
+          }         
+          { disease === DISEASE_TRACHOMA &&
           
           <ScenarioGraphTrachoma
+              data={scenarioData}
+              graphTypeSimple={graphTypeSimpleLocal}
+              showAllResults={false}
+              simInProgress={props.simInProgress}
+              simNeedsRerun={ scenarioState.scenarioData[ scenarioState.currentScenarioId ].isDirty }
+              classes={classes}
+              IU={implementationUnit}
+              IUData={selectedIUData}
+          />
+          }
+
+          { disease === DISEASE_STH_ROUNDWORM &&
+          
+          <ScenarioGraphSTHRoundworm
               data={scenarioData}
               graphTypeSimple={graphTypeSimpleLocal}
               showAllResults={false}
