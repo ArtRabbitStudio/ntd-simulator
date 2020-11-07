@@ -7,7 +7,7 @@ import { DISEASE_LABELS } from '../AppConstants'
 // could be moved to config file, disease must match directory name in public
 
 let diseases = []
-for ( const [key, value] of Object.entries( DISEASE_LABELS ) ) {
+for ( const [key, ] of Object.entries( DISEASE_LABELS ) ) {
   diseases.push(key)
 }
 const levels = ['country', 'state', 'iu']
