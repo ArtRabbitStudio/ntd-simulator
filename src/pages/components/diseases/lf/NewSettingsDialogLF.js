@@ -21,7 +21,7 @@ const NewSettingsDialogLF = ( { scenarioData, action, cancel, newScenarioSetting
       cancel={ cancel }
       scenarioData={ scenarioData }
       newScenarioSettingsOpen={ newScenarioSettingsOpen }
-      showPrecision={ true }
+      showPrecision={ false }
     >
 
       <SettingBedNetCoverage
