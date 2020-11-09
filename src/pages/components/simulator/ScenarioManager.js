@@ -20,6 +20,8 @@ import { loadAllIUhistoricData } from 'pages/components/simulator/helpers/iuLoad
 import { NewSettingsDialogLF } from 'pages/components/diseases/lf';
 import { NewSettingsDialogTrachoma } from 'pages/components/diseases/trachoma';
 import { NewSettingsDialogSTHRoundworm } from 'pages/components/diseases/sth-roundworm';
+import { DISEASE_LIMF, DISEASE_TRACHOMA, DISEASE_STH_ROUNDWORM } from 'AppConstants';
+
 
 const settingsDialogComponents = {
   lf: NewSettingsDialogLF,
@@ -410,9 +412,6 @@ const ScenarioManager = ( props ) => {
 
   const SettingsDialogComponent = ( disease !== null ) ? settingsDialogComponents[ disease ] : null;
 
-
-
-
   return (
     <div id="ScenarioManager">
         <section className={classes.simulator}>
@@ -483,7 +482,18 @@ const ScenarioManager = ( props ) => {
               open={ confirmationOpen }
             />
 
-            { simulationProgress !== 0 && simulationProgress !== 100 && (
+            { (simInProgress) && disease === DISEASE_STH_ROUNDWORM && (
+ 
+              <div className={ classes.progress }>
+                <CircularProgress
+                  variant="indeterminate"
+                  value={ simulationProgress }
+                  color="primary"
+                />
+              </div>
+            ) }
+            { (simulationProgress !== 0 && simulationProgress !== 100) && ( disease === DISEASE_STH_ROUNDWORM || disease === DISEASE_TRACHOMA ) && (
+ 
               <div className={ classes.progress }>
                 <CircularProgress
                   variant="determinate"
@@ -491,7 +501,7 @@ const ScenarioManager = ( props ) => {
                   color="primary"
                 />
               </div>
-            ) }
+              ) }
           </Grid>
         </section>
 

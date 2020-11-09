@@ -9,7 +9,7 @@ import {
 } from '@material-ui/core'
 
 const ConfirmationDialog = props => {
-  const { onClose, onConfirm, open, title, ...other } = props
+  const { onClose, onConfirm, open, title, intro, ...other } = props
 
   const handleCancel = () => {
     onClose()
@@ -31,11 +31,14 @@ const ConfirmationDialog = props => {
         <Typography variant="h3" component="h2" style={{ marginTop: '8px' }}>
           {title}
         </Typography>
+        <Typography variant="body2" component="p" style={{ marginTop: '8px' }}>
+          {intro}
+        </Typography>
       </DialogTitle>
       <DialogActions
         style={{ padding: '8px 16px 24px', justifyContent: 'center' }}
       >
-        <Button onClick={handleCancel} autoFocus variant="contained">
+        <Button onClick={handleCancel} variant="contained">
           Cancel
         </Button>
         <Button onClick={handleOk} color="primary" variant="contained">
