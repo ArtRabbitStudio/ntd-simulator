@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
 import { generateMdaFutureFromScenarioSettings } from 'pages/components/simulator/helpers/iuLoader';
 import { csv } from 'd3';
-import { DISEASE_TRACHOMA } from 'AppConstants';
+import { DISEASE_TRACHOMA,DISEASE_STH_ROUNDWORM } from 'AppConstants';
 
 // convert '02-2020' to 20.16666666666666666
 const convertDateIndex = ( key ) => {
@@ -133,8 +133,8 @@ export default {
     
     const newScenario =  {
       ...newScenarioData,
-      mdaFuture: generateMdaFutureFromScenarioSettings( newScenarioData ),
-      mda2015: {time:[204,216,228]}
+      mdaFuture: generateMdaFutureFromScenarioSettings( newScenarioData,DISEASE_STH_ROUNDWORM ),
+      mda2015: {time:[204,216]}
     };
 
     console.log( 'STHRoundworm inited MDA future from new scenario settings', newScenario );

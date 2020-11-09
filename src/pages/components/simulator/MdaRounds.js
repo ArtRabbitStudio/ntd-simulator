@@ -116,7 +116,12 @@ const MdaRounds = (props) => {
 
  
   const outputMDATime = (curMDARound) => {
-    const year = 2020 + ( curMDARound / 2) 
+    console.log('outputMDATime disease',disease)
+    let startYear = 2020
+    if ( disease === DISEASE_STH_ROUNDWORM ) {
+      startYear = 2019
+    }
+    const year = startYear + ( curMDARound / 2) 
     if ( year % 1 === 0 ) {
       return year
     } else {

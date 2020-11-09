@@ -133,7 +133,7 @@ export default {
     
     const newScenario =  {
       ...newScenarioData,
-      mdaFuture: generateMdaFutureFromScenarioSettings( newScenarioData ),
+      mdaFuture: generateMdaFutureFromScenarioSettings( newScenarioData,DISEASE_TRACHOMA ),
       mda2015: {time:[204,216,228]}
     };
 

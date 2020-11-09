@@ -10,7 +10,6 @@ export const loadAllIUhistoricData = async (
   implementationUnit,
   disease
 ) => {
-  console.log('loadAllIUhistoricData for', disease)
   let mdaData = null
   let params = null
   
@@ -561,16 +560,22 @@ export const generateMdaFutureFromScenario = ( scenario ) => {
   return newMDAs;
 }
 
-export const generateMdaFutureFromScenarioSettings = ( scenario ) => {
+export const generateMdaFutureFromScenarioSettings = ( scenario,disease ) => {
 
-  const numberOfYears = 11 * 2;
+  let numberOfYears = 11 * 2;
+  let startMonth = 246;
+  if ( disease === DISEASE_STH_ROUNDWORM ) {
+    // roundworm has user interaction from 2018 so 12 years in total
+    numberOfYears = 12 * 2;
+    startMonth = 228;
+  }
 
   let MDAtime = [];
 
   for ( let i = 0; i < numberOfYears; i++ ) {
     // 246/12 = 2020
     // 228/12 = 2019
-    MDAtime.push(6 * i + 246);
+    MDAtime.push(6 * i + startMonth);
   }
 
   let MDAcoverage = [];
