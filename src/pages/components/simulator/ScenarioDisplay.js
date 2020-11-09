@@ -22,6 +22,7 @@ import { useScenarioStore } from 'store/scenarioStore'
 import ChartSettings from 'pages/components/simulator/ChartSettings'
 import MdaRounds from 'pages/components/simulator/MdaRounds'
 import DiseaseModels from 'pages/components/simulator/models/DiseaseModels';
+import ConfirmationDialog from "pages/components/ConfirmationDialog";
 
 import { DISEASE_LIMF, DISEASE_TRACHOMA, DISEASE_STH_ROUNDWORM } from 'AppConstants';
 
@@ -71,6 +72,7 @@ const ScenarioDisplay = (props) => {
 
   const [ graphMetric, setGraphMetric ] = useState( 'Ms' )
   const [ graphTypeSimpleLocal, setGraphTypeSimpleLocal ] = useState(true)
+  const [ showPrecisionConfirmation, setshowPrecisionConfirmation ] = useState(false)
   const handleGraphTypeChange = () => {
     if (graphTypeSimpleLocal) {
       setGraphTypeSimpleLocal(false)
@@ -129,6 +131,7 @@ const ScenarioDisplay = (props) => {
                 label="Precision (runs)"
                 setGraphTypeSimple={handleGraphTypeChange}
                 graphTypeSimple={graphTypeSimpleLocal}
+                showDialog={setshowPrecisionConfirmation}
               />
             }
             { disease === DISEASE_TRACHOMA &&
@@ -139,6 +142,7 @@ const ScenarioDisplay = (props) => {
                 showPrecisionSlider={false}
                 setGraphTypeSimple={handleGraphTypeChange}
                 graphTypeSimple={graphTypeSimpleLocal}
+                showDialog={setshowPrecisionConfirmation}
               />
             }
 
@@ -419,11 +423,24 @@ const ScenarioDisplay = (props) => {
 
           </React.Fragment>
         ) }
-
+        <ConfirmationDialog
+          title="Setting a higher precision"
+          intro="A higher precision setting leads to less uncertainty in the results. However the running time for calculating the reulsts goes up and at the highest setting it can take up to a few minutes to see results. Do you want to increase the precision?"
+          onClose={() => {
+            setshowPrecisionConfirmation(false);
+            props.resetCurrentScenario()
+          }}
+          onConfirm={()=>{
+            setshowPrecisionConfirmation(false);
+            props.runCurrentScenario()
+          }}
+          open={showPrecisionConfirmation}
+        />
       </div>
     </div>
 
   ) : null;
+
 
   return (
     <div id="ScenarioDisplay">

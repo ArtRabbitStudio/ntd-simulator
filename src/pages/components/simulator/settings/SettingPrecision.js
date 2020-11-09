@@ -11,7 +11,7 @@ import {
   Fab
 } from "@material-ui/core";
 
-const SettingPrecision = ({ inModal, label, classAdd,showPrecisionSlider, setGraphTypeSimple,graphTypeSimple, scenarioId }) => {
+const SettingPrecision = ({ inModal, label, classAdd,showPrecisionSlider, setGraphTypeSimple,graphTypeSimple, scenarioId, showDialog }) => {
 
   const classes = useStyles();
   const { dispatchSimState } = useSimulatorStore();
@@ -29,7 +29,7 @@ const SettingPrecision = ({ inModal, label, classAdd,showPrecisionSlider, setGra
         step={5}
         max={200}
         onChange={(event, newValue) => {
-
+          const oldValue = scenarioState.scenarioData[ scenarioId ].settings.runs
           dispatchScenarioStateUpdate( {
             type: ScenarioStoreConstants.ACTION_TYPES.UPDATE_SCENARIO_SETTING_BY_ID,
             id: scenarioId,
@@ -45,6 +45,10 @@ const SettingPrecision = ({ inModal, label, classAdd,showPrecisionSlider, setGra
           if( updateSimState ) {
             // update overall simulator precision settings too
             dispatchSimState({ type: "runs", payload: newValue });
+          }
+
+          if ( oldValue < newValue && newValue > 45 ) {  
+            showDialog(true)
           }
 
         }}
