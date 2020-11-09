@@ -106,6 +106,10 @@ const ScenarioManager = ( props ) => {
 
   const callbacks = {
 
+    pleaseWaitCallback: () => {
+      console.log( "✋ Please wait, running simulation ..." );
+    },
+
     progressCallback: ( progress ) => {
       setSimulationProgress( progress );
     },
