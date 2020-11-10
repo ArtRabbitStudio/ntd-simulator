@@ -5,6 +5,8 @@ import { combineFullMda } from 'pages/components/simulator/helpers/combineFullMd
 import { trimMdaHistory } from 'pages/components/simulator/helpers/trimMdaHistory';
 import { removeInactiveMDArounds } from 'pages/components/simulator/helpers/removeInactiveMDArounds';
 import { generateMdaFutureFromDefaults, generateMdaFutureFromScenarioSettings } from 'pages/components/simulator/helpers/iuLoader';
+import { DISEASE_LIMF } from 'AppConstants';
+
 
 export default {
 
@@ -29,7 +31,7 @@ export default {
     
     const newScenario =  {
       ...newScenarioData,
-      mdaFuture: generateMdaFutureFromScenarioSettings( newScenarioData )
+      mdaFuture: generateMdaFutureFromScenarioSettings( newScenarioData,DISEASE_LIMF )
     };
 
     console.log( 'LFModel inited MDA future from new scenario settings', newScenario );

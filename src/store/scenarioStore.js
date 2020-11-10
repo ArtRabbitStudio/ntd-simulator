@@ -41,7 +41,11 @@ const settingToMdaFutureMap = {
   coverage: 'coverage',
   covN: 'bednets',
   rho: 'adherence',
-  mdaRegimen: 'regimen'
+  mdaRegimen: 'regimen',
+  coverageInfants: 'coverageInfants',
+  coveragePreSAC: 'coveragePreSAC',
+  coverageSAC: 'coverageSAC',
+  coverageAdults: 'coverageAdults'
 };
 
 const reducer = ( scenarioState, action ) => {

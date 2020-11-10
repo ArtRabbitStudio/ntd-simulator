@@ -405,7 +405,7 @@ const ScenarioDisplay = (props) => {
             <Tooltip
               title={disease === DISEASE_LIMF ? "White bars show no intervention;  blue bars show intervention, the height of the blue colour shows coverage. Historic interventions before 2019 are greyed out." 
               :
-              "White bars show no intervention;  blue bars show intervention, the height of the blue colour shows coverage. Historic interventions before 2020 are greyed out. Use the slider to adjust interruption and when MDA is discontinued."
+              "White bars show no intervention;  blue bars show intervention, the height of the blue colour shows coverage. Historic interventions are greyed out. Use the slider to adjust interruption and when MDA is discontinued."
               }
               aria-label="info"
             >
