@@ -14,6 +14,7 @@ import {
 import useStyles from 'pages/components/simulator/styles'
 
 import { DISEASE_LIMF, DISEASE_TRACHOMA, DISEASE_STH_ROUNDWORM } from 'AppConstants';
+import { FreeBreakfast } from '@material-ui/icons'
 //import ClickAway from "hooks/clickAway";
 
 const MdaRounds = (props) => {
@@ -119,7 +120,7 @@ const MdaRounds = (props) => {
     console.log('outputMDATime disease',disease)
     let startYear = 2020
     if ( disease === DISEASE_STH_ROUNDWORM ) {
-      startYear = 2019
+      startYear = 2018
     }
     const year = startYear + ( curMDARound / 2) 
     if ( year % 1 === 0 ) {
@@ -137,7 +138,20 @@ const MdaRounds = (props) => {
   const actualBar = 10
   const rightMargin = 50
   const areaOffset = rightMargin - actualBar
-  const initialOffset = disease === DISEASE_LIMF ? barWidth/2 : barWidth
+  let initialOffset = barWidth
+  switch ( disease ) {
+    case DISEASE_LIMF:
+      initialOffset = barWidth/2
+      break
+    case DISEASE_TRACHOMA:
+      initialOffset = barWidth
+      break
+    case DISEASE_STH_ROUNDWORM:
+      initialOffset = barWidth/2
+      break
+    default: 
+      initialOffset = barWidth/2
+  }
 
   const mapActiveToTime = future.active.filter((val,index)=>{
     if ( future.time[index] !== undefined ) {

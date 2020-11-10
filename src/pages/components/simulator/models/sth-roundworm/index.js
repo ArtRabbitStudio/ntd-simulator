@@ -16,26 +16,29 @@ const randomGeneratorKey = "Random Generator";
 
 const combineData = ( historicalData, futureData ) => {
 
-  const combined = historicalData.map(
+  const combined = futureData.map(
     ( item, i ) => {
 
       if (
         futureData.length > i // in case there's an empty line in the CSV
-        && item[ randomGeneratorKey ] === futureData[ i ][ randomGeneratorKey ]
+        && item[ randomGeneratorKey ] === historicalData[ i ][ randomGeneratorKey ]
       ) {
         // merging two objects
-        return Object.assign( {}, item, futureData[ i ] );
+        return Object.assign( {}, historicalData[ i ], item );
       }
 
       return {};
     }
   );
 
+
   return combined.map(
     // remove redundant columns
     ( row ) => {
       delete row[ randomGeneratorKey ];
       delete row.bet;
+      delete row.k;
+      delete row.R0;
       return row;
     }
   )
@@ -72,6 +75,7 @@ const combineData = ( historicalData, futureData ) => {
 const combineSummaries = ( historicalSummary, futureSummary ) => {
   const history = convertSummary( historicalSummary );
   const future = convertSummary( futureSummary );
+
   return {
     ts: history.ts.concat( future.ts ),
     median: history.median.concat( future.median ),
@@ -103,6 +107,8 @@ const convertSummary = ( s ) => {
   return Object.keys( s.median ).reduce(
 
     ( acc, k ) => {
+      // don't include the k column
+      if ( k === 'k' ) return acc;
 
       const ts = convertDateIndex( k );
 
@@ -144,7 +150,7 @@ export default {
     const newScenario =  {
       ...newScenarioData,
       mdaFuture: generateMdaFutureFromScenarioSettings( newScenarioData,DISEASE_STH_ROUNDWORM ),
-      mda2015: {time:[204,216]}
+      mda2015: {time:[180,192,204]}
     };
 
     console.log( 'STHRoundworm inited MDA future from new scenario settings', newScenario );

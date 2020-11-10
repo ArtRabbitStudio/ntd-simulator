@@ -268,7 +268,8 @@ export const loadMdaHistoryLF = async (implementationUnit) => {
       return true
     }),
   }
-
+  // TODO adjust this for STH
+  
   // returns one more line than it's ought to?
   newMdaObj.time.length = 20
   newMdaObj.coverage.length = 20
@@ -567,7 +568,7 @@ export const generateMdaFutureFromScenarioSettings = ( scenario,disease ) => {
   if ( disease === DISEASE_STH_ROUNDWORM ) {
     // roundworm has user interaction from 2018 so 12 years in total
     numberOfYears = 12 * 2;
-    startMonth = 228;
+    startMonth = 216;
   }
 
   let MDAtime = [];

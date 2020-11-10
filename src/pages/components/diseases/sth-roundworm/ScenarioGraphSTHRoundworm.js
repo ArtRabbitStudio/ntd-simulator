@@ -33,8 +33,8 @@ function ScenarioGraphTrachoma({
 
   metrics = ['p']
 
-  const startYear = 17
-  const futureYear = 20
+  const startYear = 15
+  const futureYear = 18
   const lPad = 50
   const rPad = 32
   const tPad = 20
@@ -263,9 +263,6 @@ function ScenarioGraphTrachoma({
     )
   
   }
-
-  return <React.Fragment><h3>Scenario graph to go here...</h3></React.Fragment>
-
 
   return (
     <React.Fragment>

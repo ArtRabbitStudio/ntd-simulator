@@ -100,6 +100,8 @@ const PerDiseaseSetup = (props) => {
       }
     })
   }
+  console.log('TODO TODO mdaObjTimeFiltered',mdaObjTimeFiltered)
+  console.log('where is the called from and do we need to make this specific and add coverage and a switch for the right year period, ah yes this will be for the mini graph we need this when we have loaded the mda history')
 
   const submitSetup = (event) => {
     dispatchSimState({
