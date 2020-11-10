@@ -45,7 +45,7 @@ const MdaRounds = (props) => {
   }
 
   const setMDAProperty = ( key, idx, newValue ) => {
-    console.log('dispatchScenarioStateUpdate',key,idx,newValue)
+    //console.log('dispatchScenarioStateUpdate',key,idx,newValue)
     dispatchScenarioStateUpdate( {
       type: ScenarioStoreConstants.ACTION_TYPES.UPDATE_SCENARIO_MDA_FUTURE_SETTING_BY_ID_AND_IDX,
       id: scenarioState.currentScenarioId,
@@ -370,7 +370,7 @@ const MdaRounds = (props) => {
                   variant="contained"
                   color="primary"
                   onClick={() => {
-                    console.log('confirm clicked')
+                    //console.log('confirm clicked')
                     setCurMDARound(-1)
                     setDoseSettingsOpen(false)
                   }}
@@ -487,7 +487,7 @@ const MdaRounds = (props) => {
                   variant="contained"
                   color="primary"
                   onClick={() => {
-                    console.log('confirm clicked')
+                    //console.log('confirm clicked')
                     setCurMDARound(-1)
                     setDoseSettingsOpen(false)
                   }}
