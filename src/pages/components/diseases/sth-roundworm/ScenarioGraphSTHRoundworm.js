@@ -1,19 +1,18 @@
 import React, { useState } from 'react'
 import { zip, zipObject, map, flatten, flattenDeep, pick, values, max, forEach } from 'lodash'
-import { scaleLinear, extent, line } from 'd3'
+import { scaleLinear, extent } from 'd3'
 import AutoSizer from 'react-virtualized-auto-sizer'
+import ScenarioGraphPath from 'pages/components/simulator/ScenarioGraphPath'
+import ScenarioGraphAtivePoint from 'pages/components/simulator/ScenarioGraphActivePoint'
+import ScenarioGraphInfoPoints from 'pages/components/simulator/ScenarioGraphInfoPoints'
+import ScenarioGraphGrid from 'pages/components/simulator/ScenarioGraphGrid'
+
 import {
   Typography,
 } from '@material-ui/core'
 
 let fadeOutTimeout = null
 
-function Path({ data, prop, x, y, color }) {
-  const coords = data.map((d) => [x(d.ts), y(d[prop])])
-  const l = line()(coords)
-
-  return <path d={l} stroke={color} fill="none" strokeWidth="2" />
-}
 
 function ScenarioGraphTrachoma({
   data,
@@ -70,95 +69,6 @@ function ScenarioGraphTrachoma({
 
   domainY[0] = 0;
 
-  const ShowActivePoint = ({ active, coord, mode }) => {
-    const highColour = mode === 'f' ? '#D86422' : '#ABB2B8'
-    const lowColour = mode === 'f' ? '#ffc914' : '#ffc914'
-    const textHigh = mode === 'f' ? '#fff' : '#fff'
-    const textLow = mode === 'f' ? '#2c3f4d' : '#2c3f4d'
-
-    return (
-      <g
-        key={`active-${active}-${mode}`}
-        transform={`translate(${coord[0]},${coord[1]})`}
-      >
-        <circle
-          fill={
-            coord[2] <= 1
-              ? lowColour
-              : coord[2] >= 6 && coord[2] <= 10
-                ? highColour
-                : coord[2] > 10
-                  ? highColour
-                  : highColour
-          }
-          fillOpacity={1}
-          r={20}
-          cx={2}
-          cy={-18}
-        ></circle>
-        <text
-          fontSize="12px"
-          fontFamily="Roboto"
-          pointerEvents="none"
-          x={2}
-          y={-18}
-          textAnchor="middle"
-          dominantBaseline="central"
-          fill={
-            coord[2] <= 1
-              ? textLow
-              : coord[2] >= 6 && coord[2] <= 10
-                ? textHigh
-                : coord[2] > 10
-                  ? textHigh
-                  : textHigh
-          }
-        >
-          {`${coord[2].toFixed(1)}%`}
-        </text>
-      </g>
-    )
-  }
-  const InfoPoints = ({ data, prop, x, y, color, mode }) => {
-    const coords = data.map((d) => [x(d.ts), y(d[prop]), d[prop]])
-    let points = null
-
-    points = coords.map((coord, i) => {
-      return (
-        <g key={`info-${i}-${mode}`} transform={`translate(${coord[0]},${coord[1]})`}>
-          <circle
-            key={`${i}-${mode}`}
-            fill={color}
-            fillOpacity={0.8}
-            r={3}
-            cx={0}
-            cy={0}
-          ></circle>
-        </g>
-      )
-    })
-
-    let hoverPoints = coords.map((coord, i) => {
-      return (
-        <g key={`hover-${i}-${mode}`} transform={`translate(${coord[0]},${coord[1]})`}>
-          <circle
-            key={`${i}-${mode}-h`}
-            fill={color}
-            fillOpacity={0}
-            r={6}
-            cx={0}
-            cy={0}
-            cursor="crosshair"
-            onMouseEnter={() => handleEnter(`${i}-${mode}`)}
-            onMouseLeave={handleLeave}
-          ></circle>
-        </g>
-      )
-    })
-    const allPoints = points.concat(hoverPoints)
-
-    return allPoints
-  }
 
   
 
@@ -260,7 +170,7 @@ function ScenarioGraphTrachoma({
         
         {metrics.map((m, i) => (
           <g key={`${i}-l`}>
-            <Path
+            <ScenarioGraphPath
               key={`${i}-l-h`}
               data={historicSeries}
               prop={m}
@@ -268,7 +178,7 @@ function ScenarioGraphTrachoma({
               y={y}
               color={hcolor}
             />
-            <Path
+            <ScenarioGraphPath
               key={`${i}-l-f`}
               data={futureSeries}
               prop={m}
@@ -282,7 +192,9 @@ function ScenarioGraphTrachoma({
         {main &&
           metrics.map((m, i) => (
             <g key={`${i}-ps`}>
-              <InfoPoints
+              <ScenarioGraphInfoPoints
+                handleEnter={(id)=>handleEnter(id)}
+                handleLeave={()=>handleLeave()}
                 key={`${i}-ps-h`}
                 data={historicSeries}
                 prop={m}
@@ -291,7 +203,9 @@ function ScenarioGraphTrachoma({
                 color={hcolor}
                 mode="h"
               />
-              <InfoPoints
+              <ScenarioGraphInfoPoints
+                handleEnter={(id)=>handleEnter(id)}
+                handleLeave={()=>handleLeave()}
                 key={`${i}-ps-f`}
                 data={futureSeries}
                 prop={m}
@@ -301,7 +215,7 @@ function ScenarioGraphTrachoma({
                 mode="f"
               />
               {activeInfo &&
-                <ShowActivePoint active={activeInfo} coord={[x(activeCoords.ts), y(activeCoords[m]), activeCoords[m]]} mode={activeMode} />
+                <ScenarioGraphAtivePoint active={activeInfo} coord={[x(activeCoords.ts), y(activeCoords[m]), activeCoords[m]]} mode={activeMode} />
               }
             </g>
           ))}
@@ -370,62 +284,7 @@ function ScenarioGraphTrachoma({
       >
         <g transform={`translate(${lPad},${yPad})`}>
           
-          <rect x={x(ticksX[0])} width={x(ticksX[futureYear - startYear])} height={svgHeight - yPad - 32 - tPad} fill="#f9f9f9" />
-          {ticksX.map((t, i) => {
-            const xt = x(t)
-            const yearLabel = 2000 + t
-            return (
-              <g key={xt}>
-                <line
-                  key={t}
-                  x1={xt}
-                  x2={xt}
-                  y1={-5}
-                  y2={height}
-                  {...(i === 0 || i === ticksX.length - 1
-                    ? {}
-                    : { strokeDasharray: '10 2' })}
-                  {...(startYear + i === futureYear ? { strokeWidth: "2" } : {})}
-                  {...(startYear + i === futureYear ? { stroke: "#ddd" } : { stroke: "#ddd" })}
-                ></line>
-                <text x={xt} y={height + yPad - 20} fontSize={12} textAnchor="middle" fill="#2c3f4d">
-                  {yearLabel}
-                </text>
-                {(i < ticksX.length - 1) && <line
-                  key={`${t}-year`}
-                  x1={xt}
-                  x2={x(t + 1) - 3}
-                  y1={height + yPad}
-                  y2={height + yPad}
-                  stroke="#CCE8F4"
-                  strokeWidth="10"
-                ></line>}
-              </g>
-            )
-          })}
-          {ticksY.map((t, i) => {
-            const yt = y(t)
-            let yearBar = null
-            return (
-              <g key={yt}>
-                <line
-                  key={t}
-                  x1={0}
-                  x2={width - lPad - rPad}
-                  y1={yt}
-                  y2={yt}
-                  stroke="#ccc"
-                  {...(i === 0 || i === ticksY.length - 1
-                    ? {}
-                    : { strokeDasharray: '10 2' })}
-                ></line>
-                <text x={-rPad} y={yt + 4} fontSize={12} fill="#2c3f4d" textAnchor="middle">
-                  {`${t}%`}
-                </text>
-                {yearBar}
-              </g>
-            )
-          })}
+          <ScenarioGraphGrid ticksX={ticksX} ticksY={ticksY} x={x} y={y} zeroYear={2000} startYear={startYear} futureYear={futureYear} svgHeight={svgHeight} height={height} tPad={tPad} yPad={yPad} lPad={lPad} rPad={rPad} width={width} />
           {graphTypeSimple && data.results &&
             <g key={`results1-stats`}>{renderRange( data.summary['min'],  data.summary['max'], data.summary['ts'], false, x, y)}</g>
           }
