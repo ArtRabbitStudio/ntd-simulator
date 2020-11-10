@@ -492,7 +492,7 @@ const ScenarioManager = ( props ) => {
                 />
               </div>
             ) }
-            { (simulationProgress !== 0 && simulationProgress !== 100) && ( disease === DISEASE_STH_ROUNDWORM || disease === DISEASE_TRACHOMA ) && (
+            { (simulationProgress !== 0 && simulationProgress !== 100) && ( disease === DISEASE_LIMF || disease === DISEASE_TRACHOMA ) && (
  
               <div className={ classes.progress }>
                 <CircularProgress
