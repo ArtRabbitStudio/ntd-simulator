@@ -185,12 +185,11 @@ export default {
      */
 
     const paramColumns = [ [ "","adjusted_years","cov_infants","cov_preSAC","cov_SAC","cov_adults" ] ];
-
     const paramData = scenarioData.mdaFuture.time.map(
       ( time, idx ) => {
         return scenarioData.mdaFuture.active[ idx ] ? [
           idx + 1,
-          ( time / 12 - 0.5 ),  // TODO check this
+          ( time / 12 ),  // TODO check this
           scenarioData.mdaFuture.coverageInfants[ idx ],
           scenarioData.mdaFuture.coveragePreSAC[ idx ],
           scenarioData.mdaFuture.coverageSAC[ idx ],
@@ -202,7 +201,6 @@ export default {
         return entry !== null;
       }
     );
-
     /*
      * this & the API co-identify a given scenario/params
      * by using a SHA256 hash of a JSON-encode of this object
