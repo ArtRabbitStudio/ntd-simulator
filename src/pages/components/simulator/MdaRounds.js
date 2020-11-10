@@ -14,7 +14,7 @@ import {
 import useStyles from 'pages/components/simulator/styles'
 
 import { DISEASE_LIMF, DISEASE_TRACHOMA, DISEASE_STH_ROUNDWORM } from 'AppConstants';
-import { FreeBreakfast } from '@material-ui/icons'
+
 //import ClickAway from "hooks/clickAway";
 
 const MdaRounds = (props) => {
@@ -117,7 +117,7 @@ const MdaRounds = (props) => {
 
  
   const outputMDATime = (curMDARound) => {
-    console.log('outputMDATime disease',disease)
+    //console.log('outputMDATime disease',disease)
     let startYear = 2020
     if ( disease === DISEASE_STH_ROUNDWORM ) {
       startYear = 2018

@@ -6,6 +6,8 @@ import { Typography, Box, Paper } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import Tooltip from './Tooltip'
 import Legend from './Legend'
+import {DISEASE_STH_ROUNDWORM } from 'AppConstants';
+
 import useMapReducer from 'hooks/useMapReducer'
 import 'mapbox-gl/dist/mapbox-gl.css'
 
@@ -39,7 +41,6 @@ function Map({
         },
     }))
 
-
     //if (countryFeatures) console.log('countryFeatures',countryFeatures)
     /*if (iuFeatures) console.log('iuFeatures',iuFeatures)
     if (countryFeatures) console.log('countryFeatures',countryFeatures)
@@ -64,6 +65,12 @@ function Map({
                 f => f.properties.id === country
             )
 
+            // TODO: update year based on disease>
+            if ( disease === DISEASE_STH_ROUNDWORM ) {
+                dispatch({ type: 'CHANGE_YEAR', payload: 2018 })
+            }
+            
+            
             if (focus) {
                 // new zooming
                 const center = centroid({ type: 'FeatureCollection', features: [focus] });
@@ -73,7 +80,7 @@ function Map({
                 //dispatch({ type: 'FOCUS', payload: focus })
             }
         }
-    }, [countryFeatures, country, dispatch, ready])
+    }, [countryFeatures, country, dispatch, ready, disease])
 
 
 
@@ -93,7 +100,7 @@ function Map({
                 if ( feature.properties.endemicity === 'Non-endemic' ) {
                     showNotAvailable('Non-endemic')
                     dispatch({ type: 'HOVEROUT' })
-                } else if ( feature.properties['prev-2019'] === "null"  ) {
+                } else if ( feature.properties[`prev-${year}`] === "null"  ) {
                     showNotAvailable('Not enough data available')
                     dispatch({ type: 'HOVEROUT' })
                 } else {
@@ -232,7 +239,7 @@ function Map({
                         <Paper>
                         <Box p={1} pb={2}>
                             <Typography variant="body2" className={classes.legendTitle}>
-                            {trendMode ? 'Prevalence 2019' : 'Prevalence 2019'}
+                            {trendMode ? `Prevalence ${year}` : `Prevalence ${year}`}
                             </Typography>
 
                             <Legend colorScale={colorScale} />
