@@ -184,12 +184,11 @@ export default {
      * maps to the appropriate columns
      */
 
-    const paramColumns = [ [ "","adjusted_years","cov_infants","cov_preSAC","cov_SAC","cov_adults" ] ];
+    const paramColumns = [ [ "time","coverage1","coverage2","coverage3","coverage4" ] ];
 
     const paramData = scenarioData.mdaFuture.time.map(
       ( time, idx ) => {
         return scenarioData.mdaFuture.active[ idx ] ? [
-          idx + 1,
           ( time / 12 - 0.5 ),  // TODO check this
           scenarioData.mdaFuture.coverageInfants[ idx ],
           scenarioData.mdaFuture.coveragePreSAC[ idx ],
