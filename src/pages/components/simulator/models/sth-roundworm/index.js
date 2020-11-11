@@ -305,94 +305,70 @@ export default {
     /*
      * fetch all the various data files
      */
-    const historicalDataPromise = new Promise(
-      ( resolve, reject ) => {
-        console.log( `STHRoundworm loading historical data ${infoJson.historicalDataUrl}` );
-        csv( infoJson.historicalDataUrl )
-        .then( ( results ) => {
-          resolve( results );
-        } );
-      }
-    );
 
-    const historicalSummaryPromise = new Promise(
-      ( resolve, reject ) => {
-        console.log( `STHRoundworm loading historical summary ${infoJson.historicalSummaryUrl}` );
-        fetch( infoJson.historicalSummaryUrl )
-        .then( ( response ) => { return response; } )
-        .then( ( res ) => { return res.json(); } )
-        .then( ( json ) => { resolve( json ); } )
-      }
-    );
-
-    const futureKKSACDataPromise = new Promise(
-      ( resolve, reject ) => {
-        console.log( `STHRoundworm loading futureKKSAC data ${infoJson.futureKKSACDataUrl}` );
-        csv( infoJson.futureKKSACDataUrl )
-        .then( ( results ) => {
-          resolve( results );
-        } );
-      }
-    );
-
-    const futureKKSACSummaryPromise = new Promise(
-      ( resolve, reject ) => {
-        console.log( `STHRoundworm loading futureKKSAC summary ${infoJson.futureKKSACSummaryUrl}` );
-        fetch( infoJson.futureKKSACSummaryUrl )
-        .then( ( response ) => { return response; } )
-        .then( ( res ) => { return res.json(); } )
-        .then( ( json ) => { resolve( json ); } )
-      }
-    );
-
-    const futureMHISACDataPromise = new Promise(
-      ( resolve, reject ) => {
-        console.log( `STHRoundworm loading futureMHISAC data ${infoJson.futureMHISACDataUrl}` );
-        csv( infoJson.futureMHISACDataUrl )
-        .then( ( results ) => {
-          resolve( results );
-        } );
-      }
-    );
-
-    const futureMHISACSummaryPromise = new Promise(
-      ( resolve, reject ) => {
-        console.log( `STHRoundworm loading futureMHISAC summary ${infoJson.futureMHISACSummaryUrl}` );
-        fetch( infoJson.futureMHISACSummaryUrl )
-        .then( ( response ) => { return response; } )
-        .then( ( res ) => { return res.json(); } )
-        .then( ( json ) => { resolve( json ); } )
-      }
-    );
-
-    Promise.all( [
-      historicalDataPromise, historicalSummaryPromise,
-      futureKKSACDataPromise, futureKKSACSummaryPromise,
-      futureMHISACDataPromise, futureMHISACSummaryPromise
-    ] )
-      .then(
-        ( [ historicalData, historicalSummary, futureKKSACData, futureKKSACSummary, futureMHISACData, futureMHISACSummary ] ) => {
-
-          const combinedData = combineData( historicalData, futureKKSACData );
-          const combinedSummary = combineSummaries( historicalSummary, futureKKSACSummary );
-
-          const result = {
-            ...scenarioData,
-            results: combinedData,
-            summary: combinedSummary
-          };
-
-          console.warn( "TODO implement combining MHISAC data/summary" );
-
-          console.log( "STHRoundworm.runScenario combined all data, calling resultCallback" );
-          callbacks.resultCallback( result, isNewScenario );
-        }
-      )
-      .catch(
-        ( e ) => {
-          console.log( "STHRoundworm.runScenario: Promise.all() caught error: ", e );
+    const dataPromiser = ( label ) => {
+      return new Promise(
+        ( resolve, reject ) => {
+          const key = `${label}DataUrl`;
+          console.log( `STHRoundworm loading ${label} data ${infoJson[ key ]}` );
+          csv( infoJson[ key ] )
+          .then( ( results ) => {
+            resolve( results );
+          } );
         }
       );
+    };
+
+    const summaryPromiser = ( label ) => {
+      return new Promise(
+        ( resolve, reject ) => {
+          const key = `${label}SummaryUrl`;
+          console.log( `STHRoundworm loading ${label} summary ${infoJson[ key ]}` );
+          fetch( infoJson[ key ] )
+          .then( ( response ) => { return response; } )
+          .then( ( res ) => { return res.json(); } )
+          .then( ( json ) => { resolve( json ); } )
+        }
+      );
+    };
+
+    const promises = [ 'historicalKKSAC', 'historicalMHISAC', 'futureKKSAC', 'futureMHISAC' ].reduce(
+      ( acc, label ) => {
+        acc.push( dataPromiser( label ) );
+        acc.push( summaryPromiser( label ) );
+        return acc;
+      },
+      []
+    );
+
+    Promise.all( promises ).then(
+      (
+        [
+          historicalKKSACData, historicalKKSACSummary, historicalMHISACData, historicalMHISACSummary,
+          futureKKSACData, futureKKSACSummary, futureMHISACData, futureMHISACSummary
+        ]
+      ) => {
+
+        const combinedData = combineData( historicalKKSACData, futureKKSACData );
+        const combinedSummary = combineSummaries( historicalKKSACSummary, futureKKSACSummary );
+
+        const result = {
+          ...scenarioData,
+          results: combinedData,
+          summary: combinedSummary
+        };
+
+        console.warn( "TODO implement combining MHISAC data/summary" );
+
+        console.log( "STHRoundworm.runScenario combined all data, calling resultCallback" );
+        callbacks.resultCallback( result, isNewScenario );
+      }
+    )
+    .catch(
+      ( e ) => {
+        console.log( "STHRoundworm.runScenario: Promise.all() caught error: ", e );
+      }
+    );
 
   },
 
