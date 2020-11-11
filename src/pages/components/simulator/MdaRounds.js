@@ -191,9 +191,21 @@ const MdaRounds = (props) => {
                 className={`bar history`}
                 title={history.coverage ?  outputTitle(history.time[i],history.coverage[i],history.adherence[i],history.bednets[i],history.regimen[i],true,future.coverageInfants[i],future.coveragePreSAC[i],future.coverageSAC[i],future.coverageAdults[i]) : outputTitle(history.time[i]) }
               >
-                <span
+                {LFandTrachoma && <span
                   style={{
                     height: history.coverage ? history.coverage[i] : 0,
+                  }}
+                ></span>}
+
+                {disease === DISEASE_STH_ROUNDWORM && <span
+                  style={{
+                    height: history.coverage ? history.coverage[i] : 0,
+                  }}
+                ></span>}
+
+                <span
+                  style={{
+                    height: history.coverageInfants ? ( ( ( history.coverageInfants[i]+history.coveragePreSAC[i]+history.coverageSAC[i]+history.coverageAdults[i] ) / 400 ) * 100 ) : 0,
                   }}
                 ></span>
               </div>

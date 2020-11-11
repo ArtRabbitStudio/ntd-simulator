@@ -4,6 +4,7 @@ import { csv } from 'd3';
 import { DISEASE_TRACHOMA,DISEASE_STH_ROUNDWORM } from 'AppConstants';
 import sha256 from 'fast-sha256';
 import nacl from 'tweetnacl-util'
+import { CollectionsOutlined } from '@material-ui/icons';
 
 // convert '02-2020' to 20.16666666666666666
 const convertDateIndex = ( key ) => {
@@ -127,7 +128,7 @@ const convertSummary = ( s ) => {
 
 export default {
 
-  createNewScenario: function ( settings ) {
+  createNewScenario: function ( settings, mdaObj ) {
 
       const label = new Date().toISOString().split('T').join(' ').replace(/\.\d{3}Z/, '');
       const id = uuidv4();
@@ -135,22 +136,45 @@ export default {
       const newScenarioData = {
         id,
         label,
-        type: DISEASE_TRACHOMA,
+        type: DISEASE_STH_ROUNDWORM,
         settings: { ...settings } // should this be here or in the initScenario?
       };
 
       console.log( `STHRoundworm auto-created new scenario id ${newScenarioData.id}` );
 
-      return this.initScenario( newScenarioData );
+      return this.initScenario( newScenarioData, mdaObj );
 
   },
 
-  initScenario: function( newScenarioData ) {
+  initScenario: function( newScenarioData, mdaObj ) {
     
+    const startYear = 15 *12
+    const endYear = 17 * 12
+    let mda2015 = {time:[180,192,204]}
+    if ( mdaObj ) {
+      mda2015 = {
+        time: [],
+        coverageAdults: [],
+        coverageInfants: [],
+        coveragePreSAC: [],
+        coverageSAC: []
+      }
+      mdaObj.time.forEach( (item,index) => {
+        if ( item >= startYear && item <= endYear ) {
+          mda2015.time.push(mdaObj.time[index])
+          mda2015.coverageAdults.push(mdaObj.coverageAdults[index])
+          mda2015.coverageInfants.push(mdaObj.coverageInfants[index])
+          mda2015.coveragePreSAC.push(mdaObj.coveragePreSAC[index])
+          mda2015.coverageSAC.push(mdaObj.coverageSAC[index])
+        }
+      });
+      console.log('mda2015',mda2015)
+    }
+
     const newScenario =  {
       ...newScenarioData,
       mdaFuture: generateMdaFutureFromScenarioSettings( newScenarioData,DISEASE_STH_ROUNDWORM ),
-      mda2015: {time:[180,192,204]}
+      mda2015
     };
 
     console.log( 'STHRoundworm inited MDA future from new scenario settings', newScenario );
@@ -160,12 +184,12 @@ export default {
   },
 
   runScenario: async function ( { scenarioId, scenarioState, simState, callbacks } ) {
-
+    console.log('simState',simState)
     const isNewScenario = scenarioId ? false : true;
 
     const scenarioData =
       isNewScenario
-        ? this.createNewScenario( simState.settings )
+        ? this.createNewScenario( simState.settings, simState.IUData.mdaObj )
         : scenarioState.scenarioData[ scenarioId ];
 
     console.log( 'STHRoundworm fetching prepped scenarioData', scenarioData );

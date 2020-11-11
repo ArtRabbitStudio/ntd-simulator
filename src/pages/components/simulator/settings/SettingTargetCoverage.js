@@ -50,6 +50,15 @@ const SettingTargetCoverage = ({
     }
   }
 
+  let initalValue = isPerIUSetting ? value : 0
+  // this catches any setup that isn't finished
+  // for example if the mda file couldn't be loaded
+  if ( scenarioState.scenarioData[ scenarioId ] ) {
+    if ( scenarioState.scenarioData[ scenarioId ].settings[ keyVal ] ) {
+      initalValue = scenarioState.scenarioData[ scenarioId ].settings[ keyVal ]
+    }
+  }
+
   return (
     <FormControl fullWidth className={`${classes.formControl} ${classAdd}`}>
        <Tooltip
@@ -69,7 +78,7 @@ const SettingTargetCoverage = ({
       </FormLabel>
       </Tooltip>
       <Slider
-        value={ isPerIUSetting ? value : scenarioState.scenarioData[ scenarioId ].settings[ keyVal ]}
+        value={initalValue}
         min={minVal}
         step={stepVal}
         max={maxVal}

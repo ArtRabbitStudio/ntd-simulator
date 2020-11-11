@@ -36,7 +36,7 @@ function PrevalenceMiniGraph({
       break
     case DISEASE_STH_ROUNDWORM:
       start = 2010
-      end = 2019
+      end = 2018
       break
     default: 
       start = 2010

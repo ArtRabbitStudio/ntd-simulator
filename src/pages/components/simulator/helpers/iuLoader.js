@@ -8,7 +8,8 @@ export const loadAllIUhistoricData = async (
   simState,
   dispatchSimState,
   implementationUnit,
-  disease
+  disease,
+  country
 ) => {
   let mdaData = null
   let params = null
@@ -23,7 +24,7 @@ export const loadAllIUhistoricData = async (
     case DISEASE_TRACHOMA:
       break;
     case DISEASE_STH_ROUNDWORM:
-      mdaData = await loadMdaHistorySTHRoundworm(implementationUnit)
+      mdaData = await loadMdaHistorySTHRoundworm(implementationUnit,country)
       break
     default:
       break;
@@ -145,11 +146,27 @@ export const loadAllIUhistoricData = async (
 }
 
 
-export const loadMdaHistorySTHRoundworm = async (implementationUnit) => {
+export const loadMdaHistorySTHRoundworm = async (implementationUnit,country) => {
   console.log( "iuLoader loadMdaHistorySTHRoundworm:", implementationUnit );
 
   const IUid = implementationUnit ? implementationUnit : 'AGO02107'
-  const mdaResponse = await fetch(`/diseases/sth-roundworm/mda-history/${IUid}.csv`)
+  // construct path
+  const mdaHistoryPath = `https://storage.googleapis.com/ntd-disease-simulator-data/diseases/sth-roundworm/source-data/${country}/${IUid}/STH_MDA_${IUid}.csv`
+  let mdaLoaded = true
+  const mdaResponse = await fetch(mdaHistoryPath).then((response)=>{
+    if ( response.status >= 400 && response.status < 600 ) {
+      throw new Error("Bad response from server")
+    }
+    return response
+  }).then((returnedResponse)=>{
+    /// complete
+    mdaLoaded = true
+    return returnedResponse
+  }).catch((error)=>{
+    mdaLoaded = false
+    return false
+  })
+  if ( !mdaLoaded ) return false 
   let reader = mdaResponse.body.getReader()
 
   // Step 3: read the data
@@ -211,7 +228,6 @@ export const loadMdaHistorySTHRoundworm = async (implementationUnit) => {
   newMdaObj.adherence.length = newMdaObj.time.length
   newMdaObj.active.length = newMdaObj.time.length
 
-
   return newMdaObj
 
 }
@@ -269,7 +285,7 @@ export const loadMdaHistoryLF = async (implementationUnit) => {
     }),
   }
   // TODO adjust this for STH
-  
+
   // returns one more line than it's ought to?
   newMdaObj.time.length = 20
   newMdaObj.coverage.length = 20
