@@ -230,7 +230,7 @@ export default {
      * previous run of the same scenario/params
      */
     const storagePath = `https://storage.googleapis.com/ntd-disease-simulator-data`;
-    const infoJsonUrl = `${storagePath}/diseases/sth-roundworm/data/${country}/${simState.IUData.id}/${digest}/Asc-${iu}-${digest}-info.json`;
+    const infoJsonUrl = `${storagePath}/diseases/sth-roundworm/data/${country}/${simState.IUData.id}/${digest}/Asc-${iu}-${digest}-info.json?ignoreCache=${Date.now()}`;
     const infoJsonResponse = await fetch( infoJsonUrl );
 
     /*
@@ -238,30 +238,39 @@ export default {
      * and wait for a result, which will come in the same
      * format, and render out the JSON file for next time
      */
-    const infoJson = ( infoJsonResponse.status === 200 )
+    let infoJson;
 
-      ? await ( async () => {
-            const res = await infoJsonResponse.text();
-            return JSON.parse( res );
-        } )()
+    try {
 
-      : await ( async () => {
-            const apiUrl = "https://sth-app-api-mijgnzszia-ew.a.run.app/run";
-            //const apiUrl = "http://localhost:5000/run"
+      infoJson = ( infoJsonResponse.status === 200 )
 
-            console.log( `STHRoundworm didn't find static info, sending scenario params to API at ${apiUrl}:`, apiParams );
+        ? await ( async () => {
+              const res = await infoJsonResponse.text();
+              return JSON.parse( res );
+          } )()
 
-            const fetchOptions = {
-              method: "POST",
-              headers: { 'content-type': 'application/json; charset=UTF-8' },
-              body: apiParamsJson
-            };
+        : await ( async () => {
+              const apiUrl = "https://sth-app-api-mijgnzszia-ew.a.run.app/run";
+              //const apiUrl = "http://localhost:5000/run"
 
-            const response = await fetch( apiUrl, fetchOptions );
-            const res = await response.text();
+              console.log( `STHRoundworm didn't find static info, sending scenario params to API at ${apiUrl}:`, apiParams );
 
-            return JSON.parse( res )
-        } )();
+              const fetchOptions = {
+                method: "POST",
+                headers: { 'content-type': 'application/json; charset=UTF-8' },
+                body: apiParamsJson
+              };
+
+              const response = await fetch( apiUrl, fetchOptions );
+              const res = await response.text();
+              return JSON.parse( res )
+          } )();
+    }
+
+    catch( e ) {
+      callbacks.failureCallback( e.message );
+      return;
+    }
 
 
     /*
@@ -287,38 +296,64 @@ export default {
       }
     );
 
-    const futureDataPromise = new Promise(
+    const futureKKSACDataPromise = new Promise(
       ( resolve, reject ) => {
-        console.log( `STHRoundworm loading future data ${infoJson.futureDataUrl}` );
-        csv( infoJson.futureDataUrl )
+        console.log( `STHRoundworm loading futureKKSAC data ${infoJson.futureKKSACDataUrl}` );
+        csv( infoJson.futureKKSACDataUrl )
         .then( ( results ) => {
           resolve( results );
         } );
       }
     );
 
-    const futureSummaryPromise = new Promise(
+    const futureKKSACSummaryPromise = new Promise(
       ( resolve, reject ) => {
-        console.log( `STHRoundworm loading future summary ${infoJson.futureSummaryUrl}` );
-        fetch( infoJson.futureSummaryUrl )
+        console.log( `STHRoundworm loading futureKKSAC summary ${infoJson.futureKKSACSummaryUrl}` );
+        fetch( infoJson.futureKKSACSummaryUrl )
         .then( ( response ) => { return response; } )
         .then( ( res ) => { return res.json(); } )
         .then( ( json ) => { resolve( json ); } )
       }
     );
 
-    Promise.all( [ historicalDataPromise, historicalSummaryPromise, futureDataPromise, futureSummaryPromise ] )
-      .then(
-        ( [ historicalData, historicalSummary, futureData, futureSummary ] ) => {
+    const futureMHISACDataPromise = new Promise(
+      ( resolve, reject ) => {
+        console.log( `STHRoundworm loading futureMHISAC data ${infoJson.futureMHISACDataUrl}` );
+        csv( infoJson.futureMHISACDataUrl )
+        .then( ( results ) => {
+          resolve( results );
+        } );
+      }
+    );
 
-          const combinedData = combineData( historicalData, futureData );
-          const combinedSummary = combineSummaries( historicalSummary, futureSummary );
+    const futureMHISACSummaryPromise = new Promise(
+      ( resolve, reject ) => {
+        console.log( `STHRoundworm loading futureMHISAC summary ${infoJson.futureMHISACSummaryUrl}` );
+        fetch( infoJson.futureMHISACSummaryUrl )
+        .then( ( response ) => { return response; } )
+        .then( ( res ) => { return res.json(); } )
+        .then( ( json ) => { resolve( json ); } )
+      }
+    );
+
+    Promise.all( [
+      historicalDataPromise, historicalSummaryPromise,
+      futureKKSACDataPromise, futureKKSACSummaryPromise,
+      futureMHISACDataPromise, futureMHISACSummaryPromise
+    ] )
+      .then(
+        ( [ historicalData, historicalSummary, futureKKSACData, futureKKSACSummary, futureMHISACData, futureMHISACSummary ] ) => {
+
+          const combinedData = combineData( historicalData, futureKKSACData );
+          const combinedSummary = combineSummaries( historicalSummary, futureKKSACSummary );
 
           const result = {
             ...scenarioData,
             results: combinedData,
             summary: combinedSummary
           };
+
+          console.warn( "TODO implement combining MHISAC data/summary" );
 
           console.log( "STHRoundworm.runScenario combined all data, calling resultCallback" );
           callbacks.resultCallback( result, isNewScenario );

@@ -116,6 +116,10 @@ const ScenarioManager = ( props ) => {
       setSimulationProgress( progress );
     },
 
+    failureCallback: ( msg ) => {
+      console.log( `⛔️ Error running model: ${msg}` );
+    },
+
     resultCallback: ( resultScenario, isNewScenario ) => {
 
       delete resultScenario.isDirty;
