@@ -151,6 +151,7 @@ export default {
     const startYear = 15 *12
     const endYear = 17 * 12
     let mda2015 = {time:[180,192,204]}
+
     if ( mdaObj ) {
       mda2015 = {
         time: [],
@@ -168,7 +169,6 @@ export default {
           mda2015.coverageSAC.push(mdaObj.coverageSAC[index])
         }
       });
-      console.log('mda2015',mda2015)
     }
 
     const newScenario =  {
@@ -184,7 +184,6 @@ export default {
   },
 
   runScenario: async function ( { scenarioId, scenarioState, simState, callbacks } ) {
-    console.log('simState',simState)
     const isNewScenario = scenarioId ? false : true;
 
     const scenarioData =

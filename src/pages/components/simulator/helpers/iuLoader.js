@@ -414,7 +414,7 @@ export const generateMdaFutureFromDefaults = (simState) => {
   for ( let i = 0; i < numberOfYears; i++ ) {
     // 246/12 = 2020
     // 228/12 = 2019
-    MDAtime.push(6 * i + 246);
+    MDAtime.push(6 * i + 240);
   }
 
   let MDAcoverage = [];
@@ -501,7 +501,7 @@ export const generateMdaFutureFromScenario = ( scenario ) => {
   for ( let i = 0; i < numberOfYears; i++ ) {
     // 246/12 = 2020
     // 228/12 = 2019
-    MDAtime.push(6 * i + 246);
+    MDAtime.push(6 * i + 240);
   }
 
   let MDAcoverage = [];
@@ -580,7 +580,7 @@ export const generateMdaFutureFromScenario = ( scenario ) => {
 export const generateMdaFutureFromScenarioSettings = ( scenario,disease ) => {
 
   let numberOfYears = 11 * 2;
-  let startMonth = 246;
+  let startMonth = 240;
   if ( disease === DISEASE_STH_ROUNDWORM ) {
     // roundworm has user interaction from 2018 so 12 years in total
     numberOfYears = 12 * 2;
