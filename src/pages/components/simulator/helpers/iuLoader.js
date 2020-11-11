@@ -8,7 +8,8 @@ export const loadAllIUhistoricData = async (
   simState,
   dispatchSimState,
   implementationUnit,
-  disease
+  disease,
+  country
 ) => {
   let mdaData = null
   let params = null
@@ -23,7 +24,7 @@ export const loadAllIUhistoricData = async (
     case DISEASE_TRACHOMA:
       break;
     case DISEASE_STH_ROUNDWORM:
-      mdaData = await loadMdaHistorySTHRoundworm(implementationUnit)
+      mdaData = await loadMdaHistorySTHRoundworm(implementationUnit,country)
       break
     default:
       break;
@@ -145,11 +146,27 @@ export const loadAllIUhistoricData = async (
 }
 
 
-export const loadMdaHistorySTHRoundworm = async (implementationUnit) => {
+export const loadMdaHistorySTHRoundworm = async (implementationUnit,country) => {
   console.log( "iuLoader loadMdaHistorySTHRoundworm:", implementationUnit );
 
   const IUid = implementationUnit ? implementationUnit : 'AGO02107'
-  const mdaResponse = await fetch(`/diseases/sth-roundworm/mda-history/${IUid}.csv`)
+  // construct path
+  const mdaHistoryPath = `https://storage.googleapis.com/ntd-disease-simulator-data/diseases/sth-roundworm/source-data/${country}/${IUid}/STH_MDA_${IUid}.csv`
+  let mdaLoaded = true
+  const mdaResponse = await fetch(mdaHistoryPath).then((response)=>{
+    if ( response.status >= 400 && response.status < 600 ) {
+      throw new Error("Bad response from server")
+    }
+    return response
+  }).then((returnedResponse)=>{
+    /// complete
+    mdaLoaded = true
+    return returnedResponse
+  }).catch((error)=>{
+    mdaLoaded = false
+    return false
+  })
+  if ( !mdaLoaded ) return false 
   let reader = mdaResponse.body.getReader()
 
   // Step 3: read the data
@@ -211,7 +228,6 @@ export const loadMdaHistorySTHRoundworm = async (implementationUnit) => {
   newMdaObj.adherence.length = newMdaObj.time.length
   newMdaObj.active.length = newMdaObj.time.length
 
-
   return newMdaObj
 
 }
@@ -268,6 +284,7 @@ export const loadMdaHistoryLF = async (implementationUnit) => {
       return true
     }),
   }
+  // TODO adjust this for STH
 
   // returns one more line than it's ought to?
   newMdaObj.time.length = 20
@@ -397,7 +414,7 @@ export const generateMdaFutureFromDefaults = (simState) => {
   for ( let i = 0; i < numberOfYears; i++ ) {
     // 246/12 = 2020
     // 228/12 = 2019
-    MDAtime.push(6 * i + 246);
+    MDAtime.push(6 * i + 240);
   }
 
   let MDAcoverage = [];
@@ -484,7 +501,7 @@ export const generateMdaFutureFromScenario = ( scenario ) => {
   for ( let i = 0; i < numberOfYears; i++ ) {
     // 246/12 = 2020
     // 228/12 = 2019
-    MDAtime.push(6 * i + 246);
+    MDAtime.push(6 * i + 240);
   }
 
   let MDAcoverage = [];
@@ -563,11 +580,11 @@ export const generateMdaFutureFromScenario = ( scenario ) => {
 export const generateMdaFutureFromScenarioSettings = ( scenario,disease ) => {
 
   let numberOfYears = 11 * 2;
-  let startMonth = 246;
+  let startMonth = 240;
   if ( disease === DISEASE_STH_ROUNDWORM ) {
     // roundworm has user interaction from 2018 so 12 years in total
     numberOfYears = 12 * 2;
-    startMonth = 228;
+    startMonth = 216;
   }
 
   let MDAtime = [];

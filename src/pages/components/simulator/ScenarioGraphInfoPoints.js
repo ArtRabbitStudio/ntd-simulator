@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 function ScenarioGraphInfoPoints({ data, prop, x, y, color, mode, handleEnter,handleLeave }) {
   

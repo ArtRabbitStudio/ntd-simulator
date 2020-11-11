@@ -4,6 +4,7 @@ import { csv } from 'd3';
 import { DISEASE_TRACHOMA,DISEASE_STH_ROUNDWORM } from 'AppConstants';
 import sha256 from 'fast-sha256';
 import nacl from 'tweetnacl-util'
+import { CollectionsOutlined } from '@material-ui/icons';
 
 // convert '02-2020' to 20.16666666666666666
 const convertDateIndex = ( key ) => {
@@ -16,26 +17,29 @@ const randomGeneratorKey = "Random Generator";
 
 const combineData = ( historicalData, futureData ) => {
 
-  const combined = historicalData.map(
+  const combined = futureData.map(
     ( item, i ) => {
 
       if (
         futureData.length > i // in case there's an empty line in the CSV
-        && item[ randomGeneratorKey ] === futureData[ i ][ randomGeneratorKey ]
+        && item[ randomGeneratorKey ] === historicalData[ i ][ randomGeneratorKey ]
       ) {
         // merging two objects
-        return Object.assign( {}, item, futureData[ i ] );
+        return Object.assign( {}, historicalData[ i ], item );
       }
 
       return {};
     }
   );
 
+
   return combined.map(
     // remove redundant columns
     ( row ) => {
       delete row[ randomGeneratorKey ];
       delete row.bet;
+      delete row.k;
+      delete row.R0;
       return row;
     }
   )
@@ -72,6 +76,7 @@ const combineData = ( historicalData, futureData ) => {
 const combineSummaries = ( historicalSummary, futureSummary ) => {
   const history = convertSummary( historicalSummary );
   const future = convertSummary( futureSummary );
+
   return {
     ts: history.ts.concat( future.ts ),
     median: history.median.concat( future.median ),
@@ -103,6 +108,8 @@ const convertSummary = ( s ) => {
   return Object.keys( s.median ).reduce(
 
     ( acc, k ) => {
+      // don't include the k column
+      if ( k === 'k' ) return acc;
 
       const ts = convertDateIndex( k );
 
@@ -121,7 +128,7 @@ const convertSummary = ( s ) => {
 
 export default {
 
-  createNewScenario: function ( settings ) {
+  createNewScenario: function ( settings, mdaObj ) {
 
       const label = new Date().toISOString().split('T').join(' ').replace(/\.\d{3}Z/, '');
       const id = uuidv4();
@@ -129,22 +136,45 @@ export default {
       const newScenarioData = {
         id,
         label,
-        type: DISEASE_TRACHOMA,
+        type: DISEASE_STH_ROUNDWORM,
         settings: { ...settings } // should this be here or in the initScenario?
       };
 
       console.log( `STHRoundworm auto-created new scenario id ${newScenarioData.id}` );
 
-      return this.initScenario( newScenarioData );
+      return this.initScenario( newScenarioData, mdaObj );
 
   },
 
-  initScenario: function( newScenarioData ) {
+  initScenario: function( newScenarioData, mdaObj ) {
     
+    const startYear = 15 *12
+    const endYear = 17 * 12
+    let mda2015 = {time:[180,192,204]}
+
+    if ( mdaObj ) {
+      mda2015 = {
+        time: [],
+        coverageAdults: [],
+        coverageInfants: [],
+        coveragePreSAC: [],
+        coverageSAC: []
+      }
+      mdaObj.time.forEach( (item,index) => {
+        if ( item >= startYear && item <= endYear ) {
+          mda2015.time.push(mdaObj.time[index])
+          mda2015.coverageAdults.push(mdaObj.coverageAdults[index])
+          mda2015.coverageInfants.push(mdaObj.coverageInfants[index])
+          mda2015.coveragePreSAC.push(mdaObj.coveragePreSAC[index])
+          mda2015.coverageSAC.push(mdaObj.coverageSAC[index])
+        }
+      });
+    }
+
     const newScenario =  {
       ...newScenarioData,
       mdaFuture: generateMdaFutureFromScenarioSettings( newScenarioData,DISEASE_STH_ROUNDWORM ),
-      mda2015: {time:[204,216]}
+      mda2015
     };
 
     console.log( 'STHRoundworm inited MDA future from new scenario settings', newScenario );
@@ -154,12 +184,11 @@ export default {
   },
 
   runScenario: async function ( { scenarioId, scenarioState, simState, callbacks } ) {
-
     const isNewScenario = scenarioId ? false : true;
 
     const scenarioData =
       isNewScenario
-        ? this.createNewScenario( simState.settings )
+        ? this.createNewScenario( simState.settings, simState.IUData.mdaObj )
         : scenarioState.scenarioData[ scenarioId ];
 
     console.log( 'STHRoundworm fetching prepped scenarioData', scenarioData );

@@ -121,7 +121,7 @@ function generateStats(data,disease) {
         values,
         map(({ prevalence }) => {
           const pValues = values(prevalence);
-          return [pValues[17], pValues[19]];
+          return [pValues[15], pValues[18]];
         })
       )(data);
       break
@@ -298,16 +298,17 @@ function mergeFeatures({ data, featureCollection, key, scales }) {
     const featureData = dataMap[id];
     const { performance } = featureData;
     const prevalenceOverTime = featureData?.prevalence ?? {};
-
     const endemicity = featureData?.endemicity ?? "–";
     // const population = featureData?.population ?? '–'
 
     // get color from scale if prevalence value available
     const colorsByYear = mapValues(prevalenceOverTime, (prevalence) => {
+      
       if ( featureData.endemicity === 'Non-endemic' ) return '#fff'
         return isFinite(prevalence) ? color(prev(prevalence)).hex() : null
       }
     );
+
 
     return merge({}, feature, {
       properties: {

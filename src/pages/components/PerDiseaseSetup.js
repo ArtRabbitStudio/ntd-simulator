@@ -12,7 +12,7 @@ import useStyles from 'theme/Setup';
 import { SettingSpecificScenario } from 'pages/components/simulator/settings';
 import { loadAllIUhistoricData } from 'pages/components/simulator/helpers/iuLoader';
 import SessionStorage from 'pages/components/simulator/helpers/sessionStorage';
-import { DISEASE_LIMF/*, DISEASE_TRACHOMA, DISEASE_STH_ROUNDWORM*/ } from 'AppConstants';
+import { DISEASE_LIMF, DISEASE_STH_ROUNDWORM/*, DISEASE_TRACHOMA*/ } from 'AppConstants';
 
 const PerDiseaseSetup = (props) => {
   const [isLoading, setIsLoading] = useState(false)
@@ -31,7 +31,8 @@ const PerDiseaseSetup = (props) => {
       simState,
       dispatchSimState,
       implementationUnit,
-      disease
+      disease,
+      country
     )
     setIsLoading(false)
   }
@@ -87,6 +88,10 @@ const PerDiseaseSetup = (props) => {
       bednets: [],
       coverage: [],
       regimen: [],
+      coverageInfants: [],
+      coveragePreSAC: [],
+      coverageSAC: [],
+      coverageAdults: []
     }
     map(simState.IUData.mdaObj.time, (e, i) => {
       const currentYear = 2000 + e / 12
@@ -97,6 +102,12 @@ const PerDiseaseSetup = (props) => {
         mdaObjTimeFiltered.bednets.push(simState.IUData.mdaObj.bednets[i])
         mdaObjTimeFiltered.coverage.push(simState.IUData.mdaObj.coverage[i])
         mdaObjTimeFiltered.regimen.push(simState.IUData.mdaObj.regimen[i])
+        if ( simState.IUData.mdaObj.coverageInfants ) {
+          mdaObjTimeFiltered.coverageInfants.push(simState.IUData.mdaObj.coverageInfants[i])
+          mdaObjTimeFiltered.coveragePreSAC.push(simState.IUData.mdaObj.coveragePreSAC[i])
+          mdaObjTimeFiltered.coverageSAC.push(simState.IUData.mdaObj.coverageSAC[i])
+          mdaObjTimeFiltered.coverageAdults.push(simState.IUData.mdaObj.coverageAdults[i])
+        }
       }
     })
   }
@@ -109,6 +120,7 @@ const PerDiseaseSetup = (props) => {
     // pass params to simulator ..
     history.push({ pathname: `/${disease}/${country}/${implementationUnit}/run` })
   }
+
 
   return (
       <section className={classes.section}>

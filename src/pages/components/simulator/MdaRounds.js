@@ -14,6 +14,7 @@ import {
 import useStyles from 'pages/components/simulator/styles'
 
 import { DISEASE_LIMF, DISEASE_TRACHOMA, DISEASE_STH_ROUNDWORM } from 'AppConstants';
+
 //import ClickAway from "hooks/clickAway";
 
 const MdaRounds = (props) => {
@@ -86,7 +87,7 @@ const MdaRounds = (props) => {
     
   }
   const calculateTime = (months) => {
-    const year = (2000 + (months)/12) - .5
+    const year = (2000 + (months)/12)
     if ( year % 1  === 0 ) {
       return year
     } else {
@@ -116,12 +117,12 @@ const MdaRounds = (props) => {
 
  
   const outputMDATime = (curMDARound) => {
-    console.log('outputMDATime disease',disease)
+    //console.log('outputMDATime disease',disease)
     let startYear = 2020
     if ( disease === DISEASE_STH_ROUNDWORM ) {
-      startYear = 2019
+      startYear = 2018
     }
-    const year = startYear + ( curMDARound / 2) 
+    const year = startYear + ( curMDARound / 2)
     if ( year % 1 === 0 ) {
       return year
     } else {
@@ -137,7 +138,20 @@ const MdaRounds = (props) => {
   const actualBar = 10
   const rightMargin = 50
   const areaOffset = rightMargin - actualBar
-  const initialOffset = disease === DISEASE_LIMF ? barWidth/2 : barWidth
+  let initialOffset = barWidth
+  switch ( disease ) {
+    case DISEASE_LIMF:
+      initialOffset = barWidth/2
+      break
+    case DISEASE_TRACHOMA:
+      initialOffset = barWidth
+      break
+    case DISEASE_STH_ROUNDWORM:
+      initialOffset = barWidth/2
+      break
+    default: 
+      initialOffset = barWidth/2
+  }
 
   const mapActiveToTime = future.active.filter((val,index)=>{
     if ( future.time[index] !== undefined ) {
@@ -148,6 +162,9 @@ const MdaRounds = (props) => {
 
   const LFandSTHRoundworm = ( disease === DISEASE_LIMF || disease === DISEASE_STH_ROUNDWORM )
   const LFandTrachoma = ( disease === DISEASE_LIMF || disease === DISEASE_TRACHOMA )
+
+  console.log('history',history)
+  console.log('future',future)
 
   return (
     <React.Fragment>
@@ -161,28 +178,51 @@ const MdaRounds = (props) => {
           history.time &&
           history.time.map((e, i) => (
             <React.Fragment key={`bar-hist-${i}`}>
-              <div
-                style={{left: `calc( ${areaOffset}px + ${initialOffset}% + ${barWidth*((i*2) - 1)+barWidth}%)` }}
-                className={`bar history`}
-                title={history.coverage ? outputTitle(history.time[i],history.coverage[i],history.adherence[i],history.bednets[i],history.regimen[i],true,future.coverageInfants[i],future.coveragePreSAC[i],future.coverageSAC[i],future.coverageAdults[i]) : outputTitle(history.time[i]) }
-              >
-                <span
-                  style={{
-                    height: history.coverage ? history.coverage[i] : 0,
-                  }}
-                ></span>
-              </div>
-              <div
+             
+              
+                {LFandTrachoma && <React.Fragment>
+                 <div
+                 style={{left: `calc( ${areaOffset}px + ${initialOffset}% + ${barWidth*((i*2) - 1)+barWidth}%)` }}
+                 className={`bar history`}
+                 title={history.coverage && history.coverage[i] ? outputTitle(history.time[i],history.coverage[i],history.adherence[i],history.bednets[i],history.regimen[i],true,history.coverageInfants[i],history.coveragePreSAC[i],history.coverageSAC[i],history.coverageAdults[i]) : outputTitle(history.time[i]) }
+               >
+                 <span
+                   style={{
+                     height: history.coverage && history.coverage[i] ? history.coverage[i] : 0,
+                   }}
+                 ></span>
+               </div><div
                 style={{left: `calc( ${areaOffset}px + ${initialOffset}% + ${barWidth*(i*2)+barWidth}%)` }}
                 className={`bar history`}
-                title={history.coverage ?  outputTitle(history.time[i],history.coverage[i],history.adherence[i],history.bednets[i],history.regimen[i],true,future.coverageInfants[i],future.coveragePreSAC[i],future.coverageSAC[i],future.coverageAdults[i]) : outputTitle(history.time[i]) }
-              >
-                <span
+                title={history.coverage && history.coverage[i] ?  outputTitle(history.time[i],history.coverage[i],history.adherence[i],history.bednets[i],history.regimen[i],true,history.coverageInfants[i],history.coveragePreSAC[i],history.coverageSAC[i],history.coverageAdults[i]) : outputTitle(history.time[i]) }
+              ><span
                   style={{
-                    height: history.coverage ? history.coverage[i] : 0,
+                    height: history.coverage && history.coverage[i] ? history.coverage[i] : 0,
                   }}
-                ></span>
-              </div>
+                ></span></div></React.Fragment>}
+
+                {disease === DISEASE_STH_ROUNDWORM && <React.Fragment>
+                 <div
+                 style={{left: `calc( ${areaOffset}px + ${initialOffset}% + ${barWidth*((i*2) - 1)+barWidth}%)` }}
+                 className={`bar history`}
+                 title={history.coverageInfants ? outputTitle(0,0,0,0,'',true,history.coverageInfants[i],history.coveragePreSAC[i],history.coverageSAC[i],history.coverageAdults[i]) : outputTitle(history.time[i]) }
+               >
+                 <span
+                   style={{
+                    height: history.coverageInfants ? ( ( ( history.coverageInfants[i]+history.coveragePreSAC[i]+history.coverageSAC[i]+history.coverageAdults[i] ) / 400 ) * 100 ) : 0,
+                   }}
+                 ></span>
+               </div>
+                < div
+                style={{left: `calc( ${areaOffset}px + ${initialOffset}% + ${barWidth*(i*2)+barWidth}%)` }}
+                className={`bar history`}
+                title={history.coverageInfants ?  outputTitle(0,0,0,0,'',true,history.coverageInfants[i],history.coveragePreSAC[i],history.coverageSAC[i],history.coverageAdults[i]) : outputTitle(history.time[i]) }
+              ><span
+                  style={{
+                    height: history.coverageInfants ? ( ( ( history.coverageInfants[i]+history.coveragePreSAC[i]+history.coverageSAC[i]+history.coverageAdults[i] ) / 400 ) * 100 ) : 0,
+                  }}
+                ></span></div></React.Fragment>}
+              
             </React.Fragment>
           )
         )}

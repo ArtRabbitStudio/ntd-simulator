@@ -160,7 +160,7 @@ export default {
     const coverage = scenarioData.settings.coverage / 100;    // 0.9 in model vs 90 in UI
     const mdaSixMonths = scenarioData.settings.mdaSixMonths;  // 6=biannual, 12=annual
     const mdaRoundsString = scenarioData.mdaFuture.time
-      .map( t => 2000 + ( t - 6 ) / 12 )
+      .map( t => 2000 + ( t ) / 12 )
       .map( t => Math.floor( t ) === t ? `${t}01` : `${Math.floor( t) }06` )
       .filter( ( t, idx ) => { return scenarioData.mdaFuture.active[ idx ]; } )
       .join( '-' );
