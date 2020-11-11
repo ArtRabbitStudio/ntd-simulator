@@ -184,7 +184,7 @@ const MdaRounds = (props) => {
                  <div
                  style={{left: `calc( ${areaOffset}px + ${initialOffset}% + ${barWidth*((i*2) - 1)+barWidth}%)` }}
                  className={`bar history`}
-                 title={history.coverage && history.coverage[i] ? outputTitle(history.time[i],history.coverage[i],history.adherence[i],history.bednets[i],history.regimen[i],true,history.coverageInfants[i],history.coveragePreSAC[i],history.coverageSAC[i],history.coverageAdults[i]) : outputTitle(history.time[i]) }
+                 title={history.coverage && history.coverage[i] ? outputTitle(history.time[i],history.coverage[i],history.adherence[i],history.bednets[i],history.regimen[i],true,0,0,0,0) : outputTitle(history.time[i]) }
                >
                  <span
                    style={{
@@ -194,7 +194,7 @@ const MdaRounds = (props) => {
                </div><div
                 style={{left: `calc( ${areaOffset}px + ${initialOffset}% + ${barWidth*(i*2)+barWidth}%)` }}
                 className={`bar history`}
-                title={history.coverage && history.coverage[i] ?  outputTitle(history.time[i],history.coverage[i],history.adherence[i],history.bednets[i],history.regimen[i],true,history.coverageInfants[i],history.coveragePreSAC[i],history.coverageSAC[i],history.coverageAdults[i]) : outputTitle(history.time[i]) }
+                title={history.coverage && history.coverage[i] ?  outputTitle(history.time[i],history.coverage[i],history.adherence[i],history.bednets[i],history.regimen[i],true,0,0,0,0) : outputTitle(history.time[i]) }
               ><span
                   style={{
                     height: history.coverage && history.coverage[i] ? history.coverage[i] : 0,

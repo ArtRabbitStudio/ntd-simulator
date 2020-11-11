@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import { zip, zipObject, map, flatten, flattenDeep, pick, values, max, forEach } from 'lodash'
-import { scaleLinear, extent } from 'd3'
+import { zip, zipObject, map, flatten, max, forEach } from 'lodash'
+import { scaleLinear } from 'd3'
 import AutoSizer from 'react-virtualized-auto-sizer'
 import ScenarioGraphPath from 'pages/components/simulator/ScenarioGraphPath'
 import ScenarioGraphAtivePoint from 'pages/components/simulator/ScenarioGraphActivePoint'
@@ -14,11 +14,11 @@ import {
 let fadeOutTimeout = null
 
 
-function ScenarioGraphTrachoma({
+function ScenarioGraphSTHRoundworm({
   data,
   width = 600,
   height = 400,
-  metrics = ['p'],
+  metrics = ['KK','MHI'],
   showAllResults,
   inputs,
   classes,
@@ -31,8 +31,6 @@ function ScenarioGraphTrachoma({
 
   const [activeInfo, setActiveInfo] = useState(null)
 
-  metrics = ['p']
-
   const startYear = 15
   const futureYear = 18
   const lPad = 50
@@ -43,17 +41,17 @@ function ScenarioGraphTrachoma({
   const svgWidth = width
   
 
-  const dataSelection = showAllResults ? data.results : [data.results[0]]
+  const dataSelection = data.results
+
 
   const isStartYear = (element) => element >= startYear;
   const isPrediction = (element) => element >= futureYear;
-
-  const IndexToStartForOutput = (flatten(map(dataSelection, 'ts')).findIndex(isStartYear))
-  const IndexForPrediction = (flatten(map(dataSelection, 'ts')).findIndex(isPrediction))
-  const domainX = [startYear, max(flatten(map(dataSelection, 'ts'))) + .9 ]
-
+  const IndexToStartForOutput = (flatten(map(dataSelection[metrics], 'ts')).findIndex(isStartYear))
+  const IndexForPrediction = (flatten(map(dataSelection[metrics], 'ts')).findIndex(isPrediction))
+  const domainX = [startYear, max(flatten(map(dataSelection[metrics], 'ts'))) ]
+  
   let dataToOutput = [];
-  forEach(data.results,(r)=>{
+  forEach(data.results[metrics],(r)=>{
     dataToOutput.push({
       p: r.p.slice(IndexToStartForOutput),
       ts: r.ts.slice(IndexToStartForOutput)
@@ -61,16 +59,8 @@ function ScenarioGraphTrachoma({
   })
 
 
-  let domainY = extent(
-    flattenDeep(map(dataToOutput, (x) => values(pick(x, metrics))))
-  )
+  const domainY = [ 0, max(flatten(map(dataSelection[metrics], 'p'))) ]
 
-
-
-  domainY[0] = 0;
-
-
-  
 
   const handleEnter = (id) => {
     if (fadeOutTimeout != null) {
@@ -85,11 +75,11 @@ function ScenarioGraphTrachoma({
   }
 
 
-  const x = scaleLinear().domain(domainX).range([0, width - rPad])
+  const x = scaleLinear().domain(domainX).range([0, width - rPad*2 - lPad])
 
   const y = scaleLinear().domain(domainY).range([height, 0]).nice()
 
-  const ticksX = x.ticks(12)
+  const ticksX = x.ticks(13)
   const ticksY = y.ticks()
 
   const renderResult = (d, main) => {
@@ -149,6 +139,7 @@ function ScenarioGraphTrachoma({
     let activeMode = 'h'
     if (activeInfo != null) {
       const activeInfoParts = activeInfo.split('-');
+
       activeCoords = historicSeries[activeInfoParts[0]]//.map((d) => [x(d.ts), y(d[prop]), d[prop]]);
       if (activeInfoParts[1] === 'f') {
         activeMode = 'f'
@@ -168,36 +159,36 @@ function ScenarioGraphTrachoma({
     return (
       <>
         
-        {metrics.map((m, i) => (
-          <g key={`${i}-l`}>
+        
+          <g key={`0-l`}>
             <ScenarioGraphPath
-              key={`${i}-l-h`}
+              key={`0-l-h`}
               data={historicSeries}
-              prop={m}
+              prop={'p'}
               x={x}
               y={y}
               color={hcolor}
             />
             <ScenarioGraphPath
-              key={`${i}-l-f`}
+              key={`0-l-f`}
               data={futureSeries}
-              prop={m}
+              prop={'p'}
               x={x}
               y={y}
               color={color}
             />
           </g>
-        ))}
+        
 
         {main &&
-          metrics.map((m, i) => (
-            <g key={`${i}-ps`}>
+          
+            <g key={`0-ps`}>
               <ScenarioGraphInfoPoints
                 handleEnter={(id)=>handleEnter(id)}
                 handleLeave={()=>handleLeave()}
-                key={`${i}-ps-h`}
+                key={`0-ps-h`}
                 data={historicSeries}
-                prop={m}
+                prop={'p'}
                 x={x}
                 y={y}
                 color={hcolor}
@@ -206,19 +197,19 @@ function ScenarioGraphTrachoma({
               <ScenarioGraphInfoPoints
                 handleEnter={(id)=>handleEnter(id)}
                 handleLeave={()=>handleLeave()}
-                key={`${i}-ps-f`}
+                key={`0-ps-f`}
                 data={futureSeries}
-                prop={m}
+                prop={'p'}
                 x={x}
                 y={y}
                 color={color}
                 mode="f"
               />
               {activeInfo &&
-                <ScenarioGraphAtivePoint active={activeInfo} coord={[x(activeCoords.ts), y(activeCoords[m]), activeCoords[m]]} mode={activeMode} />
+                <ScenarioGraphAtivePoint active={activeInfo} coord={[x(activeCoords.ts), y(activeCoords.p), activeCoords.p]} mode={activeMode} />
               }
             </g>
-          ))}
+        }
 
       </>
     )
@@ -282,8 +273,8 @@ function ScenarioGraphTrachoma({
         <g transform={`translate(${lPad},${yPad})`}>
           
           <ScenarioGraphGrid ticksX={ticksX} ticksY={ticksY} x={x} y={y} zeroYear={2000} startYear={startYear} futureYear={futureYear} svgHeight={svgHeight} height={height} tPad={tPad} yPad={yPad} lPad={lPad} rPad={rPad} width={width} />
-          {graphTypeSimple && data.results &&
-            <g key={`results1-stats`}>{renderRange( data.summary['min'],  data.summary['max'], data.summary['ts'], false, x, y)}</g>
+          {graphTypeSimple && data.results[metrics] &&
+            <g key={`results1-stats`}>{renderRange( data.summary[metrics]['min'],  data.summary[metrics]['max'], data.summary[metrics]['ts'], false, x, y)}</g>
           }
           {<line
             key={`WHO target`}
@@ -295,12 +286,12 @@ function ScenarioGraphTrachoma({
             strokeDasharray='10 2'
           ></line>}
           {!graphTypeSimple && data.results &&
-            data.results.map((result, i) => (
+            data.results[metrics].map((result, i) => (
               <g key={`results1-${i}`}>{renderResult(result, false, x, y)}</g>
             ))}
           
           {data.summary &&
-            [data.summary].map((result, i) => (
+            [data.summary[metrics]].map((result, i) => (
               <g key={`results-${i}`}>{renderResult(result, true, x, y)}</g>
             ))}
             {simNeedsRerun && <rect x={0} width={svgWidth} height={svgHeight} fill="rgba(233,241,247,.4)" />}
@@ -313,6 +304,6 @@ function ScenarioGraphTrachoma({
 
 export default (props) => (
   <AutoSizer disableHeight>
-    {({ width }) => <ScenarioGraphTrachoma {...props} width={width} />}
+    {({ width }) => <ScenarioGraphSTHRoundworm {...props} width={width} />}
   </AutoSizer>
 )

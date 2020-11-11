@@ -69,8 +69,13 @@ TabPanel.propTypes = {
 const ScenarioDisplay = (props) => {
 
   const classes = useStyles();
+  const { disease } = useUIState();
 
-  const [ graphMetric, setGraphMetric ] = useState( 'Ms' )
+  let defaultMetric = 'Ms'
+  if ( disease === DISEASE_STH_ROUNDWORM ) {
+    defaultMetric = 'KK'
+  }
+  const [ graphMetric, setGraphMetric ] = useState( defaultMetric )
   const [ graphTypeSimpleLocal, setGraphTypeSimpleLocal ] = useState(true)
   const [ showPrecisionConfirmation, setshowPrecisionConfirmation ] = useState(false)
   const handleGraphTypeChange = () => {
@@ -86,7 +91,7 @@ const ScenarioDisplay = (props) => {
   const { implementationUnit } = useUIState();
   const { selectedIUData } = useDataAPI();
 
-  const { disease } = useUIState();
+  
   const diseaseModel = DiseaseModels[ disease ];
 
   // 2nd-arg empty array makes this a componentDidMount equivalent - only re-run if {nothing} changes
@@ -103,6 +108,7 @@ const ScenarioDisplay = (props) => {
     []
 
   );
+
 
   const scenarioId = scenarioState.currentScenarioId;
   const scenarioData = scenarioState.scenarioData[ scenarioId ];
@@ -307,12 +313,27 @@ const ScenarioDisplay = (props) => {
                   }}
                 >
                   <MenuItem value={"Ms"}>Prevalence microfilariae</MenuItem>
-                  <MenuItem value={"Ls"}>
-                    Prevalence in the mosquito population
-                  </MenuItem>
-                  <MenuItem value={"Ws"}>
-                    Prevalence of worms in the lymph nodes
-                  </MenuItem>
+                  <MenuItem value={"Ls"}>Prevalence in the mosquito population</MenuItem>
+                  <MenuItem value={"Ws"}>Prevalence of worms in the lymph nodes</MenuItem>
+                </Select>
+              </FormControl>
+              ) }
+              { disease === DISEASE_STH_ROUNDWORM && (
+              <FormControl
+                variant="outlined"
+                className={classes.formControlPrevalence}
+              >
+                <Select
+                  labelId="metric"
+                  id="metric"
+                  value={graphMetric}
+                  MenuProps={{ disablePortal: true }}
+                  onChange={(ev) => {
+                    setGraphMetric(ev.target.value);
+                  }}
+                >
+                  <MenuItem value={"KK"}>Prevalence School Age Children</MenuItem>
+                  <MenuItem value={"MHI"}>Medium Heavy Prevalence by Village</MenuItem>
                 </Select>
               </FormControl>
               ) }
@@ -386,6 +407,7 @@ const ScenarioDisplay = (props) => {
               data={scenarioData}
               graphTypeSimple={graphTypeSimpleLocal}
               showAllResults={false}
+              metrics={[graphMetric]}
               simInProgress={props.simInProgress}
               simNeedsRerun={ scenarioState.scenarioData[ scenarioState.currentScenarioId ].isDirty }
               classes={classes}

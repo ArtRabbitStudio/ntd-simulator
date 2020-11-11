@@ -1,10 +1,9 @@
 import { v4 as uuidv4 } from 'uuid';
 import { generateMdaFutureFromScenarioSettings } from 'pages/components/simulator/helpers/iuLoader';
 import { csv } from 'd3';
-import { DISEASE_TRACHOMA,DISEASE_STH_ROUNDWORM } from 'AppConstants';
+import { DISEASE_STH_ROUNDWORM } from 'AppConstants';
 import sha256 from 'fast-sha256';
 import nacl from 'tweetnacl-util'
-import { CollectionsOutlined } from '@material-ui/icons';
 
 // convert '02-2020' to 20.16666666666666666
 const convertDateIndex = ( key ) => {
@@ -349,13 +348,15 @@ export default {
         ]
       ) => {
 
-        const combinedData = combineData( historicalKKSACData, futureKKSACData );
-        const combinedSummary = combineSummaries( historicalKKSACSummary, futureKKSACSummary );
+        const combinedDataKK = combineData( historicalKKSACData, futureKKSACData );
+        const combinedSummaryKK = combineSummaries( historicalKKSACSummary, futureKKSACSummary );
+        const combinedDataMHI = combineData( historicalMHISACData, futureMHISACData );
+        const combinedSummaryMHI = combineSummaries( historicalMHISACSummary, futureMHISACSummary );
 
         const result = {
           ...scenarioData,
-          results: combinedData,
-          summary: combinedSummary
+          results: { KK: combinedDataKK, MHI: combinedDataMHI },
+          summary: { KK: combinedSummaryKK, MHI: combinedSummaryMHI}
         };
 
         console.warn( "TODO implement combining MHISAC data/summary" );
