@@ -1,6 +1,6 @@
 import Papa from 'papaparse'
 import { last, filter, forEach } from 'lodash'
-import { DISEASE_CONFIG,DISEASE_LIMF, DISEASE_TRACHOMA, DISEASE_STH_ROUNDWORM } from 'AppConstants';
+import { DISEASE_CONFIG,DISEASE_LIMF, DISEASE_TRACHOMA, DISEASE_STH_ROUNDWORM, DISEASE_STH_WHIPWORM } from 'AppConstants';
 
 import SessionStorage from './sessionStorage';
 
@@ -23,7 +23,8 @@ export const loadAllIUhistoricData = async (
     case DISEASE_TRACHOMA:
       break;
     case DISEASE_STH_ROUNDWORM:
-      mdaData = await loadMdaHistorySTHRoundworm(implementationUnit,country)
+    case DISEASE_STH_WHIPWORM:
+      mdaData = await loadMdaHistorySTHRoundworm(implementationUnit,country,disease)
       break
     default:
       break;
@@ -123,6 +124,7 @@ export const loadAllIUhistoricData = async (
       }
       break
     case DISEASE_STH_ROUNDWORM:
+    case DISEASE_STH_WHIPWORM:
       defaults.settings.coverageInfants = last(mdaData.coverageInfants)
       defaults.settings.coveragePreSAC = last(mdaData.coveragePreSAC)
       defaults.settings.coverageSAC = last(mdaData.coverageSAC)
@@ -133,9 +135,6 @@ export const loadAllIUhistoricData = async (
   }
 
 
-
-  console.log( "iuLoader creating simState defaults:", defaults );
-
   dispatchSimState({
     type: 'everything',
     payload: defaults,
@@ -145,12 +144,13 @@ export const loadAllIUhistoricData = async (
 }
 
 
-export const loadMdaHistorySTHRoundworm = async (implementationUnit,country) => {
+export const loadMdaHistorySTHRoundworm = async (implementationUnit,country,disease) => {
   console.log( "iuLoader loadMdaHistorySTHRoundworm:", implementationUnit );
 
   const IUid = implementationUnit ? implementationUnit : 'AGO02107'
   // construct path
-  const mdaHistoryPath = `https://storage.googleapis.com/ntd-disease-simulator-data/diseases/sth-roundworm/source-data/${country}/${IUid}/STH_MDA_${IUid}.csv`
+  const mdaHistoryPath = `https://storage.googleapis.com/ntd-disease-simulator-data/diseases/${disease}/source-data/${country}/${IUid}/STH_MDA_${IUid}.csv`
+  console.log('loading mda history from',mdaHistoryPath)
   let mdaLoaded = true
   const mdaResponse = await fetch(mdaHistoryPath).then((response)=>{
     if ( response.status >= 400 && response.status < 600 ) {
@@ -404,16 +404,17 @@ export const loadIUParamsLF = async (implementationUnit) => {
    */
 }
 
-export const generateMdaFutureFromDefaults = (simState) => {
+export const generateMdaFutureFromDefaults = ( simState,disease ) => {
 
-  const numberOfYears = 11 * 2;
+  const numberOfYears = DISEASE_CONFIG[ disease ] ? DISEASE_CONFIG[ disease ].numberOfYears : 11 * 2;
+  const startMonth = DISEASE_CONFIG[ disease ] ? DISEASE_CONFIG[ disease ].startMonth : 240;
 
   let MDAtime = [];
 
   for ( let i = 0; i < numberOfYears; i++ ) {
     // 246/12 = 2020
     // 228/12 = 2019
-    MDAtime.push(6 * i + 240);
+    MDAtime.push(6 * i + startMonth);
   }
 
   let MDAcoverage = [];
@@ -489,18 +490,19 @@ export const generateMdaFutureFromDefaults = (simState) => {
   return newMDAs;
 }
 
-export const generateMdaFutureFromScenario = ( scenario ) => {
+export const generateMdaFutureFromScenario = ( scenario,disease ) => {
 
   const mdaFuture = scenario.mdaFuture;
 
-  const numberOfYears = 11 * 2;
+  const numberOfYears = DISEASE_CONFIG[ disease ] ? DISEASE_CONFIG[ disease ].numberOfYears : 11 * 2;
+  const startMonth = DISEASE_CONFIG[ disease ] ? DISEASE_CONFIG[ disease ].startMonth : 240;
 
   let MDAtime = [];
 
   for ( let i = 0; i < numberOfYears; i++ ) {
     // 246/12 = 2020
     // 228/12 = 2019
-    MDAtime.push(6 * i + 240);
+    MDAtime.push(6 * i + startMonth);
   }
 
   let MDAcoverage = [];

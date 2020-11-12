@@ -24,7 +24,7 @@ import MdaRounds from 'pages/components/simulator/MdaRounds'
 import DiseaseModels from 'pages/components/simulator/models/DiseaseModels';
 import ConfirmationDialog from "pages/components/ConfirmationDialog";
 
-import { DISEASE_CONFIG,DISEASE_LIMF, DISEASE_TRACHOMA, DISEASE_STH_ROUNDWORM } from 'AppConstants';
+import { DISEASE_CONFIG,DISEASE_LIMF, DISEASE_TRACHOMA, DISEASE_STH_ROUNDWORM, DISEASE_STH_WHIPWORM } from 'AppConstants';
 
 // settings
 import {
@@ -110,6 +110,7 @@ const ScenarioDisplay = (props) => {
 
   const scenarioId = scenarioState.currentScenarioId;
   const scenarioData = scenarioState.scenarioData[ scenarioId ];
+  const STH = ( disease === DISEASE_STH_ROUNDWORM || disease === DISEASE_STH_WHIPWORM )
 
   const scenarioDisplay = scenarioData ? (
 
@@ -127,7 +128,7 @@ const ScenarioDisplay = (props) => {
               {scenarioData.label}
             </Typography>
 
-            { (disease === DISEASE_LIMF || disease === DISEASE_STH_ROUNDWORM) &&
+            { (disease === DISEASE_LIMF || STH ) &&
               <SettingPrecision
                 classAdd={classes.precision}
                 inModal={true}
@@ -215,7 +216,7 @@ const ScenarioDisplay = (props) => {
                   />
                 }
 
-                { disease === DISEASE_STH_ROUNDWORM &&
+                { STH &&
                 <Fragment>
                   <SettingTargetCoverage
                     scenarioId={ scenarioData.id }
@@ -299,7 +300,7 @@ const ScenarioDisplay = (props) => {
               { disease === DISEASE_LIMF && (
               <FormControl
                 variant="outlined"
-                className={classes.formControlPrevalence}
+                className={`${classes.formControlPrevalence} ${classes.metricSelector}`}
               >
                 <Select
                   labelId="larvae-prevalence"
@@ -316,10 +317,10 @@ const ScenarioDisplay = (props) => {
                 </Select>
               </FormControl>
               ) }
-              { disease === DISEASE_STH_ROUNDWORM && (
+              { STH && (
               <FormControl
                 variant="outlined"
-                className={classes.formControlPrevalence}
+                className={`${classes.formControlPrevalence} ${classes.metricSelector}`}
               >
                 <Select
                   labelId="metric"
@@ -331,7 +332,7 @@ const ScenarioDisplay = (props) => {
                   }}
                 >
                   <MenuItem value={"KK"}>Prevalence School Age Children</MenuItem>
-                  <MenuItem value={"MHI"}>Medium Heavy Prevalence by Village</MenuItem>
+                  <MenuItem value={"MHI"}>Prevalence of Medium and High Intensity in School Aged Children</MenuItem>
                 </Select>
               </FormControl>
               ) }
@@ -399,7 +400,7 @@ const ScenarioDisplay = (props) => {
           />
           }
 
-          { disease === DISEASE_STH_ROUNDWORM &&
+          { STH &&
           
           <ScenarioGraphSTHRoundworm
               data={scenarioData}

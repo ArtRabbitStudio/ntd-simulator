@@ -59,6 +59,13 @@ const useStyles = makeStyles((theme) => ({
     float: 'right',
     margin: theme.spacing(0, 2, 0, 0),
   },
+  metricSelector: {
+    maxWidth: 250,
+    width: 250,
+    '& .MuiPopover-root': {
+      transform: 'translate(-200px, 0)'
+    }
+  },
 
   contentLeftColumn: {},
   settingsIcon: {

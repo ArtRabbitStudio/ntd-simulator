@@ -9,21 +9,21 @@ const endValue =  props.intialMonthValues[1] ? ( ( props.intialMonthValues[1] - 
 const [value, setValue] = useState([startValue,endValue]);
 const handleChange = (event, newValue) => {
     setValue(newValue);
-
     // 240 is 2019 last month
     // we're going in steps of 6 month
     const start = 246 + (newValue[0]-1) * 6
-    const end = 246 + (newValue[1]-1) * 6
+    const end = 246 + (newValue[1]+1) * 6
     props.onChange(start,end)
 
 }
 const valueLabelFormat = (value) => {
     const startYear = 2019
     const selectedYear = startYear + (value/2) - 2000 
-    return value === 1 ? `'20` : `'${Math.floor(selectedYear)}`
+    return `'${Math.floor(selectedYear)+1}`
 }
 
 useEffect(() => {
+
     const newStartValue =  ( ( props.intialMonthValues[0] - 246 ) / 6 ) + 1 
     const newEndValue =  ( ( props.intialMonthValues[1] - 246 ) / 6 ) + 1
     setValue([newStartValue,newEndValue])
@@ -33,17 +33,17 @@ return (
     <div className={`future-slider ${props.disease}`} style={{position:'relative',zIndex:99}}>
           <div style={{
             top: '5px',
-            left: `calc( ${props.areaOffset}px + ${props.barWidth/2}% + ${((props.numberOfHistoryBars*props.barWidth)-props.barWidth*2)}%)`,
-            width: `calc( ${props.numberOfFutreTimeBars*props.barWidth}% - ${props.barWidth}% )`,
+            left: props.left,
+            width: props.width,
             position: 'absolute'
           }}
             >
             <Slider 
                 value={value} 
                 onChange={handleChange}
-                min={1}
-                stepo={1}
-                max={props.numberOfFutreTimeBars}
+                min={0}
+                step={1}
+                max={props.numberOfFutreTimeBars-1}
                 getAriaValueText={valueLabelFormat}
                 valueLabelFormat={valueLabelFormat}
                 valueLabelDisplay="auto"

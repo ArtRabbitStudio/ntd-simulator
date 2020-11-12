@@ -263,6 +263,7 @@ export default {
     const country = simState.IUData.id.substring( 0, 3 );
     const iu = simState.IUData.id;
 
+
     /*
      * first try to fetch a pre-rendered flat JSON file
      * containing the data file URLs, created by a

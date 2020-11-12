@@ -12,6 +12,7 @@ import Country from 'pages/Country';
 import { IntroLF, SetupLF } from 'pages/components/diseases/lf';
 import { IntroTrachoma, SetupTrachoma } from 'pages/components/diseases/trachoma';
 import { IntroSTHRoundworm  , SetupSTHRoundworm } from 'pages/components/diseases/sth-roundworm';
+import { IntroSTHWhipworm } from 'pages/components/diseases/sth-whipworm';
 
 import ScenarioManager from 'pages/components/simulator/ScenarioManager';
 
@@ -20,13 +21,15 @@ import ScenarioManager from 'pages/components/simulator/ScenarioManager';
 const introComponents = {
   lf: IntroLF,
   trachoma: IntroTrachoma,
-  'sth-roundworm': IntroSTHRoundworm
+  'sth-roundworm': IntroSTHRoundworm,
+  'sth-whipworm': IntroSTHWhipworm
 };
 
 const setupComponents = {
   lf: SetupLF,
   trachoma: SetupTrachoma,
-  'sth-roundworm': SetupSTHRoundworm
+  'sth-roundworm': SetupSTHRoundworm,
+  'sth-whipworm': SetupSTHRoundworm
 };
 
 const Simulator = ( props ) => {

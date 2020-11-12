@@ -75,11 +75,11 @@ function ScenarioGraphSTHRoundworm({
   }
 
 
-  const x = scaleLinear().domain(domainX).range([0, width - rPad*2 - lPad])
+  const x = scaleLinear().domain(domainX).range([0, width - rPad - lPad])
 
   const y = scaleLinear().domain(domainY).range([height, 0]).nice()
 
-  const ticksX = x.ticks(13)
+  const ticksX = x.ticks(15)
   const ticksY = y.ticks()
 
   const renderResult = (d, main) => {

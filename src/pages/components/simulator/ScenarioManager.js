@@ -21,6 +21,7 @@ import { NewSettingsDialogLF } from 'pages/components/diseases/lf';
 import { NewSettingsDialogTrachoma } from 'pages/components/diseases/trachoma';
 import { NewSettingsDialogSTHRoundworm } from 'pages/components/diseases/sth-roundworm';
 import { DISEASE_LIMF, DISEASE_TRACHOMA, DISEASE_STH_ROUNDWORM } from 'AppConstants';
+import { DISEASE_STH_WHIPWORM } from '../../../AppConstants';
 
 
 const settingsDialogComponents = {
@@ -424,7 +425,7 @@ const ScenarioManager = ( props ) => {
   }
 
   const SettingsDialogComponent = ( disease !== null ) ? settingsDialogComponents[ disease ] : null;
-
+  const STH = ( disease === DISEASE_STH_WHIPWORM || disease === DISEASE_STH_ROUNDWORM )
   return (
     <div id="ScenarioManager">
         <section className={classes.simulator}>
@@ -495,7 +496,7 @@ const ScenarioManager = ( props ) => {
               open={ confirmationOpen }
             />
 
-            { (simInProgress) && disease === DISEASE_STH_ROUNDWORM && (
+            { (simInProgress) && STH && (
  
               <div className={ classes.progress }>
                 <CircularProgress

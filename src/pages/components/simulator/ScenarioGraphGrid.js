@@ -28,11 +28,11 @@ function ScenarioGraphGrid({ ticksX,ticksY, x, y, zeroYear, startYear, futureYea
                 {(i < ticksX.length - 1) && <line
                   key={`${t}-year`}
                   x1={xt}
-                  x2={x(t + 1) - 3}
+                  x2={x(t + 1) - 2}
                   y1={height + yPad}
                   y2={height + yPad}
-                  stroke="#CCE8F4"
-                  strokeWidth="10"
+                  stroke="#ccc"
+                  strokeWidth="3"
                 ></line>}
               </g>
             )

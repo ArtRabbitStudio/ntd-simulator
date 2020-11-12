@@ -58,7 +58,7 @@ const initialState = ( () => {
         vecCap: 0, // $("#vectorialCapacity").val(),
         vecComp: 0, //$("#vectorialCompetence").val(),
         vecD: 0, //$("#vectorialDeathRate").val(),
-        // additions for sth roundworm
+        // additions for sth roundworm / whipworm
         // "cov_infants","cov_preSAC","cov_SAC","cov_adults"
         coverageInfants: 0,
         coveragePreSAC: 0,
