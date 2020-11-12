@@ -24,7 +24,7 @@ import MdaRounds from 'pages/components/simulator/MdaRounds'
 import DiseaseModels from 'pages/components/simulator/models/DiseaseModels';
 import ConfirmationDialog from "pages/components/ConfirmationDialog";
 
-import { DISEASE_LIMF, DISEASE_TRACHOMA, DISEASE_STH_ROUNDWORM } from 'AppConstants';
+import { DISEASE_CONFIG,DISEASE_LIMF, DISEASE_TRACHOMA, DISEASE_STH_ROUNDWORM } from 'AppConstants';
 
 // settings
 import {
@@ -71,10 +71,8 @@ const ScenarioDisplay = (props) => {
   const classes = useStyles();
   const { disease } = useUIState();
 
-  let defaultMetric = 'Ms'
-  if ( disease === DISEASE_STH_ROUNDWORM ) {
-    defaultMetric = 'KK'
-  }
+  const defaultMetric = DISEASE_CONFIG[ disease ] ? DISEASE_CONFIG[ disease ].defaultMetric : 'Ms'
+
   const [ graphMetric, setGraphMetric ] = useState( defaultMetric )
   const [ graphTypeSimpleLocal, setGraphTypeSimpleLocal ] = useState(true)
   const [ showPrecisionConfirmation, setshowPrecisionConfirmation ] = useState(false)
@@ -447,7 +445,7 @@ const ScenarioDisplay = (props) => {
         ) }
         <ConfirmationDialog
           title="Setting a higher precision"
-          intro="A higher precision setting leads to less uncertainty in the results. However the running time for calculating the reulsts goes up and at the highest setting it can take up to a few minutes to see results. Do you want to increase the precision?"
+          intro="Increasing precision means less uncertainty in the results, but longer calculation times. At the highest precision setting, this can take up to a few minutes. Do you want to proceed?"
           onClose={() => {
             setshowPrecisionConfirmation(false);
             props.resetCurrentScenario()
