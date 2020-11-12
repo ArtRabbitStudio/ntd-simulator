@@ -245,7 +245,7 @@ export default {
      * by using a SHA256 hash of a JSON-encode of this object
      */
     const apiParams = {
-      disease: 'sth-roundworm',
+      disease: this.modelDiseaseType,
       iu: simState.IUData.id,
       mdaData: paramColumns.concat( paramData ),
       runs: scenarioData.settings.runs
@@ -269,7 +269,7 @@ export default {
      * previous run of the same scenario/params
      */
     const storagePath = `https://storage.googleapis.com/ntd-disease-simulator-data`;
-    const infoJsonUrl = `${storagePath}/diseases/sth-roundworm/data/${country}/${simState.IUData.id}/${digest}/Asc-${iu}-${digest}-info.json?ignoreCache=${Date.now()}`;
+    const infoJsonUrl = `${storagePath}/diseases/${this.modelDiseaseType}/data/${country}/${simState.IUData.id}/${digest}/Asc-${iu}-${digest}-info.json?ignoreCache=${Date.now()}`;
     const infoJsonResponse = await fetch( infoJsonUrl );
 
     /*

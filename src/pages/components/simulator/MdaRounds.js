@@ -473,7 +473,7 @@ const MdaRounds = (props) => {
           
               <SettingTargetCoverage
                 value={future.coverageSAC[curMDARound]}
-                onChange={( event, newValue ) => { console.log(' change coverageSAC curMDARound',curMDARound,future.coverage[curMDARound],newValue); setMDAProperty( 'coverageSAC', curMDARound, newValue ); }}
+                onChange={( event, newValue ) => { /*console.log(' change coverageSAC curMDARound',curMDARound,future.coverage[curMDARound],newValue);*/ setMDAProperty( 'coverageSAC', curMDARound, newValue ); }}
                 inModal={true}
                 label="Coverage School-Age Children "
                 min={0}
