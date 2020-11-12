@@ -13,7 +13,7 @@ import {
 } from 'pages/components/simulator/settings'
 import useStyles from 'pages/components/simulator/styles'
 
-import { DISEASE_LIMF, DISEASE_TRACHOMA, DISEASE_STH_ROUNDWORM } from 'AppConstants';
+import { DISEASE_CONFIG,DISEASE_LIMF, DISEASE_TRACHOMA, DISEASE_STH_ROUNDWORM } from 'AppConstants';
 
 //import ClickAway from "hooks/clickAway";
 
@@ -118,10 +118,7 @@ const MdaRounds = (props) => {
  
   const outputMDATime = (curMDARound) => {
     //console.log('outputMDATime disease',disease)
-    let startYear = 2020
-    if ( disease === DISEASE_STH_ROUNDWORM ) {
-      startYear = 2018
-    }
+    const startYear = DISEASE_CONFIG[ disease ] ? DISEASE_CONFIG[ disease ].interventionStartYear : 2020
     const year = startYear + ( curMDARound / 2)
     if ( year % 1 === 0 ) {
       return year
@@ -138,20 +135,7 @@ const MdaRounds = (props) => {
   const actualBar = 10
   const rightMargin = 50
   const areaOffset = rightMargin - actualBar
-  let initialOffset = barWidth
-  switch ( disease ) {
-    case DISEASE_LIMF:
-      initialOffset = barWidth/2
-      break
-    case DISEASE_TRACHOMA:
-      initialOffset = barWidth
-      break
-    case DISEASE_STH_ROUNDWORM:
-      initialOffset = barWidth/2
-      break
-    default: 
-      initialOffset = barWidth/2
-  }
+  const initialOffset = DISEASE_CONFIG[ disease ] ? barWidth / DISEASE_CONFIG[ disease ].offsetBarWidthDivider : barWidth
 
   const mapActiveToTime = future.active.filter((val,index)=>{
     if ( future.time[index] !== undefined ) {
@@ -489,7 +473,7 @@ const MdaRounds = (props) => {
           
               <SettingTargetCoverage
                 value={future.coverageSAC[curMDARound]}
-                onChange={( event, newValue ) => { setMDAProperty( 'coverageSAC', curMDARound, newValue ); }}
+                onChange={( event, newValue ) => { console.log(' change coverageSAC curMDARound',curMDARound,future.coverage[curMDARound],newValue); setMDAProperty( 'coverageSAC', curMDARound, newValue ); }}
                 inModal={true}
                 label="Coverage School-Age Children "
                 min={0}

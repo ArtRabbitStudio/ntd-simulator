@@ -220,7 +220,7 @@ const reducer = ( incomingSimState, action ) => {
         ...simState,
         settings: { ...simState.settings, coverageInfants: action.payload }
       }
-      case 'coveragePreSAC':
+    case 'coveragePreSAC':
     return {
       ...simState,
       settings: { ...simState.settings, coveragePreSAC: action.payload }

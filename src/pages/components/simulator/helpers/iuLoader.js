@@ -1,6 +1,6 @@
 import Papa from 'papaparse'
 import { last, filter, forEach } from 'lodash'
-import { DISEASE_LIMF, DISEASE_TRACHOMA, DISEASE_STH_ROUNDWORM } from 'AppConstants';
+import { DISEASE_CONFIG,DISEASE_LIMF, DISEASE_TRACHOMA, DISEASE_STH_ROUNDWORM } from 'AppConstants';
 
 import SessionStorage from './sessionStorage';
 
@@ -20,7 +20,6 @@ export const loadAllIUhistoricData = async (
       mdaData = await loadMdaHistoryLF(implementationUnit)
       params = await loadIUParamsLF(implementationUnit)
       break;
-
     case DISEASE_TRACHOMA:
       break;
     case DISEASE_STH_ROUNDWORM:
@@ -579,13 +578,9 @@ export const generateMdaFutureFromScenario = ( scenario ) => {
 
 export const generateMdaFutureFromScenarioSettings = ( scenario,disease ) => {
 
-  let numberOfYears = 11 * 2;
-  let startMonth = 240;
-  if ( disease === DISEASE_STH_ROUNDWORM ) {
-    // roundworm has user interaction from 2018 so 12 years in total
-    numberOfYears = 12 * 2;
-    startMonth = 216;
-  }
+  const numberOfYears = DISEASE_CONFIG[ disease ] ? DISEASE_CONFIG[ disease ].numberOfYears : 11 * 2;
+  const startMonth = DISEASE_CONFIG[ disease ] ? DISEASE_CONFIG[ disease ].startMonth : 240;
+
 
   let MDAtime = [];
 

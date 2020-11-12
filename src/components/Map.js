@@ -6,7 +6,7 @@ import { Typography, Box, Paper } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import Tooltip from './Tooltip'
 import Legend from './Legend'
-import {DISEASE_STH_ROUNDWORM } from 'AppConstants';
+import { DISEASE_CONFIG } from 'AppConstants';
 
 import useMapReducer from 'hooks/useMapReducer'
 import 'mapbox-gl/dist/mapbox-gl.css'
@@ -65,11 +65,8 @@ function Map({
                 f => f.properties.id === country
             )
 
-            // TODO: update year based on disease>
-            if ( disease === DISEASE_STH_ROUNDWORM ) {
-                dispatch({ type: 'CHANGE_YEAR', payload: 2018 })
-            }
-            
+            // Set right output year for disease
+            dispatch({ type: 'CHANGE_YEAR', payload: DISEASE_CONFIG[ disease ].historicEndYear })
             
             if (focus) {
                 // new zooming

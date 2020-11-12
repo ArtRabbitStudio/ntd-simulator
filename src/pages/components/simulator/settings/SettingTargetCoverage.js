@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import useStyles from 'pages/components/simulator/styles'
 
 import { useSimulatorStore } from 'store/simulatorStore'
@@ -22,7 +22,7 @@ const SettingTargetCoverage = ({
   const classes = useStyles()
   const { dispatchSimState } = useSimulatorStore()
   const { scenarioState, dispatchScenarioStateUpdate } = useScenarioStore();
-
+  const { setInit, Init } = useState( false )
   const minVal = min ? min : 0
   const maxVal = max ? max : 100
   const stepVal = step ? step : 1
@@ -31,7 +31,6 @@ const SettingTargetCoverage = ({
   // make title and key a parameter to pass in so we can utilise this slider instead of making new ones
   const titleVal = title ? title : "Proportion of the eligible population that will be treated."
   const keyVal = valueKey ? valueKey : 'coverage'
-
   scenarioId = scenarioId ? scenarioId : scenarioState.currentScenarioId;
 
   /* TODO FIXME */
@@ -51,13 +50,17 @@ const SettingTargetCoverage = ({
   }
 
   let initalValue = isPerIUSetting ? value : 0
+
   // this catches any setup that isn't finished
   // for example if the mda file couldn't be loaded
-  if ( scenarioState.scenarioData[ scenarioId ] ) {
-    if ( scenarioState.scenarioData[ scenarioId ].settings[ keyVal ] ) {
+  // TE removed, this breaks the slider interaction
+  /*if ( scenarioState.scenarioData[ scenarioId ] ) {
+    if ( scenarioState.scenarioData[ scenarioId ].settings[ keyVal ] !== null ) {
+      console.log('keyVal',keyVal)
+      console.log('setting initial value to',scenarioState.scenarioData[ scenarioId ].settings[ keyVal ])
       initalValue = scenarioState.scenarioData[ scenarioId ].settings[ keyVal ]
     }
-  }
+  }*/
 
   return (
     <FormControl fullWidth className={`${classes.formControl} ${classAdd}`}>
