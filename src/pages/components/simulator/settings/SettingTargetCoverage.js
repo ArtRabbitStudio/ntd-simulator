@@ -51,7 +51,6 @@ const SettingTargetCoverage = ({
   }
 
   let initalValue = isPerIUSetting ? value : 0
-
   // this catches any setup that isn't finished
   // for example if the mda file couldn't be loaded
   // TE removed, this breaks the slider interaction

@@ -139,7 +139,6 @@ export default {
   },
 
   createNewScenario: function ( settings, mdaObj ) {
-
       const label = new Date().toISOString().split('T').join(' ').replace(/\.\d{3}Z/, '');
       const id = uuidv4();
 
@@ -157,7 +156,6 @@ export default {
   },
 
   initScenario: function( newScenarioData, mdaObj ) {
-    
     const startYear = 15 *12
     const endYear = 17 * 12
     let mda2015 = {time:[180,192,204]}

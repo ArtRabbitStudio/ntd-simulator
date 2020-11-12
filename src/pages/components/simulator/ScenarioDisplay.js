@@ -202,6 +202,7 @@ const ScenarioDisplay = (props) => {
 
                 { disease === DISEASE_LIMF &&
                   <SettingTargetCoverage
+                    scenarioId={ scenarioData.id }
                     inModal={true}
                     label="Treatment target coverage"
                   />
@@ -209,6 +210,7 @@ const ScenarioDisplay = (props) => {
                 { disease === DISEASE_TRACHOMA &&
                   <SettingTargetCoverage
                     inModal={true}
+                    scenarioId={ scenarioData.id }
                     min={60}
                     max={90}
                     step={10}
@@ -424,10 +426,7 @@ const ScenarioDisplay = (props) => {
             
 
             <Tooltip
-              title={disease === DISEASE_LIMF ? "White bars show no intervention;  blue bars show intervention, the height of the blue colour shows coverage. Historic interventions before 2019 are greyed out." 
-              :
-              "White bars show no intervention;  blue bars show intervention, the height of the blue colour shows coverage. Historic interventions are greyed out. Use the slider to adjust interruption and when MDA is discontinued."
-              }
+              title={DISEASE_CONFIG[ disease ].mdaTooltip}
               aria-label="info"
             >
 

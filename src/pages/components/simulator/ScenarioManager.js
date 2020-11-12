@@ -27,7 +27,8 @@ import { DISEASE_STH_WHIPWORM } from '../../../AppConstants';
 const settingsDialogComponents = {
   lf: NewSettingsDialogLF,
   trachoma: NewSettingsDialogTrachoma,
-  'sth-roundworm': NewSettingsDialogSTHRoundworm
+  'sth-roundworm': NewSettingsDialogSTHRoundworm,
+  'sth-whipworm': NewSettingsDialogSTHRoundworm
 };
 
 const a11yProps = (index) => {
