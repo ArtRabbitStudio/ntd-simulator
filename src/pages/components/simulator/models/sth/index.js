@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
 import { generateMdaFutureFromScenarioSettings } from 'pages/components/simulator/helpers/iuLoader';
 import { csv } from 'd3';
-import { DISEASE_STH_ROUNDWORM } from 'AppConstants';
+import { DISEASE_STH_ROUNDWORM, DISEASE_STH_WHIPWORM } from 'AppConstants';
 import sha256 from 'fast-sha256';
 import nacl from 'tweetnacl-util'
 
@@ -127,6 +127,17 @@ const convertSummary = ( s ) => {
 
 export default {
 
+  modelDiseaseType: null,
+  modelDiseaseLabel: null,
+
+  initModel: function( disease ) {
+    this.modelDiseaseType = disease;
+    this.modelDiseaseLabel = {
+      [ DISEASE_STH_ROUNDWORM ]: 'STHRoundworm',
+      [ DISEASE_STH_WHIPWORM ]: 'STHWhipworm'
+    }[ disease ];
+  },
+
   createNewScenario: function ( settings, mdaObj ) {
 
       const label = new Date().toISOString().split('T').join(' ').replace(/\.\d{3}Z/, '');
@@ -135,11 +146,11 @@ export default {
       const newScenarioData = {
         id,
         label,
-        type: DISEASE_STH_ROUNDWORM,
+        type: this.modelDiseaseType,
         settings: { ...settings } // should this be here or in the initScenario?
       };
 
-      console.log( `STHRoundworm auto-created new scenario id ${newScenarioData.id}` );
+      console.log( `${this.modelDiseaseLabel} auto-created new scenario id ${newScenarioData.id}` );
 
       return this.initScenario( newScenarioData, mdaObj );
 
@@ -172,11 +183,11 @@ export default {
 
     const newScenario =  {
       ...newScenarioData,
-      mdaFuture: generateMdaFutureFromScenarioSettings( newScenarioData,DISEASE_STH_ROUNDWORM ),
+      mdaFuture: generateMdaFutureFromScenarioSettings( newScenarioData, this.modelDiseaseType ),
       mda2015
     };
 
-    console.log( 'STHRoundworm inited MDA future from new scenario settings', newScenario );
+    console.log( `${this.modelDiseaseLabel} inited MDA future from new scenario settings`, newScenario );
 
     return newScenario;
 
@@ -190,7 +201,7 @@ export default {
         ? this.createNewScenario( simState.settings, simState.IUData.mdaObj )
         : scenarioState.scenarioData[ scenarioId ];
 
-    console.log( 'STHRoundworm fetching prepped scenarioData', scenarioData );
+    console.log( `${this.modelDiseaseLabel} fetching prepped scenarioData`, scenarioData );
 
     /*
      * notify the UI there's potentially a long wait ahead
@@ -247,7 +258,7 @@ export default {
     hasher.update( nacl.decodeUTF8( apiParamsJson ) );
     const digest = Buffer.from( hasher.digest() ).toString( 'hex' ).substring( 0, 24 );
 
-    console.log( `STHRoundworm model using MDA file hash: ${digest}` );
+    console.log( `${this.modelDiseaseLabel} model using MDA file hash: ${digest}` );
 
     const country = simState.IUData.id.substring( 0, 3 );
     const iu = simState.IUData.id;
@@ -281,7 +292,7 @@ export default {
               const apiUrl = "https://sth-app-api-mijgnzszia-ew.a.run.app/run";
               //const apiUrl = "http://localhost:5000/run"
 
-              console.log( `STHRoundworm didn't find static info, sending scenario params to API at ${apiUrl}:`, apiParams );
+              console.log( `${this.modelDiseaseLabel} didn't find static info, sending scenario params to API at ${apiUrl}:`, apiParams );
 
               const fetchOptions = {
                 method: "POST",
@@ -309,7 +320,7 @@ export default {
       return new Promise(
         ( resolve, reject ) => {
           const key = `${label}DataUrl`;
-          console.log( `STHRoundworm loading ${label} data ${infoJson[ key ]}` );
+          console.log( `${this.modelDiseaseLabel} loading ${label} data ${infoJson[ key ]}` );
           csv( infoJson[ key ] )
           .then( ( results ) => {
             resolve( results );
@@ -322,7 +333,7 @@ export default {
       return new Promise(
         ( resolve, reject ) => {
           const key = `${label}SummaryUrl`;
-          console.log( `STHRoundworm loading ${label} summary ${infoJson[ key ]}` );
+          console.log( `${this.modelDiseaseLabel} loading ${label} summary ${infoJson[ key ]}` );
           fetch( infoJson[ key ] )
           .then( ( response ) => { return response; } )
           .then( ( res ) => { return res.json(); } )
@@ -361,13 +372,13 @@ export default {
 
         console.warn( "TODO implement combining MHISAC data/summary" );
 
-        console.log( "STHRoundworm.runScenario combined all data, calling resultCallback" );
+        console.log( `${this.modelDiseaseLabel}.runScenario combined all data, calling resultCallback` );
         callbacks.resultCallback( result, isNewScenario );
       }
     )
     .catch(
       ( e ) => {
-        console.log( "STHRoundworm.runScenario: Promise.all() caught error: ", e );
+        console.warn( `💣 ${this.modelDiseaseLabel}.runScenario: Promise.all() caught error: `, e );
       }
     );
 

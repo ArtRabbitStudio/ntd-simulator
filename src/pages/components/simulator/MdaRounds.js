@@ -163,9 +163,6 @@ const MdaRounds = (props) => {
   const LFandSTHRoundworm = ( disease === DISEASE_LIMF || disease === DISEASE_STH_ROUNDWORM )
   const LFandTrachoma = ( disease === DISEASE_LIMF || disease === DISEASE_TRACHOMA )
 
-  console.log('history',history)
-  console.log('future',future)
-
   return (
     <React.Fragment>
       <div className={classes.legend}>

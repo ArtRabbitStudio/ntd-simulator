@@ -71,7 +71,16 @@ const ScenarioManager = ( props ) => {
   const { scenarioState, dispatchScenarioStateUpdate } = useScenarioStore();
   const { disease, country, implementationUnit: iu, section } = useUIState();
 
+  /*
+   * everything flows from the 'disease' key in the URL
+   * work out which model to use, and init it with a
+   * 'variant' (e.g. sth-roundworm, sth-whipworm etc)
+   * if called for by the model
+   */
   const diseaseModel = DiseaseModels[ disease ];
+  if ( diseaseModel.initModel ) {
+    diseaseModel.initModel( disease );
+  }
 
   const [ simInProgress, setSimInProgress ] = useState( false );
   const [ simulationProgress, setSimulationProgress ] = useState( 0 );
@@ -109,7 +118,7 @@ const ScenarioManager = ( props ) => {
   const callbacks = {
 
     pleaseWaitCallback: () => {
-      console.log( "✋ Please wait, running simulation ..." );
+      console.info( `✋ Please wait, running ${disease} simulation ...` );
     },
 
     progressCallback: ( progress ) => {
@@ -117,7 +126,7 @@ const ScenarioManager = ( props ) => {
     },
 
     failureCallback: ( msg ) => {
-      console.log( `⛔️ Error running model: ${msg}` );
+      console.warn( `⛔️ Error running ${disease} model: ${msg}` );
     },
 
     resultCallback: ( resultScenario, isNewScenario ) => {

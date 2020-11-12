@@ -1,11 +1,13 @@
 export const DISEASE_LIMF = 'lf'
 export const DISEASE_TRACHOMA = 'trachoma'
 export const DISEASE_STH_ROUNDWORM = 'sth-roundworm'
+export const DISEASE_STH_WHIPWORM = 'sth-whipworm'
 
 export const DISEASE_LABELS = {
   'lf': 'Lymphatic filariasis',
   'trachoma': 'Trachoma',
-  'sth-roundworm': 'Soil-transmitted helminth (roundworm)' 
+  'sth-roundworm': 'Soil-transmitted helminth (roundworm)',
+  'sth-whipworm': 'Soil-transmitted helminth (whipworm)',
 }
 
 export const NO_DATA = '[no data]'
