@@ -110,7 +110,9 @@ export var Person = function (a, b) {
   this.react = function () {
     var bNReduction = 1 - (1 - params.sN) * this.bedNet
     //immune state update
-
+    if(Number.isNaN(bNReduction)){
+      bNReduction = 1
+    }
     //I +=  (param->dt) *( (double) W - param->z * I);
     this.I = statFunctions.immuneRK4Step(this.W, this.I)
     //male worm update
