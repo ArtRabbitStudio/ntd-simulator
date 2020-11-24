@@ -440,7 +440,9 @@ export var Model = function (n) {
       } else {
         params.dt = 1.0
       }
-      
+      if(t < 13){
+        params.dt = 1.0
+      }
       for (var j = 0; j < this.n; j++) {
         this.people[j].react()
       }
@@ -452,7 +454,7 @@ export var Model = function (n) {
       } else {
         params.L3 = this.L3()
       }
-      params.L3 = this.L3()/params.dt
+      params.L3 = this.L3()
       if (t % 2 == 0 && t < Math.floor(t) + params.dt) {
         //cout << "t = " << (double) t/12.0 << "\n";
         this.saveOngoing(
