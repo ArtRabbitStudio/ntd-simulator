@@ -6,6 +6,7 @@ import ScenarioGraphPath from 'pages/components/simulator/ScenarioGraphPath'
 import ScenarioGraphAtivePoint from 'pages/components/simulator/ScenarioGraphActivePoint'
 import ScenarioGraphInfoPoints from 'pages/components/simulator/ScenarioGraphInfoPoints'
 import ScenarioGraphGrid from 'pages/components/simulator/ScenarioGraphGrid'
+import ScenarioGraphInfoLine from 'pages/components/simulator/ScenarioGraphInfoLine'
 
 import {
   Typography,
@@ -280,15 +281,7 @@ function ScenarioGraphTrachoma({
         {graphTypeSimple && data.results &&
             <g key={`results1-stats`}>{renderRange( data.summary['min'],  data.summary['max'], data.summary['ts'], false, x, y)}</g>
           }
-          {<line
-            key={`WHO target`}
-            x1={0}
-            x2={width - lPad - rPad}
-            y1={y(5)}
-            y2={y(5)}
-            stroke="#03D386"
-            strokeDasharray='10 2'
-          ></line>}
+          
           {!graphTypeSimple && data.results &&
             data.results.map((result, i) => (
               <g key={`results1-${i}`}>{renderResult(result, false, x, y)}</g>
@@ -298,6 +291,17 @@ function ScenarioGraphTrachoma({
             [data.summary].map((result, i) => (
               <g key={`results-${i}`}>{renderResult(result, true, x, y)}</g>
             ))}
+          <ScenarioGraphInfoLine 
+            legend={`WHO target`}
+            line={[0,width - lPad - rPad,y(5),y(5)]}
+            stroke="#03D386"
+            strokeDasharray='10 2'
+            percentage={5}
+            color={'#03D386'}
+            textColor={'#252525'}
+            legendColor={'#252525'}
+            otherActive={activeInfo}
+          />
             {simNeedsRerun && <rect x={0} width={svgWidth} height={svgHeight} fill="rgba(233,241,247,.4)" />}
             {simInProgress && <rect x={0} width={svgWidth} height={svgHeight} fill="rgba(220,233,240,.4)" />}
         </g>
