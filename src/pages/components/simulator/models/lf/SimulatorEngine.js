@@ -110,7 +110,9 @@ export var Person = function (a, b) {
   this.react = function () {
     var bNReduction = 1 - (1 - params.sN) * this.bedNet
     //immune state update
-
+    if(Number.isNaN(bNReduction)){
+      bNReduction = 1
+    }
     //I +=  (param->dt) *( (double) W - param->z * I);
     this.I = statFunctions.immuneRK4Step(this.W, this.I)
     //male worm update
@@ -244,11 +246,14 @@ export var Model = function (n) {
       //mf += param->kappas1 * pow(1 - exp(-param->r1 *( host_pop[i].mfConc() * host_pop[i].b)/param->kappas1), 2.0);
       mf += this.people[i].b * statFunctions.L3Uptake(this.people[i].M)
       bTot += this.people[i].b
+
     }
+    
     mf = mf / bTot //(double) n;
+    var bedNetCov = this.bedNetCoverage()
     return (
       (mf *
-        (1 + this.bedNetInt * params.covN * (params.sN - 1)) *
+        (1 + this.bedNetInt * bedNetCov * (params.sN - 1)) *
         params.lbda *
         params.g) /
       (params.sig + params.lbda * params.psi1)
@@ -281,7 +286,16 @@ export var Model = function (n) {
       }
     }
   }
-
+  
+  this.bedNetCoverage = function(){
+    var nts = 0.0
+    for (var i = 0; i < this.n; i++) {
+      //mf += param->kappas1 * pow(1 - exp(-param->r1 *( host_pop[i].mfConc() * host_pop[i].b)/param->kappas1), 2.0);
+      nts += this.people[i].bednet
+    }
+    return(nts/this.n)
+  }
+  
   this.bedNetEvent = function () {
     params.sig = params.sig + params.lbda * params.dN * params.covN
     var bedNetInc = (params.covN - params.covNOld) * this.n
@@ -436,6 +450,9 @@ export var Model = function (n) {
         //1200.0
         params.dt = 12.0
       } else {
+        params.dt = 1.0
+      }
+      if(t < 13){
         params.dt = 1.0
       }
       for (var j = 0; j < this.n; j++) {
