@@ -452,9 +452,10 @@ export var Model = function (n) {
       } else {
         params.dt = 1.0
       }
-      if(t < 13){
+      //Removed TE 05.12.2020 Seems to break the graph
+      /*if(t < 13){
         params.dt = 1.0
-      }
+      }*/
       for (var j = 0; j < this.n; j++) {
         this.people[j].react()
       }

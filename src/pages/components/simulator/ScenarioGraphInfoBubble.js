@@ -1,6 +1,14 @@
 import React from 'react';
 
-function ScenarioGraphInfoBubble({  coord, color, textColor, legend, legendColor, percentage }) {
+function ScenarioGraphInfoBubble({  
+    coord, 
+    color, 
+    textColor, 
+    legend, 
+    legendColor, 
+    percentage,
+    bubbleText
+  }) {
 
 
   return (
@@ -11,14 +19,14 @@ function ScenarioGraphInfoBubble({  coord, color, textColor, legend, legendColor
       <rect
         fill={color}
         fillOpacity={1}
-        x={-20}
+        x={bubbleText ? -60 : -20}
         y={-10}
         rx={5}
         ry={5}
-        width={40}
+        width={bubbleText ? 120 : 40}
         height={20}
       />
-      <text
+      {percentage && <text
         fontSize="12px"
         fontFamily="Roboto"
         pointerEvents="none"
@@ -29,8 +37,18 @@ function ScenarioGraphInfoBubble({  coord, color, textColor, legend, legendColor
         fill={textColor}
       >
         {`${percentage.toFixed(1)}%`}
-      </text>
-      <text
+      </text>}
+      {bubbleText && <text
+        fontSize="12px"
+        fontFamily="Roboto"
+        pointerEvents="none"
+        x={0}
+        y={1}
+        textAnchor="middle"
+        dominantBaseline="central"
+        fill={textColor}
+      >{bubbleText}</text>}
+      {legend && <text
         fontSize="12px"
         fontFamily="Roboto"
         pointerEvents="none"
@@ -41,7 +59,7 @@ function ScenarioGraphInfoBubble({  coord, color, textColor, legend, legendColor
         fill={legendColor}
       >
         {legend}
-      </text>
+      </text>}
     </g>
   )
 }

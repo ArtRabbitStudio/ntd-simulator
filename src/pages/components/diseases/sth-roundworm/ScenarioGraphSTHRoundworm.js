@@ -7,6 +7,7 @@ import ScenarioGraphAtivePoint from 'pages/components/simulator/ScenarioGraphAct
 import ScenarioGraphInfoPoints from 'pages/components/simulator/ScenarioGraphInfoPoints'
 import ScenarioGraphGrid from 'pages/components/simulator/ScenarioGraphGrid'
 import ScenarioGraphInfoLine from 'pages/components/simulator/ScenarioGraphInfoLine'
+import ScenarioGraphInfoBubble from 'pages/components/simulator/ScenarioGraphInfoBubble'
 
 import {
   Typography,
@@ -31,7 +32,7 @@ function ScenarioGraphSTHRoundworm({
 }) {
 
   const [activeInfo, setActiveInfo] = useState(null)
-
+  const [uncertaintyInfo,setUncertaintyInfo] = useState(false)
   const startYear = 15
   const futureYear = 18
   const lPad = 50
@@ -75,6 +76,12 @@ function ScenarioGraphSTHRoundworm({
     }, 50)
   }
 
+  const handleUncertaintyHover = () => {
+    setUncertaintyInfo(true)
+  }
+  const handleUncertaintyLeave = () => {
+    setUncertaintyInfo(false)
+  }
 
   const x = scaleLinear().domain(domainX).range([0, width - rPad - lPad])
 
@@ -255,8 +262,8 @@ function ScenarioGraphSTHRoundworm({
     return (
 
       <>
-          <polygon points={points+' '+pointsMax} fill={bgColor} opacity={.1} />
-          <polygon points={fpoints+' '+fpointsMax} fill={bgColor} opacity={.15} />
+          <polygon points={points+' '+pointsMax} fill={bgColor} opacity={.1} onMouseEnter={handleUncertaintyHover} onMouseLeave={handleUncertaintyLeave} />
+          <polygon points={fpoints+' '+fpointsMax} fill={bgColor} opacity={.15} onMouseEnter={handleUncertaintyHover} onMouseLeave={handleUncertaintyLeave} />
       </>
 
     )
@@ -304,6 +311,14 @@ function ScenarioGraphSTHRoundworm({
             legendColor={'#252525'}
             otherActive={activeInfo}
           />
+            {(uncertaintyInfo && activeInfo === null) && 
+            <ScenarioGraphInfoBubble 
+              coord={[width - lPad - rPad - rPad,y(data.summary[metrics]['max'][data.summary[metrics]['max'].length-1])]}
+              color={'#E1E4E6'}
+              textColor={'#252525'}
+              legendColor={'#E1E4E6'}
+              bubbleText={'Model uncertainty'}            
+            />}
             {simNeedsRerun && <rect x={0} width={svgWidth} height={svgHeight} fill="rgba(233,241,247,.4)" />}
             {simInProgress && <rect x={0} width={svgWidth} height={svgHeight} fill="rgba(220,233,240,.4)" />}
         </g>
