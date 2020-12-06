@@ -20,8 +20,7 @@ import { loadAllIUhistoricData } from 'pages/components/simulator/helpers/iuLoad
 import { NewSettingsDialogLF } from 'pages/components/diseases/lf';
 import { NewSettingsDialogTrachoma } from 'pages/components/diseases/trachoma';
 import { NewSettingsDialogSTHRoundworm } from 'pages/components/diseases/sth-roundworm';
-import { DISEASE_LIMF, DISEASE_TRACHOMA, DISEASE_STH_ROUNDWORM } from 'AppConstants';
-import { DISEASE_STH_WHIPWORM } from '../../../AppConstants';
+import { DISEASE_LIMF, DISEASE_TRACHOMA, DISEASE_STH_ROUNDWORM, DISEASE_STH_WHIPWORM, DISEASE_STH_HOOKWORM } from 'AppConstants';
 
 
 const settingsDialogComponents = {
@@ -426,7 +425,7 @@ const ScenarioManager = ( props ) => {
   }
 
   const SettingsDialogComponent = ( disease !== null ) ? settingsDialogComponents[ disease ] : null;
-  const STH = ( disease === DISEASE_STH_WHIPWORM || disease === DISEASE_STH_ROUNDWORM )
+  const STH = ( disease === DISEASE_STH_WHIPWORM || disease === DISEASE_STH_ROUNDWORM || disease === DISEASE_STH_HOOKWORM )
   return (
     <div id="ScenarioManager">
         <section className={classes.simulator}>

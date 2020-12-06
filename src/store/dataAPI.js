@@ -31,7 +31,7 @@ import {
 } from "lodash";
 import { color, extent, scaleSymlog, interpolateHcl } from "d3";
 
-import { DISEASE_LIMF, DISEASE_TRACHOMA, DISEASE_STH_ROUNDWORM, DISEASE_STH_WHIPWORM } from 'AppConstants';
+import { DISEASE_LIMF, DISEASE_TRACHOMA, DISEASE_STH_ROUNDWORM, DISEASE_STH_WHIPWORM, DISEASE_STH_HOOKWORM } from 'AppConstants';
 
 //const seq5 = ["#BA455E", "#CB7386", "#DDA2AF", "#EED0D7", "#ffffff"];
 //const seq5b = ["#A91636", "#BA455E", "#CB7386", "#DDA2AF", "#FFFFFF"];
@@ -118,6 +118,7 @@ function generateStats(data,disease) {
       break
     case DISEASE_STH_ROUNDWORM:
     case DISEASE_STH_WHIPWORM: 
+    case DISEASE_STH_HOOKWORM: 
       prevExtent = flow(
         values,
         map(({ prevalence }) => {
@@ -239,6 +240,7 @@ function createEntries({ data, relations, key, disease }) {
           break
         case DISEASE_STH_ROUNDWORM:
         case DISEASE_STH_WHIPWORM:
+        case DISEASE_STH_HOOKWORM:
           performance = round(last(prevValues) - prevValues[17]*100)/100;
           break
         default:
@@ -739,7 +741,7 @@ class DataAPI {
     return null;
   }
   get diseases() {
-    return [DISEASE_LIMF, DISEASE_TRACHOMA, DISEASE_STH_ROUNDWORM, DISEASE_STH_WHIPWORM];
+    return [ DISEASE_LIMF, DISEASE_TRACHOMA, DISEASE_STH_ROUNDWORM, DISEASE_STH_WHIPWORM, DISEASE_STH_HOOKWORM ];
   }
 
   get regimes() {

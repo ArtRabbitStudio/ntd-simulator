@@ -1,6 +1,6 @@
 import Papa from 'papaparse'
 import { last, filter, forEach } from 'lodash'
-import { DISEASE_CONFIG,DISEASE_LIMF, DISEASE_TRACHOMA, DISEASE_STH_ROUNDWORM, DISEASE_STH_WHIPWORM } from 'AppConstants';
+import { DISEASE_CONFIG, DISEASE_LIMF, DISEASE_TRACHOMA, DISEASE_STH_ROUNDWORM, DISEASE_STH_WHIPWORM, DISEASE_STH_HOOKWORM } from 'AppConstants';
 
 import SessionStorage from './sessionStorage';
 
@@ -24,6 +24,7 @@ export const loadAllIUhistoricData = async (
       break;
     case DISEASE_STH_ROUNDWORM:
     case DISEASE_STH_WHIPWORM:
+    case DISEASE_STH_HOOKWORM:
       mdaData = await loadMdaHistorySTHRoundworm(implementationUnit,country,disease)
       break
     default:
@@ -125,6 +126,7 @@ export const loadAllIUhistoricData = async (
       break
     case DISEASE_STH_ROUNDWORM:
     case DISEASE_STH_WHIPWORM:
+    case DISEASE_STH_HOOKWORM:
       defaults.settings.coverageInfants = last(mdaData.coverageInfants)
       defaults.settings.coveragePreSAC = last(mdaData.coveragePreSAC)
       defaults.settings.coverageSAC = last(mdaData.coverageSAC)

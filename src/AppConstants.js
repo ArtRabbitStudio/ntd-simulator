@@ -1,17 +1,19 @@
-export const DISEASE_LIMF = 'lf'
-export const DISEASE_TRACHOMA = 'trachoma'
-export const DISEASE_STH_ROUNDWORM = 'sth-roundworm'
-export const DISEASE_STH_WHIPWORM = 'sth-whipworm'
+export const DISEASE_LIMF = 'lf';
+export const DISEASE_TRACHOMA = 'trachoma';
+export const DISEASE_STH_ROUNDWORM = 'sth-roundworm';
+export const DISEASE_STH_WHIPWORM = 'sth-whipworm';
+export const DISEASE_STH_HOOKWORM = 'sth-hookworm';
 
 export const DISEASE_LABELS = {
-  'lf':                 'Lymphatic filariasis',
-  'trachoma':           'Trachoma',
-  'sth-roundworm':      'Soil-transmitted helminth (roundworm)',
-  'sth-whipworm':       'Soil-transmitted helminth (whipworm)',
+  [DISEASE_LIMF]:               'Lymphatic filariasis',
+  [DISEASE_TRACHOMA]:           'Trachoma',
+  [DISEASE_STH_ROUNDWORM]:      'Soil-transmitted helminth (roundworm)',
+  [DISEASE_STH_WHIPWORM]:       'Soil-transmitted helminth (whipworm)',
+  [DISEASE_STH_HOOKWORM]:       'Soil-transmitted helminth (hookworm)',
 }
 
 export const DISEASE_CONFIG = {
-  'lf': {
+  [DISEASE_LIMF]: {
                         historicStartYear: 2010,
                         historicEndYear: 2019,
                         interventionStartYear: 2020,
@@ -24,7 +26,7 @@ export const DISEASE_CONFIG = {
                         mapLegend: 'Prevalence map and trends since 2010.',
                         mdaTooltip: 'White bars show no intervention;  blue bars show intervention, the height of the blue colour shows coverage. Historic interventions before 2019 are greyed out.'
   },
-  'trachoma': {
+  [DISEASE_TRACHOMA]: {
                         historicStartYear: 2017,
                         historicEndYear: 2019,
                         interventionStartYear: 2020,
@@ -38,7 +40,7 @@ export const DISEASE_CONFIG = {
                         mdaTooltip: 'White bars show no intervention;  blue bars show intervention, the height of the blue colour shows coverage. Historic interventions are greyed out. Use the slider to adjust interruption and when MDA is discontinued.'
 
   },
-  'sth-roundworm': {
+  [DISEASE_STH_ROUNDWORM]: {
                         historicStartYear: 2010,
                         historicEndYear: 2018,
                         interventionStartYear: 2018,
@@ -52,7 +54,19 @@ export const DISEASE_CONFIG = {
                         mdaTooltip: 'White bars show no intervention;  blue bars show intervention, the height of the blue colour shows coverage. Historic interventions before 2018 are greyed out.'
 
   },
-  'sth-whipworm': {
+  [DISEASE_STH_WHIPWORM]: {
+                        historicStartYear: 2010,
+                        historicEndYear: 2018,
+                        interventionStartYear: 2018,
+                        startYear: 2015,
+                        endYear: 2030,
+                        defaultMetric: 'KK',
+                        numberOfYears: 12 * 2,
+                        startMonth: 216,
+                        offsetBarWidthDivider: 2,
+                        mapLegend: 'Prevalence map and trends since 2017'
+  },
+  [DISEASE_STH_HOOKWORM]: {
                         historicStartYear: 2010,
                         historicEndYear: 2018,
                         interventionStartYear: 2018,

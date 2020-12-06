@@ -24,7 +24,7 @@ import MdaRounds from 'pages/components/simulator/MdaRounds'
 import DiseaseModels from 'pages/components/simulator/models/DiseaseModels';
 import ConfirmationDialog from "pages/components/ConfirmationDialog";
 
-import { DISEASE_CONFIG,DISEASE_LIMF, DISEASE_TRACHOMA, DISEASE_STH_ROUNDWORM, DISEASE_STH_WHIPWORM } from 'AppConstants';
+import { DISEASE_CONFIG,DISEASE_LIMF, DISEASE_TRACHOMA, DISEASE_STH_ROUNDWORM, DISEASE_STH_WHIPWORM, DISEASE_STH_HOOKWORM } from 'AppConstants';
 
 // settings
 import {
@@ -110,7 +110,7 @@ const ScenarioDisplay = (props) => {
 
   const scenarioId = scenarioState.currentScenarioId;
   const scenarioData = scenarioState.scenarioData[ scenarioId ];
-  const STH = ( disease === DISEASE_STH_ROUNDWORM || disease === DISEASE_STH_WHIPWORM )
+  const STH = ( disease === DISEASE_STH_ROUNDWORM || disease === DISEASE_STH_WHIPWORM || disease === DISEASE_STH_HOOKWORM )
 
   const scenarioDisplay = scenarioData ? (
 

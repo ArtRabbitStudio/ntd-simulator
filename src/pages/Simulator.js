@@ -22,14 +22,16 @@ const introComponents = {
   lf: IntroLF,
   trachoma: IntroTrachoma,
   'sth-roundworm': IntroSTHRoundworm,
-  'sth-whipworm': IntroSTHWhipworm
+  'sth-whipworm': IntroSTHWhipworm,
+  'sth-hookworm': IntroSTHWhipworm
 };
 
 const setupComponents = {
   lf: SetupLF,
   trachoma: SetupTrachoma,
   'sth-roundworm': SetupSTHRoundworm,
-  'sth-whipworm': SetupSTHRoundworm
+  'sth-whipworm': SetupSTHRoundworm,
+  'sth-hookworm': SetupSTHRoundworm
 };
 
 const Simulator = ( props ) => {
