@@ -6,6 +6,8 @@ import ScenarioGraphPath from 'pages/components/simulator/ScenarioGraphPath'
 import ScenarioGraphAtivePoint from 'pages/components/simulator/ScenarioGraphActivePoint'
 import ScenarioGraphInfoPoints from 'pages/components/simulator/ScenarioGraphInfoPoints'
 import ScenarioGraphGrid from 'pages/components/simulator/ScenarioGraphGrid'
+import ScenarioGraphInfoLine from 'pages/components/simulator/ScenarioGraphInfoLine'
+import ScenarioGraphInfoBubble from 'pages/components/simulator/ScenarioGraphInfoBubble'
 
 import {
   Typography,
@@ -30,7 +32,7 @@ function ScenarioGraphSTHRoundworm({
 }) {
 
   const [activeInfo, setActiveInfo] = useState(null)
-
+  const [uncertaintyInfo,setUncertaintyInfo] = useState(false)
   const startYear = 15
   const futureYear = 18
   const lPad = 50
@@ -74,6 +76,12 @@ function ScenarioGraphSTHRoundworm({
     }, 50)
   }
 
+  const handleUncertaintyHover = () => {
+    setUncertaintyInfo(true)
+  }
+  const handleUncertaintyLeave = () => {
+    setUncertaintyInfo(false)
+  }
 
   const x = scaleLinear().domain(domainX).range([0, width - rPad - lPad])
 
@@ -206,7 +214,14 @@ function ScenarioGraphSTHRoundworm({
                 mode="f"
               />
               {activeInfo &&
-                <ScenarioGraphAtivePoint active={activeInfo} coord={[x(activeCoords.ts), y(activeCoords.p), activeCoords.p]} mode={activeMode} />
+                <ScenarioGraphAtivePoint 
+                  active={activeInfo} 
+                  coord={[x(activeCoords.ts), y(activeCoords.p), activeCoords.p]} 
+                  mode={activeMode} 
+                  low={1}
+                  med={6}
+                  high={10}
+                />
               }
             </g>
         }
@@ -247,8 +262,8 @@ function ScenarioGraphSTHRoundworm({
     return (
 
       <>
-          <polygon points={points+' '+pointsMax} fill={bgColor} opacity={.1} />
-          <polygon points={fpoints+' '+fpointsMax} fill={bgColor} opacity={.15} />
+          <polygon points={points+' '+pointsMax} fill={bgColor} opacity={.1} onMouseEnter={handleUncertaintyHover} onMouseLeave={handleUncertaintyLeave} />
+          <polygon points={fpoints+' '+fpointsMax} fill={bgColor} opacity={.15} onMouseEnter={handleUncertaintyHover} onMouseLeave={handleUncertaintyLeave} />
       </>
 
     )
@@ -276,15 +291,6 @@ function ScenarioGraphSTHRoundworm({
           {graphTypeSimple && data.results[metrics] &&
             <g key={`results1-stats`}>{renderRange( data.summary[metrics]['min'],  data.summary[metrics]['max'], data.summary[metrics]['ts'], false, x, y)}</g>
           }
-          {<line
-            key={`WHO target`}
-            x1={0}
-            x2={width - lPad - rPad}
-            y1={y(5)}
-            y2={y(5)}
-            stroke="#03D386"
-            strokeDasharray='10 2'
-          ></line>}
           {!graphTypeSimple && data.results &&
             data.results[metrics].map((result, i) => (
               <g key={`results1-${i}`}>{renderResult(result, false, x, y)}</g>
@@ -294,6 +300,25 @@ function ScenarioGraphSTHRoundworm({
             [data.summary[metrics]].map((result, i) => (
               <g key={`results-${i}`}>{renderResult(result, true, x, y)}</g>
             ))}
+          <ScenarioGraphInfoLine 
+            legend={`WHO target`}
+            line={[0,width - lPad - rPad,y(2),y(2)]}
+            stroke="#03D386"
+            strokeDasharray='10 2'
+            percentage={2}
+            color={'#03D386'}
+            textColor={'#252525'}
+            legendColor={'#252525'}
+            otherActive={activeInfo}
+          />
+            {(uncertaintyInfo && activeInfo === null) && 
+            <ScenarioGraphInfoBubble 
+              coord={[width - lPad - rPad - rPad,y(data.summary[metrics]['max'][data.summary[metrics]['max'].length-1])]}
+              color={'#E1E4E6'}
+              textColor={'#252525'}
+              legendColor={'#E1E4E6'}
+              bubbleText={'Model uncertainty'}            
+            />}
             {simNeedsRerun && <rect x={0} width={svgWidth} height={svgHeight} fill="rgba(233,241,247,.4)" />}
             {simInProgress && <rect x={0} width={svgWidth} height={svgHeight} fill="rgba(220,233,240,.4)" />}
         </g>

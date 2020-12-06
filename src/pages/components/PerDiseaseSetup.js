@@ -153,7 +153,7 @@ const PerDiseaseSetup = (props) => {
           </div>
           {props.disease === DISEASE_LIMF && <div className={classes.chart}>
           <Tooltip
-              title="White bars show no intervention;  blue bars show intervention, the height of the blue colour shows coverage."
+              title="Light blue bars show no intervention;  blue bars show intervention, the height of the blue colour shows coverage."
               aria-label="info"
             >
             <Typography

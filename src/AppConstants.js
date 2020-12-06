@@ -24,7 +24,7 @@ export const DISEASE_CONFIG = {
                         startMonth: 240,
                         offsetBarWidthDivider: 2,
                         mapLegend: 'Prevalence map and trends since 2010.',
-                        mdaTooltip: 'White bars show no intervention;  blue bars show intervention, the height of the blue colour shows coverage. Historic interventions before 2019 are greyed out.'
+                        mdaTooltip: 'Light blue bars show no intervention;  blue bars show intervention, the height of the blue colour shows coverage. Historic interventions before 2019 are greyed out.'
   },
   [DISEASE_TRACHOMA]: {
                         historicStartYear: 2017,
@@ -37,7 +37,7 @@ export const DISEASE_CONFIG = {
                         startMonth: 240,
                         offsetBarWidthDivider: 1,
                         mapLegend: 'Prevalence map and trends since 2017',
-                        mdaTooltip: 'White bars show no intervention;  blue bars show intervention, the height of the blue colour shows coverage. Historic interventions are greyed out. Use the slider to adjust interruption and when MDA is discontinued.'
+                        mdaTooltip: 'Light blue bars show no intervention;  blue bars show intervention, the height of the blue colour shows coverage. Historic interventions are greyed out. Use the slider to adjust interruption and when MDA is discontinued.'
 
   },
   [DISEASE_STH_ROUNDWORM]: {
@@ -51,7 +51,7 @@ export const DISEASE_CONFIG = {
                         startMonth: 216,
                         offsetBarWidthDivider: 2,
                         mapLegend: 'Prevalence map and trends since 2017',
-                        mdaTooltip: 'White bars show no intervention;  blue bars show intervention, the height of the blue colour shows coverage. Historic interventions before 2018 are greyed out.'
+                        mdaTooltip: 'Light blue bars show no intervention;  blue bars show intervention, the height of the blue colour shows coverage. Historic interventions before 2018 are greyed out.'
 
   },
   [DISEASE_STH_WHIPWORM]: {
@@ -77,7 +77,7 @@ export const DISEASE_CONFIG = {
                         startMonth: 216,
                         offsetBarWidthDivider: 2,
                         mapLegend: 'Prevalence map and trends since 2017',
-                        mdaTooltip: 'White bars show no intervention;  blue bars show intervention, the height of the blue colour shows coverage. Historic interventions before 2018 are greyed out.'
+                        mdaTooltip: 'Light blue bars show no intervention;  blue bars show intervention, the height of the blue colour shows coverage. Historic interventions before 2018 are greyed out.'
 
   }
 }

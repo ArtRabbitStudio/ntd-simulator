@@ -504,6 +504,11 @@ const ScenarioManager = ( props ) => {
                   value={ simulationProgress }
                   color="primary"
                 />
+                
+                <Typography paragraph variant="body1" component="p" align="center">
+                    Calculating... please wait
+                </Typography>
+                
               </div>
             ) }
             { (simulationProgress !== 0 && simulationProgress !== 100) && ( disease === DISEASE_LIMF || disease === DISEASE_TRACHOMA ) && (
@@ -514,6 +519,11 @@ const ScenarioManager = ( props ) => {
                   value={ simulationProgress }
                   color="primary"
                 />
+                
+                <Typography paragraph variant="body1" component="p" align="center">
+                    Calculating... please wait
+                </Typography>
+                
               </div>
               ) }
           </Grid>

@@ -86,9 +86,13 @@ const Footer = (props) => {
 
                         </Grid>
 
-                        <Grid item xs={12} className={classes.column}>
+                        <Grid item xs={3} className={classes.column}>
                             <Typography variant="h6" component="h6" className={classes.headline} >designed and made by</Typography>
                             <Link href="https://opencultu.re" rel="noopener" target="_blank" color="inherit" variant="body2">Open Cultu.re</Link>
+                        </Grid>
+
+                        <Grid item md={3} sm={6} xs={12} className={classes.column} >
+                                <Typography variant="h6" component="h6" className={classes.headline} >{`Version: ${process.env.REACT_APP_VERSION}`}</Typography>
                         </Grid>
 
                     </Grid>

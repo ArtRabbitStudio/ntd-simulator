@@ -27,6 +27,7 @@ import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 // root element styles
 import "./App.scss";
 
+
 const theme = createMuiTheme({
   palette: {
     tooltip: {

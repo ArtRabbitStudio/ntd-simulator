@@ -205,6 +205,9 @@ const useStyles = makeStyles((theme) => ({
       top: "50%",
       transform: "translate(-50%, -50%)",
     },
+    "& > p": {
+      marginTop: 20
+    },
   },
   updateScenario: {
     position: "absolute",

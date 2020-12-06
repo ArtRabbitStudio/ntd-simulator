@@ -6,6 +6,8 @@ import ScenarioGraphPath from 'pages/components/simulator/ScenarioGraphPath'
 import ScenarioGraphActivePoint from 'pages/components/simulator/ScenarioGraphActivePoint'
 import ScenarioGraphInfoPoints from 'pages/components/simulator/ScenarioGraphInfoPoints'
 import ScenarioGraphGrid from 'pages/components/simulator/ScenarioGraphGrid'
+import ScenarioGraphInfoLine from 'pages/components/simulator/ScenarioGraphInfoLine'
+import ScenarioGraphInfoBubble from 'pages/components/simulator/ScenarioGraphInfoBubble'
 
 import {
   Typography,
@@ -67,6 +69,14 @@ function ScenarioGraphLF({
 
 
   const [activeInfo, setActiveInfo] = useState(null)
+  const [uncertaintyInfo,setUncertaintyInfo] = useState(false)
+
+  const handleUncertaintyHover = () => {
+    setUncertaintyInfo(true)
+  }
+  const handleUncertaintyLeave = () => {
+    setUncertaintyInfo(false)
+  }
 
   const handleEnter = (id) => {
     if (fadeOutTimeout != null) {
@@ -247,8 +257,8 @@ function ScenarioGraphLF({
     return (
 
       <>
-          <polygon points={points+' '+pointsMax} fill={bgColor} opacity={.1} />
-          <polygon points={fpoints+' '+fpointsMax} fill={bgColor} opacity={.15} />
+          <polygon points={points+' '+pointsMax} fill={bgColor} opacity={.1} onMouseEnter={handleUncertaintyHover} onMouseLeave={handleUncertaintyLeave} />
+          <polygon points={fpoints+' '+fpointsMax} fill={bgColor} opacity={.15} onMouseEnter={handleUncertaintyHover} onMouseLeave={handleUncertaintyLeave} />
       </>
 
     )
@@ -275,15 +285,7 @@ function ScenarioGraphLF({
           {graphTypeSimple && data.results &&
             <g key={`results1-stats`}>{renderRange( data.stats[metrics+'Min'],  data.stats[metrics+'Max'], data.stats['ts'], false, x, y)}</g>
           }
-          <line
-            key={`WHO target`}
-            x1={0}
-            x2={width - lPad - rPad}
-            y1={y(1)}
-            y2={y(1)}
-            stroke="#03D386"
-            strokeDasharray='10 2'
-          ></line>
+          
           {!graphTypeSimple && data.results &&
             data.results.map((result, i) => (
               <g key={`results1-${i}`}>{renderResult(result, false, x, y)}</g>
@@ -293,6 +295,25 @@ function ScenarioGraphLF({
             [data.stats].map((result, i) => (
               <g key={`results-${i}`}>{renderResult(result, true, x, y)}</g>
             ))}
+          <ScenarioGraphInfoLine 
+            legend={`WHO target`}
+            line={[0,width - lPad - rPad,y(1),y(1)]}
+            stroke="#03D386"
+            strokeDasharray='10 2'
+            percentage={1}
+            color={'#03D386'}
+            textColor={'#252525'}
+            legendColor={'#252525'}
+            otherActive={activeInfo}
+          />
+          {(uncertaintyInfo && activeInfo === null) && 
+            <ScenarioGraphInfoBubble 
+              coord={[width - lPad - rPad - rPad,y(data.stats[metrics+'Max'][data.stats[metrics+'Max'].length-1])]}
+              color={'#E1E4E6'}
+              textColor={'#252525'}
+              legendColor={'#E1E4E6'}
+              bubbleText={'Model uncertainty'}            
+            />}
             {simNeedsRerun && <rect x={0} width={svgWidth} height={svgHeight} fill="rgba(233,241,247,.4)" />}
             {simInProgress && <rect x={0} width={svgWidth} height={svgHeight} fill="rgba(220,233,240,.4)" />}
         </g>
