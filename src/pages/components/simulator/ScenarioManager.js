@@ -27,7 +27,8 @@ const settingsDialogComponents = {
   lf: NewSettingsDialogLF,
   trachoma: NewSettingsDialogTrachoma,
   'sth-roundworm': NewSettingsDialogSTHRoundworm,
-  'sth-whipworm': NewSettingsDialogSTHRoundworm
+  'sth-whipworm': NewSettingsDialogSTHRoundworm,
+  'sth-hookworm': NewSettingsDialogSTHRoundworm
 };
 
 const a11yProps = (index) => {
