@@ -16,22 +16,26 @@ import { IntroSTHWhipworm } from 'pages/components/diseases/sth-whipworm';
 
 import ScenarioManager from 'pages/components/simulator/ScenarioManager';
 
+import AppConstants from 'AppConstants';
+
 
 
 const introComponents = {
-  lf: IntroLF,
-  trachoma: IntroTrachoma,
-  'sth-roundworm': IntroSTHRoundworm,
-  'sth-whipworm': IntroSTHWhipworm,
-  'sth-hookworm': IntroSTHWhipworm
+  [ AppConstants.DISEASE_LIMF ]: IntroLF,
+  [ AppConstants.DISEASE_TRACHOMA ]: IntroTrachoma,
+  [ AppConstants.DISEASE_STH_ROUNDWORM ]: IntroSTHRoundworm,
+  [ AppConstants.DISEASE_STH_WHIPWORM ]: IntroSTHWhipworm,
+  [ AppConstants.DISEASE_STH_HOOKWORM ]: IntroSTHWhipworm,
+  [ AppConstants.DISEASE_SCH_MANSONI ]: IntroSTHWhipworm
 };
 
 const setupComponents = {
-  lf: SetupLF,
-  trachoma: SetupTrachoma,
-  'sth-roundworm': SetupSTHRoundworm,
-  'sth-whipworm': SetupSTHRoundworm,
-  'sth-hookworm': SetupSTHRoundworm
+  [ AppConstants.DISEASE_LIMF ]: SetupLF,
+  [ AppConstants.DISEASE_TRACHOMA ]: SetupTrachoma,
+  [ AppConstants.DISEASE_STH_ROUNDWORM ]: SetupSTHRoundworm,
+  [ AppConstants.DISEASE_STH_WHIPWORM ]: SetupSTHRoundworm,
+  [ AppConstants.DISEASE_STH_HOOKWORM ]: SetupSTHRoundworm,
+  [ AppConstants.DISEASE_SCH_MANSONI ]: SetupSTHRoundworm,
 };
 
 const Simulator = ( props ) => {
