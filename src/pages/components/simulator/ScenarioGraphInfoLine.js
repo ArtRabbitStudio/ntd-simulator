@@ -12,7 +12,7 @@ function ScenarioGraphInfoLine({
     percentage,
     otherActive
   }) {
-  const coord = [line[1],line[2],line[3]]
+  const coord = [line[1]/2,line[2],line[3]]
 
   const [showInfo,setShowInfo] = useState(false)
   const handleEnter = () => {

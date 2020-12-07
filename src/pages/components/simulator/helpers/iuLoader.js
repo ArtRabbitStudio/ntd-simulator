@@ -157,11 +157,12 @@ export const loadAllIUhistoricData = async (
 
 
 export const loadMdaHistorySTHRoundworm = async (implementationUnit,country,disease) => {
-  console.log( "iuLoader loadMdaHistorySTHRoundworm:", implementationUnit );
+  console.log( "iuLoader loadMdaHistorySTHRoundworm:", implementationUnit,disease );
 
   const IUid = implementationUnit ? implementationUnit : 'AGO02107'
   // construct path
-  const mdaHistoryPath = `https://storage.googleapis.com/ntd-disease-simulator-data/diseases/${disease}/source-data/${country}/${IUid}/STH_MDA_${IUid}.csv`
+  const preFix = disease === DISEASE_SCH_MANSONI ? 'SCH' :  'STH'
+  const mdaHistoryPath = `https://storage.googleapis.com/ntd-disease-simulator-data/diseases/${disease}/source-data/${country}/${IUid}/${preFix}_MDA_${IUid}.csv`
   console.log('loading mda history from',mdaHistoryPath)
   let mdaLoaded = true
   const mdaResponse = await fetch(mdaHistoryPath).then((response)=>{
@@ -459,7 +460,7 @@ export const generateMdaFutureFromDefaults = ( simState,disease ) => {
     }
 
     else {
-      active = simState.settings.mdaSixMonths === 6 ? true : ( i % 2 ? false : true );
+      active = simState.settings.mdaSixMonths === 6 ? true : ( i % (simState.settings.mdaSixMonths/6) ? false : true );
     }
 
     MDAactive.push( active );
@@ -547,7 +548,7 @@ export const generateMdaFutureFromScenario = ( scenario,disease ) => {
     }
 
     else {
-      active = scenario.settings.mdaSixMonths === 6 ? true : ( i % 2 ? false : true );
+      active = scenario.settings.mdaSixMonths === 6 ? true : ( i % (scenario.settings.mdaSixMonths/6) ? false : true );
     }
 
     MDAactive.push( active );
@@ -634,7 +635,7 @@ export const generateMdaFutureFromScenarioSettings = ( scenario,disease ) => {
     }
 
     else {
-      active = scenario.settings.mdaSixMonths === 6 ? true : ( i % 2 ? false : true );
+      active = scenario.settings.mdaSixMonths === 6 ? true : ( i % (scenario.settings.mdaSixMonths/6) ? false : true );
     }
 
     MDAactive.push( active );

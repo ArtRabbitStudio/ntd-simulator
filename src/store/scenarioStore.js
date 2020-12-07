@@ -150,7 +150,7 @@ const reducer = ( scenarioState, action ) => {
               }
 
               else {
-                active = mdaSixMonths === 6 ? true : ( idx % 2 ? false : true );
+                active = mdaSixMonths === 6 ? true : ( idx % (mdaSixMonths/6) ? false : true );
               }
 
               return active;
@@ -174,7 +174,11 @@ const reducer = ( scenarioState, action ) => {
         newState.scenarioData[ action.id ].mdaFuture.active = newState.scenarioData[ action.id ].mdaFuture.active.map(
             ( v, idx ) => {
               let active;
-              active = mdaSixMonthsValue === 6 ? true : ( idx % 2 ? false : true );
+              // if 6 then true
+              // if 12 then %2
+              // if 24 then %4
+              // if 36 then %6
+              active = mdaSixMonthsValue === 6 ? true : ( idx % (mdaSixMonthsValue/6) ? false : true );
               return active;
             }
         )

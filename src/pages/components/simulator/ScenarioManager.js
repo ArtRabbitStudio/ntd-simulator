@@ -536,6 +536,7 @@ const ScenarioManager = ( props ) => {
                 action={ runCreatedScenario }
                 cancel={ cancelCreatedScenario }
                 newScenarioSettingsOpen={newScenarioSettingsOpen}
+                disease={disease}
               />
             : null
          }

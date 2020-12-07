@@ -87,6 +87,7 @@ const MdaRounds = (props) => {
         case DISEASE_STH_ROUNDWORM:
         case DISEASE_STH_WHIPWORM:
         case DISEASE_STH_HOOKWORM:
+        case DISEASE_SCH_MANSONI:
           return `${calculateTime(time)}: coverage ${coverageInfants}% - ${coveragePreSAC}% - ${coverageSAC}% - ${coverageAdults}%`
         default:
           return `${calculateTime(time)}: coverage ${coverage}%`

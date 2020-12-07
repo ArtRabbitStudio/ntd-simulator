@@ -8,6 +8,7 @@ import ScenarioGraphInfoPoints from 'pages/components/simulator/ScenarioGraphInf
 import ScenarioGraphGrid from 'pages/components/simulator/ScenarioGraphGrid'
 import ScenarioGraphInfoLine from 'pages/components/simulator/ScenarioGraphInfoLine'
 import ScenarioGraphInfoBubble from 'pages/components/simulator/ScenarioGraphInfoBubble'
+import AppConstants from 'AppConstants';
 
 import {
   Typography,
@@ -27,6 +28,7 @@ function ScenarioGraphSTHRoundworm({
   simInProgress,
   simNeedsRerun,
   graphTypeSimple,
+  disease,
   IU,
   IUData
 }) {
@@ -295,11 +297,31 @@ function ScenarioGraphSTHRoundworm({
             data.results[metrics].map((result, i) => (
               <g key={`results1-${i}`}>{renderResult(result, false, x, y)}</g>
             ))}
-          
-          {data.summary &&
-            [data.summary[metrics]].map((result, i) => (
-              <g key={`results-${i}`}>{renderResult(result, true, x, y)}</g>
-            ))}
+          {( disease === AppConstants.DISEASE_SCH_MANSONI && domainY[1] > 10 ) && 
+            <ScenarioGraphInfoLine 
+              legend={`Moderate`}
+              line={[0,width - lPad - rPad,y(10),y(10)]}
+              stroke="#ABB2B8"
+              strokeDasharray='10 2'
+              percentage={10}
+              color={'#ABB2B8'}
+              textColor={'#252525'}
+              legendColor={'#252525'}
+              otherActive={activeInfo}
+            />}
+          {( disease === AppConstants.DISEASE_SCH_MANSONI && domainY[1] > 50 ) &&
+            <ScenarioGraphInfoLine 
+              legend={`High`}
+              line={[0,width - lPad - rPad,y(50),y(50)]}
+              stroke="#ABB2B8"
+              strokeDasharray='10 2'
+              percentage={50}
+              color={'#ABB2B8'}
+              textColor={'#252525'}
+              legendColor={'#252525'}
+              otherActive={activeInfo}
+            />
+          }
           <ScenarioGraphInfoLine 
             legend={`WHO target`}
             line={[0,width - lPad - rPad,y(2),y(2)]}
@@ -311,9 +333,15 @@ function ScenarioGraphSTHRoundworm({
             legendColor={'#252525'}
             otherActive={activeInfo}
           />
+          {data.summary &&
+            [data.summary[metrics]].map((result, i) => (
+              <g key={`results-${i}`}>{renderResult(result, true, x, y)}</g>
+            ))}
+          
+          
             {(uncertaintyInfo && activeInfo === null) && 
             <ScenarioGraphInfoBubble 
-              coord={[width - lPad - rPad - rPad,y(data.summary[metrics]['max'][data.summary[metrics]['max'].length-1])]}
+              coord={[(width - lPad - rPad)/2,y(domainY[1])]}
               color={'#E1E4E6'}
               textColor={'#252525'}
               legendColor={'#E1E4E6'}

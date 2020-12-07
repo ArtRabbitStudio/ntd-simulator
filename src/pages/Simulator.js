@@ -13,6 +13,8 @@ import { IntroLF, SetupLF } from 'pages/components/diseases/lf';
 import { IntroTrachoma, SetupTrachoma } from 'pages/components/diseases/trachoma';
 import { IntroSTHRoundworm  , SetupSTHRoundworm } from 'pages/components/diseases/sth-roundworm';
 import { IntroSTHWhipworm } from 'pages/components/diseases/sth-whipworm';
+import { IntroSTHHookworm } from 'pages/components/diseases/sth-hookworm';
+import { IntroSCHMansoni } from 'pages/components/diseases/sch-mansoni';
 
 import ScenarioManager from 'pages/components/simulator/ScenarioManager';
 
@@ -25,8 +27,8 @@ const introComponents = {
   [ AppConstants.DISEASE_TRACHOMA ]: IntroTrachoma,
   [ AppConstants.DISEASE_STH_ROUNDWORM ]: IntroSTHRoundworm,
   [ AppConstants.DISEASE_STH_WHIPWORM ]: IntroSTHWhipworm,
-  [ AppConstants.DISEASE_STH_HOOKWORM ]: IntroSTHWhipworm,
-  [ AppConstants.DISEASE_SCH_MANSONI ]: IntroSTHWhipworm
+  [ AppConstants.DISEASE_STH_HOOKWORM ]: IntroSTHHookworm,
+  [ AppConstants.DISEASE_SCH_MANSONI ]: IntroSCHMansoni
 };
 
 const setupComponents = {

@@ -194,7 +194,7 @@ const ScenarioDisplay = (props) => {
                   />
                 }
 
-                <SettingFrequency inModal={true} label="Treatment frequency" />
+                <SettingFrequency inModal={true} label="Treatment frequency" disease={disease} />
 
                 { disease === AppConstants.DISEASE_LIMF &&
                   <SettingDrugRegimen inModal={true} label="Drug regimen" />
@@ -414,6 +414,7 @@ const ScenarioDisplay = (props) => {
               classes={classes}
               IU={implementationUnit}
               IUData={selectedIUData}
+              disease={disease}
           />
           }
         </div>
