@@ -54,22 +54,22 @@ const Head = ({ title, classAdd, intro }) => {
 
     const classes = useStyles();
     classAdd = classAdd ? classAdd : '';
-    
+
 
     return (
         <Box className={`${classes.card}  ${classAdd} ${!intro && classes.bottomMargin}`}>
 
             <NavLink to='/' className={classes.pageHeader} >
-                <Typography variant="h1" component="h2">NTD Prevalence Simulator </Typography>
+                <Typography variant="h1" component="h2">NTD {title} </Typography>
                 <Typography variant="h6" component="h6" className={`${classes.headline}`} >Africa <span className={classes.beta}>Beta version</span></Typography>
-                {intro && 
+                {intro &&
                     <Grid item md={6} xs={12} className={classes.head}>
                         <Typography paragraph variant="body1" component="p">{intro}</Typography>
                     </Grid>
                 }
             </NavLink>
 
-            
+
         </Box>
     )
 }

@@ -11,8 +11,17 @@ import AccordionElement from 'pages/components/AccordionElement';
 import SelectDisease from 'pages/components/SelectDisease';
 import Logo from 'images/ntd-logo.svg';
 import BG from 'images/africa.jpg';
+import { useTranslation } from "react-i18next";
 
 const useStyles = makeStyles(theme => ({
+  langToggle: {
+    position: "fixed",
+    backgroundColor: theme.palette.secondary.light,
+    top: "1rem",
+    right: "1rem",
+    zIndex: "10",
+    padding: "0.5rem 1rem",
+  },
   section: {
     position: "relative",
     backgroundColor: theme.palette.secondary.light,
@@ -24,7 +33,7 @@ const useStyles = makeStyles(theme => ({
     marginBottom: theme.spacing(2)
   },
   "@global": {
-		body: { 
+		body: {
       backgroundColor:'white',
       backgroundImage: `url(${BG})`,
       backgroundRepeat: 'no-repeat',
@@ -71,20 +80,26 @@ const Home = (props) => {
   const classes = useStyles();
   const { disease: currentDisease, setImplementationUnit, setCountry, setDisease } = useUIState()
 
-
   useEffect(() => {
     setImplementationUnit(null);
     setCountry(null);
     setDisease(null);
   }, [currentDisease, setDisease, setCountry, setImplementationUnit])
 
-
+  const { t, i18n } = useTranslation();
+  function handleClick(lang) {
+    i18n.changeLanguage(lang);
+  }
 
   return (
     <Layout className={classes.homeimage} /* classAdd="full-height"*/ >
+      {i18n.language==="en" ?
+      <button onClick={()=>handleClick("de")} className={classes.langToggle}>German</button> : <button onClick={()=>handleClick("en")} className={classes.langToggle}>English</button>
+      }
       <Head classAdd={classes.cardTransparent}
-        title="prevalence simulator"
-        intro="The projections on this website provide guidance on the impact of more frequent, longer or higher coverage treatment strategies on achieving 2030 goals"
+        title={t('appTitle')}
+        intro={t('appDesc')}
+        //intro="The projections on this website provide guidance on the impact of more frequent, longer or higher coverage treatment strategies on achieving 2030 goals"
       />
 
 
@@ -94,9 +109,9 @@ const Home = (props) => {
       <section className={`${classes.section} ${classes.cardTransparent}`}>
         <Typography variant="h3" component="h6" className={`${classes.headline} ${classes.marginBottom}`}>Before you start</Typography>
         <AccordionElement title="How it works">
-        The projections on this website provide guidance on the 
-        impact of more frequent, longer or higher coverage treatment 
-        strategies on achieving 2030 goals.   
+        The projections on this website provide guidance on the
+        impact of more frequent, longer or higher coverage treatment
+        strategies on achieving 2030 goals.
         The projections are model based. Please note that the models used have only been validated against a certain number of settings.
         A full description of the models can be found in the About section.
         </AccordionElement>
@@ -109,7 +124,7 @@ const Home = (props) => {
         This website is for Programme Managers and Implementation Partners and allows you to investigate the potential impact of delays to MDAs due to COVID19 (or other scenarios). It contains estimates of the current prevalence in endemic implementation units, and estimates of the impact of different interruptions to the programme. This interface will allow you to adapt the mathematical modelling to your local knowledge and provide you with the analyses you need to prioritise where MDA needs to be reinstated.
         </AccordionElement>
 
-      
+
         <Typography variant="h3" component="h6" className={`${classes.headline} ${classes.marginBottom} ${classes.marginTop}`}>Who's behind this?</Typography>
 
         <div className={` ${classes.textBlocks} ${classes.white}`}>

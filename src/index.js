@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Suspense } from "react";
 import ReactDOM from 'react-dom'
 import { Provider } from 'mobx-react'
 // TODO work out what the hell's going on with this
@@ -7,6 +7,7 @@ import { BrowserRouter as Router } from 'react-router-dom'
 import RootStore from './store/rootStore'
 import App from './App'
 import './index.css'
+import "./i18next";
 
 import * as serviceWorker from './serviceWorker'
 
@@ -23,11 +24,15 @@ window.ntd = {
 const { dataAPI, uiState } = new RootStore()
 
 ReactDOM.render(
-    <Provider dataAPI={dataAPI} uiState={uiState}>
-        <Router>
-            <App />
-        </Router>
-    </Provider>,
+    <React.StrictMode>
+        <Suspense fallback={<div>Loading ……</div>}>
+            <Provider dataAPI={dataAPI} uiState={uiState}>
+                <Router>
+                    <App />
+                </Router>
+            </Provider>
+        </Suspense>
+    </React.StrictMode>,
     document.getElementById('root')
 )
 
