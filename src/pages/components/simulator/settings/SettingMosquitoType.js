@@ -3,6 +3,7 @@ import useStyles from "pages/components/simulator/styles";
 
 import { useSimulatorStore } from "store/simulatorStore";
 import { useScenarioStore, ScenarioStoreConstants } from "store/scenarioStore";
+import { useTranslation } from 'react-i18next';
 
 import {
   FormControl,
@@ -14,7 +15,7 @@ import {
 } from "@material-ui/core";
 
 const SettingMosquitoType = ({ inModal, value, label, scenarioId }) => {
-
+const { t, i18n } = useTranslation();
   const classes = useStyles();
   const { dispatchSimState } = useSimulatorStore();
   const { scenarioState, dispatchScenarioStateUpdate } = useScenarioStore();
@@ -28,7 +29,7 @@ const SettingMosquitoType = ({ inModal, value, label, scenarioId }) => {
   return (
     <FormControl fullWidth className={classes.formControlSelect}>
        <Tooltip
-        title="Which mosquito is the primary transmitter of lymphatic filariasis in this area."
+        title={t('whichMosquito')}
         aria-label="info"
       >
       <FormLabel 

@@ -3,7 +3,7 @@ import useStyles from "pages/components/simulator/styles";
 
 import { useSimulatorStore } from "store/simulatorStore";
 import { useScenarioStore, ScenarioStoreConstants } from "store/scenarioStore";
-
+import { useTranslation } from 'react-i18next';
 import {
   FormControl,
   Select,
@@ -13,7 +13,7 @@ import {
 } from "@material-ui/core";
 
 const SettingFrequency = ({ inModal, label, value, classAdd, scenarioId }) => {
-
+const { t, i18n } = useTranslation();
   const classes = useStyles();
   const { dispatchSimState } = useSimulatorStore();
   const { scenarioState, dispatchScenarioStateUpdate } = useScenarioStore();
@@ -44,7 +44,7 @@ const SettingFrequency = ({ inModal, label, value, classAdd, scenarioId }) => {
       className={`${classes.formControl} ${classAdd}`}
     >
       <Tooltip
-        title="Will the MDAs be every 6 months or every year?"
+        title={t('everyYear')}
         aria-label="info"
       >
       <FormLabel 
@@ -64,8 +64,8 @@ const SettingFrequency = ({ inModal, label, value, classAdd, scenarioId }) => {
         value={ isPerIUSetting ? value : scenarioState.scenarioData[ scenarioId ].settings.mdaSixMonths }
         onChange={handleChange}
       >
-        <MenuItem value={12}>Annual</MenuItem>
-        <MenuItem value={6}>Every 6 months</MenuItem>
+        <MenuItem value={12}>{t('annual')}</MenuItem>
+        <MenuItem value={6}>{t('every6Months')}</MenuItem>
       </Select>
     </FormControl>
   )

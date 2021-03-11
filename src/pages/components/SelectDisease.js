@@ -10,9 +10,11 @@ import { Box, TextField,FormControl,Fab } from '@material-ui/core';
 import Autocomplete from '@material-ui/lab/Autocomplete'
 import useStyles from 'theme/SelectCountry'
 import { DISEASE_LABELS } from '../../AppConstants'
+import { useTranslation } from 'react-i18next';
 
 
 const SelectDisease = ({ selectIU, showBack }) => {
+  const { t, i18n } = useTranslation();
   const classes = useStyles()
   const history = useHistory()
 
@@ -45,7 +47,7 @@ const SelectDisease = ({ selectIU, showBack }) => {
   }
 
 
-  const defaultSuggestionOption = { name: "Select a disease" };
+  const defaultSuggestionOption = { name: t('selectDisease') };
 
 
   const diseasesSelect = diseases.map((d)=>{
@@ -64,7 +66,7 @@ const SelectDisease = ({ selectIU, showBack }) => {
     <React.Fragment>
       <Box className={classes.box}>
 
-        <FormControl className={`${classes.formControl} countries`}>
+        <FormControl className={`${classes.formControl} ${t('countries')}`}>
           <Autocomplete
             id="disease"
             options={diseasesSelectWithDefault}

@@ -1,5 +1,6 @@
 import React from 'react'
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
+import { useTranslation } from 'react-i18next';
 import {
   Typography,
   Button,
@@ -14,7 +15,7 @@ const ConfirmationDialog = props => {
   const handleCancel = () => {
     onClose()
   }
-
+const { t, i18n } = useTranslation();
   const handleOk = () => {
     onConfirm()
   }
@@ -39,10 +40,10 @@ const ConfirmationDialog = props => {
         style={{ padding: '8px 16px 24px', justifyContent: 'center' }}
       >
         <Button onClick={handleCancel} variant="contained">
-          Cancel
+          {t('cancel')}
         </Button>
         <Button onClick={handleOk} color="primary" variant="contained">
-          Ok
+          {t('ok')}
         </Button>
       </DialogActions>
     </Dialog>

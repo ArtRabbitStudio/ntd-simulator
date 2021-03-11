@@ -8,6 +8,7 @@ import ScenarioGraphInfoPoints from 'pages/components/simulator/ScenarioGraphInf
 import ScenarioGraphGrid from 'pages/components/simulator/ScenarioGraphGrid'
 import ScenarioGraphInfoLine from 'pages/components/simulator/ScenarioGraphInfoLine'
 import ScenarioGraphInfoBubble from 'pages/components/simulator/ScenarioGraphInfoBubble'
+import { useTranslation } from "react-i18next";
 
 import {
   Typography,
@@ -31,6 +32,7 @@ function ScenarioGraphSTHRoundworm({
   IUData
 }) {
 
+  const { t, i18n } = useTranslation();
   const [activeInfo, setActiveInfo] = useState(null)
   const [uncertaintyInfo,setUncertaintyInfo] = useState(false)
   const startYear = 15
@@ -274,10 +276,10 @@ function ScenarioGraphSTHRoundworm({
     <React.Fragment>
       <div className={classes.scenarioGraphLegend}>
         <Typography className={classes.scenarioGraphLegendHistoric} style={{ width: x(ticksX[futureYear - startYear]) }} variant="h6" component="h6">
-          Historic
+          {t('historic')}
         </Typography>
         <Typography className={`${classes.scenarioGraphLegendPrediction}`} variant="h6" component="h6">
-          Prediction
+          {t('prediction')}
         </Typography>
       </div>
       <svg

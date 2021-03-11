@@ -5,6 +5,7 @@ import Fab from '@material-ui/core/Fab';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
+import { useTranslation } from 'react-i18next';
 
 import Icon from 'images/settings.svg';
 //import IconHover from 'images/settings-hover.svg';
@@ -65,12 +66,12 @@ const useStyles = makeStyles(theme => ({
 }));
 // <button mat-button aria-label="settings" className={classes.icon} onClick={(event) => handleClickOpen(event)}></button>
 const ChartSettings = ({ title, buttonText, cancelText, cancel, action, onOpen, children, hideFab, newScenarioSettingsOpen }) => {
-
+const { t, i18n } = useTranslation();
   const classes = useStyles();
   const [ open, setOpen ] = useState(false);
 
-  title = title ? title : 'Settings';
-  buttonText = buttonText ? buttonText : 'Update graphs';
+  title = title ? title : t('settings');
+  buttonText = buttonText ? buttonText : t('updateGraphs');
 
   const handleClickOpen = () => {
     setOpen( true );

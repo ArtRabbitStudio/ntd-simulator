@@ -7,6 +7,7 @@ import {
 import useStyles from './simulator/styles';
 import ChartSettings from './ChartSettings';
 import TextContents from './TextContents';
+import { useTranslation } from 'react-i18next';
 import {
   SettingBedNetCoverage,
   SettingDrugRegimen,
@@ -22,6 +23,8 @@ import {
 import { useScenarioStore } from 'store/scenarioStore';
 
 const SettingsDialog = ( props ) => {
+  
+  const { t, i18n } = useTranslation();
 
   const classes = useStyles();
   const { scenarioState } = useScenarioStore();
@@ -32,9 +35,9 @@ const SettingsDialog = ( props ) => {
     <Grid item md={6} xs={12}>
 
       <ChartSettings
-        title="New scenario"
-        buttonText="Create New Scenario"
-        cancelText="Cancel Changes"
+        title={t('newScenario')}
+        buttonText={t('createNewScenario')}
+        cancelText={t('cancelChanges')}
         action={props.action}
         cancel={props.cancel}
         hideFab={true}
@@ -42,13 +45,13 @@ const SettingsDialog = ( props ) => {
       >
         <TextContents>
           <Typography paragraph variant="body1" component="p">
-            What scenario do you want to simulate?
+            {t('simulate')}
           </Typography>
         </TextContents>
 
         <SettingName
           inModal={true}
-          label="Scenario name"
+          label={t('scenarioName')}
           scenarioId={ scenarioData.id }
           scenarioLabel={ scenarioData.label }
         />
@@ -56,31 +59,31 @@ const SettingsDialog = ( props ) => {
         <SettingBedNetCoverage
           scenarioId={ scenarioData.id }
           inModal={true}
-          label="Bed Net Coverage"
+          label={t('bedNetCoverage')}
         />
 
         <SettingFrequency
           scenarioId={ scenarioData.id }
           inModal={true}
-          label="Treatment frequency"
+          label={t('treatmentFrequency')}
         />
 
         <SettingDrugRegimen
           scenarioId={ scenarioData.id }
           inModal={true}
-          label="Drug regimen"
+          label={t('drugRegimen')}
         />
 
         <SettingTargetCoverage
           scenarioId={ scenarioData.id }
           inModal={true}
-          label="Treatment target coverage"
+          label={t('treatmentTargetCoverage')}
         />
 
         <SettingSystematicAdherence
           scenarioId={ scenarioData.id }
           inModal={true}
-          label="Systematic adherence"
+          label={t('systematicAdherence')}
         />
 
         {/* no longer in use <SettingBasePrevalence inModal={true} label="Base prevalence" /> */}
@@ -89,18 +92,18 @@ const SettingsDialog = ( props ) => {
         <SettingInsecticideCoverage
           scenarioId={ scenarioData.id }
           inModal={true}
-          label="Insecticide Coverage"
+          label={t('insecticideCoverage')}
         />
 
         <SettingMosquitoType
           scenarioId={ scenarioData.id }
           inModal={true}
-          label="Mosquito type"
+          label={t('mosquitoType')}
         />
 
         <TextContents>
           <Typography paragraph variant="body1" component="p">
-            Are you interested in a specific scenario? { scenarioData.settings.specificPredictionIndex }
+           {t('specific')} { scenarioData.settings.specificPredictionIndex }
           </Typography>
         </TextContents>
         <SettingSpecificScenario
@@ -112,7 +115,7 @@ const SettingsDialog = ( props ) => {
           scenarioId={ scenarioData.id }
           classAdd={classes.precision}
           inModal={true}
-          label="Precision (runs)"
+          label={t('precision')}
           setGraphTypeSimple={()=>{console.log('handling graph type simple');}}
         />
 

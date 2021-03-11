@@ -8,6 +8,7 @@ import useStyles from 'pages/components/simulator/styles';
 
 import ChartSettings from 'pages/components/simulator/ChartSettings';
 import TextContents from 'pages/components/TextContents';
+import { useTranslation } from 'react-i18next';
 
 import {
   SettingName,
@@ -18,15 +19,16 @@ import {
 const NewScenarioSettingsDialog = ( props ) => {
 
   const classes = useStyles();
+  const { t, i18n } = useTranslation();
 
   return (
 
     <Grid item md={6} xs={12}>
 
       <ChartSettings
-        title="New scenario"
-        buttonText="Create New Scenario"
-        cancelText="Cancel Changes"
+        title={t('newScenario')}
+        buttonText={t('createNewScenario')}
+        cancelText={t('cancelChanges')}
         action={props.action}
         cancel={props.cancel}
         hideFab={true}
@@ -35,13 +37,13 @@ const NewScenarioSettingsDialog = ( props ) => {
 
         <TextContents>
           <Typography paragraph variant="body1" component="p">
-            What scenario do you want to simulate?
+            {t('simulate')}
           </Typography>
         </TextContents>
 
         <SettingName
           inModal={true}
-          label="Scenario name"
+          label={t('scenarioName')}
           scenarioId={ props.scenarioData.id }
           scenarioLabel={ props.scenarioData.label }
         />
@@ -50,7 +52,7 @@ const NewScenarioSettingsDialog = ( props ) => {
 
         <TextContents>
           <Typography paragraph variant="body1" component="p">
-            Are you interested in a specific scenario? { props.scenarioData.settings.specificPredictionIndex }
+             {t('specific')} { props.scenarioData.settings.specificPredictionIndex }
           </Typography>
         </TextContents>
 
@@ -64,7 +66,7 @@ const NewScenarioSettingsDialog = ( props ) => {
             scenarioId={ props.scenarioData.id }
             classAdd={classes.precision}
             inModal={true}
-            label="Precision (runs)"
+            label={t('precision')}
             setGraphTypeSimple={()=>{console.log('handling graph type simple');}}
           />
         }

@@ -3,6 +3,7 @@ import useStyles from "pages/components/simulator/styles";
 
 import { useSimulatorStore } from "store/simulatorStore";
 import { useScenarioStore, ScenarioStoreConstants } from "store/scenarioStore";
+import { useTranslation } from "react-i18next";
 
 import {
   FormControl,
@@ -12,6 +13,7 @@ import {
 } from "@material-ui/core";
 
 const SettingBedNetCoverage = ({ inModal, label, value, onChange, classAdd, scenarioId }) => {
+  const { t, i18n } = useTranslation();
 
   const classes = useStyles();
   const { dispatchSimState } = useSimulatorStore();
@@ -39,7 +41,7 @@ const SettingBedNetCoverage = ({ inModal, label, value, onChange, classAdd, scen
   return (
     <FormControl fullWidth className={`${classes.formControl} ${classAdd}`}>
       <Tooltip
-        title="Proportion of the population covered by a bed net shared with one other person."
+        title={t('proportionOfPopulation')}
         aria-label="info"
       >
       <FormLabel

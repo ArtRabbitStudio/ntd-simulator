@@ -2,6 +2,7 @@ import React from 'react'
 import AccordionElement from 'pages/components/AccordionElement';
 import { Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import { useTranslation } from "react-i18next";
 
 import {
   DISEASE_LABELS
@@ -22,19 +23,20 @@ const useStyles = makeStyles(theme => ({
 
 
 export default function Intro(props) {
+  const { t, i18n } = useTranslation();
   const classes = useStyles();
   return (
 
     <section className={classes.section}>
-    <Typography variant="h3" component="h6" className={`${classes.headline} ${classes.marginBottom}`}>{`About projections for ${DISEASE_LABELS['sth-roundworm']}`}</Typography>
+    <Typography variant="h3" component="h6" className={`${classes.headline} ${classes.marginBottom}`}>{`${t('aboutProjections')} ${DISEASE_LABELS['sth-roundworm']}`}</Typography>
 
 
     {/*<AccordionElement title="Data">
         Short introduction to Trachoma specfic data
   </AccordionElement>*/}
 
-    <AccordionElement title="Model and Methodology">
-    More about the STH model
+    <AccordionElement title={t('modelAndMethodology')}>
+    {t('MoreAbout')}
     </AccordionElement>
 
 

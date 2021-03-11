@@ -7,6 +7,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import Tooltip from './Tooltip'
 import Legend from './Legend'
 import { DISEASE_CONFIG } from 'AppConstants';
+import { useTranslation } from 'react-i18next';
 
 import useMapReducer from 'hooks/useMapReducer'
 import 'mapbox-gl/dist/mapbox-gl.css'
@@ -46,7 +47,7 @@ function Map({
     if (countryFeatures) console.log('countryFeatures',countryFeatures)
     if (stateFeatures) console.log('stateFeatures',stateFeatures)
     */
-
+    const { t, i18n } = useTranslation();
     const classes = useStyles()
     const history = useHistory()
 
@@ -236,7 +237,7 @@ function Map({
                         <Paper>
                         <Box p={1} pb={2}>
                             <Typography variant="body2" className={classes.legendTitle}>
-                            {trendMode ? `Prevalence ${year}` : `Prevalence ${year}`}
+                            {trendMode ? `${t('prevalence')} ${year}` : `${t('prevalence')} ${year}`}
                             </Typography>
 
                             <Legend colorScale={colorScale} />

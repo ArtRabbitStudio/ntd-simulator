@@ -4,6 +4,7 @@ import { Typography } from '@material-ui/core';
 import { useSimulatorStore } from 'store/simulatorStore';
 import useStyles from 'theme/Setup';
 import PerDiseaseSetup from 'pages/components/PerDiseaseSetup';
+import { useTranslation } from "react-i18next";
 
 // settings
 import {
@@ -13,6 +14,7 @@ import {
 
 const SetupSTHRoundworm = (props) => {
 
+  const { t, i18n } = useTranslation();
   const classes = useStyles();
   const { simState } = useSimulatorStore();
 
@@ -23,7 +25,7 @@ const SetupSTHRoundworm = (props) => {
       <div className={`${classes.formControlWrap} fullwidth`}>
         <div className={classes.setupFormControl}>
           <Typography paragraph variant="h3" component="p">
-            MDA Settings
+            {t('MDASettings')}
             </Typography>
         </div>
       </div>
@@ -32,7 +34,7 @@ const SetupSTHRoundworm = (props) => {
         <div className={classes.setupFormControl}>
           <SettingFrequency
             inModal={false}
-            label="MDA Frequency"
+            label={t('MDAFrequency')}
             value={simState.settings.mdaSixMonths}
           />
         </div>
@@ -42,12 +44,12 @@ const SetupSTHRoundworm = (props) => {
         <div className={classes.setupFormControl}>
           <SettingTargetCoverage
             inModal={false}
-            label="MDA Target Coverage Infants"
+            label={t('MDAInfants')}
             min={0}
             max={100}
             step={5}
             valueKey="coverageInfants"
-            title="Proportion of infants that will be treated."
+            title={t('InfantsTitle')}
             value={simState.settings.coverageInfants}
           />
         </div>
@@ -56,12 +58,12 @@ const SetupSTHRoundworm = (props) => {
         <div className={classes.setupFormControl}>
           <SettingTargetCoverage
             inModal={false}
-            label="MDA Target Coverage Preschool Children"
+            label={t('tMDAPreschoolext')}
             min={0}
             max={100}
             step={5}
             valueKey="coveragePreSAC"
-            title="Proportion of preschool age children that will be treated."
+            title={t('PreschoolTitle')}
             value={simState.settings.coveragePreSAC}
           />
         </div>
@@ -70,12 +72,12 @@ const SetupSTHRoundworm = (props) => {
         <div className={classes.setupFormControl}>
           <SettingTargetCoverage
             inModal={false}
-            label="MDA Target Coverage School-Age Children "
+            label={t('MDASchoolAge')}
             min={0}
             max={100}
             step={5}
             valueKey="coverageSAC"
-            title="Proportion of school-age children that will be treated."
+            title={t('SchoolAgeTitle')}
             value={simState.settings.coverageSAC}
           />
         </div>
@@ -84,12 +86,12 @@ const SetupSTHRoundworm = (props) => {
         <div className={classes.setupFormControl}>
           <SettingTargetCoverage
             inModal={false}
-            label="MDA Target Coverage Adults"
+            label={t('MDAAdults')}
             min={0}
             max={100}
             step={5}
             valueKey="coverageAdults"
-            title="Proportion of adults that will be treated."
+            title={t('AdultsTitle')}
             value={simState.settings.coverageAdults}
           />
         </div>

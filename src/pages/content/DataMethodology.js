@@ -4,8 +4,10 @@ import Typography from '@material-ui/core/Typography';
 
 import Head from 'pages/components/Head';
 import TextContents from 'pages/components/TextContents'
+import { useTranslation } from 'react-i18next';
 
 const DataMethodology = (props) => {
+  const { t, i18n } = useTranslation();
 
   return (
     <Layout>
@@ -14,9 +16,9 @@ const DataMethodology = (props) => {
         
       />
       <TextContents>
-      <Typography gutterBottom variant="h2">Data & Methodology </Typography>
+      <Typography gutterBottom variant="h2">{t('dataAndMethodology')}</Typography>
         <Typography paragraph variant="body1" component="p">
-        This page should give an overview of how different teams work with data and models
+        {t('thisPage')}
        
         </Typography>
         

@@ -1,6 +1,7 @@
 import React, { /* useState */ } from 'react';
 
 import NewScenarioSettingsDialog from 'pages/components/simulator/NewScenarioSettingsDialog';
+import { useTranslation } from "react-i18next";
 
 import {
   SettingBedNetCoverage,
@@ -13,6 +14,7 @@ import {
 } from 'pages/components/simulator/settings';
 
 const NewSettingsDialogLF = ( { scenarioData, action, cancel, newScenarioSettingsOpen } ) => {
+  const { t, i18n } = useTranslation();
 
   return (
 
@@ -27,43 +29,43 @@ const NewSettingsDialogLF = ( { scenarioData, action, cancel, newScenarioSetting
       <SettingBedNetCoverage
         scenarioId={ scenarioData.id }
         inModal={true}
-        label="Bed Net Coverage"
+        label={t('bedNetCoverage')}
       />
 
       <SettingFrequency
         scenarioId={ scenarioData.id }
         inModal={true}
-        label="Treatment frequency"
+        label={t('treatmentFrequency')}
       />
 
       <SettingDrugRegimen
         scenarioId={ scenarioData.id }
         inModal={true}
-        label="Drug regimen"
+        label={t('drugRegimen')}
       />
 
       <SettingTargetCoverage
         scenarioId={ scenarioData.id }
         inModal={true}
-        label="Treatment target coverage"
+        label={t('treatmentTargetCoverage')}
       />
 
       <SettingSystematicAdherence
         scenarioId={ scenarioData.id }
         inModal={true}
-        label="Systematic adherence"
+        label={t('systematicAdherence')}
       />
 
       <SettingInsecticideCoverage
         scenarioId={ scenarioData.id }
         inModal={true}
-        label="Insecticide Coverage"
+        label={t('insecticideCoverage')}
       />
 
       <SettingMosquitoType
         scenarioId={ scenarioData.id }
         inModal={true}
-        label="Mosquito type"
+        label={t('mosquitoType')}
       />
 
     </NewScenarioSettingsDialog>

@@ -1,6 +1,7 @@
 import React, { /* useState */ } from 'react';
 
 import NewScenarioSettingsDialog from 'pages/components/simulator/NewScenarioSettingsDialog';
+import { useTranslation } from "react-i18next";
 
 import {
   SettingFrequency,
@@ -8,6 +9,7 @@ import {
 } from 'pages/components/simulator/settings';
 
 const NewSettingsDialogSTHRoundworm = ( { scenarioData, action, cancel, newScenarioSettingsOpen } ) => {
+  const { t, i18n } = useTranslation();
 
   return (
 
@@ -22,51 +24,51 @@ const NewSettingsDialogSTHRoundworm = ( { scenarioData, action, cancel, newScena
       <SettingFrequency
         scenarioId={ scenarioData.id }
         inModal={true}
-        label="Treatment frequency"
+        label={t('treatmentFrequency')}
       />
 
       <SettingTargetCoverage
         scenarioId={ scenarioData.id }
         inModal={true}
-        label="MDA Target Coverage Infants"
+        label={t('MDAInfants')}
         min={0}
         max={100}
         step={5}
         valueKey="coverageInfants"
-        title="Proportion of infants that will be treated."
+        title={t('InfantsTitle')}
       />
   
       <SettingTargetCoverage
         scenarioId={ scenarioData.id }
         inModal={true}
-        label="MDA Target Coverage Preschool Children"
+        label={t('MDAPreschool')}
         min={0}
         max={100}
         step={5}
         valueKey="coveragePreSAC"
-        title="Proportion of preschool age children that will be treated."
+        title={t('PreschoolTitle')}
       />
   
       <SettingTargetCoverage
         scenarioId={ scenarioData.id }
         inModal={true}
-        label="MDA Target Coverage School-Age Children "
+        label={t('MDASchoolAge')}
         min={0}
         max={100}
         step={5}
         valueKey="coverageSAC"
-        title="Proportion of school-age children that will be treated."
+        title={t('SchoolAgeTitle')}
       />
     
       <SettingTargetCoverage
         scenarioId={ scenarioData.id }
         inModal={true}
-        label="MDA Target Coverage Adults"
+        label={t('MDAAdults')}
         min={0}
         max={100}
         step={5}
         valueKey="coverageAdults"
-        title="Proportion of adults that will be treated."
+        title={t('AdultsTitle')}
       />
 
 

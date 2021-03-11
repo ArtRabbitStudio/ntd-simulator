@@ -8,6 +8,7 @@ import Box from '@material-ui/core/Box'
 import MenuItem from '@material-ui/core/MenuItem'
 import FormControl from '@material-ui/core/FormControl'
 import Select from '@material-ui/core/Select'
+import { useTranslation } from 'react-i18next';
 
 import {
   DISEASE_LABELS
@@ -38,7 +39,7 @@ const useStyles = makeStyles(theme => ({
 
 const Inputs = props => {
   const classes = useStyles()
-
+const { t, i18n } = useTranslation();
   const { diseases } = useDataAPI()
   const { disease } = useUIState()
 
@@ -66,7 +67,7 @@ const Inputs = props => {
             </MenuItem>
           ))}
           <MenuItem key="other" value="other">
-            Other diseases coming soon...
+            {t('otherDiseases')}
           </MenuItem>
         </Select>
       </FormControl>
