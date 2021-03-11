@@ -7,33 +7,46 @@ const useStyles = makeStyles(theme => ({
     display: "flex",
     alignItems: "center",
     flexWrap: "nowrap",
+    color: theme.palette.basic.white,
+
+    '& a': {
+      color: theme.palette.basic.white,
+      border: `1px solid ${theme.palette.basic.white}`,
+    },
+
     '& > ul': {
       display: "flex",
       alignItems: "center",
       flexWrap: "nowrap",
       padding: 0,
+      margin: 0,
       '& > li': {
         display: 'block',
         listStyleType: 'none',
         padding: 0,
         margin: 0
       }
+    },
+    '&.dark': {
+      color: theme.palette.text.primary,
+
+      '& a': {
+        color: theme.palette.text.primary,
+        border: `1px solid ${theme.palette.text.primary}`,
+      },
     }
   },
   headline: {
-    color: theme.palette.basic.white,
     margin: theme.spacing(0, 0, 0, 0),
   },
   switch: {
-    color: theme.palette.basic.white,
     display: "inline-block",
     padding: "2px 5px",
     margin: "0px 0px 0px 10px",
-    border: `1px solid ${theme.palette.basic.white}`,
   }
 }));
 // <button mat-button aria-label="settings" className={classes.icon} onClick={(event) => handleClickOpen(event)}></button>
-const LanguageSwitch = ({ current = 'en-US' }) => {
+const LanguageSwitch = ({ current = 'en-US', dark }) => {
 
   const classes = useStyles();
 
@@ -44,7 +57,7 @@ const LanguageSwitch = ({ current = 'en-US' }) => {
   ]
 
   return (
-    <nav className={classes.root}>
+    <nav className={`${classes.root}  ${dark ? 'dark' : ''}`}>
       <Typography variant="h6" component="h6" className={classes.headline} >Also available in:</Typography>
 
       <ul>

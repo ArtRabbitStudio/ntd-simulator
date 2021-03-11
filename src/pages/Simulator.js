@@ -11,7 +11,7 @@ import Country from 'pages/Country';
 
 import { IntroLF, SetupLF } from 'pages/components/diseases/lf';
 import { IntroTrachoma, SetupTrachoma } from 'pages/components/diseases/trachoma';
-import { IntroSTHRoundworm  , SetupSTHRoundworm } from 'pages/components/diseases/sth-roundworm';
+import { IntroSTHRoundworm, SetupSTHRoundworm } from 'pages/components/diseases/sth-roundworm';
 import { IntroSTHWhipworm } from 'pages/components/diseases/sth-whipworm';
 
 import ScenarioManager from 'pages/components/simulator/ScenarioManager';
@@ -32,41 +32,41 @@ const setupComponents = {
   'sth-whipworm': SetupSTHRoundworm
 };
 
-const Simulator = ( props ) => {
+const Simulator = (props) => {
 
-  useEffect( () => {
+  useEffect(() => {
     // console.log( "Simulator mounting" );
-  }, [] );
+  }, []);
 
   const { disease, country, implementationUnit, section } = useUIState();
 
-  const IntroComponent = ( disease !== null ) ? introComponents[ disease ] : null;
-  const SetupComponent = ( disease !== null ) ? setupComponents[ disease ] : null;
+  const IntroComponent = (disease !== null) ? introComponents[disease] : null;
+  const SetupComponent = (disease !== null) ? setupComponents[disease] : null;
 
   return (
 
     <Layout>
 
       <HeadWithInputs title="prevalence simulator" />
-    
+
       <SelectCountry
-        selectIU={ country ? true : false }
-        showCountryConfirmation={ country && implementationUnit ? true : false }
-        showIUConfirmation={ country && implementationUnit && section ? true : false }
-        showBack={ disease && country && implementationUnit ? true : false }
+        selectIU={country ? true : false}
+        showCountryConfirmation={country && implementationUnit ? true : false}
+        showIUConfirmation={country && implementationUnit && section ? true : false}
+        showBack={disease && country && implementationUnit ? true : false}
       />
 
-      { disease && ( !country ) && <IntroComponent/> }
+      { disease && (!country) && <IntroComponent />}
 
-      { disease && country && ( !implementationUnit ) && <Country/> }
+      { disease && country && (!implementationUnit) && <Country />}
 
-      { disease && country && implementationUnit && ( !section ) && <SetupComponent disease={disease} /> }
+      { disease && country && implementationUnit && (!section) && <SetupComponent disease={disease} />}
 
-      { disease && country && implementationUnit && section && <ScenarioManager/> }
+      { disease && country && implementationUnit && section && <ScenarioManager />}
 
     </Layout>
 
   );
 }
 
-export default observer( Simulator );
+export default observer(Simulator);

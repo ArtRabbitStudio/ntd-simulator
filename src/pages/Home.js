@@ -6,11 +6,13 @@ import { Layout } from 'layout';
 import { makeStyles } from '@material-ui/core/styles';
 
 import Head from 'pages/components/Head';
+import HeadWithInputs from 'pages/components/HeadWithInputs';
+
 import TextContents from 'pages/components/TextContents';
 import AccordionElement from 'pages/components/AccordionElement';
 import SelectDisease from 'pages/components/SelectDisease';
 import Logo from 'images/ntd-logo.svg';
-import BG from 'images/africa.jpg';
+//import BG from 'images/africa.jpg';
 
 const useStyles = makeStyles(theme => ({
   section: {
@@ -24,14 +26,15 @@ const useStyles = makeStyles(theme => ({
     marginBottom: theme.spacing(2)
   },
   "@global": {
-		body: { 
-      backgroundColor:'white',
-      backgroundImage: `url(${BG})`,
-      backgroundRepeat: 'no-repeat',
-      backgroundPosition: 'right top',
-      backgroundSize: '70% auto'
+    body: {
+      //backgroundColor: 'white',
+      //backgroundImage: `url(${BG})`,
+      //backgroundRepeat: 'no-repeat',
+      //backgroundPosition: 'right top',
+      //backgroundSize: '70% auto'
 
-    }},
+    }
+  },
   marginTop: {
     marginTop: theme.spacing(6)
   },
@@ -82,10 +85,14 @@ const Home = (props) => {
 
   return (
     <Layout className={classes.homeimage} /* classAdd="full-height"*/ >
+      { /*
       <Head classAdd={classes.cardTransparent}
         title="prevalence simulator"
         intro="The projections on this website provide guidance on the impact of more frequent, longer or higher coverage treatment strategies on achieving 2030 goals"
       />
+      */ }
+
+      <HeadWithInputs disableInputs={true} showLanguages={true} classAdd={classes.cardTransparent} />
 
 
 
@@ -94,33 +101,33 @@ const Home = (props) => {
       <section className={`${classes.section} ${classes.cardTransparent}`}>
         <Typography variant="h3" component="h6" className={`${classes.headline} ${classes.marginBottom}`}>Before you start</Typography>
         <AccordionElement title="How it works">
-        The projections on this website provide guidance on the 
-        impact of more frequent, longer or higher coverage treatment 
-        strategies on achieving 2030 goals.   
-        The projections are model based. Please note that the models used have only been validated against a certain number of settings.
-        A full description of the models can be found in the About section.
+          The projections on this website provide guidance on the
+          impact of more frequent, longer or higher coverage treatment
+          strategies on achieving 2030 goals.
+          The projections are model based. Please note that the models used have only been validated against a certain number of settings.
+          A full description of the models can be found in the About section.
         </AccordionElement>
 
         <AccordionElement title="Our mission">
-        Many urgent policy issues concerning the control and elimination of neglected tropical diseases (NTDs) can be informed by  high-quality quantitative modelling. However, a dearth of modelling in this area prevents donors and policymakers from accessing existing expertise. We hope that our NTD Simulator can help close this knowledge gap.
+          Many urgent policy issues concerning the control and elimination of neglected tropical diseases (NTDs) can be informed by  high-quality quantitative modelling. However, a dearth of modelling in this area prevents donors and policymakers from accessing existing expertise. We hope that our NTD Simulator can help close this knowledge gap.
         </AccordionElement>
 
         <AccordionElement title="What you can do">
-        This website is for Programme Managers and Implementation Partners and allows you to investigate the potential impact of delays to MDAs due to COVID19 (or other scenarios). It contains estimates of the current prevalence in endemic implementation units, and estimates of the impact of different interruptions to the programme. This interface will allow you to adapt the mathematical modelling to your local knowledge and provide you with the analyses you need to prioritise where MDA needs to be reinstated.
+          This website is for Programme Managers and Implementation Partners and allows you to investigate the potential impact of delays to MDAs due to COVID19 (or other scenarios). It contains estimates of the current prevalence in endemic implementation units, and estimates of the impact of different interruptions to the programme. This interface will allow you to adapt the mathematical modelling to your local knowledge and provide you with the analyses you need to prioritise where MDA needs to be reinstated.
         </AccordionElement>
 
-      
+
         <Typography variant="h3" component="h6" className={`${classes.headline} ${classes.marginBottom} ${classes.marginTop}`}>Who's behind this?</Typography>
 
         <div className={` ${classes.textBlocks} ${classes.white}`}>
           <div className={`${classes.textBlock} ${classes.white}`}>
             <TextContents>
-                            <Typography paragraph variant="body1" component="p">
-                                The NTD Simulator was designed and built in collaboration with the <Link underline="always" color="inherit" href="https://www.ntdmodelling.org/">NTD Modelling Consortium</Link>, an international network of infectious disease modellers focussing on neglected tropical diseases.
+              <Typography paragraph variant="body1" component="p">
+                The NTD Simulator was designed and built in collaboration with the <Link underline="always" color="inherit" href="https://www.ntdmodelling.org/">NTD Modelling Consortium</Link>, an international network of infectious disease modellers focussing on neglected tropical diseases.
                             </Typography>
-                            <a href="https://www.ntdmodelling.org/"><img src={Logo} border="0" alt="NTD Modelling Consortium" /></a>
-                            <Typography paragraph variant="body1" component="p">
-                                The work of the NTD Modelling Consortium is supported by the Bill and Melinda Gates Foundation.
+              <a href="https://www.ntdmodelling.org/"><img src={Logo} border="0" alt="NTD Modelling Consortium" /></a>
+              <Typography paragraph variant="body1" component="p">
+                The work of the NTD Modelling Consortium is supported by the Bill and Melinda Gates Foundation.
                             </Typography>
 
             </TextContents>

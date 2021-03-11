@@ -5,6 +5,7 @@ import ConfirmationDialog from "./ConfirmationDialog";
 
 import Head from './Head'
 import Inputs from './Inputs'
+import LanguageSwitch from './LanguageSwitch'
 import { useHistory } from 'react-router-dom'
 
 const useStyles = makeStyles((theme) => ({
@@ -42,13 +43,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const HeadWithInputs = ({ title, disableInputs, disableClear, classAdd }) => {
+const HeadWithInputs = ({ title, disableInputs, disableClear, classAdd, showLanguages }) => {
   const classes = useStyles()
   const [showConfirmation, setshowConfirmation] = useState(false);
-  const [selectedValue,setSelectedValue ] = useState(null)
+  const [selectedValue, setSelectedValue] = useState(null)
   const history = useHistory()
 
-  const handleChange = (value)=>{
+  const handleChange = (value) => {
     setSelectedValue(value)
     setshowConfirmation(true);
   }
@@ -61,23 +62,26 @@ const HeadWithInputs = ({ title, disableInputs, disableClear, classAdd }) => {
 
   return (
     <React.Fragment>
-    <div className={classes.headContainer}>
+      <div className={classes.headContainer}>
         <Grid item md={6} xs={12} className={classes.head}>
           <Head title={title} classAdd={classAdd} />
         </Grid>
         <Grid item md={6} xs={12} className={classes.inputs}>
+
           {disableInputs !== true && <Inputs onChange={handleChange} />}
+          {showLanguages === true && <LanguageSwitch onChange={handleChange} dark={true} />}
+
         </Grid>
         {disableClear !== true && <div className={classes.clear}></div>}
-    </div>
-    <ConfirmationDialog
-          title="Do you want to leave this scenario?"
-          onClose={() => {
-            setshowConfirmation(false);
-          }}
-          onConfirm={doChange}
-          open={showConfirmation}
-        />
+      </div>
+      <ConfirmationDialog
+        title="Do you want to leave this scenario?"
+        onClose={() => {
+          setshowConfirmation(false);
+        }}
+        onConfirm={doChange}
+        open={showConfirmation}
+      />
     </React.Fragment>
   )
 }
