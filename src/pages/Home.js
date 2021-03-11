@@ -5,8 +5,10 @@ import { useUIState } from 'hooks/stateHooks'
 import { Layout } from 'layout';
 import { makeStyles } from '@material-ui/core/styles';
 
-import Head from 'pages/components/Head';
+//import Head from 'pages/components/Head';
 import HeadWithInputs from 'pages/components/HeadWithInputs';
+import WhatYouCanDo from 'pages/components/WhatYouCanDo';
+import DiseasesList from 'pages/components/DiseasesList';
 
 import TextContents from 'pages/components/TextContents';
 import AccordionElement from 'pages/components/AccordionElement';
@@ -95,8 +97,11 @@ const Home = (props) => {
       <HeadWithInputs disableInputs={true} showLanguages={true} classAdd={classes.cardTransparent} />
 
 
-
       <SelectDisease />
+
+      <WhatYouCanDo />
+
+      <DiseasesList />
 
       <section className={`${classes.section} ${classes.cardTransparent}`}>
         <Typography variant="h3" component="h6" className={`${classes.headline} ${classes.marginBottom}`}>Before you start</Typography>

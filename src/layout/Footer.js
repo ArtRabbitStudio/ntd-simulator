@@ -53,13 +53,11 @@ const Footer = (props) => {
       <footer className={classes.footer}>
         <Container className={classes.container} maxWidth="xl" >
 
-
-          <Grid item xs={12} className={classes.column}>
-            <LanguageSwitch current={undefined} />
-          </Grid>
-
-
           <Grid container spacing={0}>
+
+            <Grid item xs={12} className={classes.column}>
+              <LanguageSwitch current={undefined} />
+            </Grid>
 
             <Grid item md={3} sm={6} xs={12} className={classes.column}>
               <Typography variant="h6" component="h6" className={classes.headline} >Connect</Typography>
@@ -108,13 +106,13 @@ const Footer = (props) => {
                   <Link component={RouterLink} to="/simulator" color="inherit">Schistosomiasis Mansoni</Link>
                 </Typography>
                 <Typography component="li" variant="body2">
-                  <Link component={RouterLink} to="/simulator" color="inherit">Soil-transmitted helmithiasis (roundworm)</Link>
+                  <Link component={RouterLink} to="/simulator" color="inherit">Soil-transmitted helmithiasis Hookworm</Link>
                 </Typography>
                 <Typography component="li" variant="body2">
-                  <Link component={RouterLink} to="/simulator" color="inherit">Soil-transmitted helmithiasis (hookworm)</Link>
+                  <Link component={RouterLink} to="/simulator" color="inherit">Soil-transmitted helmithiasis Hookworm</Link>
                 </Typography>
                 <Typography component="li" variant="body2">
-                  <Link component={RouterLink} to="/simulator" color="inherit">Soil-transmitted helmithiasis (roundworm)</Link>
+                  <Link component={RouterLink} to="/simulator" color="inherit">Soil-transmitted helmithiasis Hookworm</Link>
                 </Typography>
                 <Typography component="li" variant="body2">
                   <Link component={RouterLink} to="/simulator" color="inherit">Trachoma</Link>
