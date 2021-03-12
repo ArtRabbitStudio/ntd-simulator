@@ -1,12 +1,14 @@
 import React from 'react';
-import { makeStyles, Grid, Container, Box, Typography } from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
+import { Grid, Container, Box, Typography } from '@material-ui/core';
 import CapsHeadline from './CapsHeadline'
+import FullWidthBackground from './FullWidthBackground'
 
 import ico1 from 'images/mda-delays.svg';
 import ico2 from 'images/modelling.svg';
 import ico3 from 'images/scenarios.svg';
 
-const useStyles = makeStyles(theme => ({
+const styles = theme => ({
   root: {
     clear: 'both',
     padding: theme.spacing(4, 0),
@@ -40,37 +42,39 @@ const useStyles = makeStyles(theme => ({
     display: 'block',
     margin: theme.spacing(4, 0, 1, 0),
   },
-}));
+});
 
 const WhatYouCanDo = (props) => {
 
-  const classes = useStyles();
+  const { classes, theme } = props
 
   return (
-    <Container className={classes.root} maxWidth="xl" >
+    <FullWidthBackground color={theme.palette.secondary.light}>
+      <Container className={classes.root} maxWidth="xl" >
 
-      <CapsHeadline text="What you can do" />
+        <CapsHeadline text="What you can do" />
 
-      <Grid container spacing={0} className={classes.grid}>
+        <Grid container spacing={0} className={classes.grid}>
 
-        <Grid item md={4} sm={4} xs={12} className={`${classes.column} ${classes.column1}`}>
-          <Typography variant="h4" component="strong" className={classes.headline} >MDA delays</Typography>
-          <Typography variant="body1" component="p" className={classes.description} >Investigage potential impact of delays to MDA</Typography>
+          <Grid item md={4} sm={4} xs={12} className={`${classes.column} ${classes.column1}`}>
+            <Typography variant="h4" component="strong" className={classes.headline} >MDA delays</Typography>
+            <Typography variant="body1" component="p" className={classes.description} >Investigage potential impact of delays to MDA</Typography>
+          </Grid>
+
+          <Grid item md={4} sm={4} xs={12} className={`${classes.column} ${classes.column2}`}>
+            <Typography variant="h4" component="strong" className={classes.headline} >Modelling</Typography>
+            <Typography variant="body1" component="p" className={classes.description} >Adapt mathematical modelling to your local knowledge</Typography>
+          </Grid>
+
+          <Grid item md={4} sm={4} xs={12} className={`${classes.column} ${classes.column3}`}>
+            <Typography variant="h4" component="strong" className={classes.headline} >Scenarios</Typography>
+            <Typography variant="body1" component="p" className={classes.description} >Analyse where MDA needs to be reinstated</Typography>
+          </Grid>
+
         </Grid>
-
-        <Grid item md={4} sm={4} xs={12} className={`${classes.column} ${classes.column2}`}>
-          <Typography variant="h4" component="strong" className={classes.headline} >Modelling</Typography>
-          <Typography variant="body1" component="p" className={classes.description} >Adapt mathematical modelling to your local knowledge</Typography>
-        </Grid>
-
-        <Grid item md={4} sm={4} xs={12} className={`${classes.column} ${classes.column3}`}>
-          <Typography variant="h4" component="strong" className={classes.headline} >Scenarios</Typography>
-          <Typography variant="body1" component="p" className={classes.description} >Analyse where MDA needs to be reinstated</Typography>
-        </Grid>
-
-      </Grid>
-    </Container>
+      </Container>
+    </FullWidthBackground>
   );
 }
 
-export default WhatYouCanDo;
+export default withStyles(styles, { withTheme: true })(WhatYouCanDo);

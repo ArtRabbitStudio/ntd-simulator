@@ -1,6 +1,9 @@
 import React from 'react';
-import { makeStyles, Grid, Container, Box, Typography } from '@material-ui/core';
+import { Grid, Container, Box, Typography } from '@material-ui/core';
 import CapsHeadline from './CapsHeadline'
+import FullWidthBackground from './FullWidthBackground'
+import { withStyles } from '@material-ui/core/styles';
+
 
 import ico1 from 'images/lf-icon.svg';
 import ico2 from 'images/sch-mansoni-icon.svg';
@@ -9,7 +12,7 @@ import ico4 from 'images/sth-whipworm-icon.svg';
 import ico5 from 'images/sth-roundworm-icon.svg';
 import ico6 from 'images/sth-hookworm-icon.svg';
 
-const useStyles = makeStyles(theme => ({
+const styles = theme => ({
   root: {
     clear: 'both',
     padding: theme.spacing(4, 0),
@@ -52,46 +55,50 @@ const useStyles = makeStyles(theme => ({
     display: 'block',
     margin: theme.spacing(4, 0, 1, 0),
   },
-}));
+});
 
 const DiseasesList = (props) => {
 
-  const classes = useStyles();
+  const { classes, theme } = props
+
+  //const classes = useStyles();
 
   return (
-    <Container className={classes.root} maxWidth="xl" >
+    <FullWidthBackground color={theme.palette.secondary.light}>
+      <Container className={classes.root} maxWidth="xl" >
 
-      <CapsHeadline text="Diseases" />
+        <CapsHeadline text="Diseases" />
 
-      <Grid container spacing={0} className={classes.grid}>
+        <Grid container spacing={0} className={classes.grid}>
 
-        <Grid item md={4} sm={4} xs={12} className={`${classes.column} ${classes.column1}`}>
-          <Typography variant="body1" component="p" className={classes.headline} >Lymphatic Filariasis</Typography>
+          <Grid item md={4} sm={4} xs={12} className={`${classes.column} ${classes.column1}`}>
+            <Typography variant="body1" component="p" className={classes.headline} >Lymphatic Filariasis</Typography>
+          </Grid>
+
+          <Grid item md={4} sm={4} xs={12} className={`${classes.column} ${classes.column2}`}>
+            <Typography variant="body1" component="p" className={classes.headline} >Schistosomiasis Mansoni</Typography>
+          </Grid>
+
+          <Grid item md={4} sm={4} xs={12} className={`${classes.column} ${classes.column3}`}>
+            <Typography variant="body1" component="p" className={classes.headline} >Trachoma</Typography>
+          </Grid>
+
+          <Grid item md={4} sm={4} xs={12} className={`${classes.column} ${classes.column4}`}>
+            <Typography variant="body1" component="p" className={classes.headline} >Soil-transmitted helmithiasis Whipworm</Typography>
+          </Grid>
+
+          <Grid item md={4} sm={4} xs={12} className={`${classes.column} ${classes.column5}`}>
+            <Typography variant="body1" component="p" className={classes.headline} >Soil-transmitted helmithiasis Roundworm</Typography>
+          </Grid>
+
+          <Grid item md={4} sm={4} xs={12} className={`${classes.column} ${classes.column6}`}>
+            <Typography variant="body1" component="p" className={classes.headline} >Soil-transmitted helmithiasis Hookworm</Typography>
+          </Grid>
+
         </Grid>
-
-        <Grid item md={4} sm={4} xs={12} className={`${classes.column} ${classes.column2}`}>
-          <Typography variant="body1" component="p" className={classes.headline} >Schistosomiasis Mansoni</Typography>
-        </Grid>
-
-        <Grid item md={4} sm={4} xs={12} className={`${classes.column} ${classes.column3}`}>
-          <Typography variant="body1" component="p" className={classes.headline} >Trachoma</Typography>
-        </Grid>
-
-        <Grid item md={4} sm={4} xs={12} className={`${classes.column} ${classes.column4}`}>
-          <Typography variant="body1" component="p" className={classes.headline} >Soil-transmitted helmithiasis Whipworm</Typography>
-        </Grid>
-
-        <Grid item md={4} sm={4} xs={12} className={`${classes.column} ${classes.column5}`}>
-          <Typography variant="body1" component="p" className={classes.headline} >Soil-transmitted helmithiasis Roundworm</Typography>
-        </Grid>
-
-        <Grid item md={4} sm={4} xs={12} className={`${classes.column} ${classes.column6}`}>
-          <Typography variant="body1" component="p" className={classes.headline} >Soil-transmitted helmithiasis Hookworm</Typography>
-        </Grid>
-
-      </Grid>
-    </Container>
+      </Container>
+    </FullWidthBackground>
   );
 }
 
-export default DiseasesList;
+export default withStyles(styles, { withTheme: true })(DiseasesList);
