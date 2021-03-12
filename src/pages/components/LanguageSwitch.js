@@ -1,6 +1,7 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Typography, Link } from '@material-ui/core';
+import { useTranslation } from "react-i18next";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -50,12 +51,18 @@ const useStyles = makeStyles(theme => ({
 const LanguageSwitch = ({ current = 'en-US', dark }) => {
 
   const classes = useStyles();
+  const { t, i18n } = useTranslation();
 
   const languages = [
-    { code: 'en-US', name: 'English', 'url': '/' },
-    { code: 'pt-PT', name: 'Português', 'url': '/pt' },
-    { code: 'fr-FR', name: 'Français', 'url': '/fr' },
+    { code: 'en-US', name: 'English', 'url': '/', short: 'en' },
+    { code: 'pt-PT', name: 'Português', 'url': '/pt', short: 'pt' },
+    { code: 'fr-FR', name: 'Français', 'url': '/fr', short: 'fr' },
   ]
+
+  function handleClick(lang) {
+    i18n.changeLanguage(lang);
+  }
+
 
   return (
     <nav className={`${classes.root}  ${dark ? 'dark' : ''}`}>
@@ -68,11 +75,12 @@ const LanguageSwitch = ({ current = 'en-US', dark }) => {
             return (
               <li key={i}>
                 <Link
-                  href={lang.url}
+                  href="#"
                   lang={lang.code}
                   aria-label={`Switch to ${lang.name}`}
                   hrefLang={lang.code}
                   className={classes.switch}
+                  onClick={() => handleClick(lang.short)}
                 >
                   <Typography variant="h6" component="span" className={classes.headline} >{lang.name}</Typography>
                 </Link>

@@ -24,14 +24,6 @@ import iMission from 'images/graph-copy.png';
 import iHowIW from 'images/graph-copy-2.png';
 
 const useStyles = makeStyles(theme => ({
-  langToggle: {
-    position: "fixed",
-    backgroundColor: theme.palette.secondary.light,
-    top: "1rem",
-    right: "1rem",
-    zIndex: "10",
-    padding: "0.5rem 1rem",
-  },
   section: {
     position: "relative",
     backgroundColor: theme.palette.secondary.light,
