@@ -14,6 +14,7 @@ import TextWithImage from 'pages/components/TextWithImage';
 import TextContents from 'pages/components/TextContents';
 import AccordionElement from 'pages/components/AccordionElement';
 import SelectDisease from 'pages/components/SelectDisease';
+import SupportedBy from 'pages/components/SupportedBy';
 
 import { useTranslation } from "react-i18next";
 
@@ -169,6 +170,8 @@ const Home = (props) => {
       </TextWithImage>
 
       <DiseasesList />
+
+      <SupportedBy />
 
 
       <section className={`${classes.section} ${classes.cardTransparent}`}>

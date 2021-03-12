@@ -35,7 +35,6 @@ const styles = theme => ({
     backgroundImage: `url(${ico3})`,
   },
   grid: {
-    backgroundColor: theme.palette.secondary.light,
   },
 
   headline: {
