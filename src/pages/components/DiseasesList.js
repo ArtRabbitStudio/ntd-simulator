@@ -64,11 +64,11 @@ const DiseasesList = (props) => {
   //const classes = useStyles();
 
   return (
-    <FullWidthBackground color={theme.palette.secondary.light}>
-      <Container className={classes.root} maxWidth="xl" >
+    <Container className={classes.root} maxWidth="xl" >
 
-        <CapsHeadline text="Diseases" />
+      <CapsHeadline text="Diseases" />
 
+      <FullWidthBackground color={theme.palette.secondary.light}>
         <Grid container spacing={0} className={classes.grid}>
 
           <Grid item md={4} sm={4} xs={12} className={`${classes.column} ${classes.column1}`}>
@@ -96,8 +96,8 @@ const DiseasesList = (props) => {
           </Grid>
 
         </Grid>
-      </Container>
-    </FullWidthBackground>
+      </FullWidthBackground>
+    </Container>
   );
 }
 

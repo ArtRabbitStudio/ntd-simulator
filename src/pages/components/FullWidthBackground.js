@@ -27,7 +27,7 @@ const FullWidthBackground = ({ color, children }) => {
   const classes = useStyles();
 
   return (
-    <div className={classes.root} >
+    <div className={`${classes.root} fwbg`} >
       <div className={classes.inner} >
         {children}
       </div>

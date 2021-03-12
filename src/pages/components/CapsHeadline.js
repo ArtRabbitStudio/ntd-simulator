@@ -13,7 +13,7 @@ const CapsHeadline = ({ text }) => {
   const classes = useStyles();
 
   return (
-    <Typography variant="h6" component="strong" className={classes.root} >{text}</Typography>
+    <Typography variant="h6" component="strong" className={`${classes.root} caps-text`}>{text}</Typography>
   );
 }
 

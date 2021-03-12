@@ -49,11 +49,11 @@ const WhatYouCanDo = (props) => {
   const { classes, theme } = props
 
   return (
-    <FullWidthBackground color={theme.palette.secondary.light}>
-      <Container className={classes.root} maxWidth="xl" >
+    <Container className={classes.root} maxWidth="xl" >
 
-        <CapsHeadline text="What you can do" />
+      <CapsHeadline text="What you can do" />
 
+      <FullWidthBackground color={theme.palette.secondary.light}>
         <Grid container spacing={0} className={classes.grid}>
 
           <Grid item md={4} sm={4} xs={12} className={`${classes.column} ${classes.column1}`}>
@@ -72,8 +72,8 @@ const WhatYouCanDo = (props) => {
           </Grid>
 
         </Grid>
-      </Container>
-    </FullWidthBackground>
+      </FullWidthBackground>
+    </Container>
   );
 }
 

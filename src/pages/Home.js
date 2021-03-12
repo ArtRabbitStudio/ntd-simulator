@@ -14,7 +14,7 @@ import TextContents from 'pages/components/TextContents';
 import AccordionElement from 'pages/components/AccordionElement';
 import SelectDisease from 'pages/components/SelectDisease';
 import Logo from 'images/ntd-logo.svg';
-//import BG from 'images/africa.jpg';
+import BG from 'images/graph.png';
 
 const useStyles = makeStyles(theme => ({
   section: {
@@ -23,6 +23,21 @@ const useStyles = makeStyles(theme => ({
     width: `calc(100% + ${theme.spacing(12)}px)`,
     marginLeft: -theme.spacing(6),
     padding: theme.spacing(4, 6),
+  },
+  selectDisease: {
+    position: "relative",
+    padding: theme.spacing(4, 0),
+    margin: theme.spacing(0, 0, 0, 0),
+    top: theme.spacing(-10),
+    backgroundColor: 'white',
+    backgroundImage: `url(${BG})`,
+    backgroundRepeat: 'no-repeat',
+    backgroundPosition: 'right center',
+    backgroundSize: 'contain',
+    minHeight: "40vh",
+    display: "flex",
+    width: "100%",
+    alignItems: "center",
   },
   marginBottom: {
     marginBottom: theme.spacing(2)
@@ -96,8 +111,9 @@ const Home = (props) => {
 
       <HeadWithInputs disableInputs={true} showLanguages={true} classAdd={classes.cardTransparent} />
 
-
-      <SelectDisease />
+      <section className={`${classes.selectDisease}`}>
+        <SelectDisease />
+      </section>
 
       <WhatYouCanDo />
 

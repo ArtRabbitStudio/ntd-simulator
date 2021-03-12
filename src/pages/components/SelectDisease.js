@@ -5,8 +5,8 @@ import { observer } from 'mobx-react'
 import { useDataAPI, useUIState } from 'hooks/stateHooks'
 import { useHistory } from 'react-router-dom'
 
-//import ConfirmationDialog from "./ConfirmationDialog";
-import { Box, TextField,FormControl,Fab } from '@material-ui/core';
+import CapsHeadline from "./CapsHeadline";
+import { Box, TextField, FormControl, Fab, Typography } from '@material-ui/core';
 import Autocomplete from '@material-ui/lab/Autocomplete'
 import useStyles from 'theme/SelectCountry'
 import { DISEASE_LABELS } from '../../AppConstants'
@@ -19,7 +19,7 @@ const SelectDisease = ({ selectIU, showBack }) => {
   const { diseases } = useDataAPI()
   const { disease } = useUIState()
 
-  const [ goTo ] = useState(false);
+  const [goTo] = useState(false);
 
   const navigate = (url) => {
     let u = url ? url : goTo;
@@ -32,8 +32,8 @@ const SelectDisease = ({ selectIU, showBack }) => {
     // ConfirmationDialog
 
 
-    
-    if (value === null ) {
+
+    if (value === null) {
       return false
     }
 
@@ -48,7 +48,7 @@ const SelectDisease = ({ selectIU, showBack }) => {
   const defaultSuggestionOption = { name: "Select a disease" };
 
 
-  const diseasesSelect = diseases.map((d)=>{
+  const diseasesSelect = diseases.map((d) => {
     return {
       id: d,
       name: DISEASE_LABELS[d]
@@ -56,7 +56,7 @@ const SelectDisease = ({ selectIU, showBack }) => {
   })
 
 
-  const diseasesSelectWithDefault = [ defaultSuggestionOption ].concat( diseasesSelect );
+  const diseasesSelectWithDefault = [defaultSuggestionOption].concat(diseasesSelect);
 
   const selected = diseasesSelectWithDefault.find(x => x.id === disease)
 
@@ -64,12 +64,15 @@ const SelectDisease = ({ selectIU, showBack }) => {
     <React.Fragment>
       <Box className={classes.box}>
 
+        <Typography variant="h4" component="p" className={classes.headline} >Simulate the impact of more frequent, longer or higer coverage treatments to eradicating neglected tropical diseases.</Typography>
+
+        <CapsHeadline text="Select a Disease" />
         <FormControl className={`${classes.formControl} countries`}>
           <Autocomplete
             id="disease"
             options={diseasesSelectWithDefault}
             getOptionLabel={option => option.name}
-            getOptionSelected={ ( a, b ) => { return a.name === b.name } } // stop the Autocomplete warning barf
+            getOptionSelected={(a, b) => { return a.name === b.name }} // stop the Autocomplete warning barf
             value={selected ?? defaultSuggestionOption}
             renderInput={params => (
               <TextField {...params} /*InputProps={{ ...params.InputProps, disableUnderline: true }}*/ />
@@ -77,19 +80,19 @@ const SelectDisease = ({ selectIU, showBack }) => {
             onChange={handleChange}
           />
           {showBack && <Fab
-          color="inherit"
-          aria-label="REMOVE SCENARIO"
-          disabled={false}
-          className={classes.reloadIcon}
-          onClick={handleChange}
-        >
-          &nbsp;
+            color="inherit"
+            aria-label="REMOVE SCENARIO"
+            disabled={false}
+            className={classes.reloadIcon}
+            onClick={handleChange}
+          >
+            &nbsp;
         </Fab>}
         </FormControl>
-        
+
 
       </Box>
-       
+
     </React.Fragment>
   )
 }
