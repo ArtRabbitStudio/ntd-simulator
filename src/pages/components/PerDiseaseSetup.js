@@ -13,10 +13,11 @@ import { SettingSpecificScenario } from 'pages/components/simulator/settings';
 import { loadAllIUhistoricData } from 'pages/components/simulator/helpers/iuLoader';
 import SessionStorage from 'pages/components/simulator/helpers/sessionStorage';
 import { DISEASE_LIMF } from 'AppConstants';
+import { useTranslation } from 'react-i18next';
 
 const PerDiseaseSetup = (props) => {
   const [isLoading, setIsLoading] = useState(false)
-
+  const { t, i18n } = useTranslation();
   const history = useHistory()
   const classes = useStyles()
   const { simState, dispatchSimState } = useSimulatorStore()
@@ -72,7 +73,7 @@ const PerDiseaseSetup = (props) => {
     return (
         <section className={classes.section}>
           <Typography variant="h3" component="h6" className={classes.headline}>
-            Loading setup for {selectedIUName}
+            {t('loadingSetup')} {selectedIUName}
           </Typography>
         </section>
     )
@@ -125,11 +126,11 @@ const PerDiseaseSetup = (props) => {
   return (
       <section className={classes.section}>
         <Typography variant="h3" component="h6" className={classes.headline}>
-          Setup
+          {t('setup')}
         </Typography>
         <TextContents>
           <Typography paragraph variant="body1" component="p">
-            {`We hold the following information for ${selectedIUName}.`}
+            {`${t('weHold')} ${selectedIUName}.`}
             <br />
           </Typography>
         </TextContents>
@@ -137,7 +138,7 @@ const PerDiseaseSetup = (props) => {
         <div className={classes.charts}>
           <div className={classes.chart}>
           <Tooltip
-              title="Inferred prevalence based on geostatistical maps interpolating through space and projected forward in time using the transmission model."
+              title={t('inferredPrevalence')}
               aria-label="info"
             >
             <Typography
@@ -145,7 +146,7 @@ const PerDiseaseSetup = (props) => {
               component="h6"
               className={`${classes.headline} ${classes.withHelp}`}
             >
-              Estimated prevalence (
+              {t('estimatedPrevalence')} (
               {selectedIUData[0] && selectedIUData[0].endemicity})
             </Typography>
           </Tooltip>
@@ -153,7 +154,7 @@ const PerDiseaseSetup = (props) => {
           </div>
           {props.disease === DISEASE_LIMF && <div className={classes.chart}>
           <Tooltip
-              title="Light blue bars show no intervention;  blue bars show intervention, the height of the blue colour shows coverage."
+              title={t('blueBars')}
               aria-label="info"
             >
             <Typography
@@ -161,7 +162,7 @@ const PerDiseaseSetup = (props) => {
               component="h6"
               className={`${classes.headline} ${classes.withHelp}`}
             >
-              Espen intervention data (MDA)
+              {t('espen')}
             </Typography>
             </Tooltip>
             <div className="bars setup">
@@ -211,7 +212,7 @@ const PerDiseaseSetup = (props) => {
 
         <TextContents>
           <Typography paragraph variant="body1" component="p">
-            Set up your simulation scenario by selecting environmental factors and MDA settings. <br></br>then click "Predictions" or one of the disruption buttons to simulate potential outcomes. <br></br>You can edit your setup at any time or create a new scenario.
+            {t('setup1')}<br></br>{t('setup2')}<br></br>{t('setup3')}
           </Typography>
         </TextContents>
 
@@ -225,12 +226,12 @@ const PerDiseaseSetup = (props) => {
 
         <TextContents>
           <Typography variant="h3" component="h6" className={classes.headline}>
-            Disruption
+            {t('disruption')}
           </Typography>
           <Typography paragraph variant="body1" component="p">
-            Are you interested in a specific disruption scenario?
+            {t('disruption1')}
             <br />
-            You will be able to change this later.
+            {t('disruption2')}
           </Typography>
         </TextContents>
 
@@ -241,7 +242,7 @@ const PerDiseaseSetup = (props) => {
         </div>
 
         <Button onClick={submitSetup} variant="contained" color="primary">
-          Predictions
+          {t('predictions')}
         </Button>
       </section>
   )

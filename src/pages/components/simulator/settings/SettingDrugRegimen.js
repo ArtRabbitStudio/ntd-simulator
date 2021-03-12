@@ -5,8 +5,10 @@ import { useSimulatorStore } from 'store/simulatorStore'
 import { useScenarioStore, ScenarioStoreConstants } from "store/scenarioStore";
 
 import { FormControl, Select, FormLabel, MenuItem,Tooltip } from '@material-ui/core'
+import { useTranslation } from "react-i18next";
 
 const SettingDrugRegimen = ({ inModal, label, value, onChange, classAdd, scenarioId }) => {
+  const { t, i18n } = useTranslation();
   const classes = useStyles()
   const { dispatchSimState } = useSimulatorStore()
   const { scenarioState, dispatchScenarioStateUpdate } = useScenarioStore();
@@ -50,7 +52,7 @@ const SettingDrugRegimen = ({ inModal, label, value, onChange, classAdd, scenari
       className={`${classes.formControl} ${classAdd}`}
     >
       <Tooltip
-        title="Choose the appropriate drug regimen."
+        title={t('chooseDrugRegimen')}
         aria-label="info"
       >
       <FormLabel 

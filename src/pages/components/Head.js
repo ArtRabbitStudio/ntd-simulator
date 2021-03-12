@@ -3,6 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import { Typography, Grid } from '@material-ui/core';
 import { NavLink } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 import Logo from 'images/ntd-logo.svg';
 
@@ -49,8 +50,8 @@ const useStyles = makeStyles(theme => ({
     padding: 5
   }
 }));
-
 const Head = ({ title, classAdd, intro }) => {
+  const { t, i18n } = useTranslation();
 
   const classes = useStyles();
   classAdd = classAdd ? classAdd : '';
@@ -64,7 +65,7 @@ const Head = ({ title, classAdd, intro }) => {
 
         <Typography variant="h6" component="span" className={`${classes.headline}`} >NTD Modelling Consortium</Typography>
         <Typography variant="h1" component="h2">NTD Prediction Simulator</Typography>
-        <Typography variant="h6" component="span" className={`${classes.headline}`} >Africa <span className={classes.beta}>Beta {process.env.REACT_APP_VERSION}</span></Typography>
+        <Typography variant="h6" component="span" className={`${classes.headline}`} >Africa <span className={classes.beta}>{t('beta')} {process.env.REACT_APP_VERSION}</span></Typography>
         {intro &&
           <Grid item md={6} xs={12} className={classes.head}>
             <Typography paragraph variant="body1" component="p">{intro}</Typography>

@@ -3,6 +3,7 @@ import useStyles from "pages/components/simulator/styles";
 
 import { useSimulatorStore } from "store/simulatorStore";
 import { useScenarioStore, ScenarioStoreConstants } from "store/scenarioStore";
+import { useTranslation } from 'react-i18next';
 
 import {
   FormControl,
@@ -12,6 +13,8 @@ import {
 } from "@material-ui/core";
 
 const SettingInsecticideCoverage = ({ inModal, label, value, classAdd, scenarioId }) => {
+
+  const { t, i18n } = useTranslation();
 
   const classes = useStyles();
   const { dispatchSimState } = useSimulatorStore();
@@ -24,7 +27,7 @@ const SettingInsecticideCoverage = ({ inModal, label, value, classAdd, scenarioI
   return (
     <FormControl fullWidth className={`${classes.formControl} ${classAdd}`}>
       <Tooltip
-        title="What proportion of the popiulation are covered by regular indoor residual spraying."
+        title={t('whatProportion')}
         aria-label="info"
       >
       <FormLabel

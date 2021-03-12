@@ -23,6 +23,7 @@ import ChartSettings from 'pages/components/simulator/ChartSettings'
 import MdaRounds from 'pages/components/simulator/MdaRounds'
 import DiseaseModels from 'pages/components/simulator/models/DiseaseModels';
 import ConfirmationDialog from "pages/components/ConfirmationDialog";
+import { useTranslation } from 'react-i18next';
 
 import { DISEASE_CONFIG,DISEASE_LIMF, DISEASE_TRACHOMA, DISEASE_STH_ROUNDWORM, DISEASE_STH_WHIPWORM } from 'AppConstants';
 
@@ -67,7 +68,7 @@ TabPanel.propTypes = {
 }
 
 const ScenarioDisplay = (props) => {
-
+const { t, i18n } = useTranslation();
   const classes = useStyles();
   const { disease } = useUIState();
 
@@ -133,7 +134,7 @@ const ScenarioDisplay = (props) => {
                 classAdd={classes.precision}
                 inModal={true}
                 showPrecisionSlider={true}
-                label="Precision (runs)"
+                label={t('precision')}
                 setGraphTypeSimple={handleGraphTypeChange}
                 graphTypeSimple={graphTypeSimpleLocal}
                 showDialog={setshowPrecisionConfirmation}
@@ -143,7 +144,7 @@ const ScenarioDisplay = (props) => {
               <SettingPrecision
                 classAdd={classes.precision}
                 inModal={true}
-                label="Precision (runs)"
+                label={t('precision')}
                 showPrecisionSlider={false}
                 setGraphTypeSimple={handleGraphTypeChange}
                 graphTypeSimple={graphTypeSimpleLocal}
@@ -167,22 +168,22 @@ const ScenarioDisplay = (props) => {
               </Fab>
 
               <ChartSettings
-                title="Edit scenario"
-                buttonText="Update Scenario"
-                cancelText="Cancel Changes"
+                title={t('editScenario')}
+                buttonText={t('updateScenario')}
+                cancelText={t('cancelChanges')}
                 cancel={props.resetCurrentScenario}
                 action={props.runCurrentScenario}
                 hideFab={false}
               >
                 <TextContents>
                   <Typography paragraph variant="body1" component="p">
-                    What scenario do you want to simulate?
+                    {t('simulate')}
                   </Typography>
                 </TextContents>
 
                 <SettingName
                   inModal={true}
-                  label="Scenario name"
+                  label={t('scenarioName')}
                   scenarioId={scenarioId}
                   scenarioLabel={ scenarioData.label }
                 />
@@ -190,21 +191,21 @@ const ScenarioDisplay = (props) => {
                 { disease === DISEASE_LIMF &&
                   <SettingBedNetCoverage
                     inModal={true}
-                    label="Bed Net Coverage"
+                    label={t('bedNetCoverage')}
                   />
                 }
 
-                <SettingFrequency inModal={true} label="Treatment frequency" />
+                <SettingFrequency inModal={true} label={t('treatmentFrequency')} />
 
                 { disease === DISEASE_LIMF &&
-                  <SettingDrugRegimen inModal={true} label="Drug regimen" />
+                  <SettingDrugRegimen inModal={true} label={t('drugRegimen')} />
                 }
 
                 { disease === DISEASE_LIMF &&
                   <SettingTargetCoverage
                     scenarioId={ scenarioData.id }
                     inModal={true}
-                    label="Treatment target coverage"
+                    label={t('treatmentTargetCoverage')}
                   />
                 }
                 { disease === DISEASE_TRACHOMA &&
@@ -214,7 +215,7 @@ const ScenarioDisplay = (props) => {
                     min={60}
                     max={90}
                     step={10}
-                    label="Treatment target coverage"
+                    label={t('treatmentTargetCoverage')}
                   />
                 }
 
@@ -223,45 +224,45 @@ const ScenarioDisplay = (props) => {
                   <SettingTargetCoverage
                     scenarioId={ scenarioData.id }
                     inModal={true}
-                    label="MDA Coverage Infants"
+                    label={t('MDACoverageInfants')}
                     min={0}
                     max={100}
                     step={5}
                     valueKey="coverageInfants"
-                    title="Proportion of infants that will be treated."
+                    title={t('InfantsTitle')}
                   />
               
                   <SettingTargetCoverage
                     scenarioId={ scenarioData.id }
                     inModal={true}
-                    label="MDA Coverage Preschool Children"
+                    label={t('MDACoveragePreschool')}
                     min={0}
                     max={100}
                     step={5}
                     valueKey="coveragePreSAC"
-                    title="Proportion of preschool age children that will be treated."
+                    title={t('PreschoolTitle')}
                   />
               
                   <SettingTargetCoverage
                     scenarioId={ scenarioData.id }
                     inModal={true}
-                    label="MDA Coverage School-Age Children "
+                    label={t('MDACoverageSchoolAge')}
                     min={0}
                     max={100}
                     step={5}
                     valueKey="coverageSAC"
-                    title="Proportion of school-age children that will be treated."
+                    title={t('SchoolAgeTitle')}
                   />
                 
                   <SettingTargetCoverage
                     scenarioId={ scenarioData.id }
                     inModal={true}
-                    label="MDA Coverage Adults"
+                    label={t('MDACoverageAdults')}
                     min={0}
                     max={100}
                     step={5}
                     valueKey="coverageAdults"
-                    title="Proportion of adults that will be treated."
+                    title={t('AdultsTitle')}
                   />
                 </Fragment>
                 
@@ -271,27 +272,27 @@ const ScenarioDisplay = (props) => {
                 {disease === DISEASE_LIMF && 
                   <SettingSystematicAdherence
                     inModal={true}
-                    label="Systematic adherence"
+                    label={t('systematicAdherence')}
                   />
                 }
 
                 { disease === DISEASE_LIMF &&
                   <SettingInsecticideCoverage
                     inModal={true}
-                    label="Insecticide Coverage"
+                    label={t('insecticideCoverage')}
                   />
                 }
 
                 { disease === DISEASE_LIMF &&
                   <SettingMosquitoType
                     inModal={true}
-                    label="Mosquito type"
+                    label={t('mosquitoType')}
                   />
                 }
 
                 <TextContents>
                   <Typography paragraph variant="body1" component="p">
-                    Are you interested in a specific scenario? { scenarioState.scenarioData[ scenarioState.currentScenarioId ].specificPredictionIndex }
+                    {t('specific')} { scenarioState.scenarioData[ scenarioState.currentScenarioId ].specificPredictionIndex }
                   </Typography>
                 </TextContents>
 
@@ -313,9 +314,9 @@ const ScenarioDisplay = (props) => {
                     setGraphMetric(ev.target.value);
                   }}
                 >
-                  <MenuItem value={"Ms"}>Prevalence microfilariae</MenuItem>
-                  <MenuItem value={"Ls"}>Prevalence in the mosquito population</MenuItem>
-                  <MenuItem value={"Ws"}>Prevalence of worms in the lymph nodes</MenuItem>
+                  <MenuItem value={"Ms"}>{t('prevalence1')}</MenuItem>
+                  <MenuItem value={"Ls"}>{t('prevalence2')}</MenuItem>
+                  <MenuItem value={"Ws"}>{t('prevalence3')}</MenuItem>
                 </Select>
               </FormControl>
               ) }
@@ -333,8 +334,8 @@ const ScenarioDisplay = (props) => {
                     setGraphMetric(ev.target.value);
                   }}
                 >
-                  <MenuItem value={"KK"}>Prevalence School Age Children</MenuItem>
-                  <MenuItem value={"MHI"}>Prevalence of Medium and High Intensity in School Aged Children</MenuItem>
+                  <MenuItem value={"KK"}>{t('prevalence4')}</MenuItem>
+                  <MenuItem value={"MHI"}>{t('prevalence5')}</MenuItem>
                 </Select>
               </FormControl>
               ) }
@@ -354,7 +355,7 @@ const ScenarioDisplay = (props) => {
                 }
                 onClick={props.runCurrentScenario}
               >
-                UPDATE SCENARIO
+                {t('updateScenario')}
               </Button>{" "}
               &nbsp;
               <IconButton
@@ -436,7 +437,7 @@ const ScenarioDisplay = (props) => {
               id="interventions-label"
               component="h6"
             >
-              Interventions
+              {t('interventions')}
             </Typography>
             </Tooltip>
           
@@ -444,8 +445,8 @@ const ScenarioDisplay = (props) => {
           </React.Fragment>
         ) }
         <ConfirmationDialog
-          title="Setting a higher precision"
-          intro="Increasing precision means less uncertainty in the results, but longer calculation times. At the highest precision setting, this can take up to a few minutes. Do you want to proceed?"
+          title={t('higherPrecision')}
+          intro={t('increasingPrecision')}
           onClose={() => {
             setshowPrecisionConfirmation(false);
             props.resetCurrentScenario()

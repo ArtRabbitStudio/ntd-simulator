@@ -22,6 +22,7 @@ import { NewSettingsDialogTrachoma } from 'pages/components/diseases/trachoma';
 import { NewSettingsDialogSTHRoundworm } from 'pages/components/diseases/sth-roundworm';
 import { DISEASE_LIMF, DISEASE_TRACHOMA, DISEASE_STH_ROUNDWORM } from 'AppConstants';
 import { DISEASE_STH_WHIPWORM } from '../../../AppConstants';
+import { useTranslation } from 'react-i18next';
 
 
 const settingsDialogComponents = {
@@ -68,6 +69,7 @@ TabPanel.propTypes = {
 const ScenarioManager = ( props ) => {
 
   const classes = useStyles();
+  const { t, i18n } = useTranslation();
 
   const { simState, dispatchSimState } = useSimulatorStore();
   const { scenarioState, dispatchScenarioStateUpdate } = useScenarioStore();
@@ -219,7 +221,7 @@ const ScenarioManager = ( props ) => {
     console.log( `ScenarioManager auto-running new scenario for disease ${disease}` );
 
     if ( scenarioState.scenarioKeys.length > 5 && !simInProgress ) {
-      alert( 'Sorry, maximum number of Scenarios is 5.' );
+      alert( t('alertText1') );
       return;
     }
 
@@ -461,7 +463,7 @@ const ScenarioManager = ( props ) => {
                 { scenarioState.scenarioKeys.length < 5 && (
                   <Tab
                     key={ `tab-element-99` }
-                    label={ `+ Add scenario` }
+                    label={ `+ ${t('addScenario')}` }
                     disabled={ simInProgress }
                     onClick={ createNewScenario }
                   />
@@ -489,7 +491,7 @@ const ScenarioManager = ( props ) => {
             </TabPanel>
 
             <ConfirmationDialog
-              title="Do you want to delete this scenario?"
+              title={t('deleteScenario')}
               onClose={ () => {
                 setConfirmationOpen( false );
               }}
@@ -507,7 +509,7 @@ const ScenarioManager = ( props ) => {
                 />
                 
                 <Typography paragraph variant="body1" component="p" align="center">
-                    Calculating... please wait
+                    {t('calculating')}
                 </Typography>
                 
               </div>
@@ -522,7 +524,7 @@ const ScenarioManager = ( props ) => {
                 />
                 
                 <Typography paragraph variant="body1" component="p" align="center">
-                    Calculating... please wait
+                {t('calculating')}
                 </Typography>
                 
               </div>

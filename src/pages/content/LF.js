@@ -4,8 +4,10 @@ import Typography from '@material-ui/core/Typography';
 
 import Head from 'pages/components/Head';
 import TextContents from 'pages/components/TextContents'
+import { useTranslation } from 'react-i18next';
 
 const LF = (props) => {
+  const { t, i18n } = useTranslation();
 
   return (
     <Layout>
@@ -14,57 +16,57 @@ const LF = (props) => {
         
       />
       <TextContents>
-      <Typography gutterBottom variant="h2">Lymphatic filariasis</Typography>
+      <Typography gutterBottom variant="h2">{t('LF0')}</Typography>
         <Typography paragraph variant="body1" component="p">
-        <Typography gutterBottom variant="h3"><br />About Lymphatic filariasis</Typography>
-        Lymphatic filariasis is due to filarial parasites which are transmitted to humans through mosquitoes. 
+        <Typography gutterBottom variant="h3"><br />{t('LF1')}</Typography>
+        {t('LF2')}
         </Typography>
         <Typography paragraph variant="body1" component="p">
-        When a mosquito with infective stage larvae bites a person, the parasites are deposited on the person's skin from where they enter the body. The larvae then migrate to the lymphatic vessels where they develop into adult worms in the human lymphatic system. Infection is usually acquired in childhood, but the painful and profoundly disfiguring visible manifestations of the disease occur later in life. Whereas acute episodes of the disease cause temporary disability, lymphatic filariasis (LF) leads to permanent disability.
+          {t('LF3')}
         </Typography>
-        <Typography gutterBottom variant="h3"><br />Disease Burden</Typography>
+        <Typography gutterBottom variant="h3"><br />{t('LF4')}</Typography>
         <Typography paragraph variant="body1" component="p">    
-          LF is endemic in 83 countries and there are an estimated 120 million cases, including 25 million men with hydroceles and 15 million people, primarily women, with lymphedema. The disease occurs throughout the tropical areas of Africa, Asia, the Americas and the Pacific, with around 66% of the infection clustered in South-East Asia and most of the remaining infection (~33%) centered in Africa.
+        {t('LF5')}
         </Typography>
-        <Typography gutterBottom variant="h3"><br />Transmission Dynamics</Typography>
+        <Typography gutterBottom variant="h3"><br />{t('LF6')}</Typography>
         <Typography paragraph variant="body1" component="p">
-          LF is caused by a species of filarial round worms, or nematodes, with up to 90% of all infections caused by Wuchereria bancrofti. In some parts of Asia, LF is caused by Brugia malayi and Brugia timori.  Various mosquito species transmit these worms: Culex mosquitoes transmit W. bancrofti in urban and semi-urban areas, Anopheles mosquitoes transmit worms in rural environments, especially in Africa, and Aedes mosquitoes are responsible for transmission throughout the Pacific.
+        {t('LF7')}
+        </Typography>
+        <Typography paragraph variant="body1" component="p">
+         {t('LF8')} <a href="http://www.thiswormyworld.org/about-worms/worms/what-are-worms"> {t('LF9')}</a>.
+        </Typography>
+        <Typography gutterBottom variant="h3"><br />{t('interventions')}</Typography>
+        <Typography paragraph variant="body1" component="p">
+          {t('LF11')} <a href="http://www.thiswormyworld.org/about-worms/elimination-of-lymphatic-filariasis">{t('LF12')}</a>.
+        </Typography>
+        <Typography gutterBottom variant="h3"><br />{t('LF13')}</Typography>
+        <Typography paragraph variant="body1" component="p">
+          {t('LF14')} <a href="https://parasitesandvectors.biomedcentral.com/articles/10.1186/s13071-015-1152-3">{t('LF15')}</a>{t('LF16')}<a href="https://parasitesandvectors.biomedcentral.com/articles/10.1186/s13071-015-1152-3">{t('LF17')}</a>.
           </Typography>
+        <Typography gutterBottom variant="h3"><br />{t('LF18')}</Typography>
         <Typography paragraph variant="body1" component="p">
-          To learn more about the transmission dynamics of lymphatic filariasis, please visit the <a href="http://www.thiswormyworld.org/about-worms/worms/what-are-worms">Global Atlas of Helminth Infections (GAHI)</a>.
-        </Typography>
-        <Typography gutterBottom variant="h3"><br />Interventions</Typography>
-        <Typography paragraph variant="body1" component="p">
-          Numerous countries have implemented LF control programmes, with significant achievements in the Americas, the Pacific and Asia. A few countries in Africa are close to their elimination goals. To learn more about LF elimination, please visit the <a href="http://www.thiswormyworld.org/about-worms/elimination-of-lymphatic-filariasis">Global Atlas of Helminth Infections</a>.
-        </Typography>
-        <Typography gutterBottom variant="h3"><br />Simulation Model</Typography>
-        <Typography paragraph variant="body1" component="p">
-          The underlying model is stochastic and individual-based. Its description includes an individual's worm burden, mf burden as well as aspects of the transmission cycle in mosquito populations. Various interventions are also modelled on the population. The main intervention is mass drug administration (MDA), where different regimens can be selected. Interventions also include vector control including bed-nets and insecticide treatment. A full model description can be found in the accompanying <a href="https://parasitesandvectors.biomedcentral.com/articles/10.1186/s13071-015-1152-3">P&V paper</a>, which can be found in the further reading section. Please note that the model has only been validated against a certain number of settings, details of which can be found in the <a href="https://parasitesandvectors.biomedcentral.com/articles/10.1186/s13071-015-1152-3">paper</a>.
-          </Typography>
-        <Typography gutterBottom variant="h3"><br />Model code</Typography>
-        <Typography paragraph variant="body1" component="p">
-          We are committed to making our model code available for use by other modellers. Below are links to code used in recent publications:
+          {t('LF19')}
         </Typography>
         <Typography paragraph variant="body1" component="p">
-          Smith et al. <a href="https://doi.org/10.1016/j.epidem.2017.02.006">Predicting lymphatic filariasis transmission and elimination dynamics using a multi-model ensemble framework</a> Epidemics 2017. The <a href="https://www.ntdmodelling.org/sites/www.ntdmodelling.org/files/content/EPIFIL_Code%202.zip">code for EPIFIL is available here</a>. The <a href="https://github.com/sempwn/LF-model">code for TRANSFIL is available here</a>. The code for LYMFASIM was published with:
+          {t('LF20')}<a href="https://doi.org/10.1016/j.epidem.2017.02.006">{t('LF21')}</a>{t('LF22')}<a href="https://www.ntdmodelling.org/sites/www.ntdmodelling.org/files/content/EPIFIL_Code%202.zip">{t('LF23')}</a>{t('LF24')}<a href="https://github.com/sempwn/LF-model">{t('LF25')}</a>{t('LF26')}
         </Typography>
         <Typography paragraph variant="body1" component="p">
-          Jambulingam et al. <a href="https://parasitesandvectors.biomedcentral.com/articles/10.1186/s13071-016-1768-y">Mathematical modelling of lymphatic filariasis elimination programmes in India: required duration of mass drug administration and post-treatment level of infection indicators</a>. Parasites and Vectors 2016. The code is in the additional files at the end of the paper.
+          {t('LF27')}<a href="https://parasitesandvectors.biomedcentral.com/articles/10.1186/s13071-016-1768-y">{t('LF28')}</a>{t('LF29')}
         </Typography>
-        <Typography gutterBottom variant="h3"><br />Further Reading</Typography>
+        <Typography gutterBottom variant="h3"><br />{t('LF30')}</Typography>
         <Typography paragraph variant="body1" component="p">
-          <a href="https://parasitesandvectors.biomedcentral.com/articles/10.1186/s13071-015-1152-3">Modelling paper</a><br />
-          Provides an overview of the accompanying model as well as the underlying parameters. 
+          <a href="https://parasitesandvectors.biomedcentral.com/articles/10.1186/s13071-015-1152-3">{t('LF31')}</a><br />
+          {t('LF32')} 
           <br />
           <br />
-          <a href="http://dx.doi.org/10.1371/journal.pntd.0005206">Accompanying paper</a><br />
-          Provides a description and motivation behind this tool.<br />
+          <a href="http://dx.doi.org/10.1371/journal.pntd.0005206">{t('LF33')}</a><br />
+          {t('LF34')}<br />
           <br />
-          Useful links<br />
-          <a href="http://www.thiswormyworld.org">Global Atlas of Helminth Infections</a><br />
+          {t('LF35')}<br />
+          <a href="http://www.thiswormyworld.org">{t('LF36')}</a><br />
         </Typography>
 
-        <Typography gutterBottom variant="h3"><br />Modelling publications</Typography>
+        <Typography gutterBottom variant="h3"><br />{t('LF37')}</Typography>
         <Typography paragraph variant="body1" component="p">
           <a href="http://www.cell.com/trends/parasitology/fulltext/S1471-4922(17)30305-7">The Population Biology and Transmission Dynamics of Loa loa</a><br />
             Whittaker C, Walker M, Pion SDS, Chesnais CB, Boussinesq M, Basáñez MG <strong>Trends in Parasitology</strong>, 2018; : Epub<br /><br />

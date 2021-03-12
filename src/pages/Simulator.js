@@ -15,6 +15,7 @@ import { IntroSTHRoundworm, SetupSTHRoundworm } from 'pages/components/diseases/
 import { IntroSTHWhipworm } from 'pages/components/diseases/sth-whipworm';
 
 import ScenarioManager from 'pages/components/simulator/ScenarioManager';
+import { useTranslation } from "react-i18next";
 
 
 
@@ -43,11 +44,13 @@ const Simulator = (props) => {
   const IntroComponent = (disease !== null) ? introComponents[disease] : null;
   const SetupComponent = (disease !== null) ? setupComponents[disease] : null;
 
+  const { t, i18n } = useTranslation();
+
   return (
 
     <Layout>
 
-      <HeadWithInputs title="prevalence simulator" />
+      <HeadWithInputs title={t('prevalenceSimulator')} />
 
       <SelectCountry
         selectIU={country ? true : false}

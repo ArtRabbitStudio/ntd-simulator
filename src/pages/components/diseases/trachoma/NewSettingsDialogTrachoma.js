@@ -1,6 +1,7 @@
 import React, { /* useState */ } from 'react';
 
 import NewScenarioSettingsDialog from 'pages/components/simulator/NewScenarioSettingsDialog';
+import { useTranslation } from "react-i18next";
 
 import {
   SettingFrequency,
@@ -8,6 +9,7 @@ import {
 } from 'pages/components/simulator/settings';
 
 const NewSettingsDialogTrachoma = ( { scenarioData, action, cancel, newScenarioSettingsOpen } ) => {
+  const { t, i18n } = useTranslation();
 
   return (
 
@@ -22,7 +24,7 @@ const NewSettingsDialogTrachoma = ( { scenarioData, action, cancel, newScenarioS
       <SettingFrequency
         scenarioId={ scenarioData.id }
         inModal={true}
-        label="Treatment frequency"
+        label={t('treatmentFrequency')}
       />
 
       <SettingTargetCoverage
@@ -31,7 +33,7 @@ const NewSettingsDialogTrachoma = ( { scenarioData, action, cancel, newScenarioS
         min={60}
         max={90}
         step={10}
-        label="Treatment target coverage"
+        label={t('treatmentTargetCoverage')}
       />
 
 

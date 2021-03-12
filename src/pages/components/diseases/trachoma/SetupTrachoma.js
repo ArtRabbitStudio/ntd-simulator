@@ -4,6 +4,7 @@ import { Typography } from '@material-ui/core';
 import { useSimulatorStore } from 'store/simulatorStore';
 import useStyles from 'theme/Setup';
 import PerDiseaseSetup from 'pages/components/PerDiseaseSetup';
+import { useTranslation } from "react-i18next";
 
 // settings
 import {
@@ -12,6 +13,7 @@ import {
 } from 'pages/components/simulator/settings';
 
 const SetupTrachoma = (props) => {
+  const { t, i18n } = useTranslation();
 
   const classes = useStyles();
   const { simState } = useSimulatorStore();
@@ -23,7 +25,7 @@ const SetupTrachoma = (props) => {
       <div className={`${classes.formControlWrap} fullwidth`}>
         <div className={classes.setupFormControl}>
           <Typography paragraph variant="h3" component="p">
-            MDA Settings
+            {t('MDASettings')}
             </Typography>
         </div>
       </div>
@@ -32,7 +34,7 @@ const SetupTrachoma = (props) => {
         <div className={classes.setupFormControl}>
           <SettingFrequency
             inModal={false}
-            label="MDA Frequency"
+            label={t('MDAFrequency')}
             value={simState.settings.mdaSixMonths}
           />
         </div>
@@ -42,7 +44,7 @@ const SetupTrachoma = (props) => {
         <div className={classes.setupFormControl}>
           <SettingTargetCoverage
             inModal={false}
-            label="MDA Target Coverage"
+            label={t('MDATargetCoverage')}
             min={60}
             max={90}
             step={10}

@@ -3,6 +3,7 @@ import useStyles from 'pages/components/simulator/styles'
 
 import { useSimulatorStore } from 'store/simulatorStore'
 import { useScenarioStore, ScenarioStoreConstants } from "store/scenarioStore";
+import { useTranslation } from 'react-i18next';
 
 import {
   FormControl,
@@ -16,6 +17,7 @@ import { specificScenarios } from 'pages/components/simulator/helpers/specificSc
 import { useUIState } from 'hooks/stateHooks'
 
 const SettingSpecificScenario = ({ inModal, label, classAdd, scenarioId }) => {
+  const { t, i18n } = useTranslation();
   const classes = useStyles()
   const history = useHistory()
   const { dispatchSimState } = useSimulatorStore()
@@ -92,7 +94,7 @@ const SettingSpecificScenario = ({ inModal, label, classAdd, scenarioId }) => {
           setSpecificScenarioFromSetup(0)
         }}
       >
-        6 months COVID disruption
+        {t('6MCovid')}
       </Button>{' '}
       &nbsp;
       <Button
@@ -102,7 +104,7 @@ const SettingSpecificScenario = ({ inModal, label, classAdd, scenarioId }) => {
           setSpecificScenarioFromSetup(1)
         }}
       >
-        1 year COVID disruption
+        {t('12MCovid')}
       </Button>{' '}
       &nbsp;
       <Button
@@ -111,8 +113,7 @@ const SettingSpecificScenario = ({ inModal, label, classAdd, scenarioId }) => {
         onClick={() => {
           setSpecificScenarioFromSetup(2)
         }}
-      >
-        18 months COVID disruption
+      >{t('18MCovid')}
       </Button>{' '}
       &nbsp;
       <Button
@@ -122,7 +123,7 @@ const SettingSpecificScenario = ({ inModal, label, classAdd, scenarioId }) => {
           setSpecificScenarioFromSetup(3)
         }}
       >
-        2 year COVID disruption
+        {t('24MCovid')}
       </Button>
     </React.Fragment>
   ) : (
@@ -135,11 +136,15 @@ const SettingSpecificScenario = ({ inModal, label, classAdd, scenarioId }) => {
         value={scenarioState.scenarioData[ scenarioId ].settings.specificPredictionIndex}
         onChange={handleChangeFromScenario}
       >
-        <MenuItem value={-1}>No</MenuItem>
-        <MenuItem value={0}>6 months COVID disruption</MenuItem>
-        <MenuItem value={1}>1 year COVID disruption</MenuItem>
-        <MenuItem value={2}>18 months COVID disruption</MenuItem>
-        <MenuItem value={3}>2 years COVID disruption</MenuItem>
+        <MenuItem value={-1}>{t('no')}</MenuItem>
+        <MenuItem value={0}>
+        {t('6MCovid')}</MenuItem>
+        <MenuItem value={1}>
+        {t('12MCovid')}</MenuItem>
+        <MenuItem value={2}>
+        {t('18MCovid')}</MenuItem>
+        <MenuItem value={3}>
+        {t('24MCovid')}</MenuItem>
       </Select>
     </FormControl>
   )

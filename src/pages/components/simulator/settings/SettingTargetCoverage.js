@@ -5,6 +5,7 @@ import { useSimulatorStore } from 'store/simulatorStore'
 import { useScenarioStore, ScenarioStoreConstants } from "store/scenarioStore";
 
 import { FormControl, Slider, FormLabel, Tooltip } from '@material-ui/core'
+import { useTranslation } from 'react-i18next';
 
 const SettingTargetCoverage = ({
   inModal,
@@ -26,9 +27,10 @@ const SettingTargetCoverage = ({
   const maxVal = max ? max : 100
   const stepVal = step ? step : 1
   const isPerIUSetting = value !== null && typeof value !== 'undefined';
+  const { t, i18n } = useTranslation();
 
   // make title and key a parameter to pass in so we can utilise this slider instead of making new ones
-  const titleVal = title ? title : "Proportion of the eligible population that will be treated."
+  const titleVal = title ? title : t('eligiblePopulation')
   const keyVal = valueKey ? valueKey : 'coverage'
   const incomingScenarioId = scenarioId ? true : false
   scenarioId = scenarioId ? scenarioId : scenarioState.currentScenarioId;

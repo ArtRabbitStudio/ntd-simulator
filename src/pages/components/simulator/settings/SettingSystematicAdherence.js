@@ -5,6 +5,7 @@ import { useSimulatorStore } from 'store/simulatorStore'
 import { useScenarioStore, ScenarioStoreConstants } from "store/scenarioStore";
 
 import { FormControl, Slider, FormLabel, Tooltip } from '@material-ui/core'
+import { useTranslation } from 'react-i18next';
 
 const SettingSystematicAdherence = ({
   inModal,
@@ -14,8 +15,9 @@ const SettingSystematicAdherence = ({
   onChange,
   scenarioId,
 }) => {
-  const classes = useStyles()
-  const { dispatchSimState } = useSimulatorStore()
+  const { t, i18n } = useTranslation();
+  const classes = useStyles();
+  const { dispatchSimState } = useSimulatorStore();
   const { scenarioState, dispatchScenarioStateUpdate } = useScenarioStore();
 
   const isPerIUSetting = value !== null && typeof value !== 'undefined';
@@ -40,7 +42,7 @@ const SettingSystematicAdherence = ({
   return (
     <FormControl fullWidth className={`${classes.formControl} ${classAdd}`}>
       <Tooltip
-        title="Controls how randomly coverage is applied. At 0, coverage is completely random and there is no correlation in individuals who are treated. At 1, the same individuals are treated each round. The systematic adherence parameter can scale between these two extremes."
+        title={t('controls')}
         aria-label="info"
       >
         <FormLabel

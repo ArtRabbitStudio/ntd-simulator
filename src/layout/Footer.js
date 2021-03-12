@@ -7,6 +7,8 @@ import { Link as RouterLink } from 'react-router-dom';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import LanguageSwitch from '../pages/components/LanguageSwitch'
+import { useTranslation } from "react-i18next";
+
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -45,6 +47,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Footer = (props) => {
+  const { t, i18n } = useTranslation();
 
   const classes = useStyles();
 
@@ -60,7 +63,7 @@ const Footer = (props) => {
             </Grid>
 
             <Grid item md={3} sm={6} xs={12} className={classes.column}>
-              <Typography variant="h6" component="h6" className={classes.headline} >Connect</Typography>
+              <Typography variant="h6" component="h6" className={classes.headline} >{t('Connect')}</Typography>
 
               <Typography display="block" variant="body2">Twitter: <br /><Link href="https://twitter.com/NtdModelling" rel="noopener" target="_blank" color="inherit" variant="body2">@NTD_Modelling</Link></Typography>
 
@@ -69,26 +72,26 @@ const Footer = (props) => {
 
             <Grid item md={3} sm={6} xs={12} className={classes.column}>
 
-              <Typography variant="h6" component="h6" className={classes.headline} >About</Typography>
+              <Typography variant="h6" component="h6" className={classes.headline} >{t('About')}</Typography>
 
               <ul className={classes.menu}>
                 <Typography component="li" variant="body2">
-                  <Link href="https://www.ntdmodelling.org/" rel="noopener" target="_blank" color="inherit" variant="body2">NTD Consortium</Link>
+                  <Link href="https://www.ntdmodelling.org/" rel="noopener" target="_blank" color="inherit" variant="body2">{t('NTDConsortium')}</Link>
                 </Typography>
                 <Typography component="li" variant="body2">
-                  <Link component={RouterLink} to="/data-and-methodolgy" color="inherit">Data and Methodology</Link>
+                  <Link component={RouterLink} to="/data-and-methodolgy" color="inherit">{t('footerHeadline')}</Link>
                 </Typography>
                 <Typography component="li" variant="body2">
-                  <Link component={RouterLink} to="/about" color="inherit">How to get involved</Link>
+                  <Link component={RouterLink} to="/about" color="inherit">{t('HowToGetInvolved')}</Link>
                 </Typography>
                 <Typography component="li" variant="body2">
-                  <Link component={RouterLink} to="/about" color="inherit">Help us improve</Link>
+                  <Link component={RouterLink} to="/about" color="inherit">{t('HelpUsImprove')}</Link>
                 </Typography>
                 <Typography component="li" variant="body2">
-                  <Link component={RouterLink} to="/privacy-cookies#privacy" color="inherit">Privacy</Link>
+                  <Link component={RouterLink} to="/privacy-cookies#privacy" color="inherit">{t('Privacy')}</Link>
                 </Typography>
                 <Typography component="li" variant="body2">
-                  <Link component={RouterLink} to="/privacy-cookies#cookies" color="inherit">Cookies</Link>
+                  <Link component={RouterLink} to="/privacy-cookies#cookies" color="inherit">{t('Cookies')}</Link>
                 </Typography>
               </ul>
 
@@ -96,26 +99,26 @@ const Footer = (props) => {
 
             <Grid item md={6} sm={12} xs={12} className={classes.column}>
 
-              <Typography variant="h6" component="h6" className={classes.headline} >NTDS</Typography>
+              <Typography variant="h6" component="h6" className={classes.headline} >{t('NTDS')}</Typography>
 
               <ul className={classes.menu}>
                 <Typography component="li" variant="body2">
-                  <Link component={RouterLink} to="/simulator" color="inherit">Lymphatic Filariasis</Link>
+                  <Link component={RouterLink} to="/simulator" color="inherit">{t('LymphaticFilariasis')}</Link>
                 </Typography>
                 <Typography component="li" variant="body2">
-                  <Link component={RouterLink} to="/simulator" color="inherit">Schistosomiasis Mansoni</Link>
+                  <Link component={RouterLink} to="/simulator" color="inherit">{t('SchistosomiasisMansoni')}</Link>
                 </Typography>
                 <Typography component="li" variant="body2">
-                  <Link component={RouterLink} to="/simulator" color="inherit">Soil-transmitted helmithiasis Hookworm</Link>
+                  <Link component={RouterLink} to="/simulator" color="inherit">{t('SoilTransmittedHelmithiasisHookworm')}</Link>
                 </Typography>
                 <Typography component="li" variant="body2">
-                  <Link component={RouterLink} to="/simulator" color="inherit">Soil-transmitted helmithiasis Hookworm</Link>
+                  <Link component={RouterLink} to="/simulator" color="inherit">{t('SoilTransmittedHelmithiasisHookworm')}</Link>
                 </Typography>
                 <Typography component="li" variant="body2">
-                  <Link component={RouterLink} to="/simulator" color="inherit">Soil-transmitted helmithiasis Hookworm</Link>
+                  <Link component={RouterLink} to="/simulator" color="inherit">{t('SoilTransmittedHelmithiasisHookworm')}</Link>
                 </Typography>
                 <Typography component="li" variant="body2">
-                  <Link component={RouterLink} to="/simulator" color="inherit">Trachoma</Link>
+                  <Link component={RouterLink} to="/simulator" color="inherit">{t('Trachoma')}</Link>
                 </Typography>
               </ul>
 
@@ -123,9 +126,9 @@ const Footer = (props) => {
 
             <Grid item xs={12} className={classes.column}>
 
-              <Typography variant="h6" component="h6" className={classes.copy} >&copy; NTD Consortium, Big Data Institute Oxford University</Typography>
+              <Typography variant="h6" component="h6" className={classes.copy} >&copy; {t('NTDConsortiumBigDataInstituteOxfordUniversity')}</Typography>
               <Typography variant="h6" component="h6" className={classes.headline} >
-                Designed and built by&nbsp;
+                {t('design')}&nbsp;
                 <Link href="https://www.artrabbit.studio/" rel="noopener" target="_blank" color="inherit">Opencultu.re</Link>
               </Typography>
 

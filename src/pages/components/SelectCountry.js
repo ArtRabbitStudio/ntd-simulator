@@ -9,10 +9,12 @@ import ConfirmationDialog from "./ConfirmationDialog";
 import { Box, TextField,FormControl,Fab } from '@material-ui/core';
 import Autocomplete from '@material-ui/lab/Autocomplete'
 import useStyles from 'theme/SelectCountry'
+import { useTranslation } from 'react-i18next';
 
 
 const SelectCountry = ({ selectIU, showCountryConfirmation, showIUConfirmation, showBack }) => {
   const classes = useStyles()
+  const { t, i18n } = useTranslation();
   const history = useHistory()
   const matchSection = useRouteMatch('/:disease/:section/')
   
@@ -77,8 +79,8 @@ const SelectCountry = ({ selectIU, showCountryConfirmation, showIUConfirmation, 
     navigate()
   };
 
-  const defaultCountrySuggestionOption = { name: "Select a country" };
-  const defaultIUSuggestionOption = { name: "Select IU" };
+  const defaultCountrySuggestionOption = { name: t('selectCountry') };
+  const defaultIUSuggestionOption = { name: t('selectIU') };
 
   const countrySuggestionsWithDefault = [ defaultCountrySuggestionOption ].concat( countrySuggestions );
   const selected = countrySuggestionsWithDefault.find(x => x.id === country)
@@ -94,7 +96,7 @@ const SelectCountry = ({ selectIU, showCountryConfirmation, showIUConfirmation, 
     <React.Fragment>
       <Box className={classes.box}>
 
-        <FormControl className={`${classes.formControl} countries`}>
+        <FormControl className={`${classes.formControl} ${t('countries')}`}>
           <Autocomplete
             id="country"
             options={countrySuggestionsWithDefault}
@@ -137,7 +139,7 @@ const SelectCountry = ({ selectIU, showCountryConfirmation, showIUConfirmation, 
 
       {showCountryConfirmation &&
         <ConfirmationDialog
-          title="Do you want to leave this scenario?"
+          title={t('leave')}
           onClose={() => {
             setConfirmatonOpen(false);
           }}

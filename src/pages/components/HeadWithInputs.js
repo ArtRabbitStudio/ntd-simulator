@@ -7,6 +7,7 @@ import Head from './Head'
 import Inputs from './Inputs'
 import LanguageSwitch from './LanguageSwitch'
 import { useHistory } from 'react-router-dom'
+import { useTranslation } from 'react-i18next';
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -45,6 +46,7 @@ const useStyles = makeStyles((theme) => ({
 
 const HeadWithInputs = ({ title, disableInputs, disableClear, classAdd, showLanguages }) => {
   const classes = useStyles()
+  const { t, i18n } = useTranslation();
   const [showConfirmation, setshowConfirmation] = useState(false);
   const [selectedValue, setSelectedValue] = useState(null)
   const history = useHistory()
@@ -75,7 +77,7 @@ const HeadWithInputs = ({ title, disableInputs, disableClear, classAdd, showLang
         {disableClear !== true && <div className={classes.clear}></div>}
       </div>
       <ConfirmationDialog
-        title="Do you want to leave this scenario?"
+        title={t('leave')}
         onClose={() => {
           setshowConfirmation(false);
         }}

@@ -4,6 +4,7 @@ import { Typography } from '@material-ui/core';
 import { useSimulatorStore } from 'store/simulatorStore';
 import useStyles from 'theme/Setup';
 import PerDiseaseSetup from 'pages/components/PerDiseaseSetup';
+import { useTranslation } from "react-i18next";
 
 // settings
 import {
@@ -18,6 +19,7 @@ import {
 
 
 const SetupLF = (props) => {
+  const { t, i18n } = useTranslation();
 
   const classes = useStyles();
   const { simState, dispatchSimState } = useSimulatorStore();
@@ -29,7 +31,7 @@ const SetupLF = (props) => {
       <div className={classes.formControlWrap}>
         <div className={classes.setupFormControl}>
           <Typography paragraph variant="h3" component="p">
-            Environmental factors
+            {t('environmentalFactors')}
             </Typography>
         </div>
       </div>
@@ -37,14 +39,14 @@ const SetupLF = (props) => {
       <div className={classes.formControlWrap}>
         <div className={classes.setupFormControl}>
           <Typography paragraph variant="h3" component="p">
-            MDA settings
+            {t('MDASettings')}
             </Typography>
         </div>
       </div>
 
       <div className={classes.formControlWrap}>
         <div className={classes.setupFormControl}>
-          <SettingBedNetCoverage inModal={false} label="Bed Net Coverage" value={simState.settings.covN} />
+          <SettingBedNetCoverage inModal={false} label={t('bedNetCoverage')} value={simState.settings.covN} />
         </div>
       </div>
 
@@ -52,7 +54,7 @@ const SetupLF = (props) => {
         <div className={classes.setupFormControl}>
           <SettingFrequency
             inModal={false}
-            label="MDA Frequency"
+            label={t('MDAFrequency')}
             value={simState.settings.mdaSixMonths}
           />
         </div>
@@ -60,7 +62,7 @@ const SetupLF = (props) => {
 
       <div className={classes.formControlWrap}>
         <div className={classes.setupFormControl}>
-          <SettingMosquitoType inModal={false} label="Type of Mosquito" value={simState.settings.species} />
+          <SettingMosquitoType inModal={false} label={t('typeOfMosquito')} value={simState.settings.species} />
         </div>
       </div>
 
@@ -68,7 +70,7 @@ const SetupLF = (props) => {
         <div className={classes.setupFormControl}>
           <SettingTargetCoverage
             inModal={false}
-            label="MDA Target Coverage"
+            label={t('MDATargetCoverage')}
             value={simState.settings.coverage}
           />
         </div>
@@ -76,7 +78,7 @@ const SetupLF = (props) => {
 
       <div className={classes.formControlWrap}>
         <div className={classes.setupFormControl}>
-          <SettingInsecticideCoverage inModal={false} label="Inseticide Coverage" value={simState.settings.v_to_hR} />
+          <SettingInsecticideCoverage inModal={false} label={t('inseticideCoverage')} value={simState.settings.v_to_hR} />
         </div>
       </div>
 
@@ -84,7 +86,7 @@ const SetupLF = (props) => {
         <div className={classes.setupFormControl}>
           <SettingDrugRegimen
             inModal={false}
-            label="MDA Drug Regimen"
+            label={t('MDADrugRegimen')}
             value={simState.settings.mdaRegimen}
           />
         </div>
@@ -94,7 +96,7 @@ const SetupLF = (props) => {
         <div className={classes.setupFormControl}>
           <SettingSystematicAdherence
             inModal={false}
-            label="Systematic adherence"
+            label={t('systematicAdherence')}
             onChange={(event, newValue) => {
               dispatchSimState({ type: 'rho', payload: newValue })
             }}

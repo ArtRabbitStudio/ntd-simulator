@@ -6,6 +6,7 @@ import { useScenarioStore, ScenarioStoreConstants } from 'store/scenarioStore'
 import CloseButton from 'pages/components/CloseButton'
 import AutoSizer from 'react-virtualized-auto-sizer'
 import MdaRoundsSlider from 'pages/components/simulator/MdaRoundsSlider'
+import { useTranslation } from 'react-i18next';
 //setting
 import {
   SettingBedNetCoverage,
@@ -20,6 +21,7 @@ import { DISEASE_CONFIG,DISEASE_LIMF, DISEASE_TRACHOMA, DISEASE_STH_ROUNDWORM, D
 //import ClickAway from "hooks/clickAway";
 
 const MdaRounds = (props) => {
+  const { t, i18n } = useTranslation();
   const disease = props.disease
   const { scenarioState, dispatchScenarioStateUpdate } = useScenarioStore();
 
@@ -73,14 +75,14 @@ const MdaRounds = (props) => {
 
   const outputTitle = (time,coverage,adherence,bednets,regimen,active,coverageInfants,coveragePreSAC,coverageSAC,coverageAdults) => {
     if ( !active || ( coverage === 0 && coverageInfants === 0 && coveragePreSAC === 0 && coverageSAC === 0 && coverageAdults === 0 ) ) {
-        return `${calculateTime(time)}: no intervention`
+        return `${calculateTime(time)}: ${t('noIntervention')}`
     } else {
       switch ( disease ) {
         case DISEASE_STH_ROUNDWORM:
         case DISEASE_STH_WHIPWORM:
-          return `${calculateTime(time)}: coverage ${coverageInfants}% - ${coveragePreSAC}% - ${coverageSAC}% - ${coverageAdults}%`
+          return `${calculateTime(time)}: ${t('coverage')} ${coverageInfants}% - ${coveragePreSAC}% - ${coverageSAC}% - ${coverageAdults}%`
         default:
-          return `${calculateTime(time)}: coverage ${coverage}%`
+          return `${calculateTime(time)}: ${t('coverage')} ${coverage}%`
       }
       
     }
@@ -91,7 +93,7 @@ const MdaRounds = (props) => {
     if ( year % 1  === 0 ) {
       return year
     } else {
-      return Math.floor(year)+' - round 2'
+      return Math.floor(year)+' - '+t('round2');
     }
    
   }
@@ -123,7 +125,7 @@ const MdaRounds = (props) => {
     if ( year % 1 === 0 ) {
       return year
     } else {
-      return Math.floor(year)+' - round 2'
+      return Math.floor(year)+' - '+t('round2')
     }
   }
 
@@ -244,21 +246,21 @@ const MdaRounds = (props) => {
                 <div className="bar-tooltip">
                   {future.active[curMDARound] !== false && disease === DISEASE_LIMF && (
                     <span className="t">
-                      {future.coverage[i]}% coverage
+                      {future.coverage[i]}% {t('coverage')}
                     </span>
                   )}
                   {future.active[curMDARound] !== false && disease === DISEASE_TRACHOMA && (
                     <span className="t">
-                      {future.coverage[i]}% coverage
+                      {future.coverage[i]}% {t('coverage')}
                     </span>
                   )}
                   {future.active[curMDARound] !== false && STH && (
                     <span className="t">
-                      {`${future.coverageInfants[i]}% - ${future.coveragePreSAC[i]}% - ${future.coverageSAC[i]}% - ${future.coverageAdults[i]}%  coverage`}
+                      {`${future.coverageInfants[i]}% - ${future.coveragePreSAC[i]}% - ${future.coverageSAC[i]}% - ${future.coverageAdults[i]}%  ${t('coverage')}`}
                     </span>
                   )}
                   {future.active[curMDARound] ===
-                    false && <span className="t">No MDA</span>}
+                    false && <span className="t">{t('noMDA')}</span>}
                   {future.active[curMDARound] === false &&  LFandSTH  && (
                     <span
                       className="i plus"
@@ -327,7 +329,7 @@ const MdaRounds = (props) => {
                 }}
                 onClick={ () => { setMDAProperty( 'active', curMDARound, true ); } }
               >
-                Activate
+                {t('activate')}
               </Button>
             )}
             <div
@@ -351,7 +353,7 @@ const MdaRounds = (props) => {
 
               <SettingTargetCoverage
                 inModal={true}
-                label="Treatment target coverage"
+                label={t('treatmentTargetCoverage')}
                 classAdd="spaced"
                 value={future.coverage[curMDARound]}
                 onChange={( event, newValue ) => { setMDAProperty( 'coverage', curMDARound, newValue ); }}
@@ -359,7 +361,7 @@ const MdaRounds = (props) => {
 
               <SettingBedNetCoverage
                 inModal={true}
-                label="Bed Net Coverage"
+                label={t('bedNetCoverage')}
                 classAdd="spaced"
                 value={future.bednets[curMDARound]}
                 onChange={( event, newValue ) => { setMDAProperty( 'bednets', curMDARound, newValue ); }}
@@ -367,7 +369,7 @@ const MdaRounds = (props) => {
 
               <SettingDrugRegimen
                 inModal={true}
-                label="Drug regimen"
+                label={t('drugRegimen')}
                 classAdd="spaced"
                 value={future.regimen[curMDARound]}
                 onChange={( event, newValue ) => { setMDAProperty( 'regimen', curMDARound, event.target.value ); }}
@@ -375,7 +377,7 @@ const MdaRounds = (props) => {
 
               <SettingSystematicAdherence
                 inModal={true}
-                label="Systematic adherence"
+                label={t('systematicAdherence')}
                 classAdd="spaced"
                 value={future.adherence[curMDARound]}
                 onChange={( event, newValue ) => { setMDAProperty( 'adherence', curMDARound, newValue ); }}
@@ -387,7 +389,7 @@ const MdaRounds = (props) => {
                   variant="contained"
                   onClick={ () => { setMDAProperty( 'active', curMDARound, false ); } }
                 >
-                  DEACTIVATE
+                  {t('DEACTIVATE')}
                 </Button>
                 <Button
                   className={classes.modalButton}
@@ -399,7 +401,7 @@ const MdaRounds = (props) => {
                     setDoseSettingsOpen(false)
                   }}
                 >
-                  CONFIRM
+                  {t('CONFIRM')}
                 </Button>
               </div>
             </div>
@@ -428,7 +430,7 @@ const MdaRounds = (props) => {
                 }}
                 onClick={ () => { setMDAProperty( 'active', curMDARound, true ); } }
               >
-                Activate
+                {t('activate')}
               </Button>
             )}
             <div
@@ -454,48 +456,48 @@ const MdaRounds = (props) => {
                 value={future.coverageInfants[curMDARound]}
                 onChange={( event, newValue ) => { setMDAProperty( 'coverageInfants', curMDARound, newValue ); }}
                 inModal={true}
-                label="Coverage Infants"
+                label={t('coverageInfants')}
                 min={0}
                 max={100}
                 step={5}
                 valueKey="coverageInfants"
-                title="Proportion of infants that will be treated."
+                title={t('InfantsTitle')}
               />
           
               <SettingTargetCoverage
                 value={future.coveragePreSAC[curMDARound]}
                 onChange={( event, newValue ) => { setMDAProperty( 'coveragePreSAC', curMDARound, newValue ); }}
                 inModal={true}
-                label="Coverage Preschool Children"
+                label={t('coveragePreschool')}
                 min={0}
                 max={100}
                 step={5}
                 valueKey="coveragePreSAC"
-                title="Proportion of preschool children that will be treated."
+                title={t('PreschoolTitle')}
               />
           
               <SettingTargetCoverage
                 value={future.coverageSAC[curMDARound]}
                 onChange={( event, newValue ) => { setMDAProperty( 'coverageSAC', curMDARound, newValue ); }}
                 inModal={true}
-                label="Coverage School-Age Children "
+                label={t('coverageSchoolAge')}
                 min={0}
                 max={100}
                 step={5}
                 valueKey="coverageSAC"
-                title="Proportion of school-age children that will be treated."
+                title={t('SchoolAgeTitle')}
               />
             
               <SettingTargetCoverage
                 value={future.coverageAdults[curMDARound]}
                 onChange={( event, newValue ) => { setMDAProperty( 'coverageAdults', curMDARound, newValue ); }}
                 inModal={true}
-                label="Coverage Adults"
+                label={t('coverageAdults')}
                 min={0}
                 max={100}
                 step={5}
                 valueKey="coverageAdults"
-                title="Proportion of adults that will be treated."
+                title={t('AdultsTitle')}
               />
 
               <div className={classes.modalButtons}>
@@ -504,7 +506,7 @@ const MdaRounds = (props) => {
                   variant="contained"
                   onClick={ () => { setMDAProperty( 'active', curMDARound, false ); } }
                 >
-                  DEACTIVATE
+                  {t('DEACTIVATE')}
                 </Button>
                 <Button
                   className={classes.modalButton}
@@ -516,7 +518,7 @@ const MdaRounds = (props) => {
                     setDoseSettingsOpen(false)
                   }}
                 >
-                  CONFIRM
+                  {t('CONFIRM')}
                 </Button>
               </div>
             </div>
