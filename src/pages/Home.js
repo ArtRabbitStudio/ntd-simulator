@@ -10,11 +10,15 @@ import HeadWithInputs from 'pages/components/HeadWithInputs';
 import WhatYouCanDo from 'pages/components/WhatYouCanDo';
 import DiseasesList from 'pages/components/DiseasesList';
 
+import TextWithImage from 'pages/components/TextWithImage';
 import TextContents from 'pages/components/TextContents';
 import AccordionElement from 'pages/components/AccordionElement';
 import SelectDisease from 'pages/components/SelectDisease';
 import Logo from 'images/ntd-logo.svg';
 import BG from 'images/graph.png';
+import BG2x from 'images/graph@2x.png';
+import iMission from 'images/graph-copy.png';
+import iHowIW from 'images/graph-copy-2.png';
 
 const useStyles = makeStyles(theme => ({
   section: {
@@ -38,6 +42,9 @@ const useStyles = makeStyles(theme => ({
     display: "flex",
     width: "100%",
     alignItems: "center",
+    [theme.breakpoints.up('lg')]: {
+      backgroundImage: `url(${BG2x})`,
+    },
   },
   marginBottom: {
     marginBottom: theme.spacing(2)
@@ -117,7 +124,42 @@ const Home = (props) => {
 
       <WhatYouCanDo />
 
+
+      <TextWithImage
+        caption="Our mission"
+        headline="Closing the knowledge gap"
+        image={iMission}
+        imageAlt="Our mission"
+        buttonUrl="/data-and-methodolgy"
+        buttonText="Here is how"
+      >
+        <Typography paragraph variant="body1" component="p">
+          Many urgent policy issues concering the contorl and elimination of negelcted tropical diseases (NTDs) can be informed by high-quality
+          quantitative modelling. A …. of modelling in this area prevents donors and poclymakers from accessing existing expertise.
+        </Typography>
+        <Typography paragraph variant="body1" component="p">
+          We want to help close this knowledge gap.
+        </Typography>
+      </TextWithImage>
+
+      <TextWithImage
+        caption="How it works"
+        headline="Model-based projections"
+        image={iHowIW}
+        imageAlt="How it works"
+      >
+        <Typography paragraph variant="body1" component="p">
+          The projections on this website provide guidance on the impact of more frequent, longer or higher coverage treatment strategies on achiving 2030 WHO goals.
+          The projections are model based.
+        </Typography>
+        <Typography paragraph variant="body1" component="p">
+          Please note that te models used have only been validated against a certain number of settings.
+          A full description of each model used can be found on the disease pages.
+        </Typography>
+      </TextWithImage>
+
       <DiseasesList />
+
 
       <section className={`${classes.section} ${classes.cardTransparent}`}>
         <Typography variant="h3" component="h6" className={`${classes.headline} ${classes.marginBottom}`}>Before you start</Typography>

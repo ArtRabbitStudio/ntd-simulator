@@ -44,7 +44,7 @@ const useStyles = makeStyles(theme => ({
     },
   },
   formControl: {
-    margin: theme.spacing(0, 0, 0, 0),
+    margin: theme.spacing(1, 0, 0, 0),
     width: '100%',
     textAlign: 'left',
     '& > label': {},

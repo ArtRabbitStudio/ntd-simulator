@@ -10,13 +10,14 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flexDirection: 'column',
     minHeight: '100vh',
-    
+    overflow: "hidden",
+
     [theme.breakpoints.up('lg')]: {
     }
   },
   "@global": {
-		body: { 
-      backgroundColor:'white !important'
+    body: {
+      backgroundColor: 'white !important'
     }
   },
   main: {
@@ -29,7 +30,7 @@ const useStyles = makeStyles(theme => ({
       display: 'table',
       clear: 'both'
     },
-    
+
 
     [theme.breakpoints.up('md')]: {
       '&.full-height': {

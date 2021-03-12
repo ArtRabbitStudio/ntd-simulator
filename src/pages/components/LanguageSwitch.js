@@ -29,6 +29,7 @@ const useStyles = makeStyles(theme => ({
     },
     '&.dark': {
       color: theme.palette.text.primary,
+      marginTop: - 5,
 
       '& a': {
         color: theme.palette.text.primary,
