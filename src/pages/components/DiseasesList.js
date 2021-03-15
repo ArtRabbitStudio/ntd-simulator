@@ -23,6 +23,8 @@ const styles = theme => ({
     backgroundColor: 'transparent',
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'center 40px',
+    textDecoration: "none",
+    color: "#303e4f", //theme.palette.primary.main,
     //backgroundSize: '70% auto'
     '& p': {
       maxWidth: 243,
@@ -71,27 +73,27 @@ const DiseasesList = (props) => {
       <FullWidthBackground color={theme.palette.secondary.light}>
         <Grid container spacing={0} className={classes.grid}>
 
-          <Grid item md={4} sm={4} xs={12} className={`${classes.column} ${classes.column1}`}>
+          <Grid component="a" href="/if" item md={4} sm={4} xs={12} className={`${classes.column} ${classes.column1}`}>
             <Typography variant="body1" component="p" className={classes.headline} >Lymphatic Filariasis</Typography>
           </Grid>
 
-          <Grid item md={4} sm={4} xs={12} className={`${classes.column} ${classes.column2}`}>
+          <Grid component="a" href="/if" item md={4} sm={4} xs={12} className={`${classes.column} ${classes.column2}`}>
             <Typography variant="body1" component="p" className={classes.headline} >Schistosomiasis Mansoni</Typography>
           </Grid>
 
-          <Grid item md={4} sm={4} xs={12} className={`${classes.column} ${classes.column3}`}>
+          <Grid component="a" href="/if" item md={4} sm={4} xs={12} className={`${classes.column} ${classes.column3}`}>
             <Typography variant="body1" component="p" className={classes.headline} >Trachoma</Typography>
           </Grid>
 
-          <Grid item md={4} sm={4} xs={12} className={`${classes.column} ${classes.column4}`}>
+          <Grid component="a" href="/if" item md={4} sm={4} xs={12} className={`${classes.column} ${classes.column4}`}>
             <Typography variant="body1" component="p" className={classes.headline} >Soil-transmitted helmithiasis Whipworm</Typography>
           </Grid>
 
-          <Grid item md={4} sm={4} xs={12} className={`${classes.column} ${classes.column5}`}>
+          <Grid component="a" href="/if" item md={4} sm={4} xs={12} className={`${classes.column} ${classes.column5}`}>
             <Typography variant="body1" component="p" className={classes.headline} >Soil-transmitted helmithiasis Roundworm</Typography>
           </Grid>
 
-          <Grid item md={4} sm={4} xs={12} className={`${classes.column} ${classes.column6}`}>
+          <Grid component="a" href="/if" item md={4} sm={4} xs={12} className={`${classes.column} ${classes.column6}`}>
             <Typography variant="body1" component="p" className={classes.headline} >Soil-transmitted helmithiasis Hookworm</Typography>
           </Grid>
 
