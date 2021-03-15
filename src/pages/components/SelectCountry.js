@@ -6,19 +6,20 @@ import { useDataAPI, useUIState } from 'hooks/stateHooks'
 import { useHistory } from 'react-router-dom'
 
 import ConfirmationDialog from "./ConfirmationDialog";
-import { Box, TextField,FormControl,Fab } from '@material-ui/core';
+import CapsHeadline from './CapsHeadline'
+import { Box, TextField, FormControl, Fab } from '@material-ui/core';
 import Autocomplete from '@material-ui/lab/Autocomplete'
 import useStyles from 'theme/SelectCountry'
 import { useTranslation } from 'react-i18next';
 
 
-const SelectCountry = ({ selectIU, showCountryConfirmation, showIUConfirmation, showBack }) => {
+const SelectCountry = ({ selectIU, showCountryConfirmation, showIUConfirmation, showBack, countyAndIUSet }) => {
   const classes = useStyles()
   const { t, i18n } = useTranslation();
   const history = useHistory()
   const matchSection = useRouteMatch('/:disease/:section/')
-  
-  const { countrySuggestions, iusByCountrySuggestions,  } = useDataAPI()
+
+  const { countrySuggestions, iusByCountrySuggestions, } = useDataAPI()
   const { disease, country, implementationUnit } = useUIState()
 
   const [goTo, setGoTo] = useState(false);
@@ -27,7 +28,7 @@ const SelectCountry = ({ selectIU, showCountryConfirmation, showIUConfirmation, 
     let u = url ? url : goTo;
     history.push({ pathname: u })
   }
-  
+
   const handleBackToCountry = () => {
     const url = `/${disease}/${country}`;
     if (showCountryConfirmation || showIUConfirmation) {
@@ -82,13 +83,13 @@ const SelectCountry = ({ selectIU, showCountryConfirmation, showIUConfirmation, 
   const defaultCountrySuggestionOption = { name: t('selectCountry') };
   const defaultIUSuggestionOption = { name: t('selectIU') };
 
-  const countrySuggestionsWithDefault = [ defaultCountrySuggestionOption ].concat( countrySuggestions );
+  const countrySuggestionsWithDefault = [defaultCountrySuggestionOption].concat(countrySuggestions);
   const selected = countrySuggestionsWithDefault.find(x => x.id === country)
-  let activeIUs =  iusByCountrySuggestions.filter(x => (x.prevalence !== null && x.endemicity !== "Non-endemic") ) 
+  let activeIUs = iusByCountrySuggestions.filter(x => (x.prevalence !== null && x.endemicity !== "Non-endemic"))
   const selectedIU = activeIUs.find(x => x.id === implementationUnit)
 
-  if ( !selectIU ) {
-    activeIUs = [ defaultIUSuggestionOption ].concat( activeIUs )
+  if (!selectIU) {
+    activeIUs = [defaultIUSuggestionOption].concat(activeIUs)
   }
 
 
@@ -96,12 +97,15 @@ const SelectCountry = ({ selectIU, showCountryConfirmation, showIUConfirmation, 
     <React.Fragment>
       <Box className={classes.box}>
 
+
+        <CapsHeadline text={selectIU ? (countyAndIUSet ? t('setUpScenario') : t('selectIULong')) : t('selectCountry')} />
+
         <FormControl className={`${classes.formControl} ${t('countries')}`}>
           <Autocomplete
             id="country"
             options={countrySuggestionsWithDefault}
             getOptionLabel={option => option.name}
-            getOptionSelected={ ( a, b ) => { return a.name === b.name } } // stop the Autocomplete warning barf
+            getOptionSelected={(a, b) => { return a.name === b.name }} // stop the Autocomplete warning barf
             value={selected ?? defaultCountrySuggestionOption}
             renderInput={params => (
               <TextField {...params} /*InputProps={{ ...params.InputProps, disableUnderline: true }}*/ />
@@ -109,24 +113,24 @@ const SelectCountry = ({ selectIU, showCountryConfirmation, showIUConfirmation, 
             onChange={handleCountryChange}
           />
           {showBack && <Fab
-          color="inherit"
-          aria-label="REMOVE SCENARIO"
-          disabled={false}
-          className={classes.reloadIcon}
-          onClick={()=>{handleBackToCountry()}}
-        >
-          &nbsp;
+            color="inherit"
+            aria-label="REMOVE SCENARIO"
+            disabled={false}
+            className={classes.reloadIcon}
+            onClick={() => { handleBackToCountry() }}
+          >
+            &nbsp;
         </Fab>}
         </FormControl>
-        
+
 
         {selectIU &&
           <FormControl className={`${classes.formControl} ius`}>
             <Autocomplete
               id="iu"
               options={activeIUs}
-              getOptionLabel={option => ( option.relatedStateName ? `${option.name} (${option.relatedStateName})` : `${option.name}` ) }
-              getOptionSelected={ ( a, b ) => { return a.name === b.name } } // stop the Autocomplete warning barf
+              getOptionLabel={option => (option.relatedStateName ? `${option.name} (${option.relatedStateName})` : `${option.name}`)}
+              getOptionSelected={(a, b) => { return a.name === b.name }} // stop the Autocomplete warning barf
               value={selectedIU ?? defaultIUSuggestionOption}
               renderInput={params => (
                 <TextField {...params}/* InputProps={{ ...params.InputProps, disableUnderline: true }}*/ />

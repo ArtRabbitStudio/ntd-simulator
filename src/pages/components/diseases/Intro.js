@@ -20,10 +20,8 @@ const useStyles = makeStyles(theme => ({
     position: "relative",
     backgroundColor: theme.palette.secondary.light,
     background: "linear-gradient(to bottom,  rgba(232,234,235,1) 0%,rgba(249,249,249,01) 100%)",
-
-
     width: `calc(100% + ${theme.spacing(12)}px)`,
-    marginLeft: -theme.spacing(6),
+    margin: theme.spacing(12, 0, 0, -6),
     padding: theme.spacing(4, 6, 6, 6),
   },
   marginBottom: {

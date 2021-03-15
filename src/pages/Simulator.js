@@ -55,17 +55,19 @@ const Simulator = (props) => {
       <SelectCountry
         selectIU={country ? true : false}
         showCountryConfirmation={country && implementationUnit ? true : false}
+        countyAndIUSet={country && implementationUnit}
         showIUConfirmation={country && implementationUnit && section ? true : false}
         showBack={disease && country && implementationUnit ? true : false}
       />
 
-      { disease && (!country) && <IntroComponent />}
 
       { disease && country && (!implementationUnit) && <Country />}
 
       { disease && country && implementationUnit && (!section) && <SetupComponent disease={disease} />}
 
       { disease && country && implementationUnit && section && <ScenarioManager />}
+
+      { disease && <IntroComponent />}
 
     </Layout>
 
