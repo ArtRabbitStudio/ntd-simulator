@@ -14,9 +14,12 @@
   "theWork": "The work of the NTD Modelling Consortium is supported by the Bill and Melinda Gates Foundation.",
 
   "notFound": "This page could not be found",
-
   "prevalence": "Prevalence",
   "NTDConsortium": "NTD Consortium",
+  "NTDModellingConsortium": "NTD Modelling Consortium",
+  "NegelctedTropicalDiseases": "Negelcted Tropical Diseases",
+  "Africa": "Africa",
+
   "HowToGetInvolved": "How to get involved",
   "HelpUsImprove": "Help us improve",
   "prevalenceSimulator": "prevalence simulator",
