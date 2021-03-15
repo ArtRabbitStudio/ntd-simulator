@@ -8,6 +8,13 @@ import { Box, MenuItem, Typography, FormControl, Select } from '@material-ui/cor
 
 import { useTranslation } from 'react-i18next';
 
+import ico1 from 'images/lf-icon.svg';
+import ico2 from 'images/sch-mansoni-icon.svg';
+import ico3 from 'images/trachoma-icon.svg';
+import ico4 from 'images/sth-whipworm-icon.svg';
+import ico5 from 'images/sth-roundworm-icon.svg';
+import ico6 from 'images/sth-hookworm-icon.svg';
+
 import {
   DISEASE_LABELS
 } from 'AppConstants'
@@ -21,16 +28,39 @@ const useStyles = makeStyles(theme => ({
   },
   formControl: {
     textAlign: 'left',
+    padding: theme.spacing(0, 8, 0, 0),
+    backgroundColor: 'transparent',
+    backgroundRepeat: 'no-repeat',
+    backgroundPosition: 'right center',
+    backgroundSize: "50px 50px",
     '& > label': {},
     [theme.breakpoints.up('sm')]: {
       margin: theme.spacing(0, 0, 2, 0),
     },
     [theme.breakpoints.up('md')]: {
       margin: theme.spacing(0, 0, 0, 0),
-      width: 'calc(50% - 16px)',
+      width: 'calc(60% - 16px)',
     },
     [theme.breakpoints.up('lg')]: {
     },
+    '&.icon-lf': {
+      backgroundImage: `url(${ico1})`,
+    },
+    '&.icon-trachoma': {
+      backgroundImage: `url(${ico3})`,
+    },
+    '&.icon-sth-roundworm': {
+      backgroundImage: `url(${ico5})`,
+    },
+    '&.sth-whipworm': {
+      backgroundImage: `url(${ico4})`,
+    },
+    '&.mansoni': {
+      backgroundImage: `url(${ico2})`,
+    },
+    '&.sth-hookworm': {
+      backgroundImage: `url(${ico6})`,
+    }
   },
   headline: {
     display: "block",
@@ -56,7 +86,7 @@ const Inputs = props => {
 
       <Typography variant="h6" component="span" className={`${classes.headline}`} >{t('disease')}</Typography>
 
-      <FormControl className={`${classes.formControl}`}>
+      <FormControl className={`${classes.formControl} icon-${disease}`}>
         <Select
           labelId="disease-label"
           id="disease"
