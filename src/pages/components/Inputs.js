@@ -4,10 +4,8 @@ import { observer } from 'mobx-react'
 import { makeStyles } from '@material-ui/core/styles'
 import { useDataAPI, useUIState } from 'hooks/stateHooks'
 
-import Box from '@material-ui/core/Box'
-import MenuItem from '@material-ui/core/MenuItem'
-import FormControl from '@material-ui/core/FormControl'
-import Select from '@material-ui/core/Select'
+import { Box, MenuItem, Typography, FormControl, Select } from '@material-ui/core'
+
 import { useTranslation } from 'react-i18next';
 
 import {
@@ -18,10 +16,10 @@ const useStyles = makeStyles(theme => ({
   root: {
     zIndex: 9,
     position: 'relative',
-  },
-  formControl: {
     margin: theme.spacing(0, 0, 2, 0),
     width: 'calc(100% - 16px)',
+  },
+  formControl: {
     textAlign: 'left',
     '& > label': {},
     [theme.breakpoints.up('sm')]: {
@@ -34,12 +32,16 @@ const useStyles = makeStyles(theme => ({
     [theme.breakpoints.up('lg')]: {
     },
   },
+  headline: {
+    display: "block",
+    margin: theme.spacing(0, 0, 1, 0),
+  }
 }))
 
 
 const Inputs = props => {
   const classes = useStyles()
-const { t, i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { diseases } = useDataAPI()
   const { disease } = useUIState()
 
@@ -51,6 +53,9 @@ const { t, i18n } = useTranslation();
 
   return (
     <Box className={classes.root}>
+
+      <Typography variant="h6" component="span" className={`${classes.headline}`} >{t('disease')}</Typography>
+
       <FormControl className={`${classes.formControl}`}>
         <Select
           labelId="disease-label"

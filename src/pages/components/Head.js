@@ -48,6 +48,10 @@ const useStyles = makeStyles(theme => ({
   beta: {
     backgroundColor: '#ffc914',
     padding: 5
+  },
+  headline: {
+    display: "block",
+    margin: theme.spacing(0, 0, 1, 0),
   }
 }));
 const Head = ({ title, classAdd, intro }) => {
@@ -62,7 +66,7 @@ const Head = ({ title, classAdd, intro }) => {
 
       <NavLink to='/' className={classes.pageHeader} >
 
-
+        { /*Negelcted Tropical Diseases*/}
         <Typography variant="h6" component="span" className={`${classes.headline}`} >NTD Modelling Consortium</Typography>
         <Typography variant="h1" component="h2">NTD Prediction Simulator</Typography>
         <Typography variant="h6" component="span" className={`${classes.headline}`} >Africa <span className={classes.beta}>{t('beta')} {process.env.REACT_APP_VERSION}</span></Typography>
