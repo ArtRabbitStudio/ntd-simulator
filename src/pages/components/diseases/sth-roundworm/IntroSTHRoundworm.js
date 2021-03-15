@@ -7,7 +7,7 @@ export default function IntroSth(props) {
   const { t, i18n } = useTranslation();
   return (
 
-    <IntroWrap ident='sth-roundworm' detailsUrl="#">
+    <IntroWrap ident='sth-roundworm'>
       <AccordionElement title={t('Geographic and historic MDA data')}>
         {t('Geographic and historic MDA data')}
         {t('modelText')}

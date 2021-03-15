@@ -6,6 +6,8 @@ import ScrollToTop from "./pages/components/ScrollToTop";
 import Home from "./pages/Home";
 import Page from "./pages/Page";
 import Simulator from "./pages/Simulator";
+import Disease from "./pages/Disease";
+
 
 import DataMethodolgy from "./pages/content/DataMethodology";
 import About from "./pages/content/About";
@@ -246,6 +248,7 @@ function App() {
                 <Route exact path="/trachoma-data-methodoloy" component={Trachoma} />
                 <Route exact path="/" component={Home} />
 
+                <Route exact path="/disease/:disease" component={Disease} />
                 <Route exact path="/:disease" component={Simulator} />
                 <Route exact path="/:disease/:country" component={Simulator} />
                 <Route exact path="/:disease/:country/:iu" component={Simulator} />

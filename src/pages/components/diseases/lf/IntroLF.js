@@ -7,7 +7,7 @@ export default function IntroLF(props) {
   const { t, i18n } = useTranslation();
   return (
 
-    <IntroWrap ident='lf' detailsUrl="#">
+    <IntroWrap ident='lf'>
       <AccordionElement title={t('Geographic and historic MDA data')}>
         {t('Geographic and historic MDA data')}
         {t('modelText')}

@@ -75,32 +75,17 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
-export default function IntroWrap(props) {
+export default function DetailWrap(props) {
   const { t, i18n } = useTranslation();
   const classes = useStyles();
+  const { leftPart, rightPart, disease } = { ...props };
 
   return (
 
-    <section className={`${classes.section} icon-${props.ident}`} >
+    <section className={`${classes.section} icon-${disease}`} >
 
-      <div className={classes.headlinesWrap}>
-        <div className={`${classes.headlines} icon-${props.ident}`}>
-          <Typography variant="h3" component="h5" className={`${classes.headline}`}>
-            {`${t('aboutProjections')} ${DISEASE_LABELS[props.ident]}`}
-          </Typography>
-          <Typography variant="h5" component="h6" className={classes.subHeadline}>
-            {t('backgroundAboutModelData')}
-          </Typography>
-        </div>
-        <div className={classes.btn}>
-          <ArrowButton text={t('fullDetails')} url={`/disease/${props.ident}`} />
-        </div>
-      </div>
-
-
-
-
-      {props.children}
+      {leftPart}
+      {rightPart}
 
     </section>
 

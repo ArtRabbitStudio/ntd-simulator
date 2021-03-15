@@ -53,13 +53,13 @@ const useStyles = makeStyles(theme => ({
     '&.icon-sth-roundworm': {
       backgroundImage: `url(${ico5})`,
     },
-    '&.sth-whipworm': {
+    '&.icon-sth-whipworm': {
       backgroundImage: `url(${ico4})`,
     },
-    '&.mansoni': {
+    '&.icon-mansoni': {
       backgroundImage: `url(${ico2})`,
     },
-    '&.sth-hookworm': {
+    '&.icon-sth-hookworm': {
       backgroundImage: `url(${ico6})`,
     }
   },

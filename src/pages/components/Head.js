@@ -54,7 +54,7 @@ const useStyles = makeStyles(theme => ({
     margin: theme.spacing(0, 0, 1, 0),
   }
 }));
-const Head = ({ title, classAdd, intro, alternativeHeadline }) => {
+const Head = ({ classAdd, intro, alternativeHeadline }) => {
   const { t, i18n } = useTranslation();
 
   const classes = useStyles();
