@@ -33,8 +33,10 @@
   "Contact": "Contact",
   "design": "designed and made by",
   "Version": "Version",
+  "fullDetails": "Full details",
 
   "aboutProjections": "About projections for ",
+  "backgroundAboutModelData": "Background about the model and data used",
   "modelAndMethodology": "Model and Methodology",
   "the": "The ",
   "model": "model",

@@ -14,7 +14,7 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: theme.palette.basic.white,
     backgroundRepeat: 'no-repeat',
     padding: "10px 41px 10px 14px",
-    minWidth: 170,
+    minWidth: 140,
     display: "inline-block",
     transition: "all 0.3s ease-in-out",
     borderRadius: 2,

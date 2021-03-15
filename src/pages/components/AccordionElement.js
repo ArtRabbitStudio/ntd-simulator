@@ -1,21 +1,20 @@
 import React from 'react'
-
 import { makeStyles } from '@material-ui/core/styles'
-
 import { Grid, Box, Typography, AccordionDetails, Accordion, AccordionSummary } from '@material-ui/core'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-
+import CapsHeadline from './CapsHeadline'
 
 const useStyles = makeStyles(theme => ({
   root: {
-    backgroundColor: theme.palette.secondary.dark,
+    backgroundColor: theme.palette.basic.white,
     marginBottom: '10px !important',
+    '&.MuiPaper-elevation1': {
+      boxShadow: "none"
+    },
   },
 
 
 }))
-
-
 
 const AccordionElement = props => {
   const classes = useStyles();
@@ -28,7 +27,7 @@ const AccordionElement = props => {
           aria-controls="panel1a-content"
           id="panel1a-header"
         >
-          <Typography variant="h3" component="h6" className={classes.headline}>{props.title}</Typography>
+          <CapsHeadline text={props.title} />
         </AccordionSummary>
         <AccordionDetails>
           <Grid item md={6} xs={12} className={classes.head}>
