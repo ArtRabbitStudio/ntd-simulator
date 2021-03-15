@@ -8,6 +8,7 @@ const useStyles = makeStyles(theme => ({
     display: "flex",
     alignItems: "center",
     flexWrap: "nowrap",
+    width: "100%",
     color: theme.palette.basic.white,
 
     '& a': {
@@ -36,7 +37,13 @@ const useStyles = makeStyles(theme => ({
         color: theme.palette.text.primary,
         border: `1px solid ${theme.palette.text.primary}`,
       },
-    }
+    },
+    [theme.breakpoints.up('lg')]: {
+
+    },
+    [theme.breakpoints.up('sm')]: {
+
+    },
   },
   headline: {
     margin: theme.spacing(0, 0, 0, 0),

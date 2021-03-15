@@ -36,7 +36,6 @@ const useStyles = makeStyles(theme => ({
     position: "relative",
     padding: theme.spacing(4, 0),
     margin: theme.spacing(0, 0, 0, 0),
-    top: theme.spacing(-10),
     backgroundColor: 'white',
     backgroundImage: `url(${BG})`,
     backgroundRepeat: 'no-repeat',
@@ -48,6 +47,10 @@ const useStyles = makeStyles(theme => ({
     alignItems: "center",
     [theme.breakpoints.up('lg')]: {
       backgroundImage: `url(${BG2x})`,
+      top: theme.spacing(0),
+    },
+    [theme.breakpoints.up('sm')]: {
+
     },
   },
   marginBottom: {

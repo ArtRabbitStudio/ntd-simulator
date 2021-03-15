@@ -33,13 +33,14 @@ const useStyles = makeStyles(theme => ({
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'right center',
     backgroundSize: "50px 50px",
+    width: "70%",
     '& > label': {},
     [theme.breakpoints.up('sm')]: {
       margin: theme.spacing(0, 0, 2, 0),
     },
     [theme.breakpoints.up('md')]: {
       margin: theme.spacing(0, 0, 0, 0),
-      width: 'calc(60% - 16px)',
+      width: 'calc(70% - 16px)',
     },
     [theme.breakpoints.up('lg')]: {
     },

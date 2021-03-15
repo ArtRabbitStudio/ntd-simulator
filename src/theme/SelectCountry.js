@@ -1,5 +1,5 @@
 import { makeStyles } from '@material-ui/core/styles'
-import ReloadIcon from "images/reload-icon.svg";
+import ReloadIcon from "images/map.svg";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -10,7 +10,6 @@ const useStyles = makeStyles(theme => ({
     zIndex: 9,
     position: 'relative',
     width: '100%',
-    maxWidth: "50%",
     display: 'flex',
     flexDirection: 'column',
     margin: theme.spacing(0, 0, 4, 0),
@@ -18,6 +17,7 @@ const useStyles = makeStyles(theme => ({
       margin: theme.spacing(0, 0, 4, 0),
     },
     [theme.breakpoints.up('md')]: {
+      maxWidth: "50%",
     },
     [theme.breakpoints.up('lg')]: {
     },

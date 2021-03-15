@@ -29,7 +29,7 @@ const useStyles = makeStyles(theme => ({
     }
   },
   bottomMargin: {
-    marginBottom: 80
+    marginBottom: 20
   },
   title: {
     margin: theme.spacing(0, 0, 1, 0),
