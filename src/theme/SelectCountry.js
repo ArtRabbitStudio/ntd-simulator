@@ -43,8 +43,11 @@ const useStyles = makeStyles(theme => ({
       },
     },
   },
-  formControl: {
+  diseaseHeadline: {
     margin: theme.spacing(1, 0, 0, 0),
+  },
+  formControl: {
+    margin: theme.spacing(0, 0, 0, 0),
     width: '100%',
     textAlign: 'left',
     '& > label': {},
@@ -52,19 +55,19 @@ const useStyles = makeStyles(theme => ({
       fontSize: 18
 
     },
-    '&.countries': {
-      margin: theme.spacing(0, 0, 2, 0),
+    '&.large': {
+      margin: theme.spacing(0, 0, 1, 0),
       flex: 1,
       flexDirection: 'row',
     },
-    '&.countries input': {
+    '&.large input': {
       fontSize: 26,
       color: '#2c3f4d'
     },
-    '&.countries .MuiAutocomplete-root': {
+    '&.large .MuiAutocomplete-root': {
       width: '80%'
     },
-    '&.ius .MuiAutocomplete-root': {
+    '&.smaller .MuiAutocomplete-root': {
       width: '80%'
     },
     [theme.breakpoints.up('sm')]: {
@@ -74,7 +77,7 @@ const useStyles = makeStyles(theme => ({
         fontSize: 24
 
       },
-      '&.countries input': {
+      '&.large input': {
         fontSize: 44
 
       },

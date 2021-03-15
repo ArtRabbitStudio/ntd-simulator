@@ -7,11 +7,14 @@ import { useHistory } from 'react-router-dom'
 
 import ConfirmationDialog from "./ConfirmationDialog";
 import CapsHeadline from './CapsHeadline'
-import { Box, TextField, FormControl, Fab } from '@material-ui/core';
+import { Box, TextField, FormControl, Fab, Typography } from '@material-ui/core';
 import Autocomplete from '@material-ui/lab/Autocomplete'
 import useStyles from 'theme/SelectCountry'
 import { useTranslation } from 'react-i18next';
 
+import {
+  DISEASE_LABELS
+} from 'AppConstants'
 
 const SelectCountry = ({ selectIU, showCountryConfirmation, showIUConfirmation, showBack, countyAndIUSet }) => {
   const classes = useStyles()
@@ -99,8 +102,8 @@ const SelectCountry = ({ selectIU, showCountryConfirmation, showIUConfirmation, 
 
 
         <CapsHeadline text={selectIU ? (countyAndIUSet ? t('setUpScenario') : t('selectIULong')) : t('selectCountry')} />
-
-        <FormControl className={`${classes.formControl} ${t('countries')}`}>
+        {!selectIU && <Typography variant="h1" component="h2" className={classes.diseaseHeadline}>{DISEASE_LABELS[disease]} {t("in")}</Typography>}
+        <FormControl className={`${classes.formControl} ${selectIU ? 'large' : 'smaller'}`}>
           <Autocomplete
             id="country"
             options={countrySuggestionsWithDefault}
@@ -125,7 +128,7 @@ const SelectCountry = ({ selectIU, showCountryConfirmation, showIUConfirmation, 
 
 
         {selectIU &&
-          <FormControl className={`${classes.formControl} ius`}>
+          <FormControl className={`${classes.formControl} smaller`}>
             <Autocomplete
               id="iu"
               options={activeIUs}

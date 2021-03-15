@@ -69,7 +69,7 @@ const SelectDisease = ({ selectIU, showBack }) => {
         <Typography variant="h4" component="p" className={classes.headline} >Simulate the impact of more frequent, longer or higer coverage treatments to eradicating neglected tropical diseases.</Typography>
 
         <CapsHeadline text="Select a Disease" />
-        <FormControl className={`${classes.formControl} countries`}>
+        <FormControl className={`${classes.formControl} large`}>
           <Autocomplete
             id="disease"
             options={diseasesSelectWithDefault}
