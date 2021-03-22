@@ -13,6 +13,7 @@ import {
 } from 'pages/components/simulator/settings';
 
 const SetupSTHRoundworm = (props) => {
+  console.log("SetupSTHRoundworm",props.disease)
 
   const { t, i18n } = useTranslation();
   const classes = useStyles();
@@ -36,6 +37,7 @@ const SetupSTHRoundworm = (props) => {
             inModal={false}
             label={t('MDAFrequency')}
             value={simState.settings.mdaSixMonths}
+            disease={props.disease}
           />
         </div>
       </div>

@@ -13,8 +13,8 @@ import { useUIState } from 'hooks/stateHooks';
 import useStyles from 'pages/components/simulator/styles';
 import ConfirmationDialog from 'pages/components/ConfirmationDialog';
 
+import AppConstants from 'AppConstants';
 import DiseaseModels from 'pages/components/simulator/models/DiseaseModels';
-import { DISEASE_LABELS } from 'AppConstants';
 
 import { loadAllIUhistoricData } from 'pages/components/simulator/helpers/iuLoader'
 import { NewSettingsDialogLF } from 'pages/components/diseases/lf';
@@ -24,12 +24,13 @@ import { DISEASE_LIMF, DISEASE_TRACHOMA, DISEASE_STH_ROUNDWORM } from 'AppConsta
 import { DISEASE_STH_WHIPWORM } from '../../../AppConstants';
 import { useTranslation } from 'react-i18next';
 
-
 const settingsDialogComponents = {
-  lf: NewSettingsDialogLF,
-  trachoma: NewSettingsDialogTrachoma,
-  'sth-roundworm': NewSettingsDialogSTHRoundworm,
-  'sth-whipworm': NewSettingsDialogSTHRoundworm
+  [ AppConstants.DISEASE_LIMF ]: NewSettingsDialogLF,
+  [ AppConstants.DISEASE_TRACHOMA ]: NewSettingsDialogTrachoma,
+  [ AppConstants.DISEASE_STH_ROUNDWORM ]: NewSettingsDialogSTHRoundworm,
+  [ AppConstants.DISEASE_STH_WHIPWORM ]: NewSettingsDialogSTHRoundworm,
+  [ AppConstants.DISEASE_STH_HOOKWORM ]: NewSettingsDialogSTHRoundworm,
+  [ AppConstants.DISEASE_SCH_MANSONI ]: NewSettingsDialogSTHRoundworm,
 };
 
 const a11yProps = (index) => {
@@ -424,11 +425,11 @@ const ScenarioManager = ( props ) => {
   //Scenario state last updated: {scenarioState.updated.toISOString()}
 
   if( !diseaseModel ) {
-    return ( <div>No model for {DISEASE_LABELS[ disease ]}</div> );
+    return ( <div>No model for {AppConstants.DISEASE_LABELS[ disease ]}</div> );
   }
 
   const SettingsDialogComponent = ( disease !== null ) ? settingsDialogComponents[ disease ] : null;
-  const STH = ( disease === DISEASE_STH_WHIPWORM || disease === DISEASE_STH_ROUNDWORM )
+  const STH = ( ! [ AppConstants.DISEASE_LIMF, AppConstants.DISEASE_TRACHOMA ].includes( disease ) );
   return (
     <div id="ScenarioManager">
         <section className={classes.simulator}>
@@ -514,7 +515,7 @@ const ScenarioManager = ( props ) => {
                 
               </div>
             ) }
-            { (simulationProgress !== 0 && simulationProgress !== 100) && ( disease === DISEASE_LIMF || disease === DISEASE_TRACHOMA ) && (
+            { (simulationProgress !== 0 && simulationProgress !== 100) && ( disease === AppConstants.DISEASE_LIMF || disease === AppConstants.DISEASE_TRACHOMA ) && (
  
               <div className={ classes.progress }>
                 <CircularProgress
@@ -539,6 +540,7 @@ const ScenarioManager = ( props ) => {
                 action={ runCreatedScenario }
                 cancel={ cancelCreatedScenario }
                 newScenarioSettingsOpen={newScenarioSettingsOpen}
+                disease={disease}
               />
             : null
          }

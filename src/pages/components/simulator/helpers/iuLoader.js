@@ -1,6 +1,14 @@
 import Papa from 'papaparse'
 import { last, filter, forEach } from 'lodash'
-import { DISEASE_CONFIG,DISEASE_LIMF, DISEASE_TRACHOMA, DISEASE_STH_ROUNDWORM, DISEASE_STH_WHIPWORM } from 'AppConstants';
+import {
+  DISEASE_CONFIG,
+  DISEASE_LIMF,
+  DISEASE_TRACHOMA,
+  DISEASE_STH_ROUNDWORM,
+  DISEASE_STH_WHIPWORM,
+  DISEASE_STH_HOOKWORM,
+  DISEASE_SCH_MANSONI
+} from 'AppConstants';
 
 import SessionStorage from './sessionStorage';
 
@@ -24,6 +32,8 @@ export const loadAllIUhistoricData = async (
       break;
     case DISEASE_STH_ROUNDWORM:
     case DISEASE_STH_WHIPWORM:
+    case DISEASE_STH_HOOKWORM:
+    case DISEASE_SCH_MANSONI:
       mdaData = await loadMdaHistorySTHRoundworm(implementationUnit,country,disease)
       break
     default:
@@ -125,6 +135,8 @@ export const loadAllIUhistoricData = async (
       break
     case DISEASE_STH_ROUNDWORM:
     case DISEASE_STH_WHIPWORM:
+    case DISEASE_STH_HOOKWORM:
+    case DISEASE_SCH_MANSONI:
       defaults.settings.coverageInfants = last(mdaData.coverageInfants)
       defaults.settings.coveragePreSAC = last(mdaData.coveragePreSAC)
       defaults.settings.coverageSAC = last(mdaData.coverageSAC)
@@ -145,11 +157,12 @@ export const loadAllIUhistoricData = async (
 
 
 export const loadMdaHistorySTHRoundworm = async (implementationUnit,country,disease) => {
-  console.log( "iuLoader loadMdaHistorySTHRoundworm:", implementationUnit );
+  console.log( "iuLoader loadMdaHistorySTHRoundworm:", implementationUnit,disease );
 
   const IUid = implementationUnit ? implementationUnit : 'AGO02107'
   // construct path
-  const mdaHistoryPath = `https://storage.googleapis.com/ntd-disease-simulator-data/diseases/${disease}/source-data/${country}/${IUid}/STH_MDA_${IUid}.csv`
+  const preFix = disease === DISEASE_SCH_MANSONI ? 'SCH' :  'STH'
+  const mdaHistoryPath = `https://storage.googleapis.com/ntd-disease-simulator-data/diseases/${disease}/source-data/${country}/${IUid}/${preFix}_MDA_${IUid}.csv`
   console.log('loading mda history from',mdaHistoryPath)
   let mdaLoaded = true
   const mdaResponse = await fetch(mdaHistoryPath).then((response)=>{
@@ -447,7 +460,7 @@ export const generateMdaFutureFromDefaults = ( simState,disease ) => {
     }
 
     else {
-      active = simState.settings.mdaSixMonths === 6 ? true : ( i % 2 ? false : true );
+      active = simState.settings.mdaSixMonths === 6 ? true : ( i % (simState.settings.mdaSixMonths/6) ? false : true );
     }
 
     MDAactive.push( active );
@@ -535,7 +548,7 @@ export const generateMdaFutureFromScenario = ( scenario,disease ) => {
     }
 
     else {
-      active = scenario.settings.mdaSixMonths === 6 ? true : ( i % 2 ? false : true );
+      active = scenario.settings.mdaSixMonths === 6 ? true : ( i % (scenario.settings.mdaSixMonths/6) ? false : true );
     }
 
     MDAactive.push( active );
@@ -622,7 +635,7 @@ export const generateMdaFutureFromScenarioSettings = ( scenario,disease ) => {
     }
 
     else {
-      active = scenario.settings.mdaSixMonths === 6 ? true : ( i % 2 ? false : true );
+      active = scenario.settings.mdaSixMonths === 6 ? true : ( i % (scenario.settings.mdaSixMonths/6) ? false : true );
     }
 
     MDAactive.push( active );

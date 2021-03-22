@@ -4,6 +4,8 @@ import useStyles from "pages/components/simulator/styles";
 import { useSimulatorStore } from "store/simulatorStore";
 import { useScenarioStore, ScenarioStoreConstants } from "store/scenarioStore";
 import { useTranslation } from 'react-i18next';
+import AppConstants from 'AppConstants';
+
 import {
   FormControl,
   Select,
@@ -12,7 +14,8 @@ import {
   Tooltip
 } from "@material-ui/core";
 
-const SettingFrequency = ({ inModal, label, value, classAdd, scenarioId }) => {
+const SettingFrequency = ({ inModal, label, value, classAdd, scenarioId,disease }) => {
+  console.log('Settings Frequency',disease)
 const { t, i18n } = useTranslation();
   const classes = useStyles();
   const { dispatchSimState } = useSimulatorStore();
@@ -64,6 +67,8 @@ const { t, i18n } = useTranslation();
         value={ isPerIUSetting ? value : scenarioState.scenarioData[ scenarioId ].settings.mdaSixMonths }
         onChange={handleChange}
       >
+        {disease === AppConstants.DISEASE_SCH_MANSONI && <MenuItem value={36}>Every 3 years</MenuItem>}
+        {disease === AppConstants.DISEASE_SCH_MANSONI && <MenuItem value={24}>Every 2 years</MenuItem>}
         <MenuItem value={12}>{t('annual')}</MenuItem>
         <MenuItem value={6}>{t('every6Months')}</MenuItem>
       </Select>
