@@ -15,7 +15,6 @@ import {
 } from "@material-ui/core";
 
 const SettingFrequency = ({ inModal, label, value, classAdd, scenarioId,disease }) => {
-  console.log('Settings Frequency',disease)
 const { t, i18n } = useTranslation();
   const classes = useStyles();
   const { dispatchSimState } = useSimulatorStore();

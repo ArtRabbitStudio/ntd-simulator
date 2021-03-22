@@ -270,7 +270,13 @@ export default {
      * previous run of the same scenario/params
      */
     const storagePath = `https://storage.googleapis.com/ntd-disease-simulator-data`;
-    const infoJsonUrl = `${storagePath}/diseases/${this.modelDiseaseType}/data/${country}/${simState.IUData.id}/${digest}/Asc-${iu}-${digest}-info.json?ignoreCache=${Date.now()}`;
+    const diseasePrefix = {
+      [ DISEASE_STH_ROUNDWORM ]: 'Asc',
+      [ DISEASE_STH_WHIPWORM ]: 'Tri',
+      [ DISEASE_STH_HOOKWORM ]: 'Hook',
+      [ DISEASE_SCH_MANSONI ]: ' Man'
+    }[ this.modelDiseaseType ];
+    const infoJsonUrl = `${storagePath}/diseases/${this.modelDiseaseType}/data-20210322a/${country}/${simState.IUData.id}/${digest}/${diseasePrefix}-${iu}-${digest}-info.json?ignoreCache=${Date.now()}`;
     const infoJsonResponse = await fetch( infoJsonUrl );
 
     /*
@@ -290,8 +296,9 @@ export default {
           } )()
 
         : await ( async () => {
-              const apiUrl = "https://sth-app-api-mijgnzszia-ew.a.run.app/run";
+              //const apiUrl = "https://sth-app-api-mijgnzszia-ew.a.run.app/run";
               //const apiUrl = "http://localhost:5000/run"
+              const apiUrl = "https://sth-api-test-20210322a-mijgnzszia-nw.a.run.app/run"; // TEST SERVER
 
               console.log( `${this.modelDiseaseLabel} didn't find static info, sending scenario params to API at ${apiUrl}:`, apiParams );
 
