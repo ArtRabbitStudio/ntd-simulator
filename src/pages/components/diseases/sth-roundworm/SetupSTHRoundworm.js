@@ -12,6 +12,7 @@ import {
 } from 'pages/components/simulator/settings';
 
 const SetupSTHRoundworm = (props) => {
+  console.log("SetupSTHRoundworm",props.disease)
 
   const classes = useStyles();
   const { simState } = useSimulatorStore();
@@ -34,6 +35,7 @@ const SetupSTHRoundworm = (props) => {
             inModal={false}
             label="MDA Frequency"
             value={simState.settings.mdaSixMonths}
+            disease={props.disease}
           />
         </div>
       </div>

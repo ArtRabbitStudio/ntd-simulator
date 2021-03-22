@@ -308,7 +308,7 @@ function ScenarioGraphLF({
           />
           {(uncertaintyInfo && activeInfo === null) && 
             <ScenarioGraphInfoBubble 
-              coord={[width - lPad - rPad - rPad,y(data.stats[metrics+'Max'][data.stats[metrics+'Max'].length-1])]}
+              coord={[(width - lPad - rPad)/2,y(domainY[1])]}              
               color={'#E1E4E6'}
               textColor={'#252525'}
               legendColor={'#E1E4E6'}

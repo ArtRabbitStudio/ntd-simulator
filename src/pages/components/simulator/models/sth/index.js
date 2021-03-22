@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
 import { generateMdaFutureFromScenarioSettings } from 'pages/components/simulator/helpers/iuLoader';
 import { csv } from 'd3';
-import { DISEASE_STH_ROUNDWORM, DISEASE_STH_WHIPWORM } from 'AppConstants';
+import { DISEASE_STH_ROUNDWORM, DISEASE_STH_WHIPWORM, DISEASE_STH_HOOKWORM, DISEASE_SCH_MANSONI } from 'AppConstants';
 import sha256 from 'fast-sha256';
 import nacl from 'tweetnacl-util'
 
@@ -134,7 +134,9 @@ export default {
     this.modelDiseaseType = disease;
     this.modelDiseaseLabel = {
       [ DISEASE_STH_ROUNDWORM ]: 'STHRoundworm',
-      [ DISEASE_STH_WHIPWORM ]: 'STHWhipworm'
+      [ DISEASE_STH_WHIPWORM ]: 'STHWhipworm',
+      [ DISEASE_STH_HOOKWORM ]: 'STHHookworm',
+      [ DISEASE_SCH_MANSONI ]: 'SCHMansoni',
     }[ disease ];
   },
 

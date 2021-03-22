@@ -7,8 +7,8 @@ import {
   SettingTargetCoverage,
 } from 'pages/components/simulator/settings';
 
-const NewSettingsDialogSTHRoundworm = ( { scenarioData, action, cancel, newScenarioSettingsOpen } ) => {
-
+const NewSettingsDialogSTHRoundworm = ( { scenarioData, action, cancel, newScenarioSettingsOpen,disease } ) => {
+  console.log("NewSettingsDialog",disease)
   return (
 
     <NewScenarioSettingsDialog
@@ -23,6 +23,7 @@ const NewSettingsDialogSTHRoundworm = ( { scenarioData, action, cancel, newScena
         scenarioId={ scenarioData.id }
         inModal={true}
         label="Treatment frequency"
+        disease={disease}
       />
 
       <SettingTargetCoverage

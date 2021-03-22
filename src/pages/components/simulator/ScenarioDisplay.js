@@ -24,7 +24,7 @@ import MdaRounds from 'pages/components/simulator/MdaRounds'
 import DiseaseModels from 'pages/components/simulator/models/DiseaseModels';
 import ConfirmationDialog from "pages/components/ConfirmationDialog";
 
-import { DISEASE_CONFIG,DISEASE_LIMF, DISEASE_TRACHOMA, DISEASE_STH_ROUNDWORM, DISEASE_STH_WHIPWORM } from 'AppConstants';
+import AppConstants from 'AppConstants';
 
 // settings
 import {
@@ -71,7 +71,7 @@ const ScenarioDisplay = (props) => {
   const classes = useStyles();
   const { disease } = useUIState();
 
-  const defaultMetric = DISEASE_CONFIG[ disease ] ? DISEASE_CONFIG[ disease ].defaultMetric : 'Ms'
+  const defaultMetric = AppConstants.DISEASE_CONFIG[ disease ] ? AppConstants.DISEASE_CONFIG[ disease ].defaultMetric : 'Ms'
 
   const [ graphMetric, setGraphMetric ] = useState( defaultMetric )
   const [ graphTypeSimpleLocal, setGraphTypeSimpleLocal ] = useState(true)
@@ -110,7 +110,7 @@ const ScenarioDisplay = (props) => {
 
   const scenarioId = scenarioState.currentScenarioId;
   const scenarioData = scenarioState.scenarioData[ scenarioId ];
-  const STH = ( disease === DISEASE_STH_ROUNDWORM || disease === DISEASE_STH_WHIPWORM )
+  const STH = ( ! [ AppConstants.DISEASE_LIMF, AppConstants.DISEASE_TRACHOMA ].includes( disease ) );
 
   const scenarioDisplay = scenarioData ? (
 
@@ -128,7 +128,7 @@ const ScenarioDisplay = (props) => {
               {scenarioData.label}
             </Typography>
 
-            { (disease === DISEASE_LIMF || STH ) &&
+            { (disease === AppConstants.DISEASE_LIMF || STH ) &&
               <SettingPrecision
                 classAdd={classes.precision}
                 inModal={true}
@@ -139,7 +139,7 @@ const ScenarioDisplay = (props) => {
                 showDialog={setshowPrecisionConfirmation}
               />
             }
-            { disease === DISEASE_TRACHOMA &&
+            { disease === AppConstants.DISEASE_TRACHOMA &&
               <SettingPrecision
                 classAdd={classes.precision}
                 inModal={true}
@@ -187,27 +187,27 @@ const ScenarioDisplay = (props) => {
                   scenarioLabel={ scenarioData.label }
                 />
 
-                { disease === DISEASE_LIMF &&
+                { disease === AppConstants.DISEASE_LIMF &&
                   <SettingBedNetCoverage
                     inModal={true}
                     label="Bed Net Coverage"
                   />
                 }
 
-                <SettingFrequency inModal={true} label="Treatment frequency" />
+                <SettingFrequency inModal={true} label="Treatment frequency" disease={disease} />
 
-                { disease === DISEASE_LIMF &&
+                { disease === AppConstants.DISEASE_LIMF &&
                   <SettingDrugRegimen inModal={true} label="Drug regimen" />
                 }
 
-                { disease === DISEASE_LIMF &&
+                { disease === AppConstants.DISEASE_LIMF &&
                   <SettingTargetCoverage
                     scenarioId={ scenarioData.id }
                     inModal={true}
                     label="Treatment target coverage"
                   />
                 }
-                { disease === DISEASE_TRACHOMA &&
+                { disease === AppConstants.DISEASE_TRACHOMA &&
                   <SettingTargetCoverage
                     inModal={true}
                     scenarioId={ scenarioData.id }
@@ -268,21 +268,21 @@ const ScenarioDisplay = (props) => {
                 
                 }
 
-                {disease === DISEASE_LIMF && 
+                {disease === AppConstants.DISEASE_LIMF && 
                   <SettingSystematicAdherence
                     inModal={true}
                     label="Systematic adherence"
                   />
                 }
 
-                { disease === DISEASE_LIMF &&
+                { disease === AppConstants.DISEASE_LIMF &&
                   <SettingInsecticideCoverage
                     inModal={true}
                     label="Insecticide Coverage"
                   />
                 }
 
-                { disease === DISEASE_LIMF &&
+                { disease === AppConstants.DISEASE_LIMF &&
                   <SettingMosquitoType
                     inModal={true}
                     label="Mosquito type"
@@ -299,7 +299,7 @@ const ScenarioDisplay = (props) => {
 
               </ChartSettings>
 
-              { disease === DISEASE_LIMF && (
+              { disease === AppConstants.DISEASE_LIMF && (
               <FormControl
                 variant="outlined"
                 className={`${classes.formControlPrevalence} ${classes.metricSelector}`}
@@ -373,7 +373,7 @@ const ScenarioDisplay = (props) => {
             </div>
           )}
 
-          { disease === DISEASE_LIMF &&
+          { disease === AppConstants.DISEASE_LIMF &&
 
             <ScenarioGraphLF
               data={scenarioData}
@@ -388,7 +388,7 @@ const ScenarioDisplay = (props) => {
             />
         
           }         
-          { disease === DISEASE_TRACHOMA &&
+          { disease === AppConstants.DISEASE_TRACHOMA &&
           
           <ScenarioGraphTrachoma
               data={scenarioData}
@@ -414,6 +414,7 @@ const ScenarioDisplay = (props) => {
               classes={classes}
               IU={implementationUnit}
               IUData={selectedIUData}
+              disease={disease}
           />
           }
         </div>
@@ -426,7 +427,7 @@ const ScenarioDisplay = (props) => {
             
 
             <Tooltip
-              title={DISEASE_CONFIG[ disease ].mdaTooltip}
+              title={AppConstants.DISEASE_CONFIG[ disease ].mdaTooltip}
               aria-label="info"
             >
 

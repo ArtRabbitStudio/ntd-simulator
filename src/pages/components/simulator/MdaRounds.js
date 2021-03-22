@@ -15,7 +15,15 @@ import {
 } from 'pages/components/simulator/settings'
 import useStyles from 'pages/components/simulator/styles'
 
-import { DISEASE_CONFIG,DISEASE_LIMF, DISEASE_TRACHOMA, DISEASE_STH_ROUNDWORM, DISEASE_STH_WHIPWORM } from 'AppConstants';
+import {
+  DISEASE_CONFIG,
+  DISEASE_LIMF,
+  DISEASE_TRACHOMA,
+  DISEASE_STH_ROUNDWORM,
+  DISEASE_STH_WHIPWORM,
+  DISEASE_STH_HOOKWORM,
+  DISEASE_SCH_MANSONI
+} from 'AppConstants';
 
 //import ClickAway from "hooks/clickAway";
 
@@ -78,6 +86,8 @@ const MdaRounds = (props) => {
       switch ( disease ) {
         case DISEASE_STH_ROUNDWORM:
         case DISEASE_STH_WHIPWORM:
+        case DISEASE_STH_HOOKWORM:
+        case DISEASE_SCH_MANSONI:
           return `${calculateTime(time)}: coverage ${coverageInfants}% - ${coveragePreSAC}% - ${coverageSAC}% - ${coverageAdults}%`
         default:
           return `${calculateTime(time)}: coverage ${coverage}%`
@@ -140,8 +150,8 @@ const MdaRounds = (props) => {
     return false
   })
 
-  const STH = (disease === DISEASE_STH_ROUNDWORM || disease === DISEASE_STH_WHIPWORM )
-  const LFandSTH = ( disease === DISEASE_LIMF || disease === DISEASE_STH_ROUNDWORM || disease === DISEASE_STH_WHIPWORM )
+  const STH = ( disease === DISEASE_STH_ROUNDWORM || disease === DISEASE_STH_WHIPWORM || disease === DISEASE_STH_HOOKWORM || disease === DISEASE_SCH_MANSONI )
+  const LFandSTH = ( disease === DISEASE_LIMF || STH )
   const LFandTrachoma = ( disease === DISEASE_LIMF || disease === DISEASE_TRACHOMA )
 
   const lPad = 50
