@@ -23,8 +23,8 @@ const useStyles = makeStyles(theme => ({
   root: {
     zIndex: 9,
     position: 'relative',
-    margin: theme.spacing(0, 0, 2, 0),
-    width: 'calc(100% - 16px)',
+    margin: theme.spacing(0, 0, 0, 0),
+    width: '100%',
   },
   formControl: {
     textAlign: 'left',
