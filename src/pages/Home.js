@@ -116,6 +116,7 @@ const Home = (props) => {
     i18n.changeLanguage(lang);
   }
 
+
   return (
     <Layout className={classes.homeimage} /* classAdd="full-height"*/ >
       { /*

@@ -30,6 +30,8 @@ function Map({
     colorScale,
     forwardRef,
     showNotAvailable,
+    showMapLegend,
+    dragPan
 }) {
     const [
         { year, viewport, feature, featureHover, tooltip, ready },
@@ -129,6 +131,7 @@ function Map({
 
 
     // old map style mapbox://styles/kpcarter100/ck7w5zz9l026d1imn43721owm
+    console.log('countryFeatures',countryFeatures);
 
     return (
         <div className={classes.mapWrap}>
@@ -139,7 +142,7 @@ function Map({
                 attributionControl={false}
                 scrollZoom={disableZoom ? false : true}
                 doubleClickZoom={disableZoom ? false : true}
-                dragPan={false}
+                dragPan={dragPan}
                 boxZoom={false}
                 dragRotate={false}
                 touchZoom={false}
@@ -160,9 +163,7 @@ function Map({
                             filter={['has', colorProp]}
                             type="fill"
                             paint={{
-                                'fill-color': '#CCE8F4',
-
-
+                                'fill-color': iuFeatures ? '#CCE8F4' : '#FAEAE1',
                             }}
                         />
                         <Layer
@@ -171,7 +172,12 @@ function Map({
                             filter={['has', colorProp]}
                             layout={{ 'line-join': 'bevel' }}
                             paint={{
-                                'line-color': 'rgba(0,0,0,0)',
+                                'line-color': [
+                                    'case',
+                                    ['==', ['get', 'id'], ( !iuFeatures && featureHover?.properties.id || null ) ],
+                                    '#D86422',
+                                    'rgba(0,0,0,0)',
+                                ],
                                 'line-width': 1,
                             }}
                         />
@@ -219,13 +225,13 @@ function Map({
                 )}
 
                 {/* Tooltip */}
-                {featureHover && !feature && (
+                {featureHover && !feature && showMapLegend && (
                     <Tooltip feature={featureHover} year={year} position={tooltip} />
                 )}
 
                 {/* Legend */}
                 
-                <HTMLOverlay
+                {showMapLegend && <HTMLOverlay
                     redraw={() => (
                     <div
                         style={{
@@ -245,7 +251,7 @@ function Map({
                         </Paper>
                     </div>
                     )}
-                />
+                />}
                 
             </ReactMapGL>
         </div>

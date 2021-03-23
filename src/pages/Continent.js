@@ -5,7 +5,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import SimpleDialog from 'pages/components/SimpleDialog'
 import { useDataAPI, useUIState } from 'hooks/stateHooks'
 import Map from 'components/Map'
-import { DISEASE_CONFIG } from 'AppConstants';
+import { DISEASE_CONFIG,DISEASE_LABELS } from 'AppConstants';
 
 const useStyles = makeStyles(theme => ({
     headLeftColumn: {
@@ -40,23 +40,24 @@ const useStyles = makeStyles(theme => ({
 }))
 
 
-const Country = props => {
+const Continent = props => {
 
     const [notAvailableAlert, setnotAvailableAlert] = useState(false)
     const [alertText, setAlertText] = useState('')
 
     const classes = useStyles()
     const {
-        iuFeatures,
+        //iuFeatures,
         countryFeatures,
-        iuScales,
+        //iuScales,
         //stateFeatures,
-        //stateScales,
+        countryScales,
         //iuData,
     } = useDataAPI()
 
-    const { country, disease } = useUIState()
+    const { disease } = useUIState()
     
+    console.log('countryScales',countryScales)
     // output csv with included and excluded data
     /*
     if ( iuData != undefined ) {
@@ -81,8 +82,8 @@ const Country = props => {
 
     }*/
 
-    const legend = DISEASE_CONFIG[ disease ] ? DISEASE_CONFIG[ disease ].mapLegend : ''
-
+    const legend = `This map shows`  
+    const legendSubtitle = `Countries with IUs that had a prevalence > 0% in ${DISEASE_CONFIG[ disease ].historicEndYear} for ${DISEASE_LABELS[ disease ]}`
 
     return (
       <React.Fragment>
@@ -91,15 +92,14 @@ const Country = props => {
                     <Map
                         countryFeatures={countryFeatures}
                         //stateFeatures={stateFeaturesCurrentCountry}
-                        iuFeatures={iuFeatures}
-                        colorScale={iuScales.prev}
+                        //iuFeatures={iuFeatures}
+                        colorScale={countryScales.prev}
                         height={720}
                         trendMode={false}
-                        disableZoom={true}
-                        dragPan={false}
-                        country={country}
+                        dragPan={true}
+                        disableZoom={false}
+                        //country={country}
                         disease={disease}
-                        showMapLegend={true}
                         showNotAvailable={(value)=>{
                             setAlertText(value)
                             setnotAvailableAlert(true)
@@ -107,6 +107,7 @@ const Country = props => {
                     />
                 </div>
                 <Typography component="h6" variant="h6" className={classes.legend}>{legend}</Typography>
+                <Typography variant="body2" className={classes.legendTitle}>{legendSubtitle}</Typography>
             </section>
             
             {notAvailableAlert &&
@@ -122,4 +123,4 @@ const Country = props => {
       </React.Fragment>
     )
 }
-export default observer(Country)
+export default observer(Continent)

@@ -2,7 +2,8 @@ import React from 'react'
 import { Tooltip as MuiTooltip } from '@material-ui/core'
 import { NO_DATA } from 'AppConstants'
 
-export default function Tooltip({ feature, year, position }) {
+export default function Tooltip({ feature, year, position, hideTrend }) {
+  console.log('hideTrend',hideTrend)
   const { endemicity,name, performance, [`prev-${year}`]: prevalence } = feature.properties
   const [x, y] = position
 
@@ -18,6 +19,9 @@ export default function Tooltip({ feature, year, position }) {
 
   if ( endemicity === 'Non-endemic' ) {
     title = `${name} ${prevalence}% [${endemicity}]`
+    if ( hideTrend ) {
+      title = `${name}`
+    }
   }
 
   if ( feature.source === 'africa-countries' && prevalence === 'null' ) {

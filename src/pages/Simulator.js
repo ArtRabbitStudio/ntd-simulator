@@ -8,6 +8,7 @@ import { Layout } from 'layout';
 import HeadWithInputs from 'pages/components/HeadWithInputs';
 import SelectCountry from 'pages/components/SelectCountry';
 import Country from 'pages/Country';
+import Continent from 'pages/Continent';
 
 import { IntroLF, SetupLF } from 'pages/components/diseases/lf';
 import { IntroTrachoma, SetupTrachoma } from 'pages/components/diseases/trachoma';
@@ -65,9 +66,11 @@ const Simulator = (props) => {
         showCountryConfirmation={country && implementationUnit ? true : false}
         countyAndIUSet={country && implementationUnit}
         showIUConfirmation={country && implementationUnit && section ? true : false}
-        showBack={disease && country && implementationUnit ? true : false}
+        showBackToCountry={disease && country && implementationUnit ? true : false}
+        showBackToContinent={disease && country && !implementationUnit ? true : false}
       />
 
+    { disease && (!country) && (!implementationUnit) && <Continent />}
 
       { disease && country && (!implementationUnit) && <Country />}
 
