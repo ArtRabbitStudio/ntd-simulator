@@ -36,7 +36,7 @@ const Disease = (props) => {
 
     <Layout>
 
-      <HeadWithInputs />
+      <HeadWithInputs disableContirmation={true} />
 
       { disease && <DetailComponent />}
 

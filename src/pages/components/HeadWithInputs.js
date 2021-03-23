@@ -44,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const HeadWithInputs = ({ title, disableInputs, disableClear, classAdd, showLanguages }) => {
+const HeadWithInputs = ({ title, disableInputs, disableClear, classAdd, showLanguages, disableContirmation }) => {
   const classes = useStyles()
   const { t, i18n } = useTranslation();
   const [showConfirmation, setshowConfirmation] = useState(false);
@@ -53,7 +53,14 @@ const HeadWithInputs = ({ title, disableInputs, disableClear, classAdd, showLang
 
   const handleChange = (value) => {
     setSelectedValue(value)
-    setshowConfirmation(true);
+    if (disableContirmation !== true) {
+      setshowConfirmation(true);
+    } else {
+      if (value !== 'other' && value != null) {
+        history.push(`/${value}`)
+      }
+    }
+
   }
   const doChange = () => {
     setshowConfirmation(false)
