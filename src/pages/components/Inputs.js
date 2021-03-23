@@ -40,7 +40,7 @@ const useStyles = makeStyles(theme => ({
     },
     [theme.breakpoints.up('md')]: {
       margin: theme.spacing(0, 0, 0, 0),
-      width: 'calc(70% - 16px)',
+      width: '100%',
     },
     [theme.breakpoints.up('lg')]: {
     },

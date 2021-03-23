@@ -9,6 +9,7 @@ const useStyles = makeStyles(theme => ({
     alignItems: "center",
     flexWrap: "nowrap",
     width: "100%",
+    justifyContent: "flex-end",
     color: theme.palette.basic.white,
 
     '& a': {

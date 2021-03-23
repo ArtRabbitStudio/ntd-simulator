@@ -65,10 +65,10 @@ const HeadWithInputs = ({ title, disableInputs, disableClear, classAdd, showLang
   return (
     <React.Fragment>
       <div className={classes.headContainer}>
-        <Grid item md={7} xs={12} className={classes.head}>
+        <Grid item md={8} xs={12} className={classes.head}>
           <Head classAdd={classAdd} alternativeHeadline={!showLanguages} />
         </Grid>
-        <Grid item md={5} xs={12} className={classes.inputs}>
+        <Grid item md={4} xs={12} className={classes.inputs}>
 
           {disableInputs !== true && <Inputs onChange={handleChange} />}
           {showLanguages === true && <LanguageSwitch onChange={handleChange} dark={true} />}
