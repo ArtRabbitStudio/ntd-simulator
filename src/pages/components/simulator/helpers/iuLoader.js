@@ -7,7 +7,8 @@ import {
   DISEASE_STH_ROUNDWORM,
   DISEASE_STH_WHIPWORM,
   DISEASE_STH_HOOKWORM,
-  DISEASE_SCH_MANSONI
+  DISEASE_SCH_MANSONI,
+  CLOUD_INFO
 } from 'AppConstants';
 
 import SessionStorage from './sessionStorage';
@@ -25,8 +26,8 @@ export const loadAllIUhistoricData = async (
   // TODO new param diesase
   switch ( disease ) {
     case DISEASE_LIMF:
-      mdaData = await loadMdaHistoryLF(implementationUnit)
-      params = await loadIUParamsLF(implementationUnit)
+      mdaData = await loadMdaHistoryLF( implementationUnit, country, disease )
+      params = await loadIUParamsLF( implementationUnit, country, disease )
       break;
     case DISEASE_TRACHOMA:
       break;
@@ -34,7 +35,7 @@ export const loadAllIUhistoricData = async (
     case DISEASE_STH_WHIPWORM:
     case DISEASE_STH_HOOKWORM:
     case DISEASE_SCH_MANSONI:
-      mdaData = await loadMdaHistorySTHRoundworm(implementationUnit,country,disease)
+      mdaData = await loadMdaHistoryFromCloudStorage( implementationUnit, country, disease )
       break
     default:
       break;
@@ -156,13 +157,14 @@ export const loadAllIUhistoricData = async (
 }
 
 
-export const loadMdaHistorySTHRoundworm = async (implementationUnit,country,disease) => {
-  console.log( "iuLoader loadMdaHistorySTHRoundworm:", implementationUnit,disease );
+export const loadMdaHistoryFromCloudStorage = async ( implementationUnit, country, disease ) => {
+
+  console.log( "iuLoader loadMdaHistoryFromCloudStorage:", implementationUnit, disease );
 
   const IUid = implementationUnit ? implementationUnit : 'AGO02107'
   // construct path
   const preFix = disease === DISEASE_SCH_MANSONI ? 'SCH' :  'STH'
-  const mdaHistoryPath = `https://storage.googleapis.com/ntd-disease-simulator-data/diseases/${disease}/source-data/${country}/${IUid}/${preFix}_MDA_${IUid}.csv`
+  const mdaHistoryPath = `${CLOUD_INFO.cloud_storage_path_root}/diseases/${disease}/source-data/${country}/${IUid}/${preFix}_MDA_${IUid}.csv`
   console.log('loading mda history from',mdaHistoryPath)
   let mdaLoaded = true
   const mdaResponse = await fetch(mdaHistoryPath).then((response)=>{
@@ -245,13 +247,15 @@ export const loadMdaHistorySTHRoundworm = async (implementationUnit,country,dise
 }
 
 
-export const loadMdaHistoryLF = async (implementationUnit) => {
+export const loadMdaHistoryLF = async ( implementationUnit, country, disease ) => {
 
-  console.log( "iuLoader loadMdaHistoryLF:", implementationUnit );
+  const preFix = disease.toUpperCase();
+  const IUid = implementationUnit ? implementationUnit : 'AGO02107';
+  const mdaHistoryPath = `${CLOUD_INFO.cloud_storage_path_root}/diseases/${disease}/source-data/${country}/${IUid}/${preFix}_MDA_${IUid}.csv`;
 
+  console.log( "iuLoader loadMdaHistoryLF:", implementationUnit, mdaHistoryPath );
 
-  const IUid = implementationUnit ? implementationUnit : 'AGO02107'
-  const mdaResponse = await fetch(`/diseases/lf/mda-history/${IUid}.csv`)
+  const mdaResponse = await fetch( mdaHistoryPath );
   let reader = mdaResponse.body.getReader()
 
   // Step 3: read the data
@@ -311,11 +315,16 @@ export const loadMdaHistoryLF = async (implementationUnit) => {
 
 
 
-export const loadIUParamsLF = async (implementationUnit) => {
-  const IUid = implementationUnit ? implementationUnit : 'AGO02107'
-  const IUParamsResponse = await fetch(`/diseases/lf/iu-params/${IUid}.csv`)
-  //console.log(`/lf/iu-params/${IUid}.csv`);
-  //console.log(IUParamsResponse);
+export const loadIUParamsLF = async ( implementationUnit, country, disease ) => {
+
+  const preFix = disease.toUpperCase();
+  const IUid = implementationUnit ? implementationUnit : 'AGO02107';
+  const iuParamsPath = `${CLOUD_INFO.cloud_storage_path_root}/diseases/${disease}/source-data/${country}/${IUid}/${preFix}_IU_params_${IUid}.csv`;
+
+  console.log( "iuLoader loadIUParamsLF:", implementationUnit, iuParamsPath );
+
+  const IUParamsResponse = await fetch( iuParamsPath )
+
   // populate iuParams
   // const IUParamsResponse = await fetch('/data/iu-params/AGO02107.csv')
   let reader = IUParamsResponse.body.getReader()

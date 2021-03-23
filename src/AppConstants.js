@@ -107,6 +107,10 @@ const DISEASE_CONFIG = {
 
 };
 
+const CLOUD_INFO = {
+  cloud_storage_path_root: 'https://storage.googleapis.com/ntd-disease-simulator-data'
+};
+
 const NO_DATA = '[no data]';
 
 const AppConstants = {
@@ -135,6 +139,7 @@ export {
 
   DISEASE_CONFIG,
   DISEASE_LABELS,
+  CLOUD_INFO,
 
   NO_DATA
 };

@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
 import { generateMdaFutureFromScenarioSettings } from 'pages/components/simulator/helpers/iuLoader';
 import { csv } from 'd3';
-import { DISEASE_TRACHOMA } from 'AppConstants';
+import { DISEASE_TRACHOMA, CLOUD_INFO } from 'AppConstants';
 
 // convert '02-2020' to 20.16666666666666666
 const convertDateIndex = ( key ) => {
@@ -171,11 +171,9 @@ export default {
 	 *	/diseases/trachoma/data/group-103/coverage-0.6/mdatype-12/103-0.6-12-202001.csv
 	 *	/diseases/trachoma/data/group-103/coverage-0.6/mdatype-12/103-0.6-12-202101-summary.json
 	 */
-    const storagePath = `https://storage.googleapis.com/ntd-disease-simulator-data`;
+    const storagePath = CLOUD_INFO.cloud_storage_path_root;
     const groupUrlPath = `${storagePath}/diseases/trachoma/data/group-${group}`;
     const mdaUrlPath = `${groupUrlPath}/coverage-${coverage}/mdatype-${scenarioData.settings.mdaSixMonths}`;
-
-
 
     const historicalDataUrl = `${groupUrlPath}/${group}-historical-prevalence.csv`;
     const historicalSummaryUrl = `${groupUrlPath}/${group}-historical-prevalence-summary.json`;

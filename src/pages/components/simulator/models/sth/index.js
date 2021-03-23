@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
 import { generateMdaFutureFromScenarioSettings } from 'pages/components/simulator/helpers/iuLoader';
 import { csv } from 'd3';
-import { DISEASE_STH_ROUNDWORM, DISEASE_STH_WHIPWORM, DISEASE_STH_HOOKWORM, DISEASE_SCH_MANSONI } from 'AppConstants';
+import { DISEASE_STH_ROUNDWORM, DISEASE_STH_WHIPWORM, DISEASE_STH_HOOKWORM, DISEASE_SCH_MANSONI, CLOUD_INFO } from 'AppConstants';
 import sha256 from 'fast-sha256';
 import nacl from 'tweetnacl-util'
 
@@ -269,7 +269,7 @@ export default {
      * containing the data file URLs, created by a
      * previous run of the same scenario/params
      */
-    const storagePath = `https://storage.googleapis.com/ntd-disease-simulator-data`;
+    const storagePath = CLOUD_INFO.cloud_storage_path_root;
     const diseasePrefix = {
       [ DISEASE_STH_ROUNDWORM ]: 'Asc',
       [ DISEASE_STH_WHIPWORM ]: 'Tri',
