@@ -62,7 +62,7 @@ const useStyles = makeStyles(theme => ({
     '&.icon-sth-whipworm': {
       backgroundImage: `url(${ico4})`,
     },
-    '&.icon-mansoni': {
+    '&.icon-sch-mansoni': {
       backgroundImage: `url(${ico2})`,
     },
     '&.icon-sth-hookworm': {

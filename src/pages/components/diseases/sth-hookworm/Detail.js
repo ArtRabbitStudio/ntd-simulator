@@ -3,11 +3,10 @@ import DetailWrap from '../Detail'
 import { useTranslation } from "react-i18next";
 import TextContents from 'pages/components/TextContents'
 import RightPartComponent from '../RightPartComponent'
-
 import Typography from '@material-ui/core/Typography';
-import { DISEASE_LIMF } from 'AppConstants'
+import { DISEASE_STH_HOOKWORM } from 'AppConstants'
 
-export default function DetaiLF(props) {
+export default function DetaiHW(props) {
   const { t, i18n } = useTranslation();
 
   const leftPart = (
@@ -37,23 +36,23 @@ export default function DetaiLF(props) {
         headline="Modelling Lymphatic filariasis"
         text="Calculate predictions based on the model, start by"
         buttons={[
-          { text: "Selecting a country", url: `/${DISEASE_LIMF}` },
+          { text: "Selecting a country", url: `/${DISEASE_STH_HOOKWORM}` },
         ]}
       />
 
       <RightPartComponent
         headline="Get involved"
         buttons={[
-          { text: "Modelling paper", url: `/${DISEASE_LIMF}` },
-          { text: "Model code on github", url: `/${DISEASE_LIMF}` },
+          { text: "Modelling paper", url: `/${DISEASE_STH_HOOKWORM}` },
+          { text: "Model code on github", url: `/${DISEASE_STH_HOOKWORM}` },
         ]}
       />
 
       <RightPartComponent
         headline="Help us improve"
         buttons={[
-          { text: "Help us improve", url: `/${DISEASE_LIMF}` },
-          { text: "Report a problem", url: `/${DISEASE_LIMF}` },
+          { text: "Help us improve", url: `/${DISEASE_STH_HOOKWORM}` },
+          { text: "Report a problem", url: `/${DISEASE_STH_HOOKWORM}` },
         ]}
       />
 
@@ -62,7 +61,7 @@ export default function DetaiLF(props) {
 
   return (
 
-    <DetailWrap disease={DISEASE_LIMF} leftPart={leftPart} rightPart={rightPart} />
+    <DetailWrap disease={DISEASE_STH_HOOKWORM} leftPart={leftPart} rightPart={rightPart} />
 
   )
 }

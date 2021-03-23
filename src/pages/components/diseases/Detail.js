@@ -1,7 +1,7 @@
 import React from 'react'
 import { Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import ArrowButton from '../ArrowButton'
+import CapsHeadline from '../CapsHeadline'
 
 import { useTranslation } from "react-i18next";
 import {
@@ -18,38 +18,20 @@ import ico6 from 'images/sth-hookworm-icon.svg';
 const useStyles = makeStyles(theme => ({
   section: {
     position: "relative",
-    backgroundColor: theme.palette.secondary.light,
-    background: "linear-gradient(to bottom,  rgba(232,234,235,1) 0%,rgba(249,249,249,01) 100%)",
-    width: `calc(100% + ${theme.spacing(12)}px)`,
-    margin: theme.spacing(12, 0, 0, -6),
-    padding: theme.spacing(4, 6, 6, 6),
+    margin: theme.spacing(4, 0, 4, 0),
+    padding: theme.spacing(0),
   },
-  marginBottom: {
-    marginBottom: theme.spacing(2)
-  },
-  headlinesWrap: {
-    position: "relative",
-    display: "flex",
-    flexDirection: "row",
-    flexWrap: "wrap",
-    alignItems: "center",
-    margin: theme.spacing(0, 0, 4, 0),
-
-  },
-  btn: {
-    flexBasis: "20%",
-    textAlign: "right"
-  },
-  headlines: {
-    position: "relative",
-    zIndex: 2,
-    flexBasis: "80%",
-    padding: theme.spacing(2, 4, 2, 12),
+  withIcon: {
+    padding: theme.spacing(0, 12, 0, 0),
+    margin: theme.spacing(-1, 0, 2, 0),
     backgroundColor: 'transparent',
     backgroundRepeat: 'no-repeat',
-    backgroundPosition: 'left center',
+    backgroundPosition: 'right center',
     backgroundSize: "75px 75px",
-    minHeight: 85,
+    minHeight: "75px",
+    lineHeight: "75px",
+    display: "inline-block",
+
     '&.icon-lf': {
       backgroundImage: `url(${ico1})`,
     },
@@ -69,9 +51,27 @@ const useStyles = makeStyles(theme => ({
       backgroundImage: `url(${ico6})`,
     }
   },
+  rightPart: {
+    flexBasis: "320px",
+    backgroundColor: theme.palette.secondary.light,
+    padding: theme.spacing(4, 2),
+
+  },
+  leftPart: {
+    flexBasis: "calc(100% - 320px)",
+    padding: theme.spacing(4, 8, 2, 0),
+
+  },
   headline: {
     margin: theme.spacing(0, 0),
-  }
+  },
+  wrap: {
+    position: "relative",
+    display: "flex",
+    flexDirection: "row",
+    flexWrap: "nowrap",
+
+  },
 }));
 
 
@@ -84,8 +84,20 @@ export default function DetailWrap(props) {
 
     <section className={`${classes.section} icon-${disease}`} >
 
-      {leftPart}
-      {rightPart}
+      <CapsHeadline text={t("DiseaseOverview")} />
+      <div>
+        <Typography gutterBottom variant="h1" className={`${classes.withIcon} icon-${disease}`}>{DISEASE_LABELS[disease]}</Typography>
+      </div>
+
+      <div className={classes.wrap}>
+        <div className={classes.leftPart}>
+          {leftPart}
+        </div>
+
+        <div className={classes.rightPart}>
+          {rightPart}
+        </div>
+      </div>
 
     </section>
 

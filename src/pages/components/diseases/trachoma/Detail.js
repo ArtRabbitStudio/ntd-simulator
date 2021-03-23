@@ -2,14 +2,16 @@ import React from 'react'
 import DetailWrap from '../Detail'
 import { useTranslation } from "react-i18next";
 import TextContents from 'pages/components/TextContents'
+import RightPartComponent from '../RightPartComponent'
 import Typography from '@material-ui/core/Typography';
+import { DISEASE_TRACHOMA } from 'AppConstants'
 
 export default function DetailTrachoma(props) {
   const { t, i18n } = useTranslation();
 
   const leftPart = (
     <TextContents>
-      <Typography gutterBottom variant="h2">About Lymphatic filariasis</Typography>
+      <Typography gutterBottom variant="h3" component="h2">About Lymphatic filariasis</Typography>
       <Typography paragraph variant="body1" component="p">
         Lymphatic filariasis is due to filarial parasites which are transmitted to humans through mosquitoes.
       </Typography>
@@ -28,12 +30,38 @@ export default function DetailTrachoma(props) {
   )
 
   const rightPart = (
-    <p>About Lymphatic filariasis</p>
+    <React.Fragment>
+
+      <RightPartComponent
+        headline="Modelling Lymphatic filariasis"
+        text="Calculate predictions based on the model, start by"
+        buttons={[
+          { text: "Selecting a country", url: `/${DISEASE_TRACHOMA}` },
+        ]}
+      />
+
+      <RightPartComponent
+        headline="Get involved"
+        buttons={[
+          { text: "Modelling paper", url: `/${DISEASE_TRACHOMA}` },
+          { text: "Model code on github", url: `/${DISEASE_TRACHOMA}` },
+        ]}
+      />
+
+      <RightPartComponent
+        headline="Help us improve"
+        buttons={[
+          { text: "Help us improve", url: `/${DISEASE_TRACHOMA}` },
+          { text: "Report a problem", url: `/${DISEASE_TRACHOMA}` },
+        ]}
+      />
+
+    </React.Fragment>
   )
 
   return (
 
-    <DetailWrap leftPart={leftPart} rightPart={rightPart} />
+    <DetailWrap disease={DISEASE_TRACHOMA} leftPart={leftPart} rightPart={rightPart} />
 
   )
 }
