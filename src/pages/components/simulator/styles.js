@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     justifyContent: "flex-end",
     flexWrap: "nowrap",
-    '& h6': {
+    '& h6:not(.closer)': {
       margin: theme.spacing(0, 2, 0, 0),
     },
     [theme.breakpoints.up('md')]: {
@@ -54,7 +54,6 @@ const useStyles = makeStyles((theme) => ({
       //margin: theme.spacing(-2, 0, -2, 0),
     }
   },
-
   centerControls: {
     display: "flex",
     alignItems: "center",
@@ -66,6 +65,10 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up('md')]: {
       //margin: theme.spacing(-2, 0, -2, 0),
     }
+  },
+  controlsRow: {
+    padding: theme.spacing(1, 0),
+    borderBottom: "1px solid #e0e0e0",
   },
   caps: {
     textTransform: "uppercase",
@@ -159,6 +162,44 @@ const useStyles = makeStyles((theme) => ({
       },
     },
   },
+  printIcon: {
+    backgroundColor: "transparent",
+    boxShadow: "none",
+    zIndex: 9,
+
+    "& .MuiTouchRipple-root": {
+      backgroundImage: `url(${RemoveIcon})`,
+      backgroundPosition: "center",
+      backgroundSize: "auto",
+      backgroundRepeat: "no-repeat",
+    },
+    "&:hover": {
+      backgroundColor: "rgb(204, 232, 244)",
+      "& .MuiTouchRipple-root": {
+        //backgroundImage: `url(${IconHover})`,
+      },
+    },
+  },
+  downloadIcon: {
+    backgroundColor: "transparent",
+    boxShadow: "none",
+    zIndex: 9,
+
+    "& .MuiTouchRipple-root": {
+      backgroundImage: `url(${RemoveIcon})`,
+      backgroundPosition: "center",
+      backgroundSize: "auto",
+      backgroundRepeat: "no-repeat",
+    },
+    "&:hover": {
+      backgroundColor: "rgb(204, 232, 244)",
+      "& .MuiTouchRipple-root": {
+        //backgroundImage: `url(${IconHover})`,
+      },
+    },
+  },
+
+
   graphTypeIconSimple: {
     backgroundColor: "transparent",
     boxShadow: "none",
@@ -228,6 +269,7 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(0, 6),
     borderBottom: "1px solid #e0e0e0",
   },
+
   chartContainer: {
     position: "relative",
     width: "100%",
@@ -235,7 +277,7 @@ const useStyles = makeStyles((theme) => ({
   },
   chartTitle: {
     display: "block",
-    float: "left"
+    margin: theme.spacing(0, 2, 0, 0),
   },
   precision: {
   },

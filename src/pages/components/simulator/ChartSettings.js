@@ -47,7 +47,6 @@ const useStyles = makeStyles(theme => ({
   icon: {
     backgroundColor: "transparent",
     boxShadow: 'none',
-    marginRight: 10,
     '& .MuiTouchRipple-root': {
       backgroundImage: `url(${Icon})`,
       backgroundPosition: 'center',

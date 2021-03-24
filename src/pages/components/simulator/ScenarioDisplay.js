@@ -119,8 +119,8 @@ const ScenarioDisplay = (props) => {
 
       <div className={classes.simulatorInnerBody}>
 
-        <Grid container spacing={0}>
-          <Grid item md={6} xs={12}>
+        <Grid container spacing={0} className={classes.controlsRow}>
+          <Grid item md={6} xs={12} className={classes.leftControls}>
             <Typography
               className={classes.chartTitle}
               variant="h3"
@@ -128,14 +128,34 @@ const ScenarioDisplay = (props) => {
             >
               {scenarioData.label}
             </Typography>
+
+            <Fab
+              color="inherit"
+              aria-label="DOWNLOAD SCENARIO"
+              disabled={props.simInProgress || props.scenarioKeys.length === 0}
+              className={classes.downloadIcon}
+              onClick={() => alert('todo')}
+            >
+              &nbsp;
+              </Fab>
+
+            <Fab
+              color="inherit"
+              aria-label="PRINT SCENARIO"
+              disabled={props.simInProgress || props.scenarioKeys.length === 0}
+              className={classes.printIcon}
+              onClick={() => alert('todo')}
+            >
+              &nbsp;
+              </Fab>
           </Grid>
 
           <Grid item md={6} xs={12} className={classes.rightControls}>
 
 
-            <Typography className={classes.caps} variant="h6" component="h6">
+            <Typography className={`${classes.caps} closer`} variant="h6" component="h6">
               Settings
-              </Typography>
+            </Typography>
 
             <ChartSettings
               title={t('editScenario')}
@@ -282,8 +302,8 @@ const ScenarioDisplay = (props) => {
 
           </Grid>
         </Grid>
-        <Grid container spacing={0} className={classes.leftControls}>
-          <Grid item md={4} xs={12}>
+        <Grid container spacing={0} className={classes.controlsRow}>
+          <Grid item md={4} xs={12} className={classes.leftControls}>
 
             {((disease === AppConstants.DISEASE_TRACHOMA) || (disease === AppConstants.DISEASE_LIMF || STH)) &&
               <SettingPrecision
