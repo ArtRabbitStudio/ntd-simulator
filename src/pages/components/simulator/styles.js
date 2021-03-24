@@ -30,9 +30,48 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(0, 0, -1, 0),
   },
   rightControls: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "flex-end",
+    flexWrap: "nowrap",
+    '& h6': {
+      margin: theme.spacing(0, 2, 0, 0),
+    },
     [theme.breakpoints.up('md')]: {
-      margin: theme.spacing(-2, 0, -2, 0),
+      //margin: theme.spacing(-2, 0, -2, 0),
     }
+  },
+
+  leftControls: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "flex-start",
+    flexWrap: "nowrap",
+    '& h6': {
+      margin: theme.spacing(0, 2, 0, 0),
+    },
+    [theme.breakpoints.up('md')]: {
+      //margin: theme.spacing(-2, 0, -2, 0),
+    }
+  },
+
+  centerControls: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    flexWrap: "nowrap",
+    '& h6': {
+      margin: theme.spacing(0, 2, 0, 0),
+    },
+    [theme.breakpoints.up('md')]: {
+      //margin: theme.spacing(-2, 0, -2, 0),
+    }
+  },
+  caps: {
+    textTransform: "uppercase",
+    fontSize: 14,
+    letterSpacing: 1,
+    display: "inline-flex"
   },
   formControlPrecision: {
     display: "block",
@@ -105,7 +144,6 @@ const useStyles = makeStyles((theme) => ({
   removeIcon: {
     backgroundColor: "transparent",
     boxShadow: "none",
-    float: 'right',
     zIndex: 9,
 
     "& .MuiTouchRipple-root": {
@@ -124,8 +162,6 @@ const useStyles = makeStyles((theme) => ({
   graphTypeIconSimple: {
     backgroundColor: "transparent",
     boxShadow: "none",
-    float: 'right',
-    marginTop: -25,
     marginLeft: 10,
     zIndex: 9,
 
@@ -145,8 +181,6 @@ const useStyles = makeStyles((theme) => ({
   graphTypeIconComplex: {
     backgroundColor: "transparent",
     boxShadow: "none",
-    float: 'right',
-    marginTop: -25,
     marginLeft: 10,
     zIndex: 9,
 

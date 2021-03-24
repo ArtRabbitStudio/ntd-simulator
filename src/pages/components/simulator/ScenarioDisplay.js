@@ -128,8 +128,164 @@ const ScenarioDisplay = (props) => {
             >
               {scenarioData.label}
             </Typography>
+          </Grid>
 
-            {(disease === AppConstants.DISEASE_LIMF || STH) &&
+          <Grid item md={6} xs={12} className={classes.rightControls}>
+
+
+            <Typography className={classes.caps} variant="h6" component="h6">
+              Settings
+              </Typography>
+
+            <ChartSettings
+              title={t('editScenario')}
+              buttonText={t('updateScenario')}
+              cancelText={t('cancelChanges')}
+              cancel={props.resetCurrentScenario}
+              action={props.runCurrentScenario}
+              hideFab={false}
+            >
+              <TextContents>
+                <Typography paragraph variant="body1" component="p">
+                  {t('simulate')}
+                </Typography>
+              </TextContents>
+
+              <SettingName
+                inModal={true}
+                label={t('scenarioName')}
+                scenarioId={scenarioId}
+                scenarioLabel={scenarioData.label}
+              />
+
+              {disease === AppConstants.DISEASE_LIMF &&
+                <SettingBedNetCoverage
+                  inModal={true}
+                  label={t('bedNetCoverage')}
+                />
+              }
+
+              <SettingFrequency inModal={true} label={t('treatmentFrequency')} disease={disease} />
+
+              {disease === AppConstants.DISEASE_LIMF &&
+                <SettingDrugRegimen inModal={true} label={t('drugRegimen')} />
+              }
+
+              {disease === AppConstants.DISEASE_LIMF &&
+                <SettingTargetCoverage
+                  scenarioId={scenarioData.id}
+                  inModal={true}
+                  label={t('treatmentTargetCoverage')}
+                />
+              }
+              {disease === AppConstants.DISEASE_TRACHOMA &&
+                <SettingTargetCoverage
+                  inModal={true}
+                  scenarioId={scenarioData.id}
+                  min={60}
+                  max={90}
+                  step={10}
+                  label={t('treatmentTargetCoverage')}
+                />
+              }
+
+              {STH &&
+                <Fragment>
+                  <SettingTargetCoverage
+                    scenarioId={scenarioData.id}
+                    inModal={true}
+                    label={t('MDACoverageInfants')}
+                    min={0}
+                    max={100}
+                    step={5}
+                    valueKey="coverageInfants"
+                    title={t('InfantsTitle')}
+                  />
+
+                  <SettingTargetCoverage
+                    scenarioId={scenarioData.id}
+                    inModal={true}
+                    label={t('MDACoveragePreschool')}
+                    min={0}
+                    max={100}
+                    step={5}
+                    valueKey="coveragePreSAC"
+                    title={t('PreschoolTitle')}
+                  />
+
+                  <SettingTargetCoverage
+                    scenarioId={scenarioData.id}
+                    inModal={true}
+                    label={t('MDACoverageSchoolAge')}
+                    min={0}
+                    max={100}
+                    step={5}
+                    valueKey="coverageSAC"
+                    title={t('SchoolAgeTitle')}
+                  />
+
+                  <SettingTargetCoverage
+                    scenarioId={scenarioData.id}
+                    inModal={true}
+                    label={t('MDACoverageAdults')}
+                    min={0}
+                    max={100}
+                    step={5}
+                    valueKey="coverageAdults"
+                    title={t('AdultsTitle')}
+                  />
+                </Fragment>
+
+
+              }
+
+              {disease === AppConstants.DISEASE_LIMF &&
+                <SettingSystematicAdherence
+                  inModal={true}
+                  label={t('systematicAdherence')}
+                />
+              }
+
+              {disease === AppConstants.DISEASE_LIMF &&
+                <SettingInsecticideCoverage
+                  inModal={true}
+                  label={t('insecticideCoverage')}
+                />
+              }
+
+              {disease === AppConstants.DISEASE_LIMF &&
+                <SettingMosquitoType
+                  inModal={true}
+                  label={t('mosquitoType')}
+                />
+              }
+
+              <TextContents>
+                <Typography paragraph variant="body1" component="p">
+                  {t('specific')} {scenarioState.scenarioData[scenarioState.currentScenarioId].specificPredictionIndex}
+                </Typography>
+              </TextContents>
+
+              <SettingSpecificScenario inModal={true} />
+
+            </ChartSettings>
+
+            <Fab
+              color="inherit"
+              aria-label="REMOVE SCENARIO"
+              disabled={props.simInProgress || props.scenarioKeys.length === 0}
+              className={classes.removeIcon}
+              onClick={props.confirmRemoveCurrentScenario}
+            >
+              &nbsp;
+              </Fab>
+
+          </Grid>
+        </Grid>
+        <Grid container spacing={0} className={classes.leftControls}>
+          <Grid item md={4} xs={12}>
+
+            {((disease === AppConstants.DISEASE_TRACHOMA) || (disease === AppConstants.DISEASE_LIMF || STH)) &&
               <SettingPrecision
                 classAdd={classes.precision}
                 inModal={true}
@@ -139,168 +295,35 @@ const ScenarioDisplay = (props) => {
                 graphTypeSimple={graphTypeSimpleLocal}
                 showDialog={setshowPrecisionConfirmation}
               />
-            }
-            {disease === AppConstants.DISEASE_TRACHOMA &&
-              <SettingPrecision
-                classAdd={classes.precision}
-                inModal={true}
-                label={t('precision')}
-                showPrecisionSlider={false}
-                setGraphTypeSimple={handleGraphTypeChange}
-                graphTypeSimple={graphTypeSimpleLocal}
-                showDialog={setshowPrecisionConfirmation}
-              />
-            }
 
+            }
+          </Grid>
+          <Grid item md={4} xs={12} className={classes.centerControls}>
+            {((disease === AppConstants.DISEASE_TRACHOMA) || (disease === AppConstants.DISEASE_LIMF || STH)) &&
+              <React.Fragment>
+                <Fab
+                  color="inherit"
+                  aria-label="SET GRAPH TYPE"
+                  disabled={false}
+                  className={graphTypeSimpleLocal ? classes.graphTypeIconSimple : classes.graphTypeIconComplex}
+                  onClick={handleGraphTypeChange}
+                >
+                </Fab>
+                <Typography className={classes.caps} variant="h6" component="h6">
+                  {t('ShowAllRuns')}
+                </Typography>
+              </React.Fragment>
+            }
           </Grid>
 
-          <Grid item md={6} xs={12}>
-
-            <div className={classes.rightControls}>
-              <Fab
-                color="inherit"
-                aria-label="REMOVE SCENARIO"
-                disabled={props.simInProgress || props.scenarioKeys.length === 0}
-                className={classes.removeIcon}
-                onClick={props.confirmRemoveCurrentScenario}
-              >
-                &nbsp;
-              </Fab>
-
-              <ChartSettings
-                title={t('editScenario')}
-                buttonText={t('updateScenario')}
-                cancelText={t('cancelChanges')}
-                cancel={props.resetCurrentScenario}
-                action={props.runCurrentScenario}
-                hideFab={false}
-              >
-                <TextContents>
-                  <Typography paragraph variant="body1" component="p">
-                    {t('simulate')}
-                  </Typography>
-                </TextContents>
-
-                <SettingName
-                  inModal={true}
-                  label={t('scenarioName')}
-                  scenarioId={scenarioId}
-                  scenarioLabel={scenarioData.label}
-                />
-
-                {disease === AppConstants.DISEASE_LIMF &&
-                  <SettingBedNetCoverage
-                    inModal={true}
-                    label={t('bedNetCoverage')}
-                  />
-                }
-
-                <SettingFrequency inModal={true} label={t('treatmentFrequency')} disease={disease} />
-
-                {disease === AppConstants.DISEASE_LIMF &&
-                  <SettingDrugRegimen inModal={true} label={t('drugRegimen')} />
-                }
-
-                {disease === AppConstants.DISEASE_LIMF &&
-                  <SettingTargetCoverage
-                    scenarioId={scenarioData.id}
-                    inModal={true}
-                    label={t('treatmentTargetCoverage')}
-                  />
-                }
-                {disease === AppConstants.DISEASE_TRACHOMA &&
-                  <SettingTargetCoverage
-                    inModal={true}
-                    scenarioId={scenarioData.id}
-                    min={60}
-                    max={90}
-                    step={10}
-                    label={t('treatmentTargetCoverage')}
-                  />
-                }
-
-                {STH &&
-                  <Fragment>
-                    <SettingTargetCoverage
-                      scenarioId={scenarioData.id}
-                      inModal={true}
-                      label={t('MDACoverageInfants')}
-                      min={0}
-                      max={100}
-                      step={5}
-                      valueKey="coverageInfants"
-                      title={t('InfantsTitle')}
-                    />
-
-                    <SettingTargetCoverage
-                      scenarioId={scenarioData.id}
-                      inModal={true}
-                      label={t('MDACoveragePreschool')}
-                      min={0}
-                      max={100}
-                      step={5}
-                      valueKey="coveragePreSAC"
-                      title={t('PreschoolTitle')}
-                    />
-
-                    <SettingTargetCoverage
-                      scenarioId={scenarioData.id}
-                      inModal={true}
-                      label={t('MDACoverageSchoolAge')}
-                      min={0}
-                      max={100}
-                      step={5}
-                      valueKey="coverageSAC"
-                      title={t('SchoolAgeTitle')}
-                    />
-
-                    <SettingTargetCoverage
-                      scenarioId={scenarioData.id}
-                      inModal={true}
-                      label={t('MDACoverageAdults')}
-                      min={0}
-                      max={100}
-                      step={5}
-                      valueKey="coverageAdults"
-                      title={t('AdultsTitle')}
-                    />
-                  </Fragment>
+          <Grid item md={4} xs={12} className={classes.rightControls}>
 
 
-                }
-
-                {disease === AppConstants.DISEASE_LIMF &&
-                  <SettingSystematicAdherence
-                    inModal={true}
-                    label={t('systematicAdherence')}
-                  />
-                }
-
-                {disease === AppConstants.DISEASE_LIMF &&
-                  <SettingInsecticideCoverage
-                    inModal={true}
-                    label={t('insecticideCoverage')}
-                  />
-                }
-
-                {disease === AppConstants.DISEASE_LIMF &&
-                  <SettingMosquitoType
-                    inModal={true}
-                    label={t('mosquitoType')}
-                  />
-                }
-
-                <TextContents>
-                  <Typography paragraph variant="body1" component="p">
-                    {t('specific')} {scenarioState.scenarioData[scenarioState.currentScenarioId].specificPredictionIndex}
-                  </Typography>
-                </TextContents>
-
-                <SettingSpecificScenario inModal={true} />
-
-              </ChartSettings>
-
-              {disease === AppConstants.DISEASE_LIMF && (
+            {disease === AppConstants.DISEASE_LIMF && (
+              <React.Fragment>
+                <Typography className={classes.caps} variant="h6" component="h6">
+                  {t('Show')}
+                </Typography>
                 <FormControl
                   variant="outlined"
                   className={`${classes.formControlPrevalence} ${classes.metricSelector}`}
@@ -319,8 +342,13 @@ const ScenarioDisplay = (props) => {
                     <MenuItem value={"Ws"}>{t('prevalence3')}</MenuItem>
                   </Select>
                 </FormControl>
-              )}
-              {STH && (
+              </React.Fragment>
+            )}
+            {STH && (
+              <React.Fragment>
+                <Typography className={classes.caps} variant="h6" component="h6">
+                  {t('Show')}
+                </Typography>
                 <FormControl
                   variant="outlined"
                   className={`${classes.formControlPrevalence} ${classes.metricSelector}`}
@@ -338,8 +366,8 @@ const ScenarioDisplay = (props) => {
                     <MenuItem value={"MHI"}>{t('prevalence5')}</MenuItem>
                   </Select>
                 </FormControl>
-              )}
-            </div>
+              </React.Fragment>
+            )}
           </Grid>
         </Grid>
 
