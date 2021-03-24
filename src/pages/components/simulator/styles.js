@@ -3,11 +3,12 @@ import Random from "images/systemic-random.svg";
 import Same from "images/systemic-same.svg";
 import Anopheles from "images/Anopheles.jpg";
 import Culex from "images/Culex.jpg";
-import InfoIcon from "images/info-24-px.svg";
+import InfoIcon from "images/info.svg";
 import RemoveIcon from "images/delete-icon-blue.svg";
 import graphTypeIconSimple from "images/graph-icon.svg";
 import graphTypeIconComplex from "images/graph-complex-icon.svg";
 import SettingsIcon from 'images/settings.svg';
+import AddIcon from 'images/add.svg';
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -66,6 +67,22 @@ const useStyles = makeStyles((theme) => ({
       transform: 'translate(-200px, 0)'
     }
   },
+  addScenario: {
+    '& .MuiTab-wrapper': {
+      backgroundImage: `url(${AddIcon})`,
+      backgroundPosition: 'right center',
+      backgroundSize: 'auto',
+      backgroundRepeat: 'no-repeat',
+      paddingRight: 30,
+    },
+    '&:hover': {
+      backgroundColor: "rgb(204, 232, 244)",
+      '& .MuiTab-wrapper': {
+        //backgroundImage: `url(${IconHover})`,
+
+      }
+    }
+  },
 
   contentLeftColumn: {},
   settingsIcon: {
@@ -108,7 +125,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "transparent",
     boxShadow: "none",
     float: 'right',
-    marginTop:-25,
+    marginTop: -25,
     marginLeft: 10,
     zIndex: 9,
 
@@ -129,7 +146,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "transparent",
     boxShadow: "none",
     float: 'right',
-    marginTop:-25,
+    marginTop: -25,
     marginLeft: 10,
     zIndex: 9,
 
@@ -216,17 +233,17 @@ const useStyles = makeStyles((theme) => ({
     transform: "translate(-50%, 0%)",
   },
   legend: {
-    float:'left',
-    width:30,
-    height:110,
+    float: 'left',
+    width: 30,
+    height: 110,
 
   },
   legendText: {
-    fontSize:12,
+    fontSize: 12,
     textAlign: 'right'
   },
   legendTextBottom: {
-    marginTop:90
+    marginTop: 90
   },
   buttonBG: {
     backgroundColor: "#fff"
@@ -337,6 +354,8 @@ const useStyles = makeStyles((theme) => ({
     whiteSpace: "nowrap",
     marginBottom: -40,
     marginTop: 10,
+    position: "relative",
+    zIndex: 5,
     '& h6': {
       display: 'inline-block'
     }

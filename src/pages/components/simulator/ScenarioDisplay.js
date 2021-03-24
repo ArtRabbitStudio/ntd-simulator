@@ -68,15 +68,15 @@ TabPanel.propTypes = {
 }
 
 const ScenarioDisplay = (props) => {
-const { t, i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
   const classes = useStyles();
   const { disease } = useUIState();
 
-  const defaultMetric = AppConstants.DISEASE_CONFIG[ disease ] ? AppConstants.DISEASE_CONFIG[ disease ].defaultMetric : 'Ms'
+  const defaultMetric = AppConstants.DISEASE_CONFIG[disease] ? AppConstants.DISEASE_CONFIG[disease].defaultMetric : 'Ms'
 
-  const [ graphMetric, setGraphMetric ] = useState( defaultMetric )
-  const [ graphTypeSimpleLocal, setGraphTypeSimpleLocal ] = useState(true)
-  const [ showPrecisionConfirmation, setshowPrecisionConfirmation ] = useState(false)
+  const [graphMetric, setGraphMetric] = useState(defaultMetric)
+  const [graphTypeSimpleLocal, setGraphTypeSimpleLocal] = useState(true)
+  const [showPrecisionConfirmation, setshowPrecisionConfirmation] = useState(false)
   const handleGraphTypeChange = () => {
     if (graphTypeSimpleLocal) {
       setGraphTypeSimpleLocal(false)
@@ -90,15 +90,15 @@ const { t, i18n } = useTranslation();
   const { implementationUnit } = useUIState();
   const { selectedIUData } = useDataAPI();
 
-  
-  const diseaseModel = DiseaseModels[ disease ];
+
+  const diseaseModel = DiseaseModels[disease];
 
   // 2nd-arg empty array makes this a componentDidMount equivalent - only re-run if {nothing} changes
   useEffect(
 
     () => {
-      if ( diseaseModel && diseaseModel.documentReady ) {
-        console.log( `ScenarioDisplay calling diseaseModel.documentReady for disease ${disease}` );
+      if (diseaseModel && diseaseModel.documentReady) {
+        console.log(`ScenarioDisplay calling diseaseModel.documentReady for disease ${disease}`);
         diseaseModel.documentReady();
       }
     },
@@ -110,8 +110,8 @@ const { t, i18n } = useTranslation();
 
 
   const scenarioId = scenarioState.currentScenarioId;
-  const scenarioData = scenarioState.scenarioData[ scenarioId ];
-  const STH = ( ! [ AppConstants.DISEASE_LIMF, AppConstants.DISEASE_TRACHOMA ].includes( disease ) );
+  const scenarioData = scenarioState.scenarioData[scenarioId];
+  const STH = (![AppConstants.DISEASE_LIMF, AppConstants.DISEASE_TRACHOMA].includes(disease));
 
   const scenarioDisplay = scenarioData ? (
 
@@ -129,7 +129,7 @@ const { t, i18n } = useTranslation();
               {scenarioData.label}
             </Typography>
 
-            { (disease === AppConstants.DISEASE_LIMF || STH ) &&
+            {(disease === AppConstants.DISEASE_LIMF || STH) &&
               <SettingPrecision
                 classAdd={classes.precision}
                 inModal={true}
@@ -140,7 +140,7 @@ const { t, i18n } = useTranslation();
                 showDialog={setshowPrecisionConfirmation}
               />
             }
-            { disease === AppConstants.DISEASE_TRACHOMA &&
+            {disease === AppConstants.DISEASE_TRACHOMA &&
               <SettingPrecision
                 classAdd={classes.precision}
                 inModal={true}
@@ -185,10 +185,10 @@ const { t, i18n } = useTranslation();
                   inModal={true}
                   label={t('scenarioName')}
                   scenarioId={scenarioId}
-                  scenarioLabel={ scenarioData.label }
+                  scenarioLabel={scenarioData.label}
                 />
 
-                { disease === AppConstants.DISEASE_LIMF &&
+                {disease === AppConstants.DISEASE_LIMF &&
                   <SettingBedNetCoverage
                     inModal={true}
                     label={t('bedNetCoverage')}
@@ -197,21 +197,21 @@ const { t, i18n } = useTranslation();
 
                 <SettingFrequency inModal={true} label={t('treatmentFrequency')} disease={disease} />
 
-                { disease === AppConstants.DISEASE_LIMF &&
+                {disease === AppConstants.DISEASE_LIMF &&
                   <SettingDrugRegimen inModal={true} label={t('drugRegimen')} />
                 }
 
-                { disease === AppConstants.DISEASE_LIMF &&
+                {disease === AppConstants.DISEASE_LIMF &&
                   <SettingTargetCoverage
-                    scenarioId={ scenarioData.id }
+                    scenarioId={scenarioData.id}
                     inModal={true}
                     label={t('treatmentTargetCoverage')}
                   />
                 }
-                { disease === AppConstants.DISEASE_TRACHOMA &&
+                {disease === AppConstants.DISEASE_TRACHOMA &&
                   <SettingTargetCoverage
                     inModal={true}
-                    scenarioId={ scenarioData.id }
+                    scenarioId={scenarioData.id}
                     min={60}
                     max={90}
                     step={10}
@@ -219,71 +219,71 @@ const { t, i18n } = useTranslation();
                   />
                 }
 
-                { STH &&
-                <Fragment>
-                  <SettingTargetCoverage
-                    scenarioId={ scenarioData.id }
-                    inModal={true}
-                    label={t('MDACoverageInfants')}
-                    min={0}
-                    max={100}
-                    step={5}
-                    valueKey="coverageInfants"
-                    title={t('InfantsTitle')}
-                  />
-              
-                  <SettingTargetCoverage
-                    scenarioId={ scenarioData.id }
-                    inModal={true}
-                    label={t('MDACoveragePreschool')}
-                    min={0}
-                    max={100}
-                    step={5}
-                    valueKey="coveragePreSAC"
-                    title={t('PreschoolTitle')}
-                  />
-              
-                  <SettingTargetCoverage
-                    scenarioId={ scenarioData.id }
-                    inModal={true}
-                    label={t('MDACoverageSchoolAge')}
-                    min={0}
-                    max={100}
-                    step={5}
-                    valueKey="coverageSAC"
-                    title={t('SchoolAgeTitle')}
-                  />
-                
-                  <SettingTargetCoverage
-                    scenarioId={ scenarioData.id }
-                    inModal={true}
-                    label={t('MDACoverageAdults')}
-                    min={0}
-                    max={100}
-                    step={5}
-                    valueKey="coverageAdults"
-                    title={t('AdultsTitle')}
-                  />
-                </Fragment>
-                
-                
+                {STH &&
+                  <Fragment>
+                    <SettingTargetCoverage
+                      scenarioId={scenarioData.id}
+                      inModal={true}
+                      label={t('MDACoverageInfants')}
+                      min={0}
+                      max={100}
+                      step={5}
+                      valueKey="coverageInfants"
+                      title={t('InfantsTitle')}
+                    />
+
+                    <SettingTargetCoverage
+                      scenarioId={scenarioData.id}
+                      inModal={true}
+                      label={t('MDACoveragePreschool')}
+                      min={0}
+                      max={100}
+                      step={5}
+                      valueKey="coveragePreSAC"
+                      title={t('PreschoolTitle')}
+                    />
+
+                    <SettingTargetCoverage
+                      scenarioId={scenarioData.id}
+                      inModal={true}
+                      label={t('MDACoverageSchoolAge')}
+                      min={0}
+                      max={100}
+                      step={5}
+                      valueKey="coverageSAC"
+                      title={t('SchoolAgeTitle')}
+                    />
+
+                    <SettingTargetCoverage
+                      scenarioId={scenarioData.id}
+                      inModal={true}
+                      label={t('MDACoverageAdults')}
+                      min={0}
+                      max={100}
+                      step={5}
+                      valueKey="coverageAdults"
+                      title={t('AdultsTitle')}
+                    />
+                  </Fragment>
+
+
                 }
 
-                {disease === AppConstants.DISEASE_LIMF && 
+                {disease === AppConstants.DISEASE_LIMF &&
                   <SettingSystematicAdherence
                     inModal={true}
                     label={t('systematicAdherence')}
                   />
                 }
 
-                { disease === AppConstants.DISEASE_LIMF &&
+                {disease === AppConstants.DISEASE_LIMF &&
                   <SettingInsecticideCoverage
                     inModal={true}
                     label={t('insecticideCoverage')}
                   />
                 }
 
-                { disease === AppConstants.DISEASE_LIMF &&
+                {disease === AppConstants.DISEASE_LIMF &&
                   <SettingMosquitoType
                     inModal={true}
                     label={t('mosquitoType')}
@@ -292,7 +292,7 @@ const { t, i18n } = useTranslation();
 
                 <TextContents>
                   <Typography paragraph variant="body1" component="p">
-                    {t('specific')} { scenarioState.scenarioData[ scenarioState.currentScenarioId ].specificPredictionIndex }
+                    {t('specific')} {scenarioState.scenarioData[scenarioState.currentScenarioId].specificPredictionIndex}
                   </Typography>
                 </TextContents>
 
@@ -300,52 +300,52 @@ const { t, i18n } = useTranslation();
 
               </ChartSettings>
 
-              { disease === AppConstants.DISEASE_LIMF && (
-              <FormControl
-                variant="outlined"
-                className={`${classes.formControlPrevalence} ${classes.metricSelector}`}
-              >
-                <Select
-                  labelId="larvae-prevalence"
-                  id="larvae-prevalence"
-                  value={graphMetric}
-                  MenuProps={{ disablePortal: true }}
-                  onChange={(ev) => {
-                    setGraphMetric(ev.target.value);
-                  }}
+              {disease === AppConstants.DISEASE_LIMF && (
+                <FormControl
+                  variant="outlined"
+                  className={`${classes.formControlPrevalence} ${classes.metricSelector}`}
                 >
-                  <MenuItem value={"Ms"}>{t('prevalence1')}</MenuItem>
-                  <MenuItem value={"Ls"}>{t('prevalence2')}</MenuItem>
-                  <MenuItem value={"Ws"}>{t('prevalence3')}</MenuItem>
-                </Select>
-              </FormControl>
-              ) }
-              { STH && (
-              <FormControl
-                variant="outlined"
-                className={`${classes.formControlPrevalence} ${classes.metricSelector}`}
-              >
-                <Select
-                  labelId="metric"
-                  id="metric"
-                  value={graphMetric}
-                  MenuProps={{ disablePortal: true }}
-                  onChange={(ev) => {
-                    setGraphMetric(ev.target.value);
-                  }}
+                  <Select
+                    labelId="larvae-prevalence"
+                    id="larvae-prevalence"
+                    value={graphMetric}
+                    MenuProps={{ disablePortal: true }}
+                    onChange={(ev) => {
+                      setGraphMetric(ev.target.value);
+                    }}
+                  >
+                    <MenuItem value={"Ms"}>{t('prevalence1')}</MenuItem>
+                    <MenuItem value={"Ls"}>{t('prevalence2')}</MenuItem>
+                    <MenuItem value={"Ws"}>{t('prevalence3')}</MenuItem>
+                  </Select>
+                </FormControl>
+              )}
+              {STH && (
+                <FormControl
+                  variant="outlined"
+                  className={`${classes.formControlPrevalence} ${classes.metricSelector}`}
                 >
-                  <MenuItem value={"KK"}>{t('prevalence4')}</MenuItem>
-                  <MenuItem value={"MHI"}>{t('prevalence5')}</MenuItem>
-                </Select>
-              </FormControl>
-              ) }
+                  <Select
+                    labelId="metric"
+                    id="metric"
+                    value={graphMetric}
+                    MenuProps={{ disablePortal: true }}
+                    onChange={(ev) => {
+                      setGraphMetric(ev.target.value);
+                    }}
+                  >
+                    <MenuItem value={"KK"}>{t('prevalence4')}</MenuItem>
+                    <MenuItem value={"MHI"}>{t('prevalence5')}</MenuItem>
+                  </Select>
+                </FormControl>
+              )}
             </div>
           </Grid>
         </Grid>
 
-        { /* this is the update button that pops up after a precision or MDA change */ }
+        { /* this is the update button that pops up after a precision or MDA change */}
         <div className={classes.scenarioGraph}>
-          { scenarioState.scenarioData[ scenarioState.currentScenarioId ].isDirty  && (
+          {scenarioState.scenarioData[scenarioState.currentScenarioId].isDirty && (
             <div className={classes.updateScenario}>
               <Button
                 variant="contained"
@@ -374,7 +374,7 @@ const { t, i18n } = useTranslation();
             </div>
           )}
 
-          { disease === AppConstants.DISEASE_LIMF &&
+          {disease === AppConstants.DISEASE_LIMF &&
 
             <ScenarioGraphLF
               data={scenarioData}
@@ -382,69 +382,69 @@ const { t, i18n } = useTranslation();
               showAllResults={false}
               metrics={[graphMetric]}
               simInProgress={props.simInProgress}
-              simNeedsRerun={ scenarioState.scenarioData[ scenarioState.currentScenarioId ].isDirty }
+              simNeedsRerun={scenarioState.scenarioData[scenarioState.currentScenarioId].isDirty}
               classes={classes}
               IU={implementationUnit}
               IUData={selectedIUData}
             />
-        
-          }         
-          { disease === AppConstants.DISEASE_TRACHOMA &&
-          
-          <ScenarioGraphTrachoma
+
+          }
+          {disease === AppConstants.DISEASE_TRACHOMA &&
+
+            <ScenarioGraphTrachoma
               data={scenarioData}
               graphTypeSimple={graphTypeSimpleLocal}
               showAllResults={false}
               simInProgress={props.simInProgress}
-              simNeedsRerun={ scenarioState.scenarioData[ scenarioState.currentScenarioId ].isDirty }
+              simNeedsRerun={scenarioState.scenarioData[scenarioState.currentScenarioId].isDirty}
               classes={classes}
               IU={implementationUnit}
               IUData={selectedIUData}
-          />
+            />
           }
 
-          { STH &&
-          
-          <ScenarioGraphSTHRoundworm
+          {STH &&
+
+            <ScenarioGraphSTHRoundworm
               data={scenarioData}
               graphTypeSimple={graphTypeSimpleLocal}
               showAllResults={false}
               metrics={[graphMetric]}
               simInProgress={props.simInProgress}
-              simNeedsRerun={ scenarioState.scenarioData[ scenarioState.currentScenarioId ].isDirty }
+              simNeedsRerun={scenarioState.scenarioData[scenarioState.currentScenarioId].isDirty}
               classes={classes}
               IU={implementationUnit}
               IUData={selectedIUData}
               disease={disease}
-          />
+            />
           }
         </div>
 
-        { props.simInProgress ? <div className={classes.mdaplaceholder}><span> </span></div> : (
+        {props.simInProgress ? <div className={classes.mdaplaceholder}><span> </span></div> : (
           <React.Fragment>
             <div className={classes.scenarioGraph}>
               <MdaRounds disease={disease} />
             </div>
-            
+
 
             <Tooltip
-              title={AppConstants.DISEASE_CONFIG[ disease ].mdaTooltip}
+              title={AppConstants.DISEASE_CONFIG[disease].mdaTooltip}
               aria-label="info"
             >
 
-            <Typography
-              className={`${classes.scenarioGraphLegendInterventions} ${classes.withHelp}`}
-              variant="h6"
-              id="interventions-label"
-              component="h6"
-            >
-              {t('interventions')}
-            </Typography>
+              <Typography
+                className={`${classes.scenarioGraphLegendInterventions} ${classes.withHelp}`}
+                variant="h6"
+                id="interventions-label"
+                component="h6"
+              >
+                {t('interventions')}
+              </Typography>
             </Tooltip>
-          
+
 
           </React.Fragment>
-        ) }
+        )}
         <ConfirmationDialog
           title={t('higherPrecision')}
           intro={t('increasingPrecision')}
@@ -452,7 +452,7 @@ const { t, i18n } = useTranslation();
             setshowPrecisionConfirmation(false);
             props.resetCurrentScenario()
           }}
-          onConfirm={()=>{
+          onConfirm={() => {
             setshowPrecisionConfirmation(false);
             props.runCurrentScenario()
           }}
@@ -466,9 +466,9 @@ const { t, i18n } = useTranslation();
 
   return (
     <div id="ScenarioDisplay">
-     { scenarioDisplay }
+      { scenarioDisplay}
     </div>
   );
 }
 
-export default observer( ScenarioDisplay );
+export default observer(ScenarioDisplay);

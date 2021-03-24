@@ -9,7 +9,7 @@ import ScenarioGraphGrid from 'pages/components/simulator/ScenarioGraphGrid'
 import ScenarioGraphInfoLine from 'pages/components/simulator/ScenarioGraphInfoLine'
 import ScenarioGraphInfoBubble from 'pages/components/simulator/ScenarioGraphInfoBubble'
 import { useTranslation } from "react-i18next";
-
+import ScenarioGraphLegend from 'pages/components/simulator/ScenarioGraphLegend'
 import {
   Typography,
 } from '@material-ui/core'
@@ -50,10 +50,10 @@ function ScenarioGraphLF({
 
   const IndexToStartForOutput = (flatten(map(dataSelection, 'ts')).findIndex(isStartYear))
   const IndexForPrediction = (flatten(map(dataSelection, 'ts')).findIndex(isPrediction))
-  const domainX = [startYear, Math.round(max(flatten(map(dataSelection, 'ts')))) ]
+  const domainX = [startYear, Math.round(max(flatten(map(dataSelection, 'ts'))))]
 
   let dataToOutput = [];
-  forEach(data.results,(r)=>{
+  forEach(data.results, (r) => {
     dataToOutput.push({
       Ls: r.Ls.slice(IndexToStartForOutput),
       Ms: r.Ms.slice(IndexToStartForOutput),
@@ -71,7 +71,7 @@ function ScenarioGraphLF({
 
 
   const [activeInfo, setActiveInfo] = useState(null)
-  const [uncertaintyInfo,setUncertaintyInfo] = useState(false)
+  const [uncertaintyInfo, setUncertaintyInfo] = useState(false)
 
   const handleUncertaintyHover = () => {
     setUncertaintyInfo(true)
@@ -97,7 +97,7 @@ function ScenarioGraphLF({
 
   const y = scaleLinear().domain(domainY).range([height, 0]).nice()
 
-  const ticksX = x.ticks(domainX[1]-domainX[0])
+  const ticksX = x.ticks(domainX[1] - domainX[0])
   const ticksY = y.ticks()
 
   const renderResult = (d, main) => {
@@ -142,7 +142,7 @@ function ScenarioGraphLF({
       historicReferencLowerLine = line()(historicReferenceLower)
       
     }*/
-    
+
     // future path
 
     const color = main ? '#D86422' : '#eee'
@@ -169,7 +169,7 @@ function ScenarioGraphLF({
 
     return (
       <>
-        
+
         {metrics.map((m, i) => (
           <g key={`${i}-l`}>
             <ScenarioGraphPath
@@ -195,8 +195,8 @@ function ScenarioGraphLF({
           metrics.map((m, i) => (
             <g key={`${i}-ps`}>
               <ScenarioGraphInfoPoints
-                handleEnter={(id)=>handleEnter(id)}
-                handleLeave={()=>handleLeave()}
+                handleEnter={(id) => handleEnter(id)}
+                handleLeave={() => handleLeave()}
                 key={`${i}-ps-h`}
                 data={historicSeries}
                 prop={m}
@@ -206,8 +206,8 @@ function ScenarioGraphLF({
                 mode="h"
               />
               <ScenarioGraphInfoPoints
-                handleEnter={(id)=>handleEnter(id)}
-                handleLeave={()=>handleLeave()}
+                handleEnter={(id) => handleEnter(id)}
+                handleLeave={() => handleLeave()}
                 key={`${i}-ps-f`}
                 data={futureSeries}
                 prop={m}
@@ -217,7 +217,7 @@ function ScenarioGraphLF({
                 mode="f"
               />
               {activeInfo &&
-                <ScenarioGraphActivePoint  active={activeInfo} coord={[x(activeCoords.ts), y(activeCoords[m]), activeCoords[m]]} mode={activeMode} />
+                <ScenarioGraphActivePoint active={activeInfo} coord={[x(activeCoords.ts), y(activeCoords[m]), activeCoords[m]]} mode={activeMode} />
               }
             </g>
           ))}
@@ -225,7 +225,7 @@ function ScenarioGraphLF({
       </>
     )
   }
-  const renderRange = (d,dMax,dts, main) => {
+  const renderRange = (d, dMax, dts, main) => {
     //console.log('renderRange',d)
 
     if (simInProgress) return
@@ -240,18 +240,18 @@ function ScenarioGraphLF({
     const historicSeriesMax = dMax.slice(IndexToStartForOutput, IndexForPrediction + 1)
     const futureSeriesMax = dMax.slice(IndexForPrediction)
 
-    const points = historicSeriesMax.map((value,index)=>{
+    const points = historicSeriesMax.map((value, index) => {
       return `${x(tsSeries[index])},${y(value)} `
     })
-    let pointsMax = historicSeries.map((value,index)=>{
+    let pointsMax = historicSeries.map((value, index) => {
       return `${x(tsSeries[index])},${y(value)} `
     })
     pointsMax.reverse()
     const bgColor = '#959FA6'
-    const fpoints = futureSeriesMax.map((value,index)=>{
+    const fpoints = futureSeriesMax.map((value, index) => {
       return `${x(ftsSeries[index])},${y(value)} `
     })
-    let fpointsMax = futureSeries.map((value,index)=>{
+    let fpointsMax = futureSeries.map((value, index) => {
       return `${x(ftsSeries[index])},${y(value)} `
     })
     fpointsMax.reverse()
@@ -259,24 +259,19 @@ function ScenarioGraphLF({
     return (
 
       <>
-          <polygon points={points+' '+pointsMax} fill={bgColor} opacity={.1} onMouseEnter={handleUncertaintyHover} onMouseLeave={handleUncertaintyLeave} />
-          <polygon points={fpoints+' '+fpointsMax} fill={bgColor} opacity={.15} onMouseEnter={handleUncertaintyHover} onMouseLeave={handleUncertaintyLeave} />
+        <polygon points={points + ' ' + pointsMax} fill={bgColor} opacity={.1} onMouseEnter={handleUncertaintyHover} onMouseLeave={handleUncertaintyLeave} />
+        <polygon points={fpoints + ' ' + fpointsMax} fill={bgColor} opacity={.15} onMouseEnter={handleUncertaintyHover} onMouseLeave={handleUncertaintyLeave} />
       </>
 
     )
-  
+
   }
 
   return (
     <React.Fragment>
-      <div className={classes.scenarioGraphLegend}>
-        <Typography className={classes.scenarioGraphLegendHistoric} style={{ width: x(ticksX[futureYear - 15]) }} variant="h6" component="h6">
-          {t('historic')}
-        </Typography>
-        <Typography className={classes.scenarioGraphLegendPrediction} variant="h6" component="h6">
-          {t('prediction')}
-        </Typography>
-      </div>
+
+      <ScenarioGraphLegend classes={classes} width={x(ticksX[futureYear - 15])} />
+
       <svg
         width={svgWidth}
         height={svgHeight}
@@ -285,21 +280,21 @@ function ScenarioGraphLF({
         <g transform={`translate(${lPad},${yPad})`}>
           <ScenarioGraphGrid ticksX={ticksX} ticksY={ticksY} x={x} y={y} zeroYear={2000} startYear={startYear} futureYear={futureYear} svgHeight={svgHeight} height={height} tPad={tPad} yPad={yPad} lPad={lPad} rPad={rPad} width={width} />
           {graphTypeSimple && data.results &&
-            <g key={`results1-stats`}>{renderRange( data.stats[metrics+'Min'],  data.stats[metrics+'Max'], data.stats['ts'], false, x, y)}</g>
+            <g key={`results1-stats`}>{renderRange(data.stats[metrics + 'Min'], data.stats[metrics + 'Max'], data.stats['ts'], false, x, y)}</g>
           }
-          
+
           {!graphTypeSimple && data.results &&
             data.results.map((result, i) => (
               <g key={`results1-${i}`}>{renderResult(result, false, x, y)}</g>
             ))}
-          
+
           {data.stats &&
             [data.stats].map((result, i) => (
               <g key={`results-${i}`}>{renderResult(result, true, x, y)}</g>
             ))}
-          <ScenarioGraphInfoLine 
+          <ScenarioGraphInfoLine
             legend={`WHO target`}
-            line={[0,width - lPad - rPad,y(1),y(1)]}
+            line={[0, width - lPad - rPad, y(1), y(1)]}
             stroke="#03D386"
             strokeDasharray='10 2'
             percentage={1}
@@ -308,16 +303,16 @@ function ScenarioGraphLF({
             legendColor={'#252525'}
             otherActive={activeInfo}
           />
-          {(uncertaintyInfo && activeInfo === null) && 
-            <ScenarioGraphInfoBubble 
-              coord={[(width - lPad - rPad)/2,y(domainY[1])]}              
+          {(uncertaintyInfo && activeInfo === null) &&
+            <ScenarioGraphInfoBubble
+              coord={[(width - lPad - rPad) / 2, y(domainY[1])]}
               color={'#E1E4E6'}
               textColor={'#252525'}
               legendColor={'#E1E4E6'}
-              bubbleText={'Model uncertainty'}            
+              bubbleText={'Model uncertainty'}
             />}
-            {simNeedsRerun && <rect x={0} width={svgWidth} height={svgHeight} fill="rgba(233,241,247,.4)" />}
-            {simInProgress && <rect x={0} width={svgWidth} height={svgHeight} fill="rgba(220,233,240,.4)" />}
+          {simNeedsRerun && <rect x={0} width={svgWidth} height={svgHeight} fill="rgba(233,241,247,.4)" />}
+          {simInProgress && <rect x={0} width={svgWidth} height={svgHeight} fill="rgba(220,233,240,.4)" />}
         </g>
       </svg>
     </React.Fragment>

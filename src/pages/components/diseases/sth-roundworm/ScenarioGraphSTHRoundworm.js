@@ -10,10 +10,8 @@ import ScenarioGraphInfoLine from 'pages/components/simulator/ScenarioGraphInfoL
 import ScenarioGraphInfoBubble from 'pages/components/simulator/ScenarioGraphInfoBubble'
 import { useTranslation } from "react-i18next";
 import AppConstants from 'AppConstants';
+import ScenarioGraphLegend from 'pages/components/simulator/ScenarioGraphLegend'
 
-import {
-  Typography,
-} from '@material-ui/core'
 
 let fadeOutTimeout = null
 
@@ -22,7 +20,7 @@ function ScenarioGraphSTHRoundworm({
   data,
   width = 600,
   height = 400,
-  metrics = ['KK','MHI'],
+  metrics = ['KK', 'MHI'],
   showAllResults,
   inputs,
   classes,
@@ -36,7 +34,7 @@ function ScenarioGraphSTHRoundworm({
 
   const { t, i18n } = useTranslation();
   const [activeInfo, setActiveInfo] = useState(null)
-  const [uncertaintyInfo,setUncertaintyInfo] = useState(false)
+  const [uncertaintyInfo, setUncertaintyInfo] = useState(false)
   const startYear = 15
   const futureYear = 18
   const lPad = 50
@@ -45,7 +43,7 @@ function ScenarioGraphSTHRoundworm({
   const yPad = 32 + 20
   const svgHeight = height + yPad * 2
   const svgWidth = width
-  
+
 
   const dataSelection = data.results
 
@@ -54,10 +52,10 @@ function ScenarioGraphSTHRoundworm({
   const isPrediction = (element) => element >= futureYear;
   const IndexToStartForOutput = (flatten(map(dataSelection[metrics], 'ts')).findIndex(isStartYear))
   const IndexForPrediction = (flatten(map(dataSelection[metrics], 'ts')).findIndex(isPrediction))
-  const domainX = [startYear, max(flatten(map(dataSelection[metrics], 'ts'))) ]
-  
+  const domainX = [startYear, max(flatten(map(dataSelection[metrics], 'ts')))]
+
   let dataToOutput = [];
-  forEach(data.results[metrics],(r)=>{
+  forEach(data.results[metrics], (r) => {
     dataToOutput.push({
       p: r.p.slice(IndexToStartForOutput),
       ts: r.ts.slice(IndexToStartForOutput)
@@ -65,7 +63,7 @@ function ScenarioGraphSTHRoundworm({
   })
 
 
-  const domainY = [ 0, max(flatten(map(dataSelection[metrics], 'p'))) ]
+  const domainY = [0, max(flatten(map(dataSelection[metrics], 'p')))]
 
 
   const handleEnter = (id) => {
@@ -98,7 +96,7 @@ function ScenarioGraphSTHRoundworm({
     if (simInProgress) return
 
     let { ts, p } = d
-    if ( p === undefined ) {
+    if (p === undefined) {
       p = d['median']
     }
 
@@ -141,7 +139,7 @@ function ScenarioGraphSTHRoundworm({
       historicReferencLowerLine = line()(historicReferenceLower)
       
     }*/
-    
+
     // future path
 
     const color = main ? '#D86422' : '#eee'
@@ -170,70 +168,70 @@ function ScenarioGraphSTHRoundworm({
 
     return (
       <>
-        
-        
-          <g key={`0-l`}>
-            <ScenarioGraphPath
-              key={`0-l-h`}
+
+
+        <g key={`0-l`}>
+          <ScenarioGraphPath
+            key={`0-l-h`}
+            data={historicSeries}
+            prop={'p'}
+            x={x}
+            y={y}
+            color={hcolor}
+          />
+          <ScenarioGraphPath
+            key={`0-l-f`}
+            data={futureSeries}
+            prop={'p'}
+            x={x}
+            y={y}
+            color={color}
+          />
+        </g>
+
+
+        {main &&
+
+          <g key={`0-ps`}>
+            <ScenarioGraphInfoPoints
+              handleEnter={(id) => handleEnter(id)}
+              handleLeave={() => handleLeave()}
+              key={`0-ps-h`}
               data={historicSeries}
               prop={'p'}
               x={x}
               y={y}
               color={hcolor}
+              mode="h"
             />
-            <ScenarioGraphPath
-              key={`0-l-f`}
+            <ScenarioGraphInfoPoints
+              handleEnter={(id) => handleEnter(id)}
+              handleLeave={() => handleLeave()}
+              key={`0-ps-f`}
               data={futureSeries}
               prop={'p'}
               x={x}
               y={y}
               color={color}
+              mode="f"
             />
+            {activeInfo &&
+              <ScenarioGraphAtivePoint
+                active={activeInfo}
+                coord={[x(activeCoords.ts), y(activeCoords.p), activeCoords.p]}
+                mode={activeMode}
+                low={1}
+                med={6}
+                high={10}
+              />
+            }
           </g>
-        
-
-        {main &&
-          
-            <g key={`0-ps`}>
-              <ScenarioGraphInfoPoints
-                handleEnter={(id)=>handleEnter(id)}
-                handleLeave={()=>handleLeave()}
-                key={`0-ps-h`}
-                data={historicSeries}
-                prop={'p'}
-                x={x}
-                y={y}
-                color={hcolor}
-                mode="h"
-              />
-              <ScenarioGraphInfoPoints
-                handleEnter={(id)=>handleEnter(id)}
-                handleLeave={()=>handleLeave()}
-                key={`0-ps-f`}
-                data={futureSeries}
-                prop={'p'}
-                x={x}
-                y={y}
-                color={color}
-                mode="f"
-              />
-              {activeInfo &&
-                <ScenarioGraphAtivePoint 
-                  active={activeInfo} 
-                  coord={[x(activeCoords.ts), y(activeCoords.p), activeCoords.p]} 
-                  mode={activeMode} 
-                  low={1}
-                  med={6}
-                  high={10}
-                />
-              }
-            </g>
         }
 
       </>
     )
   }
-  const renderRange = (d,dMax,dts, main) => {
+  const renderRange = (d, dMax, dts, main) => {
 
     if (simInProgress) return
 
@@ -247,18 +245,18 @@ function ScenarioGraphSTHRoundworm({
     const historicSeriesMax = dMax.slice(IndexToStartForOutput, IndexForPrediction + 1)
     const futureSeriesMax = dMax.slice(IndexForPrediction)
 
-    const points = historicSeriesMax.map((value,index)=>{
+    const points = historicSeriesMax.map((value, index) => {
       return `${x(tsSeries[index])},${y(value)} `
     })
-    let pointsMax = historicSeries.map((value,index)=>{
+    let pointsMax = historicSeries.map((value, index) => {
       return `${x(tsSeries[index])},${y(value)} `
     })
     pointsMax.reverse()
     const bgColor = '#959FA6'
-    const fpoints = futureSeriesMax.map((value,index)=>{
+    const fpoints = futureSeriesMax.map((value, index) => {
       return `${x(ftsSeries[index])},${y(value)} `
     })
-    let fpointsMax = futureSeries.map((value,index)=>{
+    let fpointsMax = futureSeries.map((value, index) => {
       return `${x(ftsSeries[index])},${y(value)} `
     })
     fpointsMax.reverse()
@@ -266,43 +264,38 @@ function ScenarioGraphSTHRoundworm({
     return (
 
       <>
-          <polygon points={points+' '+pointsMax} fill={bgColor} opacity={.1} onMouseEnter={handleUncertaintyHover} onMouseLeave={handleUncertaintyLeave} />
-          <polygon points={fpoints+' '+fpointsMax} fill={bgColor} opacity={.15} onMouseEnter={handleUncertaintyHover} onMouseLeave={handleUncertaintyLeave} />
+        <polygon points={points + ' ' + pointsMax} fill={bgColor} opacity={.1} onMouseEnter={handleUncertaintyHover} onMouseLeave={handleUncertaintyLeave} />
+        <polygon points={fpoints + ' ' + fpointsMax} fill={bgColor} opacity={.15} onMouseEnter={handleUncertaintyHover} onMouseLeave={handleUncertaintyLeave} />
       </>
 
     )
-  
+
   }
 
   return (
     <React.Fragment>
-      <div className={classes.scenarioGraphLegend}>
-        <Typography className={classes.scenarioGraphLegendHistoric} style={{ width: x(ticksX[futureYear - startYear]) }} variant="h6" component="h6">
-          {t('historic')}
-        </Typography>
-        <Typography className={`${classes.scenarioGraphLegendPrediction}`} variant="h6" component="h6">
-          {t('prediction')}
-        </Typography>
-      </div>
+
+      <ScenarioGraphLegend classes={classes} width={x(ticksX[futureYear - startYear])} />
+
       <svg
         width={svgWidth}
         height={svgHeight}
         viewBox={`0 0 ${svgWidth} ${svgHeight}`}
       >
         <g transform={`translate(${lPad},${yPad})`}>
-          
+
           <ScenarioGraphGrid ticksX={ticksX} ticksY={ticksY} x={x} y={y} zeroYear={2000} startYear={startYear} futureYear={futureYear} svgHeight={svgHeight} height={height} tPad={tPad} yPad={yPad} lPad={lPad} rPad={rPad} width={width} />
           {graphTypeSimple && data.results[metrics] &&
-            <g key={`results1-stats`}>{renderRange( data.summary[metrics]['min'],  data.summary[metrics]['max'], data.summary[metrics]['ts'], false, x, y)}</g>
+            <g key={`results1-stats`}>{renderRange(data.summary[metrics]['min'], data.summary[metrics]['max'], data.summary[metrics]['ts'], false, x, y)}</g>
           }
           {!graphTypeSimple && data.results &&
             data.results[metrics].map((result, i) => (
               <g key={`results1-${i}`}>{renderResult(result, false, x, y)}</g>
             ))}
-          {( disease === AppConstants.DISEASE_SCH_MANSONI && domainY[1] > 10 ) && 
-            <ScenarioGraphInfoLine 
+          {(disease === AppConstants.DISEASE_SCH_MANSONI && domainY[1] > 10) &&
+            <ScenarioGraphInfoLine
               legend={`Moderate`}
-              line={[0,width - lPad - rPad,y(10),y(10)]}
+              line={[0, width - lPad - rPad, y(10), y(10)]}
               stroke="#ABB2B8"
               strokeDasharray='10 2'
               percentage={10}
@@ -311,10 +304,10 @@ function ScenarioGraphSTHRoundworm({
               legendColor={'#252525'}
               otherActive={activeInfo}
             />}
-          {( disease === AppConstants.DISEASE_SCH_MANSONI && domainY[1] > 50 ) &&
-            <ScenarioGraphInfoLine 
+          {(disease === AppConstants.DISEASE_SCH_MANSONI && domainY[1] > 50) &&
+            <ScenarioGraphInfoLine
               legend={`High`}
-              line={[0,width - lPad - rPad,y(50),y(50)]}
+              line={[0, width - lPad - rPad, y(50), y(50)]}
               stroke="#ABB2B8"
               strokeDasharray='10 2'
               percentage={50}
@@ -324,9 +317,9 @@ function ScenarioGraphSTHRoundworm({
               otherActive={activeInfo}
             />
           }
-          <ScenarioGraphInfoLine 
+          <ScenarioGraphInfoLine
             legend={`WHO target`}
-            line={[0,width - lPad - rPad,y(2),y(2)]}
+            line={[0, width - lPad - rPad, y(2), y(2)]}
             stroke="#03D386"
             strokeDasharray='10 2'
             percentage={2}
@@ -339,18 +332,18 @@ function ScenarioGraphSTHRoundworm({
             [data.summary[metrics]].map((result, i) => (
               <g key={`results-${i}`}>{renderResult(result, true, x, y)}</g>
             ))}
-          
-          
-            {(uncertaintyInfo && activeInfo === null) && 
-            <ScenarioGraphInfoBubble 
-              coord={[(width - lPad - rPad)/2,y(domainY[1])]}
+
+
+          {(uncertaintyInfo && activeInfo === null) &&
+            <ScenarioGraphInfoBubble
+              coord={[(width - lPad - rPad) / 2, y(domainY[1])]}
               color={'#E1E4E6'}
               textColor={'#252525'}
               legendColor={'#E1E4E6'}
-              bubbleText={'Model uncertainty'}            
+              bubbleText={'Model uncertainty'}
             />}
-            {simNeedsRerun && <rect x={0} width={svgWidth} height={svgHeight} fill="rgba(233,241,247,.4)" />}
-            {simInProgress && <rect x={0} width={svgWidth} height={svgHeight} fill="rgba(220,233,240,.4)" />}
+          {simNeedsRerun && <rect x={0} width={svgWidth} height={svgHeight} fill="rgba(233,241,247,.4)" />}
+          {simInProgress && <rect x={0} width={svgWidth} height={svgHeight} fill="rgba(220,233,240,.4)" />}
         </g>
       </svg>
     </React.Fragment>

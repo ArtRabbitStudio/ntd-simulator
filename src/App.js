@@ -143,7 +143,9 @@ const theme = createMuiTheme({
     MuiTooltip: {
       tooltip: {
         color: "#fff",
-        backgroundColor: "#D86422",
+        backgroundColor: "#008dc9",
+        fontSize: 14,
+        padding: 14
       },
     },
     MuiFormLabel: {
