@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { DISEASE_STH_HOOKWORM } from 'AppConstants'
 
 export default function IntroHW(props) {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   return (
 
     <IntroWrap ident={DISEASE_STH_HOOKWORM}>

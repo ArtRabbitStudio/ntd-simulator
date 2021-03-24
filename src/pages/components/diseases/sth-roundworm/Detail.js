@@ -7,7 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import { DISEASE_STH_ROUNDWORM } from 'AppConstants'
 
 export default function DetaiRW(props) {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   const leftPart = (
     <TextContents>

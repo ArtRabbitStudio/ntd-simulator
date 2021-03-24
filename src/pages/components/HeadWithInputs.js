@@ -46,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
 
 const HeadWithInputs = ({ title, disableInputs, disableClear, classAdd, showLanguages, disableContirmation }) => {
   const classes = useStyles()
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const [showConfirmation, setshowConfirmation] = useState(false);
   const [selectedValue, setSelectedValue] = useState(null)
   const history = useHistory()

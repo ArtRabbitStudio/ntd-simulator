@@ -17,7 +17,7 @@ import { specificScenarios } from 'pages/components/simulator/helpers/specificSc
 import { useUIState } from 'hooks/stateHooks'
 
 const SettingSpecificScenario = ({ inModal, label, classAdd, scenarioId }) => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const classes = useStyles()
   const history = useHistory()
   const { dispatchSimState } = useSimulatorStore()

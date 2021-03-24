@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { DISEASE_TRACHOMA } from 'AppConstants'
 
 export default function IntroTrachoma(props) {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   return (
 
     <IntroWrap ident={DISEASE_TRACHOMA}>

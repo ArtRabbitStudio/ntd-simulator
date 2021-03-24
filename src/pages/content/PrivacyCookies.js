@@ -7,7 +7,7 @@ import TextContents from 'pages/components/TextContents'
 import { useTranslation } from 'react-i18next';
 
 const PrivacyCookies = (props) => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   return (
     <Layout>

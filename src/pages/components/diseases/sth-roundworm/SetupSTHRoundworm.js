@@ -15,7 +15,7 @@ import {
 const SetupSTHRoundworm = (props) => {
   console.log("SetupSTHRoundworm",props.disease)
 
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const classes = useStyles();
   const { simState } = useSimulatorStore();
 

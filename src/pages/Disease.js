@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react'
 import { observer } from 'mobx-react'
-import { useUIState } from 'hooks/stateHooks'
 import { Layout } from 'layout';
 import { useParams } from "react-router-dom";
 

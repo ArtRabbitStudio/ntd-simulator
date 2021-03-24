@@ -10,7 +10,7 @@ import {
 
 const NewSettingsDialogSTHRoundworm = ( { scenarioData, action, cancel, newScenarioSettingsOpen,disease } ) => {
   console.log("NewSettingsDialog",disease)
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   return (
 
     <NewScenarioSettingsDialog

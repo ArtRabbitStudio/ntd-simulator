@@ -7,7 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import { DISEASE_TRACHOMA } from 'AppConstants'
 
 export default function DetailTrachoma(props) {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   const leftPart = (
     <TextContents>

@@ -18,7 +18,7 @@ import {
 
 const SelectCountry = ({ selectIU, showCountryConfirmation, showIUConfirmation, showBackToCountry,showBackToContinent, countyAndIUSet }) => {
   const classes = useStyles()
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const history = useHistory()
   const matchSection = useRouteMatch('/:disease/:section/')
 

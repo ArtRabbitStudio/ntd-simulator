@@ -15,7 +15,7 @@ const ConfirmationDialog = props => {
   const handleCancel = () => {
     onClose()
   }
-const { t, i18n } = useTranslation();
+const { t } = useTranslation();
   const handleOk = () => {
     onConfirm()
   }

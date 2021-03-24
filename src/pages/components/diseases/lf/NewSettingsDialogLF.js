@@ -14,7 +14,7 @@ import {
 } from 'pages/components/simulator/settings';
 
 const NewSettingsDialogLF = ( { scenarioData, action, cancel, newScenarioSettingsOpen } ) => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   return (
 

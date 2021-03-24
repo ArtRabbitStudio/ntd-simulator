@@ -13,7 +13,7 @@ import {
 } from 'pages/components/simulator/settings';
 
 const SetupTrachoma = (props) => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   const classes = useStyles();
   const { simState } = useSimulatorStore();

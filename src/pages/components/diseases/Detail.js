@@ -76,7 +76,7 @@ const useStyles = makeStyles(theme => ({
 
 
 export default function DetailWrap(props) {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const classes = useStyles();
   const { leftPart, rightPart, disease } = { ...props };
 

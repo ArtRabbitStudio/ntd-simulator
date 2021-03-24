@@ -14,7 +14,7 @@ import {
 
 const SettingInsecticideCoverage = ({ inModal, label, value, classAdd, scenarioId }) => {
 
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   const classes = useStyles();
   const { dispatchSimState } = useSimulatorStore();

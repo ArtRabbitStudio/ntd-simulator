@@ -68,7 +68,7 @@ TabPanel.propTypes = {
 }
 
 const ScenarioDisplay = (props) => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const classes = useStyles();
   const { disease } = useUIState();
 

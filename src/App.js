@@ -1,4 +1,4 @@
-import React from "react";
+import React,{ Suspense } from "react";
 import { Switch, Route } from "react-router-dom";
 import useSyncRouteState from "./hooks/useSyncRouteState";
 
@@ -237,32 +237,34 @@ function App() {
   useSyncRouteState();
 
   return (
-    <CssBaseline>
-      <ThemeProvider theme={theme}>
-        <ScenarioStoreProvider>
-          <SimulatorStoreProvider>
-            <ScrollToTop>
-              <Switch>
-                <Route exact path="/data-and-methodolgy" component={DataMethodolgy} />
-                <Route exact path="/about" component={About} />
-                <Route exact path="/privacy-cookies" component={PrivacyCookies} />
-                <Route exact path="/lymphatic-filariasis-data-methodoloy" component={LF} />
-                <Route exact path="/trachoma-data-methodoloy" component={Trachoma} />
-                <Route exact path="/" component={Home} />
+    <Suspense fallback="loading">
+      <CssBaseline>
+        <ThemeProvider theme={theme}>
+          <ScenarioStoreProvider>
+            <SimulatorStoreProvider>
+              <ScrollToTop>
+                <Switch>
+                  <Route exact path="/data-and-methodolgy" component={DataMethodolgy} />
+                  <Route exact path="/about" component={About} />
+                  <Route exact path="/privacy-cookies" component={PrivacyCookies} />
+                  <Route exact path="/diseases/lymphatic-filariasis" component={LF} />
+                  <Route exact path="/diseases/trachoma" component={Trachoma} />
+                  <Route exact path="/" component={Home} />
 
-                <Route exact path="/disease/:disease" component={Disease} />
-                <Route exact path="/:disease" component={Simulator} />
-                <Route exact path="/:disease/:country" component={Simulator} />
-                <Route exact path="/:disease/:country/:iu" component={Simulator} />
-                <Route exact path="/:disease/:country/:iu/run" component={Simulator} />
+                  <Route exact path="/disease/:disease" component={Disease} />
+                  <Route exact path="/:disease" component={Simulator} />
+                  <Route exact path="/:disease/:country" component={Simulator} />
+                  <Route exact path="/:disease/:country/:iu" component={Simulator} />
+                  <Route exact path="/:disease/:country/:iu/run" component={Simulator} />
 
-                <Route exact path="**" component={Page} />
-              </Switch>
-            </ScrollToTop>
-          </SimulatorStoreProvider>
-        </ScenarioStoreProvider>
-      </ThemeProvider>
-    </CssBaseline>
+                  <Route exact path="**" component={Page} />
+                </Switch>
+              </ScrollToTop>
+            </SimulatorStoreProvider>
+          </ScenarioStoreProvider>
+        </ThemeProvider>
+      </CssBaseline>
+    </Suspense>
   );
 }
 

@@ -19,7 +19,7 @@ import {
 const NewScenarioSettingsDialog = ( props ) => {
 
   const classes = useStyles();
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   return (
 

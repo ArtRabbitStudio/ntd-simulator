@@ -72,7 +72,7 @@ const useStyles = makeStyles(theme => ({
 
 const Inputs = props => {
   const classes = useStyles()
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const { diseases } = useDataAPI()
   const { disease } = useUIState()
 

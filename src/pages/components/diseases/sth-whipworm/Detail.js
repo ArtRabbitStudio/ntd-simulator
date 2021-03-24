@@ -8,7 +8,7 @@ import { DISEASE_STH_WHIPWORM } from 'AppConstants'
 
 
 export default function DetailWW(props) {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   const leftPart = (
     <TextContents>

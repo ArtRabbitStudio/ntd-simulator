@@ -49,7 +49,7 @@ function Map({
     if (countryFeatures) console.log('countryFeatures',countryFeatures)
     if (stateFeatures) console.log('stateFeatures',stateFeatures)
     */
-    const { t, i18n } = useTranslation();
+    const { t } = useTranslation();
     const classes = useStyles()
     const history = useHistory()
 
@@ -174,7 +174,7 @@ function Map({
                             paint={{
                                 'line-color': [
                                     'case',
-                                    ['==', ['get', 'id'], ( !iuFeatures && featureHover?.properties.id || null ) ],
+                                    ['==', ['get', 'id'], ( !iuFeatures && ( featureHover?.properties.id || null ) ) ],
                                     '#D86422',
                                     'rgba(0,0,0,0)',
                                 ],

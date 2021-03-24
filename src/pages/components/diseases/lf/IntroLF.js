@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { DISEASE_LIMF } from 'AppConstants'
 
 export default function IntroLF(props) {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   return (
 
     <IntroWrap ident={DISEASE_LIMF}>

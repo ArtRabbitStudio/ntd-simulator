@@ -15,7 +15,7 @@ import {
 } from "@material-ui/core";
 
 const SettingMosquitoType = ({ inModal, value, label, scenarioId }) => {
-const { t, i18n } = useTranslation();
+const { t } = useTranslation();
   const classes = useStyles();
   const { dispatchSimState } = useSimulatorStore();
   const { scenarioState, dispatchScenarioStateUpdate } = useScenarioStore();

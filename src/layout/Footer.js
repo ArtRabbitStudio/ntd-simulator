@@ -47,7 +47,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Footer = (props) => {
-  const { t, i18n } = useTranslation();
+  const { t,i18n } = useTranslation();
 
   const classes = useStyles();
 
@@ -103,7 +103,7 @@ const Footer = (props) => {
 
               <ul className={classes.menu}>
                 <Typography component="li" variant="body2">
-                  <Link component={RouterLink} to="/simulator" color="inherit">{t('LymphaticFilariasis')}</Link>
+                  <Link component={RouterLink} to="/diseases/lymphatic-filariasis" color="inherit">{t('LymphaticFilariasis')}</Link>
                 </Typography>
                 <Typography component="li" variant="body2">
                   <Link component={RouterLink} to="/simulator" color="inherit">{t('SchistosomiasisMansoni')}</Link>
@@ -118,7 +118,7 @@ const Footer = (props) => {
                   <Link component={RouterLink} to="/simulator" color="inherit">{t('SoilTransmittedHelmithiasisHookworm')}</Link>
                 </Typography>
                 <Typography component="li" variant="body2">
-                  <Link component={RouterLink} to="/simulator" color="inherit">{t('Trachoma')}</Link>
+                  <Link component={RouterLink} to="/diseases/trachoma" color="inherit">{t('Trachoma')}</Link>
                 </Typography>
               </ul>
 
@@ -129,7 +129,7 @@ const Footer = (props) => {
               <Typography variant="h6" component="h6" className={classes.copy} >&copy; {t('NTDConsortiumBigDataInstituteOxfordUniversity')}</Typography>
               <Typography variant="h6" component="h6" className={classes.headline} >
                 {t('design')}&nbsp;
-                <Link href="https://www.artrabbit.studio/" rel="noopener" target="_blank" color="inherit">Opencultu.re</Link>
+                <Link href="https://www.opencultu.re/" rel="noopener" target="_blank" color="inherit">Opencultu.re</Link>
               </Typography>
 
             </Grid>

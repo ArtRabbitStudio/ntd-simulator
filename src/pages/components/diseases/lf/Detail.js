@@ -3,16 +3,20 @@ import DetailWrap from '../Detail'
 import { useTranslation } from "react-i18next";
 import TextContents from 'pages/components/TextContents'
 import RightPartComponent from '../RightPartComponent'
-
+import ReactMarkdown from 'react-markdown'
 import Typography from '@material-ui/core/Typography';
 import { DISEASE_LIMF } from 'AppConstants'
 
 export default function DetaiLF(props) {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation(['translation','lf']);
 
   const leftPart = (
     <TextContents>
-      <Typography gutterBottom variant="h3" component="h2">About Lymphatic filariasis</Typography>
+      <Typography gutterBottom variant="h3" component="h2">{t('lf:pageTitle')}</Typography>
+
+      {/* Styling for this content */}
+      <ReactMarkdown children={t('lf:content')} />
+
       <Typography paragraph variant="body1" component="p">
         Lymphatic filariasis is due to filarial parasites which are transmitted to humans through mosquitoes.
       </Typography>

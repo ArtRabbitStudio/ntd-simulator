@@ -27,7 +27,7 @@ const SettingTargetCoverage = ({
   const maxVal = max ? max : 100
   const stepVal = step ? step : 1
   const isPerIUSetting = value !== null && typeof value !== 'undefined';
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   // make title and key a parameter to pass in so we can utilise this slider instead of making new ones
   const titleVal = title ? title : t('eligiblePopulation')

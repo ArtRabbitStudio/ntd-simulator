@@ -71,7 +71,7 @@ TabPanel.propTypes = {
 const ScenarioManager = (props) => {
 
   const classes = useStyles();
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   const { simState, dispatchSimState } = useSimulatorStore();
   const { scenarioState, dispatchScenarioStateUpdate } = useScenarioStore();

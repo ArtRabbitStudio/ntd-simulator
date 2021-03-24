@@ -64,7 +64,7 @@ const useStyles = makeStyles(theme => ({
 }));
 // <button mat-button aria-label="settings" className={classes.icon} onClick={(event) => handleClickOpen(event)}></button>
 const ChartSettings = ({ title, buttonText, cancelText, cancel, action, onOpen, children, hideFab, newScenarioSettingsOpen }) => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const classes = useStyles();
   const [open, setOpen] = useState(false);
 

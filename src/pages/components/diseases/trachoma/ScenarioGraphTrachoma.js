@@ -29,7 +29,7 @@ function ScenarioGraphTrachoma({
   IUData
 }) {
 
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const [activeInfo, setActiveInfo] = useState(null)
   const [uncertaintyInfo, setUncertaintyInfo] = useState(false)
 

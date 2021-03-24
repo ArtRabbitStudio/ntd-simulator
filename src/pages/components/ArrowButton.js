@@ -7,7 +7,6 @@ import ArrowIcon from 'images/icon-navigation-expand-more-24-px.svg';
 const useStyles = makeStyles(theme => ({
   root: {
     clear: 'both',
-    padding: theme.spacing(0),
     backgroundImage: `url(${ArrowIcon})`,
     backgroundPosition: 'right 5px center',
     backgroundSize: 'auto',

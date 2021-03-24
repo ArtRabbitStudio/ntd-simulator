@@ -32,7 +32,7 @@ function ScenarioGraphLF({
   IU,
   IUData
 }) {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const startYear = 15
   const futureYear = 20
   const lPad = 50

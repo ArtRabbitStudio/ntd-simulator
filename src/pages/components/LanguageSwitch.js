@@ -71,21 +71,22 @@ const LanguageSwitch = ({ current = 'en-US', dark }) => {
     i18n.changeLanguage(lang);
   }
 
-
   return (
     <nav className={`${classes.root}  ${dark ? 'dark' : ''}`}>
-      <Typography variant="h6" component="h6" className={classes.headline} >Also available in:</Typography>
+      <Typography variant="h6" component="h6" className={classes.headline} >{`${t('alsoAvailableIn')}:`}</Typography>
 
       <ul>
         {languages
-          .filter(l => l.code !== current)
+          .filter(l => { 
+            return l.short !== i18n.language 
+          })
           .map((lang, i) => {
             return (
               <li key={i}>
                 <Link
                   href="#"
                   lang={lang.code}
-                  aria-label={`Switch to ${lang.name}`}
+                  aria-label={`${t('switchTo')} ${lang.name}`}
                   hrefLang={lang.code}
                   className={classes.switch}
                   onClick={() => handleClick(lang.short)}

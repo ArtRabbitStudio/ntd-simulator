@@ -9,7 +9,7 @@ import {
 } from 'pages/components/simulator/settings';
 
 const NewSettingsDialogTrachoma = ( { scenarioData, action, cancel, newScenarioSettingsOpen } ) => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   return (
 

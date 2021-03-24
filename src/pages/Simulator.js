@@ -53,7 +53,7 @@ const Simulator = (props) => {
   const IntroComponent = (disease !== null) ? introComponents[disease] : null;
   const SetupComponent = (disease !== null) ? setupComponents[disease] : null;
 
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   return (
 
