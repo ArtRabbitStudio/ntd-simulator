@@ -112,10 +112,10 @@ const useStyles = makeStyles((theme) => ({
   addScenario: {
     '& .MuiTab-wrapper': {
       backgroundImage: `url(${AddIcon})`,
-      backgroundPosition: 'right center',
+      backgroundPosition: 'left center',
       backgroundSize: 'auto',
       backgroundRepeat: 'no-repeat',
-      paddingRight: 30,
+      paddingLeft: 32,
     },
     '&:hover': {
       backgroundColor: "rgb(204, 232, 244)",

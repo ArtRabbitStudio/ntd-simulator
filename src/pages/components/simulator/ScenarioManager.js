@@ -466,7 +466,7 @@ const ScenarioManager = (props) => {
                 <Tab
                   className={classes.addScenario}
                   key={`tab-element-99`}
-                  label={`+ ${t('addScenario')}`}
+                  label={t('addScenario')}
                   disabled={simInProgress}
                   onClick={createNewScenario}
                 />
