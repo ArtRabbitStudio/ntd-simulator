@@ -244,6 +244,15 @@ tspan {
   }
 }
 
+.MuiTooltip-popper {
+  &#map-tooltip {
+    .MuiTooltip-tooltip {
+      font-size: 14px;
+      padding: 10px;
+    }
+  }
+}
+
 .caps-text {
   & + .fwbg {
     margin-top: 20px;

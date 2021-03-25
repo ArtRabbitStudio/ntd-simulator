@@ -4,7 +4,9 @@ import Same from "images/systemic-same.svg";
 import Anopheles from "images/Anopheles.jpg";
 import Culex from "images/Culex.jpg";
 import InfoIcon from "images/info.svg";
-import RemoveIcon from "images/delete-icon-blue.svg";
+import RemoveIcon from "images/bin-icon.svg";
+import PrintIcon from "images/print-icon.svg";
+import DownloadIcon from "images/download-icon.svg";
 import graphTypeIconSimple from "images/graph-icon.svg";
 import graphTypeIconComplex from "images/graph-complex-icon.svg";
 import SettingsIcon from 'images/settings.svg';
@@ -168,7 +170,7 @@ const useStyles = makeStyles((theme) => ({
     zIndex: 9,
 
     "& .MuiTouchRipple-root": {
-      backgroundImage: `url(${RemoveIcon})`,
+      backgroundImage: `url(${PrintIcon})`,
       backgroundPosition: "center",
       backgroundSize: "auto",
       backgroundRepeat: "no-repeat",
@@ -186,7 +188,7 @@ const useStyles = makeStyles((theme) => ({
     zIndex: 9,
 
     "& .MuiTouchRipple-root": {
-      backgroundImage: `url(${RemoveIcon})`,
+      backgroundImage: `url(${DownloadIcon})`,
       backgroundPosition: "center",
       backgroundSize: "auto",
       backgroundRepeat: "no-repeat",

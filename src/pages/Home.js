@@ -77,7 +77,7 @@ const useStyles = makeStyles(theme => ({
     display: 'inline-block',
     marginBottom: 20,
     marginTop: 20
-  
+
   },
   textBlock: {
     [theme.breakpoints.up("md")]: {
@@ -116,7 +116,7 @@ const Home = (props) => {
 
   return (
     <Layout className={classes.homeimage} /* classAdd="full-height"*/ >
-      
+
       { /*
       <Head classAdd={classes.cardTransparent}
         title={t('appTitle')}

@@ -1,4 +1,4 @@
-import React,{ Suspense } from "react";
+import React, { Suspense } from "react";
 import { Switch, Route } from "react-router-dom";
 import useSyncRouteState from "./hooks/useSyncRouteState";
 
@@ -96,6 +96,8 @@ const theme = createMuiTheme({
       fontFamily: "DINNextLTPro, sans-serif",
     },
 
+
+
     h1: {
       fontFamily: "DINNextLTPro, sans-serif",
       fontWeight: "normal",
@@ -140,12 +142,19 @@ const theme = createMuiTheme({
     }
   },
   overrides: {
+    MuiCssBaseline: {
+
+    },
     MuiTooltip: {
       tooltip: {
         color: "#fff",
         backgroundColor: "#008dc9",
-        fontSize: 14,
-        padding: 14
+        fontSize: 17,
+        lineHeight: "23px",
+        padding: 14,
+        '&#map-tooltip': {
+          fontSize: 12,
+        }
       },
     },
     MuiFormLabel: {
@@ -209,7 +218,18 @@ const theme = createMuiTheme({
       xl: 1556,
     },
   },
+
 });
+/*
+theme.overrides.MuiCssBaseline['@global'] = {
+  body: {
+    ...theme.typography.body1,
+  },
+  p: {
+    ...theme.typography.body1
+  }
+};
+*/
 
 // This is mostly only a problem because the console lazily evaluates the object you log. 
 // You could do a shallow clone of the event object to make console.log work.
@@ -231,15 +251,13 @@ console.shallowCloneLog = function () {
   }));
 }
 
-
-
 function App() {
   useSyncRouteState();
 
   return (
     <Suspense fallback="loading">
-      <CssBaseline>
-        <ThemeProvider theme={theme}>
+      <ThemeProvider theme={theme}>
+        <CssBaseline>
           <ScenarioStoreProvider>
             <SimulatorStoreProvider>
               <ScrollToTop>
@@ -262,8 +280,8 @@ function App() {
               </ScrollToTop>
             </SimulatorStoreProvider>
           </ScenarioStoreProvider>
-        </ThemeProvider>
-      </CssBaseline>
+        </CssBaseline>
+      </ThemeProvider>
     </Suspense>
   );
 }
