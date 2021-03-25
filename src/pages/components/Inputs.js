@@ -76,7 +76,7 @@ const Inputs = props => {
   const { diseases } = useDataAPI()
   const { disease } = useUIState()
 
-
+  const defaultSuggestionOption = { name: t('selectDisease') };
   const handleDiseaseChange = (event, value) => {
 
     props.onChange(value.props.value)
@@ -91,12 +91,15 @@ const Inputs = props => {
         <Select
           labelId="disease-label"
           id="disease"
-          value={disease ? disease : 'other'}
+          value={disease ? disease : defaultSuggestionOption.name}
           variant="outlined"
           onChange={handleDiseaseChange}
           MenuProps={{ disablePortal: true }}
 
         >
+          <MenuItem key={t('selectDisease')} value={t('selectDisease')}>
+              {t('selectDisease')}
+            </MenuItem>
           {diseases.map(r => (
             <MenuItem key={DISEASE_LABELS[r]} value={r}>
               {DISEASE_LABELS[r]}

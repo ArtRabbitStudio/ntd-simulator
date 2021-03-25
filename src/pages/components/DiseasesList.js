@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, Container, Box, Typography } from '@material-ui/core';
+import { Grid, Container, Typography } from '@material-ui/core';
 import CapsHeadline from './CapsHeadline'
 import FullWidthBackground from './FullWidthBackground'
 import { withStyles } from '@material-ui/core/styles';
@@ -77,7 +77,7 @@ const DiseasesList = (props) => {
           {
             Object.keys(DISEASE_LABELS).map(function (ident) {
               return (
-                <Grid component="a" href={`/${ident}`} item md={4} sm={4} xs={12} className={`${classes.column} icon-${ident}`}>
+                <Grid key={ident} component="a" href={`/${ident}`} item md={4} sm={4} xs={12} className={`${classes.column} icon-${ident}`}>
                   <Typography variant="body1" component="p" className={classes.headline} >{DISEASE_LABELS[ident]}</Typography>
                 </Grid>
               )

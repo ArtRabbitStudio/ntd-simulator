@@ -47,7 +47,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Footer = (props) => {
-  const { t,i18n } = useTranslation();
+  const { t } = useTranslation();
 
   const classes = useStyles();
 
@@ -66,7 +66,11 @@ const Footer = (props) => {
               <Typography variant="h6" component="h6" className={classes.headline} >{t('Connect')}</Typography>
 
               <Typography display="block" variant="body2">Twitter: <br /><Link href="https://twitter.com/NtdModelling" rel="noopener" target="_blank" color="inherit" variant="body2">@NTD_Modelling</Link></Typography>
-
+              <ul className={classes.menu}>
+                <Typography component="li" variant="body2">
+                  <Link href="https://www.ntdmodelling.org/" rel="noopener" target="_blank" color="inherit" variant="body2">{t('NTDConsortiumWebsite')}</Link>
+                </Typography>
+              </ul>
 
             </Grid>
 
@@ -76,22 +80,19 @@ const Footer = (props) => {
 
               <ul className={classes.menu}>
                 <Typography component="li" variant="body2">
-                  <Link href="https://www.ntdmodelling.org/" rel="noopener" target="_blank" color="inherit" variant="body2">{t('NTDConsortium')}</Link>
+                  <Link component={RouterLink} to="/about" color="inherit">{t('AboutTheSimulator')}</Link>
                 </Typography>
                 <Typography component="li" variant="body2">
-                  <Link component={RouterLink} to="/data-and-methodolgy" color="inherit">{t('footerHeadline')}</Link>
+                  <Link component={RouterLink} to="/about-ntd-modelling-consortium" color="inherit">{t('AboutTheNTD')}</Link>
                 </Typography>
                 <Typography component="li" variant="body2">
-                  <Link component={RouterLink} to="/about" color="inherit">{t('HowToGetInvolved')}</Link>
+                  <Link component={RouterLink} to="/get-involved" color="inherit">{t('howToGetInvolved')}</Link>
                 </Typography>
                 <Typography component="li" variant="body2">
-                  <Link component={RouterLink} to="/about" color="inherit">{t('HelpUsImprove')}</Link>
+                  <Link component={RouterLink} to="/get-involved" color="inherit">{t('helpUsImprove')}</Link>
                 </Typography>
                 <Typography component="li" variant="body2">
-                  <Link component={RouterLink} to="/privacy-cookies#privacy" color="inherit">{t('Privacy')}</Link>
-                </Typography>
-                <Typography component="li" variant="body2">
-                  <Link component={RouterLink} to="/privacy-cookies#cookies" color="inherit">{t('Cookies')}</Link>
+                  <Link component={RouterLink} to="/privacy-cookies" color="inherit">{t('PrivacyCookies')}</Link>
                 </Typography>
               </ul>
 
@@ -103,22 +104,22 @@ const Footer = (props) => {
 
               <ul className={classes.menu}>
                 <Typography component="li" variant="body2">
-                  <Link component={RouterLink} to="/diseases/lymphatic-filariasis" color="inherit">{t('LymphaticFilariasis')}</Link>
+                  <Link component={RouterLink} to="/disease/lf" color="inherit">{t('LymphaticFilariasis')}</Link>
                 </Typography>
                 <Typography component="li" variant="body2">
-                  <Link component={RouterLink} to="/simulator" color="inherit">{t('SchistosomiasisMansoni')}</Link>
+                  <Link component={RouterLink} to="/disease/sch-mansoni" color="inherit">{t('SchistosomiasisMansoni')}</Link>
                 </Typography>
                 <Typography component="li" variant="body2">
-                  <Link component={RouterLink} to="/simulator" color="inherit">{t('SoilTransmittedHelmithiasisHookworm')}</Link>
+                  <Link component={RouterLink} to="/disease/sth-roundworm" color="inherit">{t('SoilTransmittedHelmithiasisRoundworm')}</Link>
                 </Typography>
                 <Typography component="li" variant="body2">
-                  <Link component={RouterLink} to="/simulator" color="inherit">{t('SoilTransmittedHelmithiasisHookworm')}</Link>
+                  <Link component={RouterLink} to="/disease/sth-hookworm" color="inherit">{t('SoilTransmittedHelmithiasisHookworm')}</Link>
                 </Typography>
                 <Typography component="li" variant="body2">
-                  <Link component={RouterLink} to="/simulator" color="inherit">{t('SoilTransmittedHelmithiasisHookworm')}</Link>
+                  <Link component={RouterLink} to="/disease/sth-whipworm" color="inherit">{t('SoilTransmittedHelmithiasisWhipworm')}</Link>
                 </Typography>
                 <Typography component="li" variant="body2">
-                  <Link component={RouterLink} to="/diseases/trachoma" color="inherit">{t('Trachoma')}</Link>
+                  <Link component={RouterLink} to="/disease/trachoma" color="inherit">{t('Trachoma')}</Link>
                 </Typography>
               </ul>
 

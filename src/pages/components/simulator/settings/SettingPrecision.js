@@ -7,8 +7,7 @@ import { useScenarioStore, ScenarioStoreConstants } from "store/scenarioStore";
 import {
   FormControl,
   Slider,
-  FormLabel,
-  Fab
+  FormLabel
 } from "@material-ui/core";
 
 const SettingPrecision = ({ inModal, label, classAdd, showPrecisionSlider, setGraphTypeSimple, graphTypeSimple, scenarioId, showDialog }) => {

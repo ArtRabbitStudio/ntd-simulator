@@ -7,7 +7,7 @@ import {
 
 function ScenarioGraphLegend({ classes, width, tooltipText }) {
 
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   tooltipText = tooltipText ? tooltipText : 'Default tooltip text'
 

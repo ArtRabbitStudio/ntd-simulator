@@ -1,6 +1,6 @@
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import { Grid, Container, Box, Typography } from '@material-ui/core';
+import { Grid, Container, Typography } from '@material-ui/core';
 import CapsHeadline from './CapsHeadline'
 import FullWidthBackground from './FullWidthBackground'
 import { useTranslation } from "react-i18next";

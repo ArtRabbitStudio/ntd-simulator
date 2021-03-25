@@ -23,7 +23,7 @@ export default function RightPartComponent({ headline, text, buttons }) {
 
   return (
 
-    <div class={classes.root}>
+    <div className={classes.root}>
       { headline && <Typography gutterBottom variant="h3">{headline}</Typography>}
       { text &&
         <Typography paragraph variant="body1" component="p">

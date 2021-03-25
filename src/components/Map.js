@@ -131,7 +131,6 @@ function Map({
 
 
   // old map style mapbox://styles/kpcarter100/ck7w5zz9l026d1imn43721owm
-  console.log('countryFeatures', countryFeatures);
 
   return (
     <div className={classes.mapWrap}>

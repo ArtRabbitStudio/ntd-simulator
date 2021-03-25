@@ -294,7 +294,7 @@ function ScenarioGraphSTHRoundworm({
             ))}
           {(disease === AppConstants.DISEASE_SCH_MANSONI && domainY[1] > 10) &&
             <ScenarioGraphInfoLine
-              legend={`Moderate`}
+              legend={t('Moderate')}
               line={[0, width - lPad - rPad, y(10), y(10)]}
               stroke="#ABB2B8"
               strokeDasharray='10 2'
@@ -306,7 +306,7 @@ function ScenarioGraphSTHRoundworm({
             />}
           {(disease === AppConstants.DISEASE_SCH_MANSONI && domainY[1] > 50) &&
             <ScenarioGraphInfoLine
-              legend={`High`}
+              legend={t('High')}
               line={[0, width - lPad - rPad, y(50), y(50)]}
               stroke="#ABB2B8"
               strokeDasharray='10 2'
@@ -318,7 +318,7 @@ function ScenarioGraphSTHRoundworm({
             />
           }
           <ScenarioGraphInfoLine
-            legend={`WHO target`}
+            legend={t('WHOTarget')}
             line={[0, width - lPad - rPad, y(2), y(2)]}
             stroke="#03D386"
             strokeDasharray='10 2'
@@ -340,7 +340,7 @@ function ScenarioGraphSTHRoundworm({
               color={'#E1E4E6'}
               textColor={'#252525'}
               legendColor={'#E1E4E6'}
-              bubbleText={'Model uncertainty'}
+              bubbleText={t('ModelUncertainty')}
             />}
           {simNeedsRerun && <rect x={0} width={svgWidth} height={svgHeight} fill="rgba(233,241,247,.4)" />}
           {simInProgress && <rect x={0} width={svgWidth} height={svgHeight} fill="rgba(220,233,240,.4)" />}

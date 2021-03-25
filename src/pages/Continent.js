@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { observer } from 'mobx-react'
+import { useTranslation } from "react-i18next";
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles'
 import SimpleDialog from 'pages/components/SimpleDialog'
@@ -41,6 +42,7 @@ const useStyles = makeStyles(theme => ({
 
 
 const Continent = props => {
+    const { t } = useTranslation();
 
     const [notAvailableAlert, setnotAvailableAlert] = useState(false)
     const [alertText, setAlertText] = useState('')
@@ -56,9 +58,7 @@ const Continent = props => {
     } = useDataAPI()
 
     const { disease } = useUIState()
-    
-    console.log('countryScales',countryScales)
-    // output csv with included and excluded data
+        // output csv with included and excluded data
     /*
     if ( iuData != undefined ) {
         let csv = [['IU','IUstatus']]
@@ -82,8 +82,8 @@ const Continent = props => {
 
     }*/
 
-    const legend = `This map shows`  
-    const legendSubtitle = `Countries with IUs that had a prevalence > 0% in ${DISEASE_CONFIG[ disease ].historicEndYear} for ${DISEASE_LABELS[ disease ]}`
+    const legend = t('thisMapShows')  
+    const legendSubtitle = t('mapCountries',{in:DISEASE_CONFIG[ disease ].historicEndYear,for:DISEASE_LABELS[ disease ]})
 
     return (
       <React.Fragment>

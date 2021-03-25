@@ -311,7 +311,7 @@ function ScenarioGraphTrachoma({
               color={'#E1E4E6'}
               textColor={'#252525'}
               legendColor={'#E1E4E6'}
-              bubbleText={'Model uncertainty'}
+              bubbleText={t('ModelUncertainty')}
             />}
           {simNeedsRerun && <rect x={0} width={svgWidth} height={svgHeight} fill="rgba(233,241,247,.4)" />}
           {simInProgress && <rect x={0} width={svgWidth} height={svgHeight} fill="rgba(220,233,240,.4)" />}

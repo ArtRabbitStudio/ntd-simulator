@@ -21,6 +21,12 @@ const useStyles = makeStyles(theme => ({
     margin: theme.spacing(4, 0, 4, 0),
     padding: theme.spacing(0),
   },
+  nodiseasesection: {
+    clear:"both",
+    position: "relative",
+    margin: theme.spacing(4, 0, 4, 0),
+    padding: theme.spacing(0),
+  },
   withIcon: {
     padding: theme.spacing(0, 12, 0, 0),
     margin: theme.spacing(-1, 0, 2, 0),
@@ -70,7 +76,6 @@ const useStyles = makeStyles(theme => ({
     display: "flex",
     flexDirection: "row",
     flexWrap: "nowrap",
-
   },
 }));
 
@@ -79,15 +84,34 @@ export default function DetailWrap(props) {
   const { t } = useTranslation();
   const classes = useStyles();
   const { leftPart, rightPart, disease } = { ...props };
+  if ( props.disease ){
+    return (
 
+      <section className={`${classes.section} icon-${disease}`} >
+  
+        {props.disease && <CapsHeadline text={t("DiseaseOverview")} />}
+        {props.disease && <div>
+          <Typography gutterBottom variant="h1" className={`${classes.withIcon} icon-${disease}`}>{DISEASE_LABELS[disease]}</Typography>
+        </div>}
+  
+        <div className={classes.wrap}>
+          <div className={classes.leftPart}>
+            {leftPart}
+          </div>
+  
+          <div className={classes.rightPart}>
+            {rightPart}
+          </div>
+        </div>
+  
+      </section>
+  
+    )
+  }
   return (
 
-    <section className={`${classes.section} icon-${disease}`} >
 
-      <CapsHeadline text={t("DiseaseOverview")} />
-      <div>
-        <Typography gutterBottom variant="h1" className={`${classes.withIcon} icon-${disease}`}>{DISEASE_LABELS[disease]}</Typography>
-      </div>
+    <section className={`${classes.nodiseasesection}`}>
 
       <div className={classes.wrap}>
         <div className={classes.leftPart}>

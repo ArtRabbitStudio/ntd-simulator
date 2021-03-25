@@ -10,9 +10,6 @@ import ScenarioGraphInfoLine from 'pages/components/simulator/ScenarioGraphInfoL
 import ScenarioGraphInfoBubble from 'pages/components/simulator/ScenarioGraphInfoBubble'
 import { useTranslation } from "react-i18next";
 import ScenarioGraphLegend from 'pages/components/simulator/ScenarioGraphLegend'
-import {
-  Typography,
-} from '@material-ui/core'
 
 let fadeOutTimeout = null
 
@@ -293,7 +290,7 @@ function ScenarioGraphLF({
               <g key={`results-${i}`}>{renderResult(result, true, x, y)}</g>
             ))}
           <ScenarioGraphInfoLine
-            legend={`WHO target`}
+            legend={t('WHOTarget')}
             line={[0, width - lPad - rPad, y(1), y(1)]}
             stroke="#03D386"
             strokeDasharray='10 2'
@@ -309,7 +306,7 @@ function ScenarioGraphLF({
               color={'#E1E4E6'}
               textColor={'#252525'}
               legendColor={'#E1E4E6'}
-              bubbleText={'Model uncertainty'}
+              bubbleText={t('ModelUncertainty')}
             />}
           {simNeedsRerun && <rect x={0} width={svgWidth} height={svgHeight} fill="rgba(233,241,247,.4)" />}
           {simInProgress && <rect x={0} width={svgWidth} height={svgHeight} fill="rgba(220,233,240,.4)" />}

@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 
 const Evolving = (props) => {
 
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   const useStyles = makeStyles(theme => ({
     root: {
@@ -38,11 +38,11 @@ const Evolving = (props) => {
 
   return (
     <div className={`${classes.root}`} >
-      <Typography variant="h3" component="h3" className={classes.headline}>This project is constantly evolving</Typography>
+      <Typography variant="h3" component="h3" className={classes.headline}>{t('thisProjectIsConstantlyEvolving')}</Typography>
       <div className={classes.btns}>
-        <ArrowButton text={t('HelpUsImprove')} url="#" />
-        <ArrowButton text={t('ReportAProblem')} url="#" />
-        <ArrowButton text={t('ModelCodeOnGithub')} url="#" />
+        <ArrowButton text={t('helpUsImprove')} url="/get-involved" />
+        <ArrowButton text={t('reportAProblem')} url="/get-involved" />
+        <ArrowButton text={t('modelCodeOnGithub')} url="/get-involved" />
       </div>
     </div>
   );

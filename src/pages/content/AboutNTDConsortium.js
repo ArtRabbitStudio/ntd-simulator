@@ -6,14 +6,14 @@ import TextContents from 'pages/components/TextContents'
 import { useTranslation } from 'react-i18next';
 import MarkdownContent from 'pages/components/MarkdownContent';
 
-const PrivacyCookies = (props) => {
-  const { t } = useTranslation(['translation','pages-privacy-cookies']);
+const AboutNTDConsortium = (props) => {
+  const { t } = useTranslation(['translation','pages-about-ntd']);
 
   const leftPart = (
     <TextContents>
 
         {/* Styling for this content */}
-        <MarkdownContent markdown={t('pages-privacy-cookies:content')} />
+        <MarkdownContent markdown={t('pages-about-ntd:content')} />
 
       </TextContents>  
   )
@@ -31,5 +31,4 @@ const PrivacyCookies = (props) => {
     </Layout>
   )
 }
-
-export default PrivacyCookies;
+export default AboutNTDConsortium;

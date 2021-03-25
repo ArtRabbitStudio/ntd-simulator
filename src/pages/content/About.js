@@ -5,9 +5,10 @@ import Typography from '@material-ui/core/Typography';
 import Head from 'pages/components/Head';
 import TextContents from 'pages/components/TextContents'
 import { useTranslation } from 'react-i18next';
+import MarkdownContent from 'pages/components/MarkdownContent';
 
 const About = (props) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(['translation','pages-about']);
 
   return (
     <Layout>
@@ -18,39 +19,17 @@ const About = (props) => {
       />
 
       <TextContents>
-      <Typography gutterBottom variant="h2">
-        {t('about0')}</Typography>
-        <Typography paragraph variant="body1" component="p">
-          {t('about1')}
-        </Typography>
-        <Typography paragraph variant="body1" component="p">
-          {t('about2')}
-        </Typography>
-        <Typography paragraph variant="body1" component="p">
-        {t('about3')}
-        </Typography>
-        <Typography paragraph variant="body1" component="p">
-        {t('about4')}
-          </Typography>
-        <Typography paragraph variant="body1" component="p">
-        {t('about5')}
-          </Typography>
-        <Typography paragraph variant="body1" component="p">
-        {t('about6')}
-          </Typography>
-        <Typography paragraph variant="body1" component="p">{t('about7')}</Typography>
-        <Typography paragraph gutterBottom variant="body1" component="p">
-        {t('about8')}
-        </Typography>
-        <Typography gutterBottom variant="h3"><br />{t('about9')}</Typography>
-        <Typography paragraph variant="body1" component="p"></Typography>
-        {t('about10')}
-        <Typography paragraph gutterBottom variant="body1" component="p">
-        {t('about11')}
-        </Typography>
-        <Typography paragraph variant="body1" component="p">
-        {t('about12')}
-        </Typography>
+      <Typography gutterBottom variant="h2">{t('about0')}</Typography>
+        
+      <TextContents>
+
+        {/* Styling for this content */}
+        <MarkdownContent markdown={t('pages-about:content')} />
+
+      </TextContents>  
+
+
+
         <Typography paragraph variant="body1" component="p">
         {
         // eslint-disable-next-line

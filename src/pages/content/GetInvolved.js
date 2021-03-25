@@ -6,14 +6,14 @@ import TextContents from 'pages/components/TextContents'
 import { useTranslation } from 'react-i18next';
 import MarkdownContent from 'pages/components/MarkdownContent';
 
-const PrivacyCookies = (props) => {
-  const { t } = useTranslation(['translation','pages-privacy-cookies']);
+const GetInvolved = (props) => {
+  const { t } = useTranslation(['translation','pages-get-involved']);
 
   const leftPart = (
     <TextContents>
 
         {/* Styling for this content */}
-        <MarkdownContent markdown={t('pages-privacy-cookies:content')} />
+        <MarkdownContent markdown={t('pages-get-involved:content')} />
 
       </TextContents>  
   )
@@ -32,4 +32,4 @@ const PrivacyCookies = (props) => {
   )
 }
 
-export default PrivacyCookies;
+export default GetInvolved;

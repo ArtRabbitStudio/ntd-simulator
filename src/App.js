@@ -9,12 +9,11 @@ import Simulator from "./pages/Simulator";
 import Disease from "./pages/Disease";
 
 
-import DataMethodolgy from "./pages/content/DataMethodology";
 import About from "./pages/content/About";
+import AboutNTDConsortium from "./pages/content/AboutNTDConsortium";
 import PrivacyCookies from "./pages/content/PrivacyCookies";
+import GetInvolved from "./pages/content/GetInvolved";
 
-import LF from "./pages/content/LF";
-import Trachoma from "./pages/content/Trachoma";
 
 // index.js
 import { SimulatorStoreProvider } from "./store/simulatorStore";
@@ -262,11 +261,11 @@ function App() {
             <SimulatorStoreProvider>
               <ScrollToTop>
                 <Switch>
-                  <Route exact path="/data-and-methodolgy" component={DataMethodolgy} />
                   <Route exact path="/about" component={About} />
+                  <Route exact path="/about-ntd-modelling-consortium" component={AboutNTDConsortium} />
                   <Route exact path="/privacy-cookies" component={PrivacyCookies} />
-                  <Route exact path="/diseases/lymphatic-filariasis" component={LF} />
-                  <Route exact path="/diseases/trachoma" component={Trachoma} />
+                  <Route exact path="/get-involved" component={GetInvolved} />
+       
                   <Route exact path="/" component={Home} />
 
                   <Route exact path="/disease/:disease" component={Disease} />

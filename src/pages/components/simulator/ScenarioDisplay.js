@@ -327,8 +327,8 @@ const ScenarioDisplay = (props) => {
                   disabled={false}
                   className={graphTypeSimpleLocal ? classes.graphTypeIconSimple : classes.graphTypeIconComplex}
                   onClick={handleGraphTypeChange}
-                >
-                </Fab>
+                  children=""
+                />
                 <Typography className={classes.caps} variant="h6" component="h6">
                   {t('ShowAllRuns')}
                 </Typography>
