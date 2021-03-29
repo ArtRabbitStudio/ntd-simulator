@@ -5,6 +5,8 @@ import { makeStyles } from '@material-ui/core/styles'
 import SimpleDialog from 'pages/components/SimpleDialog'
 import { useDataAPI, useUIState } from 'hooks/stateHooks'
 import Map from 'components/Map'
+import { useTranslation } from "react-i18next";
+
 import { DISEASE_CONFIG } from 'AppConstants';
 
 const useStyles = makeStyles(theme => ({
@@ -41,7 +43,7 @@ const useStyles = makeStyles(theme => ({
 
 
 const Country = props => {
-
+    const { t } = useTranslation();
     const [notAvailableAlert, setnotAvailableAlert] = useState(false)
     const [alertText, setAlertText] = useState('')
 
@@ -81,9 +83,8 @@ const Country = props => {
 
     }*/
 
-    const legend = DISEASE_CONFIG[ disease ] ? DISEASE_CONFIG[ disease ].mapLegend : ''
-
-
+    const legend = t(`mapLegend.${disease}`) ? t(`mapLegend.${disease}`) : '';
+    
     return (
       <React.Fragment>
             <section className={classes.section}>

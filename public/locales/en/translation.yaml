@@ -53,11 +53,11 @@
   "footerHeadline": "Data and Methodology",
   "Overview": "Overview",
   "LymphaticFilariasis": "Lymphatic filariasis",
+  "Trachoma": "Trachoma",
   "SchistosomiasisMansoni": "Schistosomiasis Mansoni",
   "SoilTransmittedHelmithiasisHookworm": "Soil Transmitted Helmithiasis Hookworm",
   "SoilTransmittedHelmithiasisRoundworm": "Soil Transmitted Helmithiasis Roundworm",
   "SoilTransmittedHelmithiasisWhipworm": "Soil Transmitted Helmithiasis Whipworm",
-  "Trachoma": "Trachoma",
   "feedback": "Send us feedback",
   "About": "About",
   "PrivacyCookies": "Privacy & Cookies",
@@ -107,6 +107,8 @@
   "MDAAdults": "MDA Target Coverage Adults",
 
   "WHOTarget": "WHO target",
+  "Moderate": "Moderate",
+  "High": "High",
   "proportionOfPopulation": "Proportion of the population covered by a bed net shared with one other person.",
   "chooseDrugRegimen": "Choose the appropriate drug regimen.",
   "everyYear": "Will the MDAs be every 6 months or every year?",
@@ -173,16 +175,28 @@
   "selectCountry": "Select a country",
   "selectIULong": "Select an Implementation Unit",
   "selectIU": "Select IU",
-  "countries": "countries",
   "selectDisease": "Select a disease",
   "setUpScenario": "Set up a scenario",
   "disease": "Disease",
 
 
-  "mapLegend1": "Prevalence map and trends since 2010.",
-  "toolTip": "Light blue bars show no intervention;  blue bars show intervention, the height of the blue colour shows coverage. Historic interventions before 2019 are greyed out.",
-  "mapLegend2": "Prevalence map and trends since 2017",
-  "toolTip2": "Light blue bars show no intervention;  blue bars show intervention, the height of the blue colour shows coverage. Historic interventions are greyed out. Use the slider to adjust interruption and when MDA is discontinued.",
   "loading": "Loading ……",
-  "interventions": "Interventions"
+  "interventions": "Interventions",
+
+  "mapLegend":{
+    "lf": "Prevalence map and trends since 2010.",
+    "trachoma": "Prevalence map and trends since 2017.",
+    "sth-roundworm": "Prevalence map and trends since 2017.",
+    "sth-whipworm": "Prevalence map and trends since 2017.",
+    "sth-hookworm": "Prevalence map and trends since 2017.",
+    "sch-mansoni": "Prevalence map and trends since 2017.",
+  },
+  "mdaTooltip": {
+    "lf": "Light blue bars show no intervention;  blue bars show intervention, the height of the blue colour shows coverage. Historic interventions before 2019 are greyed out.",
+    "trachoma": "Light blue bars show no intervention;  blue bars show intervention, the height of the blue colour shows coverage. Historic interventions are greyed out. Use the slider to adjust interruption and when MDA is discontinued.",
+    "sth-roundworm": "Light blue bars show no intervention;  blue bars show intervention, the height of the blue colour shows coverage. Historic interventions before 2018 are greyed out.",
+    "sth-whipworm": "Light blue bars show no intervention;  blue bars show intervention, the height of the blue colour shows coverage. Historic interventions before 2018 are greyed out.",
+    "sth-hookworm": "Light blue bars show no intervention;  blue bars show intervention, the height of the blue colour shows coverage. Historic interventions before 2018 are greyed out.",
+    "sch-mansoni": "Light blue bars show no intervention;  blue bars show intervention, the height of the blue colour shows coverage. Historic interventions before 2018 are greyed out.",
+  }
 }

@@ -13,7 +13,6 @@ import {
 } from 'pages/components/simulator/settings';
 
 const SetupSTHRoundworm = (props) => {
-  console.log("SetupSTHRoundworm",props.disease)
 
   const { t } = useTranslation();
   const classes = useStyles();

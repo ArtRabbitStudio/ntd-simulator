@@ -1,4 +1,4 @@
-import React, { Suspense } from "react";
+import React from "react";
 import { Switch, Route } from "react-router-dom";
 import useSyncRouteState from "./hooks/useSyncRouteState";
 
@@ -254,7 +254,6 @@ function App() {
   useSyncRouteState();
 
   return (
-    <Suspense fallback="loading">
       <ThemeProvider theme={theme}>
         <CssBaseline>
           <ScenarioStoreProvider>
@@ -281,7 +280,6 @@ function App() {
           </ScenarioStoreProvider>
         </CssBaseline>
       </ThemeProvider>
-    </Suspense>
   );
 }
 

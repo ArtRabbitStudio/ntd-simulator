@@ -9,7 +9,6 @@ import {
 } from 'pages/components/simulator/settings';
 
 const NewSettingsDialogSTHRoundworm = ( { scenarioData, action, cancel, newScenarioSettingsOpen,disease } ) => {
-  console.log("NewSettingsDialog",disease)
   const { t } = useTranslation();
   return (
 

@@ -9,7 +9,7 @@ function ScenarioGraphLegend({ classes, width, tooltipText }) {
 
   const { t } = useTranslation();
 
-  tooltipText = tooltipText ? tooltipText : 'Default tooltip text'
+  tooltipText = tooltipText ? tooltipText : t('inferredPrevalence')
 
   return (
     <div className={classes.scenarioGraphLegend}>

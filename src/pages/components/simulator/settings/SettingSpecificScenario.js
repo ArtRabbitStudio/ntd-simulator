@@ -61,7 +61,7 @@ const SettingSpecificScenario = ({ inModal, label, classAdd, scenarioId }) => {
         dispatchScenarioStateUpdate( {
           type: ScenarioStoreConstants.ACTION_TYPES.UPDATE_SCENARIO_LABEL_BY_ID,
           id: scenarioId,
-          label: specificScenarios[par].label
+          label: t(specificScenarios[par].label)
         } );
       }
 
@@ -77,6 +77,8 @@ const SettingSpecificScenario = ({ inModal, label, classAdd, scenarioId }) => {
     })
 
     if (specificScenarios.length > par) {
+      let translatedSpecificScneario = specificScenarios[par]
+      translatedSpecificScneario.label = t(translatedSpecificScneario.label)
       dispatchSimState({
         type: 'specificPrediction',
         payload: specificScenarios[par],

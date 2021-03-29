@@ -476,7 +476,7 @@ const ScenarioDisplay = (props) => {
 
 
             <Tooltip
-              title={AppConstants.DISEASE_CONFIG[disease].mdaTooltip}
+              title={`mdaTooltip.${disease}`}
               aria-label="info"
             >
 
