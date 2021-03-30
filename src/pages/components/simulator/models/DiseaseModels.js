@@ -8,14 +8,13 @@ import {
 } from 'AppConstants';
 
 import LFModel from 'pages/components/simulator/models/lf';
-import TrachomaModel from 'pages/components/simulator/models/trachoma';
-import STHModel from 'pages/components/simulator/models/sth'
+import CombinedModel from 'pages/components/simulator/models/combined';
 
 export default {
   [ DISEASE_LIMF ]: LFModel,
-  [ DISEASE_TRACHOMA ]: STHModel,
-  [ DISEASE_STH_ROUNDWORM ]: STHModel,
-  [ DISEASE_STH_WHIPWORM ]: STHModel,
-  [ DISEASE_STH_HOOKWORM ]: STHModel,
-  [ DISEASE_SCH_MANSONI ]: STHModel,
+  [ DISEASE_TRACHOMA ]: CombinedModel,
+  [ DISEASE_STH_ROUNDWORM ]: CombinedModel,
+  [ DISEASE_STH_WHIPWORM ]: CombinedModel,
+  [ DISEASE_STH_HOOKWORM ]: CombinedModel,
+  [ DISEASE_SCH_MANSONI ]: CombinedModel,
 };
