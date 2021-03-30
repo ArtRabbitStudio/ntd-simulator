@@ -24,7 +24,7 @@ import { useScenarioStore } from 'store/scenarioStore';
 
 const SettingsDialog = ( props ) => {
   
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   const classes = useStyles();
   const { scenarioState } = useScenarioStore();

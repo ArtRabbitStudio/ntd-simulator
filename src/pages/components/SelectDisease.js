@@ -14,7 +14,7 @@ import { useTranslation } from 'react-i18next';
 
 
 const SelectDisease = ({ selectIU, showBack }) => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const classes = useStyles()
   const history = useHistory()
 
@@ -66,9 +66,9 @@ const SelectDisease = ({ selectIU, showBack }) => {
     <React.Fragment>
       <Box className={classes.box}>
 
-        <Typography variant="h4" component="p" className={classes.headline} >Simulate the impact of more frequent, longer or higer coverage treatments to eradicating neglected tropical diseases.</Typography>
+        <Typography variant="h4" component="p" className={classes.headline} >{t('appDesc')}</Typography>
 
-        <CapsHeadline text="Select a Disease" />
+        <CapsHeadline text={t('selectDisease')} />
         <FormControl className={`${classes.formControl} large`}>
           <Autocomplete
             id="disease"

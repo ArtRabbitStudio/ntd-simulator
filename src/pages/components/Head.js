@@ -55,7 +55,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 const Head = ({ classAdd, intro, alternativeHeadline }) => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   const classes = useStyles();
   classAdd = classAdd ? classAdd : '';
@@ -68,7 +68,7 @@ const Head = ({ classAdd, intro, alternativeHeadline }) => {
 
         { /*Negelcted Tropical Diseases*/}
         <Typography variant="h6" component="span" className={`${classes.headline}`} >{t(alternativeHeadline ? 'NegelctedTropicalDiseases' : 'NTDModellingConsortium')}</Typography>
-        <Typography variant="h1" component="h2">NTD Prediction Simulator</Typography>
+        <Typography variant="h1" component="h2">{t('appTitle')}</Typography>
         <Typography variant="h6" component="span" className={`${classes.headline}`} >{t('Africa')} <span className={classes.beta}>{t('beta')} {process.env.REACT_APP_VERSION}</span></Typography>
         {intro &&
           <Grid item md={6} xs={12} className={classes.head}>

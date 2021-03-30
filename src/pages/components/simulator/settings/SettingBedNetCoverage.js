@@ -13,7 +13,7 @@ import {
 } from "@material-ui/core";
 
 const SettingBedNetCoverage = ({ inModal, label, value, onChange, classAdd, scenarioId }) => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   const classes = useStyles();
   const { dispatchSimState } = useSimulatorStore();

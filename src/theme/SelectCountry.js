@@ -12,7 +12,7 @@ const useStyles = makeStyles(theme => ({
     width: '100%',
     display: 'flex',
     flexDirection: 'column',
-    margin: theme.spacing(0, 0, 4, 0),
+    margin: theme.spacing(4, 0, 4, 0),
     "& p": {
       margin: theme.spacing(0, 0, 4, 0),
     },

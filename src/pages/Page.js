@@ -5,7 +5,7 @@ import Head from 'pages/components/Head';
 import { useTranslation } from "react-i18next";
 
 const Page = (props) => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   return (
     <Layout>

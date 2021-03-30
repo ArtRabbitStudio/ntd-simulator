@@ -62,7 +62,7 @@ const useStyles = makeStyles(theme => ({
     '&.icon-sth-whipworm': {
       backgroundImage: `url(${ico4})`,
     },
-    '&.icon-mansoni': {
+    '&.icon-sch-mansoni': {
       backgroundImage: `url(${ico2})`,
     },
     '&.icon-sth-hookworm': {
@@ -76,7 +76,8 @@ const useStyles = makeStyles(theme => ({
 
 
 export default function IntroWrap(props) {
-  const { t, i18n } = useTranslation();
+  //const { t } = useTranslation();
+  const { t } = useTranslation(['translation',props.ident]);
   const classes = useStyles();
 
   return (
@@ -86,10 +87,10 @@ export default function IntroWrap(props) {
       <div className={classes.headlinesWrap}>
         <div className={`${classes.headlines} icon-${props.ident}`}>
           <Typography variant="h3" component="h5" className={`${classes.headline}`}>
-            {`${t('aboutProjections')} ${DISEASE_LABELS[props.ident]}`}
+            {`${t(`${props.ident}:summaryHeadline`)}`}
           </Typography>
           <Typography variant="h5" component="h6" className={classes.subHeadline}>
-            {t('backgroundAboutModelData')}
+            {`${t(`${props.ident}:summarySubtitle`)}`}
           </Typography>
         </div>
         <div className={classes.btn}>

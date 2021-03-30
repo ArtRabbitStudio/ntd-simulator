@@ -17,7 +17,7 @@ import { useTranslation } from 'react-i18next';
 
 const PerDiseaseSetup = (props) => {
   const [isLoading, setIsLoading] = useState(false)
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const history = useHistory()
   const classes = useStyles()
   const { simState, dispatchSimState } = useSimulatorStore()

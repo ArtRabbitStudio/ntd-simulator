@@ -28,8 +28,6 @@ const DISEASE_CONFIG = {
     numberOfYears: 11 * 2,
     startMonth: 240,
     offsetBarWidthDivider: 2,
-    mapLegend: 'Prevalence map and trends since 2010.',
-    mdaTooltip: 'Light blue bars show no intervention;  blue bars show intervention, the height of the blue colour shows coverage. Historic interventions before 2019 are greyed out.'
   },
 
   [DISEASE_TRACHOMA]: {
@@ -42,8 +40,6 @@ const DISEASE_CONFIG = {
     numberOfYears: 11 * 2,
     startMonth: 240,
     offsetBarWidthDivider: 1,
-    mapLegend: 'Prevalence map and trends since 2017',
-    mdaTooltip: 'Light blue bars show no intervention;  blue bars show intervention, the height of the blue colour shows coverage. Historic interventions are greyed out. Use the slider to adjust interruption and when MDA is discontinued.'
 
   },
 
@@ -57,8 +53,6 @@ const DISEASE_CONFIG = {
     numberOfYears: 12 * 2,
     startMonth: 216,
     offsetBarWidthDivider: 2,
-    mapLegend: 'Prevalence map and trends since 2017',
-    mdaTooltip: 'Light blue bars show no intervention;  blue bars show intervention, the height of the blue colour shows coverage. Historic interventions before 2018 are greyed out.'
 
   },
 
@@ -72,7 +66,6 @@ const DISEASE_CONFIG = {
     numberOfYears: 12 * 2,
     startMonth: 216,
     offsetBarWidthDivider: 2,
-    mapLegend: 'Prevalence map and trends since 2017'
   },
 
   [DISEASE_STH_HOOKWORM]: {
@@ -85,8 +78,6 @@ const DISEASE_CONFIG = {
     numberOfYears: 12 * 2,
     startMonth: 216,
     offsetBarWidthDivider: 2,
-    mapLegend: 'Prevalence map and trends since 2017',
-    mdaTooltip: 'Light blue bars show no intervention;  blue bars show intervention, the height of the blue colour shows coverage. Historic interventions before 2018 are greyed out.'
 
   },
 
@@ -100,9 +91,6 @@ const DISEASE_CONFIG = {
     numberOfYears: 12 * 2,
     startMonth: 216,
     offsetBarWidthDivider: 2,
-    mapLegend: 'Prevalence map and trends since 2017',
-    mdaTooltip: 'Light blue bars show no intervention;  blue bars show intervention, the height of the blue colour shows coverage. Historic interventions before 2018 are greyed out.'
-
   }
 
 };

@@ -16,9 +16,9 @@ import {
   DISEASE_LABELS
 } from 'AppConstants'
 
-const SelectCountry = ({ selectIU, showCountryConfirmation, showIUConfirmation, showBack, countyAndIUSet }) => {
+const SelectCountry = ({ selectIU, showCountryConfirmation, showIUConfirmation, showBackToCountry,showBackToContinent, countyAndIUSet }) => {
   const classes = useStyles()
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const history = useHistory()
   const matchSection = useRouteMatch('/:disease/:section/')
 
@@ -34,6 +34,16 @@ const SelectCountry = ({ selectIU, showCountryConfirmation, showIUConfirmation, 
 
   const handleBackToCountry = () => {
     const url = `/${disease}/${country}`;
+    if (showCountryConfirmation || showIUConfirmation) {
+      setGoTo(url)
+      setConfirmatonOpen(true);
+    } else {
+      navigate(url)
+    }
+  }
+
+  const handleBackToContinent = ()=> {
+    const url = `/${disease}`;
     if (showCountryConfirmation || showIUConfirmation) {
       setGoTo(url)
       setConfirmatonOpen(true);
@@ -115,12 +125,21 @@ const SelectCountry = ({ selectIU, showCountryConfirmation, showIUConfirmation, 
             )}
             onChange={handleCountryChange}
           />
-          {showBack && <Fab
+          {showBackToCountry && <Fab
             color="inherit"
             aria-label="REMOVE SCENARIO"
             disabled={false}
             className={classes.reloadIcon}
             onClick={() => { handleBackToCountry() }}
+          >
+            &nbsp;
+        </Fab>}
+        {showBackToContinent && <Fab
+            color="inherit"
+            aria-label="REMOVE SCENARIO"
+            disabled={false}
+            className={classes.reloadIcon}
+            onClick={() => { handleBackToContinent() }}
           >
             &nbsp;
         </Fab>}

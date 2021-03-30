@@ -1,6 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Typography, Link } from '@material-ui/core';
+import { Typography } from '@material-ui/core';
 import { useTranslation } from "react-i18next";
 
 const useStyles = makeStyles(theme => ({
@@ -9,11 +9,20 @@ const useStyles = makeStyles(theme => ({
     alignItems: "center",
     flexWrap: "nowrap",
     width: "100%",
+    justifyContent: "flex-end",
     color: theme.palette.basic.white,
 
-    '& a': {
+    '& button': {
+      background: "transparent",
       color: theme.palette.basic.white,
+      transition: "all 0.3s ease-in-out",
+      padding: "5px 10px 3px 10px",
+      cursor: "pointer",
       border: `1px solid ${theme.palette.basic.white}`,
+      '&:focus, &:hover': {
+        background: theme.palette.primary.dark,
+        border: `1px solid ${theme.palette.basic.white}`,
+      }
     },
 
     '& > ul': {
@@ -33,9 +42,13 @@ const useStyles = makeStyles(theme => ({
       color: theme.palette.text.primary,
       marginTop: - 5,
 
-      '& a': {
+      '& button': {
         color: theme.palette.text.primary,
         border: `1px solid ${theme.palette.text.primary}`,
+        '&:focus, &:hover': {
+          background: theme.palette.secondary.light,
+          border: `1px solid ${theme.palette.text.primary}`,
+        }
       },
     },
     [theme.breakpoints.up('lg')]: {
@@ -47,6 +60,7 @@ const useStyles = makeStyles(theme => ({
   },
   headline: {
     margin: theme.spacing(0, 0, 0, 0),
+    lineHeight: 1,
   },
   switch: {
     display: "inline-block",
@@ -70,27 +84,27 @@ const LanguageSwitch = ({ current = 'en-US', dark }) => {
     i18n.changeLanguage(lang);
   }
 
-
   return (
     <nav className={`${classes.root}  ${dark ? 'dark' : ''}`}>
-      <Typography variant="h6" component="h6" className={classes.headline} >Also available in:</Typography>
+      <Typography variant="h6" component="h6" className={classes.headline} >{`${t('alsoAvailableIn')}:`}</Typography>
 
       <ul>
         {languages
-          .filter(l => l.code !== current)
+          .filter(l => {
+            return l.short !== i18n.language
+          })
           .map((lang, i) => {
             return (
               <li key={i}>
-                <Link
-                  href="#"
+                <button
                   lang={lang.code}
-                  aria-label={`Switch to ${lang.name}`}
                   hrefLang={lang.code}
                   className={classes.switch}
+                  aria-label={`${t('switchTo')} ${lang.name}`}
                   onClick={() => handleClick(lang.short)}
                 >
                   <Typography variant="h6" component="span" className={classes.headline} >{lang.name}</Typography>
-                </Link>
+                </button>
               </li>
             );
           })}

@@ -47,8 +47,6 @@ const useStyles = makeStyles(theme => ({
   icon: {
     backgroundColor: "transparent",
     boxShadow: 'none',
-    marginRight: 10,
-    float: "right",
     '& .MuiTouchRipple-root': {
       backgroundImage: `url(${Icon})`,
       backgroundPosition: 'center',
@@ -66,32 +64,32 @@ const useStyles = makeStyles(theme => ({
 }));
 // <button mat-button aria-label="settings" className={classes.icon} onClick={(event) => handleClickOpen(event)}></button>
 const ChartSettings = ({ title, buttonText, cancelText, cancel, action, onOpen, children, hideFab, newScenarioSettingsOpen }) => {
-const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const classes = useStyles();
-  const [ open, setOpen ] = useState(false);
+  const [open, setOpen] = useState(false);
 
   title = title ? title : t('settings');
   buttonText = buttonText ? buttonText : t('updateGraphs');
 
   const handleClickOpen = () => {
-    setOpen( true );
-    if ( onOpen ) {
+    setOpen(true);
+    if (onOpen) {
       onOpen();
     }
   };
 
-  const handleClickClose = ( event ) => {
+  const handleClickClose = (event) => {
 
-    setOpen( false );
-    if( cancel ) {
-      cancel( event );
+    setOpen(false);
+    if (cancel) {
+      cancel(event);
     }
   };
 
-  const handleConfirm = ( event ) => {
-    setOpen( false );
-    if ( action ) {
-      action( event );
+  const handleConfirm = (event) => {
+    setOpen(false);
+    if (action) {
+      action(event);
     }
   };
 
@@ -100,17 +98,17 @@ const { t, i18n } = useTranslation();
   };
 
   useEffect(() => {
-    if ( newScenarioSettingsOpen ) {
-      setOpen( true )
+    if (newScenarioSettingsOpen) {
+      setOpen(true)
     } else {
-      setOpen( false )
+      setOpen(false)
     }
-  }, [ newScenarioSettingsOpen ]);
+  }, [newScenarioSettingsOpen]);
 
 
   return (
     <div className={classes.root}>
-      { hideFab === true ? null : ( <Fab color="inherit" aria-label="settings" className={classes.icon} onClick={handleClickOpen}> </Fab> ) }
+      { hideFab === true ? null : (<Fab color="inherit" aria-label="settings" className={classes.icon} onClick={handleClickOpen}> </Fab>)}
       { open &&
         <ClickAwayListener onClickAway={handleClickClose}>
           <Paper

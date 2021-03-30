@@ -19,7 +19,7 @@ import {
 
 
 const SetupLF = (props) => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   const classes = useStyles();
   const { simState, dispatchSimState } = useSimulatorStore();

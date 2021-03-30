@@ -1,0 +1,84 @@
+  summaryHeadline: About projections for Lymphatic filariasis
+  summarySubtitle: Background about the model and data used
+  summaryTab1Title: Geographic and historic MDA Data
+  summaryTab1Content: |
+    Geographic and historic MDA data is a stochastic micro-simulation of individuals with worm burden, microfilaraemia and other demographic parameters relating to age and risk of exposure. Humans are modelled individually, with their own male and female worm burden. The concentration of mf in the peripheral blood is modelled for each individual deterministically and increases according to the number of fertile female worms as well as decreasing at constant rate. The total mf density in the population contributes towards the current density of L3 larvae in the human-biting mosquito population, where the distribution of L3 amongst the human-biting mosquito population is completely homogeneous. An empirically derived relationship is used for the uptake of mf by a mosquito, where both Culex and Anopheles uptake curves are implemented depending on setting. The model dynamics are therefore divided into the individual human dynamics, including age and turnover; worm dynamics inside the host; microfilariae dynamics inside the host and larvae dynamics inside the mosquito.
+  summaryTab2Title: About the model
+  summaryTab2Content: |
+    The is a stochastic micro-simulation of individuals with worm burden, microfilaraemia and other demographic parameters relating to age and risk of exposure. Humans are modelled individually, with their own male and female worm burden. The concentration of mf in the peripheral blood is modelled for each individual deterministically and increases according to the number of fertile female worms as well as decreasing at constant rate. The total mf density in the population contributes towards the current density of L3 larvae in the human-biting mosquito population, where the distribution of L3 amongst the human-biting mosquito population is completely homogeneous. An empirically derived relationship is used for the uptake of mf by a mosquito, where both Culex and Anopheles uptake curves are implemented depending on setting. The model dynamics are therefore divided into the individual human dynamics, including age and turnover; worm dynamics inside the host; microfilariae dynamics inside the host and larvae dynamics inside the mosquito.
+  detailRightActionHeadline: Predictions for Lymphatic filariasis
+  detailRightActionIntro: Calculate predictions based on the model, start by
+  detailRightActionButton: Selecting a country
+  detailRightInfoHeadline: About the Model
+  detailRightInfoButton1: Modelling paper
+  detailRightInfoButton1Target: https://parasitesandvectors.biomedcentral.com/articles/10.1186/s13071-015-1152-3
+  detailContent: | 
+    ## About Lymphatic filariasis
+
+    Lymphatic filariasis is due to filarial parasites which are transmitted to humans through mosquitoes. When a mosquito with infective stage larvae bites a person, the parasites are deposited on the person's skin from where they enter the body. The larvae then migrate to the lymphatic vessels where they develop into adult worms in the human lymphatic system. Infection is usually acquired in childhood, but the painful and profoundly disfiguring visible manifestations of the disease occur later in life. Whereas acute episodes of the disease cause temporary disability, lymphatic filariasis (LF) leads to permanent disability.
+
+    More information on Trachoma on the [WHO website.](https://www.who.int/health-topics/lymphatic-filariasis#tab=tab_1)
+
+
+    ## Disease Burden
+
+    LF is endemic in 83 countries and there are an estimated 120 million cases, including 25 million men with hydroceles and 15 million people, primarily women, with lymphedema. The disease occurs throughout the tropical areas of Africa, Asia, the Americas and the Pacific, with around 66% of the infection clustered in South-East Asia and most of the remaining infection (~33%) centered in Africa.
+
+
+    ## Transmission Dynamics
+
+    LF is caused by a species of filarial roundworms, or nematodes, with up to 90% of all infections caused by Wuchereria bancrofti. In some parts of Asia, LF is caused by Brugia malayi and Brugia timori. Various mosquito species transmit these worms: Culex mosquitoes transmit W. bancrofti in urban and semi-urban areas, Anopheles mosquitoes transmit worms in rural environments, especially in Africa, and Aedes mosquitoes are responsible for transmission throughout the Pacific.
+
+    To learn more about the transmission dynamics of lymphatic filariasis, please visit the [Global Atlas of Helminth Infections (GAHI)](http://www.thiswormyworld.org/about-worms/worms/what-are-worms).
+
+
+    ## Interventions
+
+    Numerous countries have implemented LF control programmes, with significant achievements in the Americas, the Pacific and Asia. A few countries in Africa are close to their elimination goals. To learn more about LF elimination, please visit the [Global Atlas of Helminth Infections](http://www.thiswormyworld.org/about-worms/elimination-of-lymphatic-filariasis).
+
+
+    ## Simulation Model
+
+    The underlying model is stochastic and individual-based. Its description includes an individual's worm burden, mf burden as well as aspects of the transmission cycle in mosquito populations. Various interventions are also modelled on the population. The main intervention is mass drug administration (MDA), where different regimens can be selected. Interventions also include vector control including bed-nets and insecticide treatment. A full model description can be found in the accompanying [P&V paper](https://parasitesandvectors.biomedcentral.com/articles/10.1186/s13071-015-1152-3), which can be found in the further reading section. Please note that the model has only been validated against a certain number of settings, details of which can be found in the [paper](https://parasitesandvectors.biomedcentral.com/articles/10.1186/s13071-015-1152-3).
+
+
+    ## Model code
+
+    We are committed to making our model code available for use by other modellers. Below are links to code used in recent publications:
+
+    Smith et al. [Predicting lymphatic filariasis transmission and elimination dynamics using a multi-model ensemble framework](https://doi.org/10.1016/j.epidem.2017.02.006) Epidemics 2017. The [code for EPIFIL is available here](https://www.ntdmodelling.org/sites/www.ntdmodelling.org/files/content/EPIFIL_Code%202.zip). The [code for TRANSFIL is available here](https://github.com/sempwn/LF-model). The code for LYMFASIM was published with:
+
+    Jambulingam et al. [Mathematical modelling of lymphatic filariasis elimination programmes in India: required duration of mass drug administration and post-treatment level of infection indicators](https://parasitesandvectors.biomedcentral.com/articles/10.1186/s13071-016-1768-y). Parasites and Vectors 2016. The code is in the additional files at the end of the paper.
+
+
+    ## Data
+
+
+    ## Further Reading
+
+    [Modelling paper](https://parasitesandvectors.biomedcentral.com/articles/10.1186/s13071-015-1152-3)
+    Provides an overview of the accompanying model as well as the underlying parameters.
+
+    [Accompanying paper](http://dx.doi.org/10.1371/journal.pntd.0005206)
+    Provides a description and motivation behind this tool.
+
+    ### Useful links
+
+    [Global Atlas of Helminth Infections](http://www.thiswormyworld.org/)
+
+    ## Modelling publications
+
+    [The Population Biology and Transmission Dynamics of Loa loa](http://www.cell.com/trends/parasitology/fulltext/S1471-4922(17)30305-7)
+    Whittaker C, Walker M, Pion SDS, Chesnais CB, Boussinesq M, Basáñez MG Trends in Parasitology, 2018; : Epub
+
+    [Identifying co-endemic areas for major filarial infections in sub-Saharan Africa: seeking synergies and preventing severe adverse events during mass drug administration campaigns](https://parasitesandvectors.biomedcentral.com/articles/10.1186/s13071-018-2655-5)
+    Cano J, Basáñez MG, O'Hanlon SJ, Tekle AH, Wanji S, Zouré HG, Rebollo MP, Pullan RL Parasites and Vectors, 2018; 1: 70
+
+    [Understanding the relationship between prevalence of microfilariae and antigenaemia using a model of lymphatic filariasis infection](http://trstmh.oxfordjournals.org/content/110/2/118.short?rss=1)
+    Michael A. Irvine, Sammy M. Njenga, Shamini Gunawardena, Claire Njeri Wamae, Jorge Cano, Simon J. Brooker and T. Deirdre Hollingsworth Transactions of the Royal Society of Tropical Medicine and Hygiene, 2016; : 118-124
+
+    [Heterogeneous dynamics, robustness/fragility trade-offs, and the eradication of the macroparasitic disease, lymphatic filariasis](http://bmcmedicine.biomedcentral.com/articles/10.1186/s12916-016-0557-y)
+    Edwin Michael and Brajendra K. Singh BioMed Central, 2016; : 14:14
+
+    [Bayesian calibration of simulation models for supporting management of the elimination of the macroparasitic disease, Lymphatic Filariasis](http://www.parasitesandvectors.com/content/8/1/522)
+    Singh BK, Michael E. Parasites & Vectors, 2015; 8: 522

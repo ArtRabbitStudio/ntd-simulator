@@ -3,11 +3,14 @@ import Random from "images/systemic-random.svg";
 import Same from "images/systemic-same.svg";
 import Anopheles from "images/Anopheles.jpg";
 import Culex from "images/Culex.jpg";
-import InfoIcon from "images/info-24-px.svg";
-import RemoveIcon from "images/delete-icon-blue.svg";
+import InfoIcon from "images/info.svg";
+import RemoveIcon from "images/bin-icon.svg";
+import PrintIcon from "images/print-icon.svg";
+import DownloadIcon from "images/download-icon.svg";
 import graphTypeIconSimple from "images/graph-icon.svg";
 import graphTypeIconComplex from "images/graph-complex-icon.svg";
 import SettingsIcon from 'images/settings.svg';
+import AddIcon from 'images/add.svg';
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -29,9 +32,51 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(0, 0, -1, 0),
   },
   rightControls: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "flex-end",
+    flexWrap: "nowrap",
+    '& h6:not(.closer)': {
+      margin: theme.spacing(0, 2, 0, 0),
+    },
     [theme.breakpoints.up('md')]: {
-      margin: theme.spacing(-2, 0, -2, 0),
+      //margin: theme.spacing(-2, 0, -2, 0),
     }
+  },
+
+  leftControls: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "flex-start",
+    flexWrap: "nowrap",
+    '& h6': {
+      margin: theme.spacing(0, 2, 0, 0),
+    },
+    [theme.breakpoints.up('md')]: {
+      //margin: theme.spacing(-2, 0, -2, 0),
+    }
+  },
+  centerControls: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    flexWrap: "nowrap",
+    '& h6': {
+      margin: theme.spacing(0, 2, 0, 0),
+    },
+    [theme.breakpoints.up('md')]: {
+      //margin: theme.spacing(-2, 0, -2, 0),
+    }
+  },
+  controlsRow: {
+    padding: theme.spacing(1, 0),
+    borderBottom: "1px solid #e0e0e0",
+  },
+  caps: {
+    textTransform: "uppercase",
+    fontSize: 14,
+    letterSpacing: 1,
+    display: "inline-flex"
   },
   formControlPrecision: {
     display: "block",
@@ -66,6 +111,22 @@ const useStyles = makeStyles((theme) => ({
       transform: 'translate(-200px, 0)'
     }
   },
+  addScenario: {
+    '& .MuiTab-wrapper': {
+      backgroundImage: `url(${AddIcon})`,
+      backgroundPosition: 'left center',
+      backgroundSize: 'auto',
+      backgroundRepeat: 'no-repeat',
+      paddingLeft: 32,
+    },
+    '&:hover': {
+      backgroundColor: "rgb(204, 232, 244)",
+      '& .MuiTab-wrapper': {
+        //backgroundImage: `url(${IconHover})`,
+
+      }
+    }
+  },
 
   contentLeftColumn: {},
   settingsIcon: {
@@ -88,7 +149,6 @@ const useStyles = makeStyles((theme) => ({
   removeIcon: {
     backgroundColor: "transparent",
     boxShadow: "none",
-    float: 'right',
     zIndex: 9,
 
     "& .MuiTouchRipple-root": {
@@ -104,11 +164,47 @@ const useStyles = makeStyles((theme) => ({
       },
     },
   },
+  printIcon: {
+    backgroundColor: "transparent",
+    boxShadow: "none",
+    zIndex: 9,
+
+    "& .MuiTouchRipple-root": {
+      backgroundImage: `url(${PrintIcon})`,
+      backgroundPosition: "center",
+      backgroundSize: "auto",
+      backgroundRepeat: "no-repeat",
+    },
+    "&:hover": {
+      backgroundColor: "rgb(204, 232, 244)",
+      "& .MuiTouchRipple-root": {
+        //backgroundImage: `url(${IconHover})`,
+      },
+    },
+  },
+  downloadIcon: {
+    backgroundColor: "transparent",
+    boxShadow: "none",
+    zIndex: 9,
+
+    "& .MuiTouchRipple-root": {
+      backgroundImage: `url(${DownloadIcon})`,
+      backgroundPosition: "center",
+      backgroundSize: "auto",
+      backgroundRepeat: "no-repeat",
+    },
+    "&:hover": {
+      backgroundColor: "rgb(204, 232, 244)",
+      "& .MuiTouchRipple-root": {
+        //backgroundImage: `url(${IconHover})`,
+      },
+    },
+  },
+
+
   graphTypeIconSimple: {
     backgroundColor: "transparent",
     boxShadow: "none",
-    float: 'right',
-    marginTop:-25,
     marginLeft: 10,
     zIndex: 9,
 
@@ -128,8 +224,6 @@ const useStyles = makeStyles((theme) => ({
   graphTypeIconComplex: {
     backgroundColor: "transparent",
     boxShadow: "none",
-    float: 'right',
-    marginTop:-25,
     marginLeft: 10,
     zIndex: 9,
 
@@ -177,6 +271,7 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(0, 6),
     borderBottom: "1px solid #e0e0e0",
   },
+
   chartContainer: {
     position: "relative",
     width: "100%",
@@ -184,7 +279,7 @@ const useStyles = makeStyles((theme) => ({
   },
   chartTitle: {
     display: "block",
-    float: "left"
+    margin: theme.spacing(0, 2, 0, 0),
   },
   precision: {
   },
@@ -216,17 +311,17 @@ const useStyles = makeStyles((theme) => ({
     transform: "translate(-50%, 0%)",
   },
   legend: {
-    float:'left',
-    width:30,
-    height:110,
+    float: 'left',
+    width: 30,
+    height: 110,
 
   },
   legendText: {
-    fontSize:12,
+    fontSize: 12,
     textAlign: 'right'
   },
   legendTextBottom: {
-    marginTop:90
+    marginTop: 90
   },
   buttonBG: {
     backgroundColor: "#fff"
@@ -337,6 +432,8 @@ const useStyles = makeStyles((theme) => ({
     whiteSpace: "nowrap",
     marginBottom: -40,
     marginTop: 10,
+    position: "relative",
+    zIndex: 5,
     '& h6': {
       display: 'inline-block'
     }

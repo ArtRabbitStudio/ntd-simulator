@@ -9,10 +9,7 @@ import ScenarioGraphGrid from 'pages/components/simulator/ScenarioGraphGrid'
 import ScenarioGraphInfoLine from 'pages/components/simulator/ScenarioGraphInfoLine'
 import ScenarioGraphInfoBubble from 'pages/components/simulator/ScenarioGraphInfoBubble'
 import { useTranslation } from "react-i18next";
-
-import {
-  Typography,
-} from '@material-ui/core'
+import ScenarioGraphLegend from 'pages/components/simulator/ScenarioGraphLegend'
 
 let fadeOutTimeout = null
 
@@ -32,9 +29,9 @@ function ScenarioGraphTrachoma({
   IUData
 }) {
 
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const [activeInfo, setActiveInfo] = useState(null)
-  const [uncertaintyInfo,setUncertaintyInfo] = useState(false)
+  const [uncertaintyInfo, setUncertaintyInfo] = useState(false)
 
   metrics = ['p']
 
@@ -46,7 +43,7 @@ function ScenarioGraphTrachoma({
   const yPad = 32 + 20
   const svgHeight = height + yPad * 2
   const svgWidth = width
-  
+
 
   const dataSelection = showAllResults ? data.results : [data.results[0]]
 
@@ -55,10 +52,10 @@ function ScenarioGraphTrachoma({
 
   const IndexToStartForOutput = (flatten(map(dataSelection, 'ts')).findIndex(isStartYear))
   const IndexForPrediction = (flatten(map(dataSelection, 'ts')).findIndex(isPrediction))
-  const domainX = [startYear, Math.round(max(flatten(map(dataSelection, 'ts'))))  ]
+  const domainX = [startYear, Math.round(max(flatten(map(dataSelection, 'ts'))))]
 
   let dataToOutput = [];
-  forEach(data.results,(r)=>{
+  forEach(data.results, (r) => {
     dataToOutput.push({
       p: r.p.slice(IndexToStartForOutput),
       ts: r.ts.slice(IndexToStartForOutput)
@@ -97,14 +94,14 @@ function ScenarioGraphTrachoma({
 
   const y = scaleLinear().domain(domainY).range([height, 0]).nice()
 
-  const ticksX = x.ticks(domainX[1]-domainX[0])
+  const ticksX = x.ticks(domainX[1] - domainX[0])
   const ticksY = y.ticks()
 
   const renderResult = (d, main) => {
     if (simInProgress) return
 
     let { ts, p } = d
-    if ( p === undefined ) {
+    if (p === undefined) {
       p = d['median']
     }
 
@@ -147,7 +144,7 @@ function ScenarioGraphTrachoma({
       historicReferencLowerLine = line()(historicReferenceLower)
       
     }*/
-    
+
     // future path
 
     const color = main ? '#D86422' : '#eee'
@@ -174,7 +171,7 @@ function ScenarioGraphTrachoma({
 
     return (
       <>
-        
+
         {metrics.map((m, i) => (
           <g key={`${i}-l`}>
             <ScenarioGraphPath
@@ -200,8 +197,8 @@ function ScenarioGraphTrachoma({
           metrics.map((m, i) => (
             <g key={`${i}-ps`}>
               <ScenarioGraphInfoPoints
-                handleEnter={(id)=>handleEnter(id)}
-                handleLeave={()=>handleLeave()}
+                handleEnter={(id) => handleEnter(id)}
+                handleLeave={() => handleLeave()}
                 key={`${i}-ps-h`}
                 data={historicSeries}
                 prop={m}
@@ -211,8 +208,8 @@ function ScenarioGraphTrachoma({
                 mode="h"
               />
               <ScenarioGraphInfoPoints
-                handleEnter={(id)=>handleEnter(id)}
-                handleLeave={()=>handleLeave()}
+                handleEnter={(id) => handleEnter(id)}
+                handleLeave={() => handleLeave()}
                 key={`${i}-ps-f`}
                 data={futureSeries}
                 prop={m}
@@ -230,7 +227,7 @@ function ScenarioGraphTrachoma({
       </>
     )
   }
-  const renderRange = (d,dMax,dts, main) => {
+  const renderRange = (d, dMax, dts, main) => {
 
     if (simInProgress) return
 
@@ -244,18 +241,18 @@ function ScenarioGraphTrachoma({
     const historicSeriesMax = dMax.slice(IndexToStartForOutput, IndexForPrediction + 1)
     const futureSeriesMax = dMax.slice(IndexForPrediction)
 
-    const points = historicSeriesMax.map((value,index)=>{
+    const points = historicSeriesMax.map((value, index) => {
       return `${x(tsSeries[index])},${y(value)} `
     })
-    let pointsMax = historicSeries.map((value,index)=>{
+    let pointsMax = historicSeries.map((value, index) => {
       return `${x(tsSeries[index])},${y(value)} `
     })
     pointsMax.reverse()
     const bgColor = '#959FA6'
-    const fpoints = futureSeriesMax.map((value,index)=>{
+    const fpoints = futureSeriesMax.map((value, index) => {
       return `${x(ftsSeries[index])},${y(value)} `
     })
-    let fpointsMax = futureSeries.map((value,index)=>{
+    let fpointsMax = futureSeries.map((value, index) => {
       return `${x(ftsSeries[index])},${y(value)} `
     })
     fpointsMax.reverse()
@@ -263,48 +260,43 @@ function ScenarioGraphTrachoma({
     return (
 
       <>
-          <polygon points={points+' '+pointsMax} fill={bgColor} opacity={.1} onMouseEnter={handleUncertaintyHover} onMouseLeave={handleUncertaintyLeave} />
-          <polygon points={fpoints+' '+fpointsMax} fill={bgColor} opacity={.15} onMouseEnter={handleUncertaintyHover} onMouseLeave={handleUncertaintyLeave} />
+        <polygon points={points + ' ' + pointsMax} fill={bgColor} opacity={.1} onMouseEnter={handleUncertaintyHover} onMouseLeave={handleUncertaintyLeave} />
+        <polygon points={fpoints + ' ' + fpointsMax} fill={bgColor} opacity={.15} onMouseEnter={handleUncertaintyHover} onMouseLeave={handleUncertaintyLeave} />
       </>
 
     )
-  
+
   }
 
   return (
     <React.Fragment>
-      <div className={classes.scenarioGraphLegend}>
-        <Typography className={classes.scenarioGraphLegendHistoric} style={{ width: x(ticksX[futureYear - startYear]) }} variant="h6" component="h6">
-          {t('historic')}
-        </Typography>
-        <Typography className={`${classes.scenarioGraphLegendPrediction}`} variant="h6" component="h6">
-          {t('prediction')}
-        </Typography>
-      </div>
+
+      <ScenarioGraphLegend classes={classes} width={x(ticksX[futureYear - startYear])} />
+
       <svg
         width={svgWidth}
         height={svgHeight}
         viewBox={`0 0 ${svgWidth} ${svgHeight}`}
       >
         <g transform={`translate(${lPad},${yPad})`}>
-          
-        <ScenarioGraphGrid ticksX={ticksX} ticksY={ticksY} x={x} y={y} zeroYear={2000} startYear={startYear} futureYear={futureYear} svgHeight={svgHeight} height={height} tPad={tPad} yPad={yPad} lPad={lPad} rPad={rPad} width={width} />
-        {graphTypeSimple && data.results &&
-            <g key={`results1-stats`}>{renderRange( data.summary['min'],  data.summary['max'], data.summary['ts'], false, x, y)}</g>
+
+          <ScenarioGraphGrid ticksX={ticksX} ticksY={ticksY} x={x} y={y} zeroYear={2000} startYear={startYear} futureYear={futureYear} svgHeight={svgHeight} height={height} tPad={tPad} yPad={yPad} lPad={lPad} rPad={rPad} width={width} />
+          {graphTypeSimple && data.results &&
+            <g key={`results1-stats`}>{renderRange(data.summary['min'], data.summary['max'], data.summary['ts'], false, x, y)}</g>
           }
-          
+
           {!graphTypeSimple && data.results &&
             data.results.map((result, i) => (
               <g key={`results1-${i}`}>{renderResult(result, false, x, y)}</g>
             ))}
-          
+
           {data.summary &&
             [data.summary].map((result, i) => (
               <g key={`results-${i}`}>{renderResult(result, true, x, y)}</g>
             ))}
-          <ScenarioGraphInfoLine 
+          <ScenarioGraphInfoLine
             legend={t('WHOTarget')}
-            line={[0,width - lPad - rPad,y(5),y(5)]}
+            line={[0, width - lPad - rPad, y(5), y(5)]}
             stroke="#03D386"
             strokeDasharray='10 2'
             percentage={5}
@@ -313,16 +305,16 @@ function ScenarioGraphTrachoma({
             legendColor={'#252525'}
             otherActive={activeInfo}
           />
-          {(uncertaintyInfo && activeInfo === null) && 
-            <ScenarioGraphInfoBubble 
-              coord={[(width - lPad - rPad)/2,y(domainY[1])]}              
+          {(uncertaintyInfo && activeInfo === null) &&
+            <ScenarioGraphInfoBubble
+              coord={[(width - lPad - rPad) / 2, y(domainY[1])]}
               color={'#E1E4E6'}
               textColor={'#252525'}
               legendColor={'#E1E4E6'}
-              bubbleText={'Model uncertainty'}            
+              bubbleText={t('ModelUncertainty')}
             />}
-            {simNeedsRerun && <rect x={0} width={svgWidth} height={svgHeight} fill="rgba(233,241,247,.4)" />}
-            {simInProgress && <rect x={0} width={svgWidth} height={svgHeight} fill="rgba(220,233,240,.4)" />}
+          {simNeedsRerun && <rect x={0} width={svgWidth} height={svgHeight} fill="rgba(233,241,247,.4)" />}
+          {simInProgress && <rect x={0} width={svgWidth} height={svgHeight} fill="rgba(220,233,240,.4)" />}
         </g>
       </svg>
     </React.Fragment>

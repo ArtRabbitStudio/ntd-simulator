@@ -29,7 +29,7 @@ import {
 //import ClickAway from "hooks/clickAway";
 
 const MdaRounds = (props) => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const disease = props.disease
   const { scenarioState, dispatchScenarioStateUpdate } = useScenarioStore();
 

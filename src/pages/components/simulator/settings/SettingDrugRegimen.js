@@ -8,7 +8,7 @@ import { FormControl, Select, FormLabel, MenuItem,Tooltip } from '@material-ui/c
 import { useTranslation } from "react-i18next";
 
 const SettingDrugRegimen = ({ inModal, label, value, onChange, classAdd, scenarioId }) => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const classes = useStyles()
   const { dispatchSimState } = useSimulatorStore()
   const { scenarioState, dispatchScenarioStateUpdate } = useScenarioStore();

@@ -9,12 +9,11 @@ import Simulator from "./pages/Simulator";
 import Disease from "./pages/Disease";
 
 
-import DataMethodolgy from "./pages/content/DataMethodology";
 import About from "./pages/content/About";
+import AboutNTDConsortium from "./pages/content/AboutNTDConsortium";
 import PrivacyCookies from "./pages/content/PrivacyCookies";
+import GetInvolved from "./pages/content/GetInvolved";
 
-import LF from "./pages/content/LF";
-import Trachoma from "./pages/content/Trachoma";
 
 // index.js
 import { SimulatorStoreProvider } from "./store/simulatorStore";
@@ -96,6 +95,8 @@ const theme = createMuiTheme({
       fontFamily: "DINNextLTPro, sans-serif",
     },
 
+
+
     h1: {
       fontFamily: "DINNextLTPro, sans-serif",
       fontWeight: "normal",
@@ -140,10 +141,19 @@ const theme = createMuiTheme({
     }
   },
   overrides: {
+    MuiCssBaseline: {
+
+    },
     MuiTooltip: {
       tooltip: {
         color: "#fff",
-        backgroundColor: "#D86422",
+        backgroundColor: "#008dc9",
+        fontSize: 17,
+        lineHeight: "23px",
+        padding: 14,
+        '&#map-tooltip': {
+          fontSize: 12,
+        }
       },
     },
     MuiFormLabel: {
@@ -207,7 +217,18 @@ const theme = createMuiTheme({
       xl: 1556,
     },
   },
+
 });
+/*
+theme.overrides.MuiCssBaseline['@global'] = {
+  body: {
+    ...theme.typography.body1,
+  },
+  p: {
+    ...theme.typography.body1
+  }
+};
+*/
 
 // This is mostly only a problem because the console lazily evaluates the object you log. 
 // You could do a shallow clone of the event object to make console.log work.
@@ -229,38 +250,36 @@ console.shallowCloneLog = function () {
   }));
 }
 
-
-
 function App() {
   useSyncRouteState();
 
   return (
-    <CssBaseline>
       <ThemeProvider theme={theme}>
-        <ScenarioStoreProvider>
-          <SimulatorStoreProvider>
-            <ScrollToTop>
-              <Switch>
-                <Route exact path="/data-and-methodolgy" component={DataMethodolgy} />
-                <Route exact path="/about" component={About} />
-                <Route exact path="/privacy-cookies" component={PrivacyCookies} />
-                <Route exact path="/lymphatic-filariasis-data-methodoloy" component={LF} />
-                <Route exact path="/trachoma-data-methodoloy" component={Trachoma} />
-                <Route exact path="/" component={Home} />
+        <CssBaseline>
+          <ScenarioStoreProvider>
+            <SimulatorStoreProvider>
+              <ScrollToTop>
+                <Switch>
+                  <Route exact path="/about" component={About} />
+                  <Route exact path="/about-ntd-modelling-consortium" component={AboutNTDConsortium} />
+                  <Route exact path="/privacy-cookies" component={PrivacyCookies} />
+                  <Route exact path="/get-involved" component={GetInvolved} />
+       
+                  <Route exact path="/" component={Home} />
 
-                <Route exact path="/disease/:disease" component={Disease} />
-                <Route exact path="/:disease" component={Simulator} />
-                <Route exact path="/:disease/:country" component={Simulator} />
-                <Route exact path="/:disease/:country/:iu" component={Simulator} />
-                <Route exact path="/:disease/:country/:iu/run" component={Simulator} />
+                  <Route exact path="/disease/:disease" component={Disease} />
+                  <Route exact path="/:disease" component={Simulator} />
+                  <Route exact path="/:disease/:country" component={Simulator} />
+                  <Route exact path="/:disease/:country/:iu" component={Simulator} />
+                  <Route exact path="/:disease/:country/:iu/run" component={Simulator} />
 
-                <Route exact path="**" component={Page} />
-              </Switch>
-            </ScrollToTop>
-          </SimulatorStoreProvider>
-        </ScenarioStoreProvider>
+                  <Route exact path="**" component={Page} />
+                </Switch>
+              </ScrollToTop>
+            </SimulatorStoreProvider>
+          </ScenarioStoreProvider>
+        </CssBaseline>
       </ThemeProvider>
-    </CssBaseline>
   );
 }
 

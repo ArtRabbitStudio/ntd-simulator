@@ -44,16 +44,23 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const HeadWithInputs = ({ title, disableInputs, disableClear, classAdd, showLanguages }) => {
+const HeadWithInputs = ({ title, disableInputs, disableClear, classAdd, showLanguages, disableContirmation }) => {
   const classes = useStyles()
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const [showConfirmation, setshowConfirmation] = useState(false);
   const [selectedValue, setSelectedValue] = useState(null)
   const history = useHistory()
 
   const handleChange = (value) => {
     setSelectedValue(value)
-    setshowConfirmation(true);
+    if (disableContirmation !== true) {
+      setshowConfirmation(true);
+    } else {
+      if (value !== 'other' && value != null) {
+        history.push(`/${value}`)
+      }
+    }
+
   }
   const doChange = () => {
     setshowConfirmation(false)
@@ -65,10 +72,10 @@ const HeadWithInputs = ({ title, disableInputs, disableClear, classAdd, showLang
   return (
     <React.Fragment>
       <div className={classes.headContainer}>
-        <Grid item md={7} xs={12} className={classes.head}>
+        <Grid item md={8} xs={12} className={classes.head}>
           <Head classAdd={classAdd} alternativeHeadline={!showLanguages} />
         </Grid>
-        <Grid item md={5} xs={12} className={classes.inputs}>
+        <Grid item md={4} xs={12} className={classes.inputs}>
 
           {disableInputs !== true && <Inputs onChange={handleChange} />}
           {showLanguages === true && <LanguageSwitch onChange={handleChange} dark={true} />}

@@ -1,9 +1,10 @@
 import React from 'react';
-import { Grid, Container, Box, Typography } from '@material-ui/core';
+import { Grid, Container, Typography } from '@material-ui/core';
 import CapsHeadline from './CapsHeadline'
 import FullWidthBackground from './FullWidthBackground'
 import { withStyles } from '@material-ui/core/styles';
 
+import { DISEASE_LABELS } from 'AppConstants'
 
 import ico1 from 'images/lf-icon.svg';
 import ico2 from 'images/sch-mansoni-icon.svg';
@@ -29,25 +30,25 @@ const styles = theme => ({
     '& p': {
       maxWidth: 243,
       margin: "auto",
+    },
+    '&.icon-lf': {
+      backgroundImage: `url(${ico1})`,
+    },
+    '&.icon-trachoma': {
+      backgroundImage: `url(${ico3})`,
+    },
+    '&.icon-sth-roundworm': {
+      backgroundImage: `url(${ico5})`,
+    },
+    '&.icon-sth-whipworm': {
+      backgroundImage: `url(${ico4})`,
+    },
+    '&.icon-sch-mansoni': {
+      backgroundImage: `url(${ico2})`,
+    },
+    '&.icon-sth-hookworm': {
+      backgroundImage: `url(${ico6})`,
     }
-  },
-  column1: {
-    backgroundImage: `url(${ico1})`,
-  },
-  column2: {
-    backgroundImage: `url(${ico2})`,
-  },
-  column3: {
-    backgroundImage: `url(${ico3})`,
-  },
-  column4: {
-    backgroundImage: `url(${ico4})`,
-  },
-  column5: {
-    backgroundImage: `url(${ico5})`,
-  },
-  column6: {
-    backgroundImage: `url(${ico6})`,
   },
   grid: {
     backgroundColor: theme.palette.secondary.light,
@@ -73,33 +74,19 @@ const DiseasesList = (props) => {
       <FullWidthBackground color={theme.palette.secondary.light}>
         <Grid container spacing={0} className={classes.grid}>
 
-          <Grid component="a" href="/if" item md={4} sm={4} xs={12} className={`${classes.column} ${classes.column1}`}>
-            <Typography variant="body1" component="p" className={classes.headline} >Lymphatic Filariasis</Typography>
-          </Grid>
-
-          <Grid component="a" href="/if" item md={4} sm={4} xs={12} className={`${classes.column} ${classes.column2}`}>
-            <Typography variant="body1" component="p" className={classes.headline} >Schistosomiasis Mansoni</Typography>
-          </Grid>
-
-          <Grid component="a" href="/if" item md={4} sm={4} xs={12} className={`${classes.column} ${classes.column3}`}>
-            <Typography variant="body1" component="p" className={classes.headline} >Trachoma</Typography>
-          </Grid>
-
-          <Grid component="a" href="/if" item md={4} sm={4} xs={12} className={`${classes.column} ${classes.column4}`}>
-            <Typography variant="body1" component="p" className={classes.headline} >Soil-transmitted helmithiasis Whipworm</Typography>
-          </Grid>
-
-          <Grid component="a" href="/if" item md={4} sm={4} xs={12} className={`${classes.column} ${classes.column5}`}>
-            <Typography variant="body1" component="p" className={classes.headline} >Soil-transmitted helmithiasis Roundworm</Typography>
-          </Grid>
-
-          <Grid component="a" href="/if" item md={4} sm={4} xs={12} className={`${classes.column} ${classes.column6}`}>
-            <Typography variant="body1" component="p" className={classes.headline} >Soil-transmitted helmithiasis Hookworm</Typography>
-          </Grid>
+          {
+            Object.keys(DISEASE_LABELS).map(function (ident) {
+              return (
+                <Grid key={ident} component="a" href={`/${ident}`} item md={4} sm={4} xs={12} className={`${classes.column} icon-${ident}`}>
+                  <Typography variant="body1" component="p" className={classes.headline} >{DISEASE_LABELS[ident]}</Typography>
+                </Grid>
+              )
+            })
+          }
 
         </Grid>
       </FullWidthBackground>
-    </Container>
+    </Container >
   );
 }
 

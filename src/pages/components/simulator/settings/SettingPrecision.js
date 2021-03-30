@@ -7,11 +7,10 @@ import { useScenarioStore, ScenarioStoreConstants } from "store/scenarioStore";
 import {
   FormControl,
   Slider,
-  FormLabel,
-  Fab
+  FormLabel
 } from "@material-ui/core";
 
-const SettingPrecision = ({ inModal, label, classAdd,showPrecisionSlider, setGraphTypeSimple,graphTypeSimple, scenarioId, showDialog }) => {
+const SettingPrecision = ({ inModal, label, classAdd, showPrecisionSlider, setGraphTypeSimple, graphTypeSimple, scenarioId, showDialog }) => {
 
   const classes = useStyles();
   const { dispatchSimState } = useSimulatorStore();
@@ -24,30 +23,30 @@ const SettingPrecision = ({ inModal, label, classAdd,showPrecisionSlider, setGra
     <FormControl className={`${classes.formControlPrecision} ${classAdd}`}>
       {showPrecisionSlider && <Slider
         className={classes.precisionSlider}
-        value={ scenarioState.scenarioData[ scenarioId ].settings.runs }
+        value={scenarioState.scenarioData[scenarioId].settings.runs}
         min={10}
         step={5}
         max={200}
         onChange={(event, newValue) => {
-          const oldValue = scenarioState.scenarioData[ scenarioId ].settings.runs
-          dispatchScenarioStateUpdate( {
+          const oldValue = scenarioState.scenarioData[scenarioId].settings.runs
+          dispatchScenarioStateUpdate({
             type: ScenarioStoreConstants.ACTION_TYPES.UPDATE_SCENARIO_SETTING_BY_ID,
             id: scenarioId,
             key: 'runs',
             value: newValue
-          } );
+          });
 
-          dispatchScenarioStateUpdate( {
+          dispatchScenarioStateUpdate({
             type: ScenarioStoreConstants.ACTION_TYPES.MARK_SCENARIO_DIRTY_BY_ID,
             id: scenarioId
-          } );
+          });
 
-          if( updateSimState ) {
+          if (updateSimState) {
             // update overall simulator precision settings too
             dispatchSimState({ type: "runs", payload: newValue });
           }
 
-          if ( oldValue < newValue && newValue > 45 ) {  
+          if (oldValue < newValue && newValue > 45) {
             showDialog(true)
           }
 
@@ -55,19 +54,10 @@ const SettingPrecision = ({ inModal, label, classAdd,showPrecisionSlider, setGra
         aria-labelledby="slider"
         valueLabelDisplay={inModal ? "auto" : "on"}
       />}
-      <FormLabel component="legend" htmlFor="precision" className={classes.precisionLabel}>
+      <FormLabel component="legend" htmlFor="precision" className={`${classes.precisionLabel} ${classes.caps}`}>
         {showPrecisionSlider && label}
-        <Fab
-          color="inherit"
-          aria-label="SET GRAPH TYPE"
-          disabled={false}
-          className={graphTypeSimple ? classes.graphTypeIconSimple : classes.graphTypeIconComplex}
-          onClick={setGraphTypeSimple}
-        >
-          &nbsp;
-        </Fab>
       </FormLabel>
-      
+
     </FormControl>
 
   )

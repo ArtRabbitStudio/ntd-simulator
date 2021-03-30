@@ -1,45 +1,23 @@
 import React from 'react'
 import AccordionElement from 'pages/components/AccordionElement';
-import { Typography } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import IntroWrap from '../Intro'
+import { useTranslation } from "react-i18next";
+import { DISEASE_SCH_MANSONI } from 'AppConstants'
 
-import {
-  DISEASE_LABELS
-} from 'AppConstants'
-
-const useStyles = makeStyles(theme => ({
-  section: {
-    position: "relative",
-    backgroundColor: theme.palette.secondary.light,
-    width: `calc(100% + ${theme.spacing(12)}px)`,
-    marginLeft: -theme.spacing(6),
-    padding: theme.spacing(4, 6),
-  },
-  marginBottom: {
-    marginBottom: theme.spacing(2)
-  },
-}));
-
-
-export default function Intro(props) {
-  const classes = useStyles();
+export default function IntroHW(props) {
+  const { t } = useTranslation(['translation','sch-mansoni']);
   return (
 
-    <section className={classes.section}>
-    <Typography variant="h3" component="h6" className={`${classes.headline} ${classes.marginBottom}`}>{`About projections for ${DISEASE_LABELS['sch-mansoni']}`}</Typography>
-
-
-    {/*<AccordionElement title="Data">
-        Short introduction to Trachoma specfic data
-  </AccordionElement>*/}
-
-    <AccordionElement title="Model and Methodology">
-    More about the STH model
-    </AccordionElement>
-
-
-   
-    </section>
+    <IntroWrap ident={DISEASE_SCH_MANSONI}>
+      <AccordionElement title={t('sch-mansoni:summaryHeadline')}>
+        {t('sch-mansoni:summaryTab1Title')}
+        {t('sch-mansoni:summaryTab1Content')}
+      </AccordionElement>
+      <AccordionElement title={t('sch-mansoni:summaryTab2Title')}>
+        {t('sch-mansoni:summaryTab2Content')}
+      </AccordionElement>
+    </IntroWrap>
 
   )
 }
+

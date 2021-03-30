@@ -12,9 +12,9 @@ import DiseasesList from 'pages/components/DiseasesList';
 
 import TextWithImage from 'pages/components/TextWithImage';
 import TextContents from 'pages/components/TextContents';
-import AccordionElement from 'pages/components/AccordionElement';
 import SelectDisease from 'pages/components/SelectDisease';
-import SupportedBy from 'pages/components/SupportedBy';
+//import SupportedBy from 'pages/components/SupportedBy';
+import CapsHeadline from 'pages/components/CapsHeadline'
 
 import { useTranslation } from "react-i18next";
 
@@ -27,10 +27,10 @@ import iHowIW from 'images/graph-copy-2.png';
 const useStyles = makeStyles(theme => ({
   section: {
     position: "relative",
-    backgroundColor: theme.palette.secondary.light,
     width: `calc(100% + ${theme.spacing(12)}px)`,
     marginLeft: -theme.spacing(6),
     padding: theme.spacing(4, 6),
+    marginTop: theme.spacing(2)
   },
   selectDisease: {
     position: "relative",
@@ -66,21 +66,20 @@ const useStyles = makeStyles(theme => ({
 
     }
   },
+  supportImage: {
+    marginBottom: theme.spacing(1)
+  },
   marginTop: {
     marginTop: theme.spacing(6)
   },
   textBlocks: {
     position: "relative",
-    backgroundColor: theme.palette.secondary.dark,
     display: 'inline-block',
-    marginBottom: 20
+    marginBottom: 20,
+    marginTop: 20
+
   },
   textBlock: {
-    paddingBottom: theme.spacing(4),
-    paddingTop: theme.spacing(4),
-    paddingLeft: theme.spacing(2),
-    paddingRight: theme.spacing(2),
-    backgroundColor: theme.palette.secondary.dark,
     [theme.breakpoints.up("md")]: {
       textAlign: "left",
       float: "left",
@@ -91,12 +90,12 @@ const useStyles = makeStyles(theme => ({
       },
     },
   },
-  white: {
-    backgroundColor: '#ffffff'
-  },
   cardTransparent: {
     opacity: 0.85
   },
+  headline: {
+    margin: theme.spacing(1, 0),
+  }
 }));
 
 
@@ -111,22 +110,20 @@ const Home = (props) => {
     setDisease(null);
   }, [currentDisease, setDisease, setCountry, setImplementationUnit])
 
-  const { t, i18n } = useTranslation();
-  function handleClick(lang) {
-    i18n.changeLanguage(lang);
-  }
+  const { t } = useTranslation();
+
+
 
   return (
     <Layout className={classes.homeimage} /* classAdd="full-height"*/ >
+
       { /*
       <Head classAdd={classes.cardTransparent}
         title={t('appTitle')}
         intro={t('appDesc')}
       />
-
-      {i18n.language==="en" ?
-      <button onClick={()=>handleClick("de")} className={classes.langToggle}>German</button> : <button onClick={()=>handleClick("en")} className={classes.langToggle}>English</button>
-      }
+             
+   
 
       */ }
 
@@ -140,71 +137,45 @@ const Home = (props) => {
 
 
       <TextWithImage
-        caption="Our mission"
-        headline="Closing the knowledge gap"
+        caption={t('ourMissionTitle')}
+        headline={t('ourMissionHeadline')}
         image={iMission}
-        imageAlt="Our mission"
+        imageAlt={t('ourMissionTitle')}
         buttonUrl="/data-and-methodolgy"
-        buttonText="Here is how"
+        buttonText={t('hereIsHow')}
       >
-        <Typography paragraph variant="body1" component="p">
-          Many urgent policy issues concering the contorl and elimination of negelcted tropical diseases (NTDs) can be informed by high-quality
-          quantitative modelling. A …. of modelling in this area prevents donors and poclymakers from accessing existing expertise.
-        </Typography>
-        <Typography paragraph variant="body1" component="p">
-          We want to help close this knowledge gap.
-        </Typography>
+        <Typography paragraph variant="body1" component="p">{`${t('ourMission')}`}</Typography>
+        <Typography paragraph variant="body1" component="p">{t('ourMissionStatement')}</Typography>
       </TextWithImage>
 
       <TextWithImage
-        caption="How it works"
-        headline="Model-based projections"
+        caption={t('howItWorksTitle')}
+        headline={t('howItWorksHeadline')}
         image={iHowIW}
-        imageAlt="How it works"
+        imageAlt={t('howItWorksTitle')}
       >
-        <Typography paragraph variant="body1" component="p">
-          The projections on this website provide guidance on the impact of more frequent, longer or higher coverage treatment strategies on achiving 2030 WHO goals.
-          The projections are model based.
-        </Typography>
-        <Typography paragraph variant="body1" component="p">
-          Please note that te models used have only been validated against a certain number of settings.
-          A full description of each model used can be found on the disease pages.
-        </Typography>
+        <Typography paragraph variant="body1" component="p">{t('howItWorks')}</Typography>
+        <Typography paragraph variant="body1" component="p">{t('howItWorksStatement')}</Typography>
       </TextWithImage>
 
       <DiseasesList />
 
-      <SupportedBy />
+      {/*<SupportedBy />*/}
 
 
-      <section className={`${classes.section} ${classes.cardTransparent}`}>
+      <section className={`${classes.section}`}>
+        <CapsHeadline text={t('behindThis')} />
+        <Typography variant="h3" component="h3" className={classes.headline}>{t('behindThisHeadline')}</Typography>
 
-        <Typography variant="h3" component="h6" className={`${classes.headline} ${classes.marginBottom}`}>{t('beforeStart')}</Typography>
-        <AccordionElement title={t('howItWorksTitle')}>
-          {t('howItWorks')}
-        </AccordionElement>
-
-        <AccordionElement title={t('ourMissionTitle')}>
-          {t('ourMission')}
-        </AccordionElement>
-
-        <AccordionElement title={t('whatYouCanDoTitle')}>
-          {t('whatYouCanDo')}
-        </AccordionElement>
-
-
-        <Typography variant="h3" component="h6" className={`${classes.headline} ${classes.marginBottom} ${classes.marginTop}`}>{t('behindThis')}</Typography>
-
-        <div className={` ${classes.textBlocks} ${classes.white}`}>
-          <div className={`${classes.textBlock} ${classes.white}`}>
+        <div className={` ${classes.textBlocks}`}>
+          <div className={`${classes.textBlock}`}>
             <TextContents>
               <Typography paragraph variant="body1" component="p">
                 {t('theNTD1')} <Link underline="always" color="inherit" href="https://www.ntdmodelling.org/">NTD Modelling Consortium</Link>{t('theNTD2')}
               </Typography>
-              <a href="https://www.ntdmodelling.org/"><img src={Logo} border="0" alt="NTD Modelling Consortium" /></a>
+              <a href="https://www.ntdmodelling.org/"><img className={` ${classes.supportImage}`} src={Logo} border="0" alt="NTD Modelling Consortium" /></a>
               <Typography paragraph variant="body1" component="p">
                 {t('theWork')}
-
               </Typography>
 
             </TextContents>

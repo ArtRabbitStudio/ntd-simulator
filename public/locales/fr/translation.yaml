@@ -14,7 +14,8 @@
     "theWork": "The work of the NTD Modelling Consortium is supported by the Bill and Melinda Gates Foundation.",
     
     "notFound": "This page could not be found",
-    
+    "helpUsImprove": "Help us improve",
+    "reportAProblem": "Report a problem",
     "prevalence": "Prevalence",
     "prevalenceSimulator": "prevalence simulator",
     
@@ -143,7 +144,9 @@
     "selectIU": "Select IU",
     "countries": "countries",
     "selectDisease": "Select a disease",
-    
+    "alsoAvailableIn":"French - Also available in",
+    "switchTo":"Switch to", 
+
     "about0": "About",
     "about1": "Many urgent policy issues concerning the control and elimination of neglected tropical diseases (NTDs) can only be answered through high-quality quantitative modelling.",
     "about2": "However, a dearth of modelling in this area prevents donors and policymakers from accessing existing expertise. The NTD Modelling Consortium acts as a point of contact to commission modelling to address the right questions. The Consortium is also a conduit for the exchange of ideas, insights and questions between modellers and their users.",

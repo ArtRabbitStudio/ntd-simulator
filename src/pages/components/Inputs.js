@@ -23,8 +23,8 @@ const useStyles = makeStyles(theme => ({
   root: {
     zIndex: 9,
     position: 'relative',
-    margin: theme.spacing(0, 0, 2, 0),
-    width: 'calc(100% - 16px)',
+    margin: theme.spacing(0, 0, 0, 0),
+    width: '100%',
   },
   formControl: {
     textAlign: 'left',
@@ -40,7 +40,7 @@ const useStyles = makeStyles(theme => ({
     },
     [theme.breakpoints.up('md')]: {
       margin: theme.spacing(0, 0, 0, 0),
-      width: 'calc(70% - 16px)',
+      width: '100%',
     },
     [theme.breakpoints.up('lg')]: {
     },
@@ -56,7 +56,7 @@ const useStyles = makeStyles(theme => ({
     '&.icon-sth-whipworm': {
       backgroundImage: `url(${ico4})`,
     },
-    '&.icon-mansoni': {
+    '&.icon-sch-mansoni': {
       backgroundImage: `url(${ico2})`,
     },
     '&.icon-sth-hookworm': {
@@ -72,11 +72,11 @@ const useStyles = makeStyles(theme => ({
 
 const Inputs = props => {
   const classes = useStyles()
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const { diseases } = useDataAPI()
   const { disease } = useUIState()
 
-
+  const defaultSuggestionOption = { name: t('selectDisease') };
   const handleDiseaseChange = (event, value) => {
 
     props.onChange(value.props.value)
@@ -91,12 +91,15 @@ const Inputs = props => {
         <Select
           labelId="disease-label"
           id="disease"
-          value={disease ? disease : 'other'}
+          value={disease ? disease : defaultSuggestionOption.name}
           variant="outlined"
           onChange={handleDiseaseChange}
           MenuProps={{ disablePortal: true }}
 
         >
+          <MenuItem key={t('selectDisease')} value={t('selectDisease')}>
+              {t('selectDisease')}
+            </MenuItem>
           {diseases.map(r => (
             <MenuItem key={DISEASE_LABELS[r]} value={r}>
               {DISEASE_LABELS[r]}
