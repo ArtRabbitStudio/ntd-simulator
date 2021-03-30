@@ -1,15 +1,26 @@
 import { v4 as uuidv4 } from 'uuid';
 import { generateMdaFutureFromScenarioSettings } from 'pages/components/simulator/helpers/iuLoader';
 import { csv } from 'd3';
-import { DISEASE_STH_ROUNDWORM, DISEASE_STH_WHIPWORM, DISEASE_STH_HOOKWORM, DISEASE_SCH_MANSONI, CLOUD_INFO } from 'AppConstants';
+import { DISEASE_STH_ROUNDWORM, DISEASE_STH_WHIPWORM, DISEASE_STH_HOOKWORM, DISEASE_SCH_MANSONI, DISEASE_TRACHOMA, CLOUD_INFO } from 'AppConstants';
 import sha256 from 'fast-sha256';
 import nacl from 'tweetnacl-util'
 
 // convert '02-2020' to 20.16666666666666666
+const convertMMYYYY = ( k ) => {
+  const [ MM, YYYY ] = k.split( '-' );
+  const m = parseInt( MM );
+  const y = parseInt( YYYY ) - 2000;
+  // TODO should this be fixed 2 decimals?
+  return parseFloat( y + ( m / 12 ).toFixed( 2 ) );
+};
+
+// convert "prevKKSAC year 18.17" to 18.17
+const convertSAC = ( k ) => {
+  return parseFloat( k.substring( 15 ) );
+};
+
 const convertDateIndex = ( key ) => {
-  const year = parseFloat( key.substring( 15 ) );
-//  const ts = Math.round( ( year + 0.5 ) * 12);
-  return year;
+  return key.length === 7 ? convertMMYYYY( key ) : convertSAC( key );
 };
 
 const randomGeneratorKey = "Random Generator";
@@ -137,6 +148,7 @@ export default {
       [ DISEASE_STH_WHIPWORM ]: 'STHWhipworm',
       [ DISEASE_STH_HOOKWORM ]: 'STHHookworm',
       [ DISEASE_SCH_MANSONI ]: 'SCHMansoni',
+      [ DISEASE_TRACHOMA ]: 'Trachoma',
     }[ disease ];
   },
 
@@ -251,7 +263,27 @@ export default {
       runs: scenarioData.settings.runs
     };
 
+    /*
+     * Trachoma needs different parameters;
+     * no mdaData and some extra info from the model
+     */
+    if( this.modelDiseaseType === DISEASE_TRACHOMA ) {
+
+      delete apiParams.mdaData;
+
+      apiParams.coverage = scenarioData.settings.coverage / 100;    // 0.9 in model vs 90 in UI
+      apiParams.mdaSixMonths = scenarioData.settings.mdaSixMonths;  // 6=biannual, 12=annual
+      apiParams.mdaRounds = scenarioData.mdaFuture.time
+        .map( t => 2000 + ( t ) / 12 )
+        .map( t => Math.floor( t ) === t ? `${t}01` : `${Math.floor( t) }06` )
+        .map( t => parseInt( t, 10 ) )
+        .filter( ( t, idx ) => { return scenarioData.mdaFuture.active[ idx ]; } );
+
+    }
+
     const apiParamsJson = JSON.stringify( apiParams )
+
+    console.log( 'apiParams', apiParams );
 
     // get a SHA-256 hash of the params to use as MDA input identifier
     const hasher = new sha256.Hash();
@@ -274,9 +306,10 @@ export default {
       [ DISEASE_STH_ROUNDWORM ]: 'Asc',
       [ DISEASE_STH_WHIPWORM ]: 'Tri',
       [ DISEASE_STH_HOOKWORM ]: 'Hook',
-      [ DISEASE_SCH_MANSONI ]: ' Man'
+      [ DISEASE_SCH_MANSONI ]: ' Man',
+      [ DISEASE_TRACHOMA ]: 'Trac',
     }[ this.modelDiseaseType ];
-    const infoJsonUrl = `${storagePath}/diseases/${this.modelDiseaseType}/data-20210322a/${country}/${simState.IUData.id}/${digest}/${diseasePrefix}-${iu}-${digest}-info.json?ignoreCache=${Date.now()}`;
+    const infoJsonUrl = `${storagePath}/diseases/${this.modelDiseaseType}/output-data/${country}/${simState.IUData.id}/${digest}/${diseasePrefix}-${iu}-${digest}-info.json?ignoreCache=${Date.now()}`;
     const infoJsonResponse = await fetch( infoJsonUrl );
 
     /*
@@ -296,9 +329,9 @@ export default {
           } )()
 
         : await ( async () => {
-              //const apiUrl = "https://sth-app-api-mijgnzszia-ew.a.run.app/run";
-              //const apiUrl = "http://localhost:5000/run"
+              //const apiUrl = "https://sth-app-api-mijgnzszia-ew.a.run.app/run"; // PRODUCTION SERVER
               const apiUrl = "https://sth-api-test-20210322a-mijgnzszia-nw.a.run.app/run"; // TEST SERVER
+              //const apiUrl = "http://localhost:5000/run"
 
               console.log( `${this.modelDiseaseLabel} didn't find static info, sending scenario params to API at ${apiUrl}:`, apiParams );
 
@@ -350,7 +383,10 @@ export default {
       );
     };
 
-    const promises = [ 'historicalKKSAC', 'historicalMHISAC', 'futureKKSAC', 'futureMHISAC' ].reduce(
+    const trachomaPromiseNames = [ 'historical', 'future' ];
+    const otherPromiseNames = [ 'historicalKKSAC', 'historicalMHISAC', 'futureKKSAC', 'futureMHISAC' ];
+
+    const promises = ( this.modelDiseaseType === DISEASE_TRACHOMA ? trachomaPromiseNames : otherPromiseNames ).reduce(
       ( acc, label ) => {
         acc.push( dataPromiser( label ) );
         acc.push( summaryPromiser( label ) );
@@ -359,36 +395,69 @@ export default {
       []
     );
 
-    Promise.all( promises ).then(
-      (
-        [
-          historicalKKSACData, historicalKKSACSummary, historicalMHISACData, historicalMHISACSummary,
-          futureKKSACData, futureKKSACSummary, futureMHISACData, futureMHISACSummary
-        ]
-      ) => {
+    /*
+     * Trachoma only has historical and future data
+     */
+    const trachomaPromiseHandler = ( [ historicalData, historicalSummary, futureData, futureSummary ] ) => {
 
-        const combinedDataKK = combineData( historicalKKSACData, futureKKSACData );
-        const combinedSummaryKK = combineSummaries( historicalKKSACSummary, futureKKSACSummary );
-        const combinedDataMHI = combineData( historicalMHISACData, futureMHISACData );
-        const combinedSummaryMHI = combineSummaries( historicalMHISACSummary, futureMHISACSummary );
+      const combinedData = combineData( historicalData, futureData );
+      const combinedSummary = combineSummaries( historicalSummary, futureSummary );
 
-        const result = {
-          ...scenarioData,
-          results: { KK: combinedDataKK, MHI: combinedDataMHI },
-          summary: { KK: combinedSummaryKK, MHI: combinedSummaryMHI}
-        };
+      const result = {
+        ...scenarioData,
+        results: combinedData,
+        summary: combinedSummary
+      };
 
-        console.warn( "TODO implement combining MHISAC data/summary" );
+      console.log( `${this.modelDiseaseLabel} result:`, result );
+      console.log( `${this.modelDiseaseLabel}.runScenario combined all data, calling resultCallback` );
 
-        console.log( `${this.modelDiseaseLabel}.runScenario combined all data, calling resultCallback` );
-        callbacks.resultCallback( result, isNewScenario );
-      }
-    )
-    .catch(
-      ( e ) => {
-        console.warn( `💣 ${this.modelDiseaseLabel}.runScenario: Promise.all() caught error: `, e );
-      }
-    );
+      callbacks.resultCallback( result, isNewScenario );
+
+    };
+
+    /*
+     * STH and SCH models have KKSAC and MHISAC for both historical and future
+     */
+    const otherPromiseHandler = (
+      [
+        historicalKKSACData, historicalKKSACSummary, historicalMHISACData, historicalMHISACSummary,
+        futureKKSACData, futureKKSACSummary, futureMHISACData, futureMHISACSummary
+      ]
+    ) => {
+
+      const combinedDataKK = combineData( historicalKKSACData, futureKKSACData );
+      const combinedSummaryKK = combineSummaries( historicalKKSACSummary, futureKKSACSummary );
+      const combinedDataMHI = combineData( historicalMHISACData, futureMHISACData );
+      const combinedSummaryMHI = combineSummaries( historicalMHISACSummary, futureMHISACSummary );
+
+      const result = {
+        ...scenarioData,
+        results: { KK: combinedDataKK, MHI: combinedDataMHI },
+        summary: { KK: combinedSummaryKK, MHI: combinedSummaryMHI}
+      };
+
+      console.warn( `TODO implement combining MHISAC data/summary for ${this.modelDiseaseLabel}` );
+
+      console.log( `${this.modelDiseaseLabel} result:`, result );
+      console.log( `${this.modelDiseaseLabel}.runScenario combined all data, calling resultCallback` );
+
+      callbacks.resultCallback( result, isNewScenario );
+    }
+
+    const promiseHandler =
+      this.modelDiseaseType === DISEASE_TRACHOMA
+        ? trachomaPromiseHandler
+        : otherPromiseHandler;
+
+    Promise.all( promises )
+      .then( promiseHandler )
+      .catch(
+        ( e ) => {
+          console.warn( `💣 ${this.modelDiseaseLabel}.runScenario: Promise.all() caught error: `, e );
+        }
+      );
+
 
   },
 

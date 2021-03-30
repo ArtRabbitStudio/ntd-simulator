@@ -13,7 +13,7 @@ import STHModel from 'pages/components/simulator/models/sth'
 
 export default {
   [ DISEASE_LIMF ]: LFModel,
-  [ DISEASE_TRACHOMA ]: TrachomaModel,
+  [ DISEASE_TRACHOMA ]: STHModel,
   [ DISEASE_STH_ROUNDWORM ]: STHModel,
   [ DISEASE_STH_WHIPWORM ]: STHModel,
   [ DISEASE_STH_HOOKWORM ]: STHModel,
