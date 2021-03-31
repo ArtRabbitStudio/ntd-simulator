@@ -6,7 +6,7 @@ import TextContents from 'pages/components/TextContents'
 import MarkdownContent from 'pages/components/MarkdownContent';
 import { DISEASE_SCH_MANSONI } from 'AppConstants'
 
-export default function DetaiMansoni(props) {
+export default function DetailMansoni(props) {
   const { t } = useTranslation(['translation','sch-mansoni']);
 
 
