@@ -59,7 +59,7 @@ const SetupSTHRoundworm = (props) => {
         <div className={classes.setupFormControl}>
           <SettingTargetCoverage
             inModal={false}
-            label={t('tMDAPreschoolext')}
+            label={t('MDAPreschool')}
             min={0}
             max={100}
             step={5}
