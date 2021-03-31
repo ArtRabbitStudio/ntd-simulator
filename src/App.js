@@ -12,7 +12,7 @@ import Disease from "./pages/Disease";
 import About from "./pages/content/About";
 import AboutNTDConsortium from "./pages/content/AboutNTDConsortium";
 import PrivacyCookies from "./pages/content/PrivacyCookies";
-import GetInvolved from "./pages/content/GetInvolved";
+import HelpUsImprove from "./pages/content/HelpUsImprove";
 
 
 // index.js
@@ -263,7 +263,7 @@ function App() {
                   <Route exact path="/about" component={About} />
                   <Route exact path="/about-ntd-modelling-consortium" component={AboutNTDConsortium} />
                   <Route exact path="/privacy-cookies" component={PrivacyCookies} />
-                  <Route exact path="/get-involved" component={GetInvolved} />
+                  <Route exact path="/help-us-improve" component={HelpUsImprove} />
        
                   <Route exact path="/" component={Home} />
 

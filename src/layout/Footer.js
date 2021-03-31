@@ -65,7 +65,7 @@ const Footer = (props) => {
             <Grid item md={3} sm={6} xs={12} className={classes.column}>
               <Typography variant="h6" component="h6" className={classes.headline} >{t('Connect')}</Typography>
 
-              <Typography display="block" variant="body2">Twitter: <br /><Link href="https://twitter.com/NtdModelling" rel="noopener" target="_blank" color="inherit" variant="body2">@NTD_Modelling</Link></Typography>
+              <Typography display="block" variant="body2"><Link href="https://twitter.com/NtdModelling" rel="noopener" target="_blank" color="inherit" variant="body2">Twitter</Link></Typography>
               <ul className={classes.menu}>
                 <Typography component="li" variant="body2">
                   <Link href="https://www.ntdmodelling.org/" rel="noopener" target="_blank" color="inherit" variant="body2">{t('NTDConsortiumWebsite')}</Link>
@@ -86,10 +86,7 @@ const Footer = (props) => {
                   <Link component={RouterLink} to="/about-ntd-modelling-consortium" color="inherit">{t('AboutTheNTD')}</Link>
                 </Typography>
                 <Typography component="li" variant="body2">
-                  <Link component={RouterLink} to="/get-involved" color="inherit">{t('howToGetInvolved')}</Link>
-                </Typography>
-                <Typography component="li" variant="body2">
-                  <Link component={RouterLink} to="/get-involved" color="inherit">{t('helpUsImprove')}</Link>
+                  <Link component={RouterLink} to="/help-us-improve" color="inherit">{t('helpUsImprove')}</Link>
                 </Typography>
                 <Typography component="li" variant="body2">
                   <Link component={RouterLink} to="/privacy-cookies" color="inherit">{t('PrivacyCookies')}</Link>

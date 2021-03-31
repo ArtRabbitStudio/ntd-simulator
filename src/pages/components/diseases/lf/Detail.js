@@ -39,8 +39,8 @@ export default function DetaiLF(props) {
       <RightPartComponent
         headline={t('helpUsImprove')}
         buttons={[
-          { text: t('helpUsImprove'), url: `/get-involved` },
-          { text: t('reportAProblem'), url: `/get-involved` },
+          { text: t('helpUsImprove'), url: `/help-us-improve` },
+          { text: t('reportAProblem'), url: `/help-us-improve` },
         ]}
       />
 

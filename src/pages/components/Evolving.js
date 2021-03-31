@@ -40,9 +40,9 @@ const Evolving = (props) => {
     <div className={`${classes.root}`} >
       <Typography variant="h3" component="h3" className={classes.headline}>{t('thisProjectIsConstantlyEvolving')}</Typography>
       <div className={classes.btns}>
-        <ArrowButton text={t('helpUsImprove')} url="/get-involved" />
-        <ArrowButton text={t('reportAProblem')} url="/get-involved" />
-        <ArrowButton text={t('modelCodeOnGithub')} url="/get-involved" />
+        <ArrowButton text={t('helpUsImprove')} url="/help-us-improve" />
+        <ArrowButton text={t('reportAProblem')} url="/help-us-improve" />
+        <ArrowButton text={t('modelCodeOnGithub')} url="/help-us-improve" />
       </div>
     </div>
   );

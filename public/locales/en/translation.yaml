@@ -36,12 +36,12 @@
   "This map shows": "This map shows",
   "mapCountries": "Countries with IUs that had a prevalence > 0% in {{in}} for {{for}}",
   "Connect":"Connect",
-  "AboutTheSimulator": "About the simulator",
+  "AboutTheSimulator": "The Simulator",
   "NTDS":"NTDs",
   "notFound": "This page could not be found",
   "prevalence": "Prevalence",
   "NTDConsortiumWebsite": "NTD Modelling Website",
-  "AboutTheNTD": "About the NTD Modelling Consortium",
+  "AboutTheNTD": "NTD Modelling Consortium",
   "NTDModellingConsortium": "NTD Modelling Consortium",
   "NegelctedTropicalDiseases": "Neglected Tropical Diseases",
   "Africa": "Africa",
@@ -97,7 +97,7 @@
   "MDAPreschool": "MDA target coverage preschool children",
 
   "SchoolAgeTitle": "The percentage of school-age children that will be treated.",
-  "coverageSchoolAge": "Coverage School-Age Children ",
+  "coverageSchoolAge": "Coverage school-age children ",
   "MDACoverageSchoolAge": "MDA coverage school-age children ",
   "MDASchoolAge": "MDA target coverage school-age children ",
 

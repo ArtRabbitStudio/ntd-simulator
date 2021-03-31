@@ -6,14 +6,14 @@ import TextContents from 'pages/components/TextContents'
 import { useTranslation } from 'react-i18next';
 import MarkdownContent from 'pages/components/MarkdownContent';
 
-const GetInvolved = (props) => {
-  const { t } = useTranslation(['translation','pages-get-involved']);
+const HelpUsImprove = (props) => {
+  const { t } = useTranslation(['translation','pages-help-us-improve']);
 
   const leftPart = (
     <TextContents>
 
         {/* Styling for this content */}
-        <MarkdownContent markdown={t('pages-get-involved:content')} />
+        <MarkdownContent markdown={t('pages-help-us-improve:content')} />
 
       </TextContents>  
   )
@@ -32,4 +32,4 @@ const GetInvolved = (props) => {
   )
 }
 
-export default GetInvolved;
+export default HelpUsImprove;
