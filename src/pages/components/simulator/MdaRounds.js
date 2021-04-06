@@ -6,6 +6,8 @@ import { useScenarioStore, ScenarioStoreConstants } from 'store/scenarioStore'
 import CloseButton from 'pages/components/CloseButton'
 import AutoSizer from 'react-virtualized-auto-sizer'
 import MdaRoundsSlider from 'pages/components/simulator/MdaRoundsSlider'
+import MdaRoundBar from 'pages/components/simulator/MdaRoundBar'
+
 import { useTranslation } from 'react-i18next';
 //setting
 import {
@@ -28,64 +30,65 @@ import {
 
 //import ClickAway from "hooks/clickAway";
 
+
 const MdaRounds = (props) => {
   const { t } = useTranslation();
   const disease = props.disease
   const { scenarioState, dispatchScenarioStateUpdate } = useScenarioStore();
 
-  const history = scenarioState.scenarioData[ scenarioState.currentScenarioId ].mda2015;
-  const future = scenarioState.scenarioData[ scenarioState.currentScenarioId ].mdaFuture;
+  const history = scenarioState.scenarioData[scenarioState.currentScenarioId].mda2015;
+  const future = scenarioState.scenarioData[scenarioState.currentScenarioId].mdaFuture;
 
   const { simState } = useSimulatorStore()
   const classes = useStyles()
 
   const closeRoundModal = (event) => {
     setDoseSettingsOpen(false)
-//    setCurMDARound(-1)
+    //    setCurMDARound(-1)
   }
-  
+
 
   const [curMDARound, setCurMDARound] = useState(-1)
   const [doseSettingsOpen, setDoseSettingsOpen] = useState(false)
- // const [toolTipOpen, setToolTipOpen] = useState(false)
+  // const [toolTipOpen, setToolTipOpen] = useState(false)
 
   const closeRoundTooltip = (event) => {
     setCurMDARound(-1)
     //setToolTipOpen(false)
   }
 
-  const setMDAProperty = ( key, idx, newValue ) => {
+  const setMDAProperty = (key, idx, newValue) => {
     //console.log('dispatchScenarioStateUpdate',key,idx,newValue)
-    dispatchScenarioStateUpdate( {
+    dispatchScenarioStateUpdate({
       type: ScenarioStoreConstants.ACTION_TYPES.UPDATE_SCENARIO_MDA_FUTURE_SETTING_BY_ID_AND_IDX,
       id: scenarioState.currentScenarioId,
       idx: idx,
       key: key,
       value: newValue
-    } );
+    });
 
   };
 
-  const setMDARange = ( start, end  ) => {
+  const setMDARange = (start, end) => {
 
-    dispatchScenarioStateUpdate( {
+    dispatchScenarioStateUpdate({
       type: ScenarioStoreConstants.ACTION_TYPES.UPDATE_SCENARIO_MDA_FUTURE_SETTING_BY_ID_AND_START_END,
       id: scenarioState.currentScenarioId,
       start: start,
       end: end
-    } );
+    });
 
   };
 
   const setSimMDAactive = (array) => {
-   // dispatchSimState({ type: 'tweakedActive', payload: array })
+    // dispatchSimState({ type: 'tweakedActive', payload: array })
   }
 
-  const outputTitle = (time,coverage,adherence,bednets,regimen,active,coverageInfants,coveragePreSAC,coverageSAC,coverageAdults) => {
-    if ( !active || ( coverage === 0 && coverageInfants === 0 && coveragePreSAC === 0 && coverageSAC === 0 && coverageAdults === 0 ) ) {
-        return `${calculateTime(time)}: ${t('noIntervention')}`
+  const outputTitle = (time, coverage, adherence, bednets, regimen, active, coverageInfants, coveragePreSAC, coverageSAC, coverageAdults) => {
+    if (!active || (coverage === 0 && coverageInfants === 0 && coveragePreSAC === 0 && coverageSAC === 0 && coverageAdults === 0)) {
+      return `${calculateTime(time)}: ${t('noIntervention')}`
     } else {
-      switch ( disease ) {
+      switch (disease) {
         case DISEASE_STH_ROUNDWORM:
         case DISEASE_STH_WHIPWORM:
         case DISEASE_STH_HOOKWORM:
@@ -94,18 +97,18 @@ const MdaRounds = (props) => {
         default:
           return `${calculateTime(time)}: ${t('coverage')} ${coverage}%`
       }
-      
+
     }
-    
+
   }
   const calculateTime = (months) => {
-    const year = (2000 + (months)/12)
-    if ( year % 1  === 0 ) {
+    const year = (2000 + (months) / 12)
+    if (year % 1 === 0) {
       return year
     } else {
-      return Math.floor(year)+' - '+t('round2');
+      return Math.floor(year) + ' - ' + t('round2');
     }
-   
+
   }
 
   const numberOfYears = 22
@@ -124,45 +127,45 @@ const MdaRounds = (props) => {
       }
       setSimMDAactive([...MDAactive])
     }
-  // eslint-disable-next-line
+    // eslint-disable-next-line
   }, [simState.mdaSixMonths])
 
- 
+
   const outputMDATime = (curMDARound) => {
     //console.log('outputMDATime disease',disease)
-    const startYear = DISEASE_CONFIG[ disease ] ? DISEASE_CONFIG[ disease ].interventionStartYear : 2020
-    const year = startYear + ( curMDARound / 2)
-    if ( year % 1 === 0 ) {
+    const startYear = DISEASE_CONFIG[disease] ? DISEASE_CONFIG[disease].interventionStartYear : 2020
+    const year = startYear + (curMDARound / 2)
+    if (year % 1 === 0) {
       return year
     } else {
-      return Math.floor(year)+' - '+t('round2')
+      return Math.floor(year) + ' - ' + t('round2')
     }
   }
 
-  const startYear = DISEASE_CONFIG[ disease ] ? DISEASE_CONFIG[ disease ].startYear : 2015
-  const endYear = DISEASE_CONFIG[ disease ] ? DISEASE_CONFIG[ disease ].endYear : 2030
+  const startYear = DISEASE_CONFIG[disease] ? DISEASE_CONFIG[disease].startYear : 2015
+  const endYear = DISEASE_CONFIG[disease] ? DISEASE_CONFIG[disease].endYear : 2030
   const numberOfFutreTimeBars = future.time.length
   //const barWidth = 101.5 / numberOfBars
   const actualBar = 10
-  
-  const mapActiveToTime = future.active.filter((val,index)=>{
-    if ( future.time[index] !== undefined ) {
+
+  const mapActiveToTime = future.active.filter((val, index) => {
+    if (future.time[index] !== undefined) {
       return true
     }
     return false
   })
 
-  const STH = ( disease === DISEASE_STH_ROUNDWORM || disease === DISEASE_STH_WHIPWORM || disease === DISEASE_STH_HOOKWORM || disease === DISEASE_SCH_MANSONI )
-  const LFandSTH = ( disease === DISEASE_LIMF || STH )
-  const LFandTrachoma = ( disease === DISEASE_LIMF || disease === DISEASE_TRACHOMA )
+  const STH = (disease === DISEASE_STH_ROUNDWORM || disease === DISEASE_STH_WHIPWORM || disease === DISEASE_STH_HOOKWORM || disease === DISEASE_SCH_MANSONI)
+  const LFandSTH = (disease === DISEASE_LIMF || STH)
+  const LFandTrachoma = (disease === DISEASE_LIMF || disease === DISEASE_TRACHOMA)
 
   const lPad = 50
   const rPad = 32
   const barsWidth = props.width - lPad - rPad
 
-  const domainX = [startYear-2000, endYear-2000 ]
+  const domainX = [startYear - 2000, endYear - 2000]
   const x = scaleLinear().domain(domainX).range([0, barsWidth])
-  const sliderLength = ( ( x( (future.time[future.time.length-1] / 12) ) - x(future.time[0] / 12) ) )+lPad - rPad -(actualBar / 2)
+  const sliderLength = ((x((future.time[future.time.length - 1] / 12)) - x(future.time[0] / 12))) + lPad - rPad - (actualBar / 2)
 
   return (
     <React.Fragment>
@@ -176,83 +179,68 @@ const MdaRounds = (props) => {
           history.time &&
           history.time.map((e, i) => (
             <React.Fragment key={`bar-hist-${i}`}>
-             
-              
-                {LFandTrachoma && <React.Fragment>
-                 <div
-                 style={{left: x(e/12)+lPad-(actualBar / 2) }}
-                 className={`bar history`}
-                 title={history.coverage && history.coverage[i] ? outputTitle(history.time[i],history.coverage[i],history.adherence[i],history.bednets[i],history.regimen[i],true,0,0,0,0) : outputTitle(history.time[i]) }
-               >
-                 <span
-                   style={{
-                     height: history.coverage && history.coverage[i] ? history.coverage[i] : 0,
-                   }}
-                 ></span>
-               </div><div
-                style={{left: x((e+6)/12)+lPad-(actualBar / 2) }}
-                className={`bar history`}
-                title={history.coverage && history.coverage[i] ?  outputTitle(history.time[i],history.coverage[i],history.adherence[i],history.bednets[i],history.regimen[i],false,0,0,0,0) : outputTitle(history.time[i]) }
-              ><span
-                  style={{
-                    height: history.coverage && history.coverage[i] ? history.coverage[i] : 0,
-                  }}
-                ></span></div></React.Fragment>}
 
-                {STH && <React.Fragment>
-                 <div
-                 style={{left: x(e/12)+lPad-(actualBar / 2) }}
-                 className={`bar history`}
-                 title={history.coverageInfants ? outputTitle(history.time[i],0,0,0,'',true,history.coverageInfants[i],history.coveragePreSAC[i],history.coverageSAC[i],history.coverageAdults[i]) : outputTitle(history.time[i]) }
-               >
-                 <span
-                   style={{
-                    height: history.coverageInfants ? ( ( ( history.coverageInfants[i]+history.coveragePreSAC[i]+history.coverageSAC[i]+history.coverageAdults[i] ) / 400 ) * 100 ) : 0,
-                   }}
-                 ></span>
-               </div>
+
+              {LFandTrachoma && <React.Fragment>
+                <div
+                  style={{ left: x(e / 12) + lPad - (actualBar / 2) }}
+                  className={`bar history`}
+                  title={history.coverage && history.coverage[i] ? outputTitle(history.time[i], history.coverage[i], history.adherence[i], history.bednets[i], history.regimen[i], true, 0, 0, 0, 0) : outputTitle(history.time[i])}
+                >
+                  <MdaRoundBar ident={i} history={true} height={history.coverage && history.coverage[i] ? history.coverage[i] : 0} />
+                </div><div
+                  style={{ left: x((e + 6) / 12) + lPad - (actualBar / 2) }}
+                  className={`bar history`}
+                  title={history.coverage && history.coverage[i] ? outputTitle(history.time[i], history.coverage[i], history.adherence[i], history.bednets[i], history.regimen[i], false, 0, 0, 0, 0) : outputTitle(history.time[i])}
+                >
+                  <MdaRoundBar ident={'h' + i} history={true} height={history.coverage && history.coverage[i] ? history.coverage[i] : 0} />
+                </div></React.Fragment>}
+
+              {STH && <React.Fragment>
+                <div
+                  style={{ left: x(e / 12) + lPad - (actualBar / 2) }}
+                  className={`bar history`}
+                  title={history.coverageInfants ? outputTitle(history.time[i], 0, 0, 0, '', true, history.coverageInfants[i], history.coveragePreSAC[i], history.coverageSAC[i], history.coverageAdults[i]) : outputTitle(history.time[i])}
+                >
+                  <MdaRoundBar ident={i} history={true} height={history.coverageInfants ? (((history.coverageInfants[i] + history.coveragePreSAC[i] + history.coverageSAC[i] + history.coverageAdults[i]) / 400) * 100) : 0} />
+                </div>
                 < div
-                style={{left: x((e+6)/12)+lPad-(actualBar / 2) }}
-                className={`bar history`}
-                title={history.coverageInfants ?  outputTitle(history.time[i],0,0,0,'',false,history.coverageInfants[i],history.coveragePreSAC[i],history.coverageSAC[i],history.coverageAdults[i]) : outputTitle(history.time[i]) }
-              ><span
-                  style={{
-                    height: 0,
-                  }}
-                ></span></div></React.Fragment>}
-              
+                  style={{ left: x((e + 6) / 12) + lPad - (actualBar / 2) }}
+                  className={`bar history`}
+                  title={history.coverageInfants ? outputTitle(history.time[i], 0, 0, 0, '', false, history.coverageInfants[i], history.coveragePreSAC[i], history.coverageSAC[i], history.coverageAdults[i]) : outputTitle(history.time[i])}
+                >
+                  <MdaRoundBar ident={'h' + i} history={true} height={0} />
+                </div></React.Fragment>}
+
             </React.Fragment>
           )
-        )}
-        
-        { future.time.map( ( e, i ) => (
+          )}
+
+        {future.time.map((e, i) => (
           <div
             key={`bar-${i}`}
             onClick={(a) => {
               setCurMDARound(i)
             }}
-            style={{left: (x((e)/12))+lPad-(actualBar / 2)}}
-            className={`bar ${
-              future.active[i] === false ? 'removed' : ''
-            } ${i === curMDARound ? 'current' : ''}`}
-            title={outputTitle(future.time[i],future.coverage[i],future.adherence[i],future.bednets[i],future.regimen[i],future.active[i],future.coverageInfants[i],future.coveragePreSAC[i],future.coverageSAC[i],future.coverageAdults[i])}
+            style={{ left: (x((e) / 12)) + lPad - (actualBar / 2) }}
+            className={`bar ${future.active[i] === false ? 'removed' : ''
+              } ${i === curMDARound ? 'current' : ''}`}
+            title={outputTitle(future.time[i], future.coverage[i], future.adherence[i], future.bednets[i], future.regimen[i], future.active[i], future.coverageInfants[i], future.coveragePreSAC[i], future.coverageSAC[i], future.coverageAdults[i])}
           >
-            {LFandTrachoma && <span
-              className={ (i === curMDARound ) ? 'current' : ''}
-              style={{
-                height: future.coverage[i],
-              }}
-            ></span>}
+            {LFandTrachoma && <MdaRoundBar
+              ident={'f' + i}
+              classNameAdd={(i === curMDARound) ? 'current' : ''}
+              height={future.coverage[i]}
+            />}
 
-            {STH && <span
-              className={ (i === curMDARound ) ? 'current' : ''}
-              style={{
-                height: ( ( ( future.coverageInfants[i]+future.coveragePreSAC[i]+future.coverageSAC[i]+future.coverageAdults[i] ) / 400 ) * 100 ),
-              }}
-            ></span>}
+            {STH && <MdaRoundBar
+              ident={'f' + i}
+              classNameAdd={(i === curMDARound) ? 'current' : ''}
+              height={(((future.coverageInfants[i] + future.coveragePreSAC[i] + future.coverageSAC[i] + future.coverageAdults[i]) / 400) * 100)}
+            />}
 
             {i === curMDARound && (
-              <ClickAwayListener onClickAway={(event)=>{if ( !doseSettingsOpen ) closeRoundTooltip(event)}}>
+              <ClickAwayListener onClickAway={(event) => { if (!doseSettingsOpen) closeRoundTooltip(event) }}>
                 <div className="bar-tooltip">
                   {future.active[curMDARound] !== false && disease === DISEASE_LIMF && (
                     <span className="t">
@@ -271,14 +259,14 @@ const MdaRounds = (props) => {
                   )}
                   {future.active[curMDARound] ===
                     false && <span className="t">{t('noMDA')}</span>}
-                  {future.active[curMDARound] === false &&  LFandSTH  && (
+                  {future.active[curMDARound] === false && LFandSTH && (
                     <span
                       className="i plus"
                       title="Activate MDA"
                       onClick={(a) => {
                         setDoseSettingsOpen(true)
                       }}
-                    ></span> )}
+                    ></span>)}
                   {future.active[curMDARound] !== false && LFandSTH && (
                     <span
                       className="i edit"
@@ -292,29 +280,29 @@ const MdaRounds = (props) => {
                     <span
                       className="i remove"
                       title="Remove MDA"
-                      onClick={ () => {
-                        setMDAProperty( 'active', curMDARound, false );
+                      onClick={() => {
+                        setMDAProperty('active', curMDARound, false);
                         /* TODO FIXME */
                         closeRoundModal();
-                      } }
+                      }}
                     ></span>
-                    )}
+                  )}
                 </div>
               </ClickAwayListener>
             )}
           </div>
         ))}
-        
+
       </div>
       {disease === DISEASE_TRACHOMA && (
-        <MdaRoundsSlider 
-          disease={disease} 
-          left={(x((future.time[0])/12))+lPad-(actualBar / 2)}
+        <MdaRoundsSlider
+          disease={disease}
+          left={(x((future.time[0]) / 12)) + lPad - (actualBar / 2)}
           width={sliderLength}
-          x={(value)=>{return x(value)}}
+          x={(value) => { return x(value) }}
           numberOfFutreTimeBars={numberOfFutreTimeBars}
           onChange={setMDARange}
-          intialMonthValues={[future.time[future.active.indexOf(true)],future.time[mapActiveToTime.lastIndexOf(true)]]}
+          intialMonthValues={[future.time[future.active.indexOf(true)], future.time[mapActiveToTime.lastIndexOf(true)]]}
         />
       )}
 
@@ -337,7 +325,7 @@ const MdaRounds = (props) => {
                   marginLeft: '3rem',
                   marginTop: '13rem',
                 }}
-                onClick={ () => { setMDAProperty( 'active', curMDARound, true ); } }
+                onClick={() => { setMDAProperty('active', curMDARound, true); }}
               >
                 {t('activate')}
               </Button>
@@ -366,7 +354,7 @@ const MdaRounds = (props) => {
                 label={t('treatmentTargetCoverage')}
                 classAdd="spaced"
                 value={future.coverage[curMDARound]}
-                onChange={( event, newValue ) => { setMDAProperty( 'coverage', curMDARound, newValue ); }}
+                onChange={(event, newValue) => { setMDAProperty('coverage', curMDARound, newValue); }}
               />
 
               <SettingBedNetCoverage
@@ -374,7 +362,7 @@ const MdaRounds = (props) => {
                 label={t('bedNetCoverage')}
                 classAdd="spaced"
                 value={future.bednets[curMDARound]}
-                onChange={( event, newValue ) => { setMDAProperty( 'bednets', curMDARound, newValue ); }}
+                onChange={(event, newValue) => { setMDAProperty('bednets', curMDARound, newValue); }}
               />
 
               <SettingDrugRegimen
@@ -382,7 +370,7 @@ const MdaRounds = (props) => {
                 label={t('drugRegimen')}
                 classAdd="spaced"
                 value={future.regimen[curMDARound]}
-                onChange={( event, newValue ) => { setMDAProperty( 'regimen', curMDARound, event.target.value ); }}
+                onChange={(event, newValue) => { setMDAProperty('regimen', curMDARound, event.target.value); }}
               />
 
               <SettingSystematicAdherence
@@ -390,14 +378,14 @@ const MdaRounds = (props) => {
                 label={t('systematicAdherence')}
                 classAdd="spaced"
                 value={future.adherence[curMDARound]}
-                onChange={( event, newValue ) => { setMDAProperty( 'adherence', curMDARound, newValue ); }}
+                onChange={(event, newValue) => { setMDAProperty('adherence', curMDARound, newValue); }}
               />
 
               <div className={classes.modalButtons}>
                 <Button
                   className={`${classes.modalButton} light`}
                   variant="contained"
-                  onClick={ () => { setMDAProperty( 'active', curMDARound, false ); } }
+                  onClick={() => { setMDAProperty('active', curMDARound, false); }}
                 >
                   {t('DEACTIVATE')}
                 </Button>
@@ -417,7 +405,7 @@ const MdaRounds = (props) => {
             </div>
           </Paper>
         </ClickAwayListener>
-      ) }
+      )}
 
       { (doseSettingsOpen && STH) && (
         <ClickAwayListener onClickAway={closeRoundModal}>
@@ -438,7 +426,7 @@ const MdaRounds = (props) => {
                   marginLeft: '3rem',
                   marginTop: '13rem',
                 }}
-                onClick={ () => { setMDAProperty( 'active', curMDARound, true ); } }
+                onClick={() => { setMDAProperty('active', curMDARound, true); }}
               >
                 {t('activate')}
               </Button>
@@ -464,7 +452,7 @@ const MdaRounds = (props) => {
 
               <SettingTargetCoverage
                 value={future.coverageInfants[curMDARound]}
-                onChange={( event, newValue ) => { setMDAProperty( 'coverageInfants', curMDARound, newValue ); }}
+                onChange={(event, newValue) => { setMDAProperty('coverageInfants', curMDARound, newValue); }}
                 inModal={true}
                 label={t('coverageInfants')}
                 min={0}
@@ -473,10 +461,10 @@ const MdaRounds = (props) => {
                 valueKey="coverageInfants"
                 title={t('InfantsTitle')}
               />
-          
+
               <SettingTargetCoverage
                 value={future.coveragePreSAC[curMDARound]}
-                onChange={( event, newValue ) => { setMDAProperty( 'coveragePreSAC', curMDARound, newValue ); }}
+                onChange={(event, newValue) => { setMDAProperty('coveragePreSAC', curMDARound, newValue); }}
                 inModal={true}
                 label={t('coveragePreschool')}
                 min={0}
@@ -485,10 +473,10 @@ const MdaRounds = (props) => {
                 valueKey="coveragePreSAC"
                 title={t('PreschoolTitle')}
               />
-          
+
               <SettingTargetCoverage
                 value={future.coverageSAC[curMDARound]}
-                onChange={( event, newValue ) => { setMDAProperty( 'coverageSAC', curMDARound, newValue ); }}
+                onChange={(event, newValue) => { setMDAProperty('coverageSAC', curMDARound, newValue); }}
                 inModal={true}
                 label={t('coverageSchoolAge')}
                 min={0}
@@ -497,10 +485,10 @@ const MdaRounds = (props) => {
                 valueKey="coverageSAC"
                 title={t('SchoolAgeTitle')}
               />
-            
+
               <SettingTargetCoverage
                 value={future.coverageAdults[curMDARound]}
-                onChange={( event, newValue ) => { setMDAProperty( 'coverageAdults', curMDARound, newValue ); }}
+                onChange={(event, newValue) => { setMDAProperty('coverageAdults', curMDARound, newValue); }}
                 inModal={true}
                 label={t('coverageAdults')}
                 min={0}
@@ -514,7 +502,7 @@ const MdaRounds = (props) => {
                 <Button
                   className={`${classes.modalButton} light`}
                   variant="contained"
-                  onClick={ () => { setMDAProperty( 'active', curMDARound, false ); } }
+                  onClick={() => { setMDAProperty('active', curMDARound, false); }}
                 >
                   {t('DEACTIVATE')}
                 </Button>
@@ -534,7 +522,7 @@ const MdaRounds = (props) => {
             </div>
           </Paper>
         </ClickAwayListener>
-      ) } 
+      )}
 
     </React.Fragment>
   )

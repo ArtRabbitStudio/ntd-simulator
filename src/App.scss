@@ -64,7 +64,6 @@ tspan {
   }
   &.setup {
     margin-left: 0;
-    height: 150px;
     margin-top: 30px;
     height: auto;
     margin-bottom: 7px;
@@ -72,6 +71,14 @@ tspan {
     display: flex;
     position: relative;
   }
+
+  .stop-color-0 {
+    stop-color: #008dc9;
+  }
+  .stop-color-100 {
+    stop-color: #fff;
+  }
+
   .bar {
     //background: #b09aff;
     position: absolute;
@@ -80,19 +87,19 @@ tspan {
     min-width: 1px;
     border: 1px solid white;
     cursor: pointer;
+
+    &.history {
+      .stop-color-0 {
+        stop-color: #dce1e3;
+      }
+    }
+
+    /*
     background-image: linear-gradient(
       to bottom,
       rgba(204, 232, 244, 1) 1%,
       transparent
     );
-    &.history {
-      cursor: default;
-      background-image: linear-gradient(
-        to bottom,
-        rgba(220, 225, 227, 1) 1%,
-        transparent
-      );
-    }
     &:before {
       content: '';
       display: block;
@@ -122,58 +129,37 @@ tspan {
       background: url(./images/mask-blue.png) no-repeat 0px 0px;
       background-repeat: no-repeat;
     }
-
+    */
     &.current {
       z-index: 10;
     }
-
     &.removed {
       > span {
-        background-image: linear-gradient(
-          to bottom,
-          rgba(204, 232, 244, 1) 1%,
-          transparent
-        );
+        .stop-color-0 {
+          stop-color: rgba(204, 232, 244, 1);
+        }
       }
     }
 
     > span {
       display: block;
-      //background: #6236ff;
       min-width: 10px;
       opacity: 1;
-      //transition: opacity 0.2s ease-in;
-      //background: rgba(0, 141, 201, 1);
-      background-image: linear-gradient(
-        to bottom,
-        rgba(0, 141, 201, 1) 1%,
-        transparent
-      );
-
       &.current {
-        //background: #ffc914;
-
-        background-image: linear-gradient(to bottom, #ffc914 1%, transparent);
+        .stop-color-0 {
+          stop-color: #ffc914;
+        }
       }
     }
     &.history {
       > span {
         display: block;
-        //background: #6236ff;
         min-width: 10px;
         opacity: 1;
-        //transition: opacity 0.2s ease-in;
-        //background: rgba(0, 141, 201, 1);
-        background-image: linear-gradient(
-          to bottom,
-          rgba(88, 110, 120, 1) 1%,
-          transparent
-        );
-
         &.current {
-          //background: #d01c8b;
-
-          background-image: linear-gradient(to bottom, #d01c8b 1%, transparent);
+          .stop-color-0 {
+            stop-color: #d01c8b;
+          }
         }
       }
     }
