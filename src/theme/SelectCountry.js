@@ -16,7 +16,7 @@ const useStyles = makeStyles(theme => ({
     "& p": {
       margin: theme.spacing(0, 0, 4, 0),
     },
-    [theme.breakpoints.up('md')]: {
+    [theme.breakpoints.up('sm')]: {
       maxWidth: "50%",
     },
     [theme.breakpoints.up('lg')]: {

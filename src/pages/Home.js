@@ -91,7 +91,7 @@ const useStyles = makeStyles(theme => ({
     },
   },
   cardTransparent: {
-    opacity: 0.85
+    //opacity: 0.85
   },
   headline: {
     margin: theme.spacing(1, 0),

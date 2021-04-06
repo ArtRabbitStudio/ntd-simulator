@@ -79,7 +79,10 @@ const useStyles = makeStyles((theme) => ({
     display: "inline-flex"
   },
   formControlPrecision: {
-    display: "block",
+    display: "flex",
+    alignItems: "center",
+    flexDirection: "row",
+    flexWrap: "nowrap",
     float: "left",
     margin: theme.spacing(0, 0, 0, 4),
     width: 300,
@@ -88,9 +91,7 @@ const useStyles = makeStyles((theme) => ({
     display: "block",
     float: "left",
     fontSize: 14,
-    height: 24,
-    lineHeight: '14px',
-    padding: '7px 0px 0px 0px',
+    padding: 0,
     margin: 0
 
   },

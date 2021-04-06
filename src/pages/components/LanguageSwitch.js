@@ -11,6 +11,8 @@ const useStyles = makeStyles(theme => ({
     width: "100%",
     justifyContent: "flex-end",
     color: theme.palette.basic.white,
+    position: "relative",
+    top: 2,
 
     '& button': {
       background: "transparent",
@@ -61,6 +63,7 @@ const useStyles = makeStyles(theme => ({
   headline: {
     margin: theme.spacing(0, 0, 0, 0),
     lineHeight: 1,
+    whiteSpace: "nowrap"
   },
   switch: {
     display: "inline-block",

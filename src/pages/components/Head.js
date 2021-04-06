@@ -13,7 +13,7 @@ const useStyles = makeStyles(theme => ({
     zIndex: 20,
     position: "relative",
     float: 'left',
-    backgroundColor: '#fff',
+    //backgroundColor: '#fff',
   },
   logo: {
     display: 'block',

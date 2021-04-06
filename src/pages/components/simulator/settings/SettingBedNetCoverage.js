@@ -25,16 +25,16 @@ const SettingBedNetCoverage = ({ inModal, label, value, onChange, classAdd, scen
 
   /* TODO FIXME */
   const handleChange = (event, newValue) => {
-    if ( isPerIUSetting ) {
+    if (isPerIUSetting) {
       dispatchSimState({ type: "covN", payload: newValue });
     }
     else {
-      dispatchScenarioStateUpdate( {
+      dispatchScenarioStateUpdate({
         type: ScenarioStoreConstants.ACTION_TYPES.UPDATE_SCENARIO_SETTING_BY_ID,
         id: scenarioId,
         key: 'covN',
         value: newValue
-      } );
+      });
     }
   };
 
@@ -44,20 +44,20 @@ const SettingBedNetCoverage = ({ inModal, label, value, onChange, classAdd, scen
         title={t('proportionOfPopulation')}
         aria-label="info"
       >
-      <FormLabel
-        component="legend"
-        htmlFor="covN"
-        className={
-          inModal
-            ? classes.withHelp
-            : `${classes.withSlider} ${classes.centered} ${classes.withHelp}`
-        }
-      >
-        {label}
-      </FormLabel>
+        <FormLabel
+          component="legend"
+          htmlFor="covN"
+          className={
+            inModal
+              ? classes.withHelp
+              : `${classes.withSlider} ${classes.centered} ${classes.withHelp}`
+          }
+        >
+          {label}
+        </FormLabel>
       </Tooltip>
       <Slider
-        value={ isPerIUSetting ? value : scenarioState.scenarioData[ scenarioId ].settings.covN }
+        value={isPerIUSetting ? value : scenarioState.scenarioData[scenarioId].settings.covN}
         min={0}
         step={1}
         max={100}

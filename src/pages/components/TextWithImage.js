@@ -18,13 +18,22 @@ const TextWithImage = ({ caption, headline, image, imageAlt, children, buttonUrl
     image: {
       position: "relative",
       zIndex: 2,
-      flexBasis: "40%",
+      margin: 0,
+      '& img': {
+        maxWidth: "100%",
+        height: "auto"
+      },
+      [theme.breakpoints.up('md')]: {
+        flexBasis: "40%",
+      }
     },
     text: {
       position: "relative",
       zIndex: 2,
-      flexBasis: "60%",
       padding: theme.spacing(2, 4, 2, 0),
+      [theme.breakpoints.up('md')]: {
+        flexBasis: "60%",
+      }
     },
     headline: {
       margin: theme.spacing(1, 0),
@@ -43,7 +52,7 @@ const TextWithImage = ({ caption, headline, image, imageAlt, children, buttonUrl
         {children}
         {(buttonUrl && buttonText) && <ArrowButton text={buttonText} url={buttonUrl} />}
       </Box>
-      <figure>
+      <figure className={classes.image}>
         <img src={image} alt={imageAlt} />
       </figure>
     </div>
