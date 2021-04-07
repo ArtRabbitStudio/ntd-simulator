@@ -24,6 +24,11 @@ const useStyles = makeStyles(theme => ({
     margin: theme.spacing(12, 0, 0, -6),
     padding: theme.spacing(4, 6, 6, 6),
   },
+  hideInPrint: {
+    "@media print": {
+      display: "none"
+    }
+  },
   marginBottom: {
     marginBottom: theme.spacing(2)
   },
@@ -82,7 +87,7 @@ export default function IntroWrap(props) {
 
   return (
 
-    <section className={`${classes.section} icon-${props.ident}`} >
+    <section className={`${classes.section} icon-${props.ident} ${classes.hideInPrint}`} >
 
       <div className={classes.headlinesWrap}>
         <div className={`${classes.headlines} icon-${props.ident}`}>

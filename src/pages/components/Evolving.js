@@ -16,6 +16,11 @@ const Evolving = (props) => {
       flexWrap: "wrap",
       margin: theme.spacing(5, 0, 3, 0),
     },
+    hideInPrint: {
+      "@media print": {
+        display: "none"
+      }
+    },
     btns: {
       display: "block",
       width: "100%",
@@ -37,7 +42,7 @@ const Evolving = (props) => {
   const classes = useStyles();
 
   return (
-    <div className={`${classes.root}`} >
+    <div className={`${classes.root} ${classes.hideInPrint}`} >
       <Typography variant="h3" component="h3" className={classes.headline}>{t('thisProjectIsConstantlyEvolving')}</Typography>
       <div className={classes.btns}>
         <ArrowButton text={t('helpUsImprove')} url="/help-us-improve" />

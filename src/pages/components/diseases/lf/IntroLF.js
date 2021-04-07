@@ -1,5 +1,6 @@
 import React from 'react'
 import AccordionElement from 'pages/components/AccordionElement';
+
 import IntroWrap from '../Intro'
 import { useTranslation } from "react-i18next";
 import { DISEASE_LIMF } from 'AppConstants'
@@ -10,7 +11,7 @@ export default function IntroLF(props) {
   
   return (
 
-    <IntroWrap ident={DISEASE_LIMF}>
+    <IntroWrap ident={DISEASE_LIMF} >
       <AccordionElement title={t('lf:summaryHeadline')}>
         {t('lf:summaryTab1Title')}
         {t('lf:summaryTab1Content')}

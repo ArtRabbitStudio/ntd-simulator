@@ -71,12 +71,14 @@ const ScenarioDisplay = (props) => {
   const { t } = useTranslation();
   const classes = useStyles();
   const { disease } = useUIState();
-
+  
   const defaultMetric = AppConstants.DISEASE_CONFIG[disease] ? AppConstants.DISEASE_CONFIG[disease].defaultMetric : 'Ms'
 
   const [graphMetric, setGraphMetric] = useState(defaultMetric)
   const [graphTypeSimpleLocal, setGraphTypeSimpleLocal] = useState(true)
   const [showPrecisionConfirmation, setshowPrecisionConfirmation] = useState(false)
+  const [isPrinting, setIsPrinting] = useState(false)
+  const [preparePrinting, setPreparePrinting] = useState(false)
   const handleGraphTypeChange = () => {
     if (graphTypeSimpleLocal) {
       setGraphTypeSimpleLocal(false)
@@ -108,6 +110,22 @@ const ScenarioDisplay = (props) => {
 
   );
 
+
+
+  window.onbeforeprint = function () {
+    //do before-printing stuff
+    console.log('before print setting is Printing to true');
+    setIsPrinting(true)
+  }
+  
+
+  window.onafterprint = function () {
+  //do before-printing stuff
+    console.log('after print');
+    setIsPrinting(false)
+  }
+
+  const scenarioGraphClasses = isPrinting ? `${classes.scenarioGraphPrint} ${classes.scenarioGraph}` : `${classes.scenarioGraph}`
 
   const scenarioId = scenarioState.currentScenarioId;
   const scenarioData = scenarioState.scenarioData[scenarioId];
@@ -144,7 +162,14 @@ const ScenarioDisplay = (props) => {
               aria-label="PRINT SCENARIO"
               disabled={props.simInProgress || props.scenarioKeys.length === 0}
               className={classes.printIcon}
-              onClick={() => alert('todo')}
+              onClick={() => {
+                setIsPrinting(true)
+                setTimeout(()=>{
+                  setPreparePrinting(true)
+                },200)
+                
+                console.log('print clicked');
+              }}
             >
               &nbsp;
               </Fab>
@@ -392,7 +417,7 @@ const ScenarioDisplay = (props) => {
         </Grid>
 
         { /* this is the update button that pops up after a precision or MDA change */}
-        <div className={classes.scenarioGraph}>
+        <div className={scenarioGraphClasses}>
           {scenarioState.scenarioData[scenarioState.currentScenarioId].isDirty && (
             <div className={classes.updateScenario}>
               <Button
@@ -470,7 +495,7 @@ const ScenarioDisplay = (props) => {
 
         {props.simInProgress ? <div className={classes.mdaplaceholder}><span> </span></div> : (
           <React.Fragment>
-            <div className={classes.scenarioGraph}>
+            <div className={scenarioGraphClasses}>
               <MdaRounds disease={disease} />
             </div>
 
@@ -505,6 +530,19 @@ const ScenarioDisplay = (props) => {
             props.runCurrentScenario()
           }}
           open={showPrecisionConfirmation}
+        />
+        <ConfirmationDialog
+          title={t('printTitle')}
+          intro={t('printText')}
+          className={classes.printDialog}
+          onClose={() => {
+            setIsPrinting(false);
+          }}
+          onConfirm={() => {
+            window.print()
+            setPreparePrinting(false);
+          }}
+          open={isPrinting}
         />
       </div>
     </div>

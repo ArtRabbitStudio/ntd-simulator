@@ -14,6 +14,11 @@ const useStyles = makeStyles(theme => ({
   root: {
     marginTop: 'auto',
   },
+  hideInPrint: {
+    "@media print": {
+      display: "none"
+    }
+  },
   footer: {
     marginTop: 'auto',
     backgroundColor: theme.palette.text.primary,
@@ -52,7 +57,7 @@ const Footer = (props) => {
   const classes = useStyles();
 
   return (
-    <div className={classes.root}>
+    <div className={`${classes.root} ${classes.hideInPrint}`}>
       <footer className={classes.footer}>
         <Container className={classes.container} maxWidth="xl" >
 

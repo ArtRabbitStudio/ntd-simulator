@@ -25,6 +25,8 @@
   "whatYouCanDoScenarios": "Investigate the scenarios where MDA needs to be reinstated",
   "alsoAvailableIn":"Also available in",
   "switchTo":"Switch to",
+  "printTitle":"Print or save as PDF",
+  "printText":"To save as PDF select the PDF option in the print dialog.",
 
   "hereIsHow": "Here is how",
   "helpUsImprove": "Help us improve",

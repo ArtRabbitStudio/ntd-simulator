@@ -84,7 +84,9 @@ const Country = props => {
     }*/
 
     const legend = t(`mapLegend.${disease}`) ? t(`mapLegend.${disease}`) : '';
-    
+
+    //console.log(iuData)
+
     return (
       <React.Fragment>
             <section className={classes.section}>

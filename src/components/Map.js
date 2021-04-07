@@ -93,7 +93,7 @@ function Map({
     if (feature && feature.properties) {
       if (feature.properties.ADMIN0ISO3) {
         //console.log('country click',feature.properties.ADMIN0ISO3)
-        history.push(`/country/${feature.properties.ADMIN0ISO3}`)
+        history.push(`/${disease}/${feature.properties.ADMIN0ISO3}`)
       }
 
       if (feature.properties.IU_ID) {
@@ -128,6 +128,7 @@ function Map({
       dispatch({ type: 'HOVEROUT' })
     }
   }
+
 
 
   // old map style mapbox://styles/kpcarter100/ck7w5zz9l026d1imn43721owm
@@ -245,7 +246,7 @@ function Map({
                     {trendMode ? `${t('prevalence')} ${year}` : `${t('prevalence')} ${year}`}
                   </Typography>
 
-                  <Legend colorScale={colorScale} />
+                  <Legend colorScale={colorScale} iuFeatures={iuFeatures} />
                 </Box>
               </Paper>
             </div>

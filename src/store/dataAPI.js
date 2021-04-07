@@ -103,6 +103,8 @@ const defaultScales = {
 // calculates min/max values for prevalence and performance
 function generateStats(data,disease) {
 
+  console.log('data',data)
+
   let prevExtent = []
   switch ( disease ) {
     case DISEASE_LIMF:
@@ -110,7 +112,10 @@ function generateStats(data,disease) {
         values,
         map(({ prevalence }) => {
           const pValues = values(prevalence);
-          return [min(pValues), max(pValues)];
+          //return [min(pValues), max(pValues)];
+          // just the last year, no range
+          console.log(pValues[19])
+          return [pValues[19], pValues[19]];
         })
       )(data);
       break
@@ -119,7 +124,7 @@ function generateStats(data,disease) {
         values,
         map(({ prevalence }) => {
           const pValues = values(prevalence);
-          return [pValues[17], pValues[19]];
+          return [pValues[19], pValues[19]];
         })
       )(data);
       break
@@ -131,7 +136,7 @@ function generateStats(data,disease) {
         values,
         map(({ prevalence }) => {
           const pValues = values(prevalence);
-          return [pValues[15], pValues[18]];
+          return [pValues[18], pValues[18]];
         })
       )(data);
       break
@@ -317,7 +322,8 @@ function mergeFeatures({ data, featureCollection, key, scales }) {
     // get color from scale if prevalence value available
     const colorsByYear = mapValues(prevalenceOverTime, (prevalence) => {
       
-      if ( featureData.endemicity === 'Non-endemic' ) return '#fff'
+        // uncomment to colour Non-endemic IUs
+        //if ( featureData.endemicity === 'Non-endemic' ) return '#fff'
         return isFinite(prevalence) ? color(prev(prevalence)).hex() : null
       }
     );
@@ -699,9 +705,15 @@ class DataAPI {
   }
 
   get IUStats() {
-    const IUs = this.IUsCurrentRegime;
+    let IUs = this.IUsCurrentRegime;
     const { disease } = this.uiState;
+    
     if (IUs) {
+      const { country } = this.uiState;
+      // only give the current country ones if we have a country selec
+      if ( country ) {
+        IUs = flow(filter((x) => x.relatedCountries[0] === country))(IUs);
+      }
       return generateStats(IUs,disease);
     }
     return null;

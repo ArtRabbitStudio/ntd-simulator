@@ -15,6 +15,7 @@ function ramp(color, n = 256) {
 
 export default function Legend({
   colorScale,
+  uiFeatures,
   marginLeft = 16,
   marginRight = 16,
   marginTop = 6,
@@ -25,6 +26,8 @@ export default function Legend({
   tickSize = 6,
 }) {
   // continuous scale
+
+  
   if (colorScale.interpolate) {
     const n = Math.min(colorScale.domain().length, colorScale.range().length)
     const interpolateX = interpolate(marginLeft, width - marginRight)

@@ -105,13 +105,12 @@ const SelectCountry = ({ selectIU, showCountryConfirmation, showIUConfirmation, 
     activeIUs = [defaultIUSuggestionOption].concat(activeIUs)
   }
 
-
   return (
     <React.Fragment>
       <Box className={classes.box}>
 
 
-        <CapsHeadline text={selectIU ? (countyAndIUSet ? t('setUpScenario') : t('selectIULong')) : t('selectCountry')} />
+        <span className={`${classes.hideInPrint}`}><CapsHeadline text={selectIU ? (countyAndIUSet ? t('setUpScenario') : t('selectIULong')) : t('selectCountry')} /></span>
         {!selectIU && <Typography variant="h1" component="h2" className={classes.diseaseHeadline}>{DISEASE_LABELS[disease]} {t("in")}</Typography>}
         <FormControl className={`${classes.formControl} ${selectIU ? 'large' : 'smaller'}`}>
           <Autocomplete
@@ -129,7 +128,7 @@ const SelectCountry = ({ selectIU, showCountryConfirmation, showIUConfirmation, 
             color="inherit"
             aria-label="REMOVE SCENARIO"
             disabled={false}
-            className={classes.reloadIcon}
+            className={`${classes.reloadIcon} ${classes.hideInPrint}`}
             onClick={() => { handleBackToCountry() }}
           >
             &nbsp;
@@ -138,7 +137,7 @@ const SelectCountry = ({ selectIU, showCountryConfirmation, showIUConfirmation, 
             color="inherit"
             aria-label="REMOVE SCENARIO"
             disabled={false}
-            className={classes.reloadIcon}
+            className={`${classes.reloadIcon} ${classes.hideInPrint}`}
             onClick={() => { handleBackToContinent() }}
           >
             &nbsp;

@@ -6,6 +6,11 @@ const useStyles = makeStyles(theme => ({
     zIndex: 9,
     position: 'relative',
   },
+  hideInPrint: {
+    "@media print": {
+      display: "none"
+    }
+  },
   box: {
     zIndex: 9,
     position: 'relative',
@@ -21,6 +26,9 @@ const useStyles = makeStyles(theme => ({
     },
     [theme.breakpoints.up('lg')]: {
     },
+    "@media print": {
+      margin:0,
+    }
   },
   reloadIcon: {
     backgroundColor: "transparent",
@@ -53,7 +61,6 @@ const useStyles = makeStyles(theme => ({
     '& > label': {},
     '& input': {
       fontSize: 18
-
     },
     '&.large': {
       margin: theme.spacing(0, 0, 1, 0),
@@ -62,7 +69,10 @@ const useStyles = makeStyles(theme => ({
     },
     '&.large input': {
       fontSize: 26,
-      color: '#2c3f4d'
+      color: '#2c3f4d',
+      "@media print": {
+        fontSize:18,
+      }
     },
     '&.large .MuiAutocomplete-root': {
       width: '80%'
@@ -74,12 +84,16 @@ const useStyles = makeStyles(theme => ({
     },
     [theme.breakpoints.up('md')]: {
       '& input': {
-        fontSize: 24
-
+        fontSize: 24,
+        "@media print": {
+          fontSize:18,
+        }
       },
       '&.large input': {
-        fontSize: 44
-
+        fontSize: 44,
+        "@media print": {
+          fontSize:18,
+        }
       },
     },
     [theme.breakpoints.up('lg')]: {

@@ -14,6 +14,11 @@ const useStyles = makeStyles((theme) => ({
   clear: {
     clear: 'both',
   },
+  hideInPrint: {
+    "@media print": {
+      display: "none"
+    }
+  },
   head: {
     textAlign: 'left',
     '&:after': {
@@ -72,7 +77,7 @@ const HeadWithInputs = ({ title, disableInputs, disableClear, classAdd, showLang
   return (
     <React.Fragment>
       <div className={classes.headContainer}>
-        <Grid item md={8} xs={12} className={classes.head}>
+        <Grid item md={8} xs={12} className={`${classes.head}`}>
           <Head classAdd={classAdd} alternativeHeadline={!showLanguages} />
         </Grid>
         <Grid item md={4} xs={12} className={classes.inputs}>

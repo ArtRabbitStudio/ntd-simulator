@@ -8,6 +8,18 @@
   font-style: normal;
 }
 
+@media print {
+  @page {
+    size: A4,
+  }
+
+  #ScenarioDisplay {
+    width: '190mm';
+  }
+
+}
+
+
 body {
   color: #2c3f4d !important;
 }
@@ -38,12 +50,17 @@ body {
   fill: transparent !important;
   background: url(./images/expand-more-24-px.svg) no-repeat center center;
   background-size: contain;
+  
+  @media print {
+    background: white;
+  }
 }
 
 .MuiAccordionSummary-expandIcon .MuiSvgIcon-root {
   fill: transparent !important;
   background: url(./images/expand-more-24-px.svg) no-repeat center center;
   background-size: contain;
+  
 }
 
 /** charts **/

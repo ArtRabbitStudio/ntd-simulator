@@ -16,6 +16,11 @@ const useStyles = makeStyles((theme) => ({
   title: {
     marginBottom: 24,
   },
+  hideInPrint: {
+    "@media print": {
+      display: "none"
+    }
+  },
   formControl: {
     margin: theme.spacing(0, 0, 1, 0),
     minWidth: "100%",
@@ -41,6 +46,9 @@ const useStyles = makeStyles((theme) => ({
     },
     [theme.breakpoints.up('md')]: {
       //margin: theme.spacing(-2, 0, -2, 0),
+    },
+    "@media print": {
+      display: "none"
     }
   },
 
@@ -54,7 +62,7 @@ const useStyles = makeStyles((theme) => ({
     },
     [theme.breakpoints.up('md')]: {
       //margin: theme.spacing(-2, 0, -2, 0),
-    }
+    },
   },
   centerControls: {
     display: "flex",
@@ -66,11 +74,17 @@ const useStyles = makeStyles((theme) => ({
     },
     [theme.breakpoints.up('md')]: {
       //margin: theme.spacing(-2, 0, -2, 0),
+    },
+    "@media print": {
+      display: "none"
     }
   },
   controlsRow: {
     padding: theme.spacing(1, 0),
     borderBottom: "1px solid #e0e0e0",
+    "@media print": {
+      borderBottom: "none"
+    }
   },
   caps: {
     textTransform: "uppercase",
@@ -86,6 +100,9 @@ const useStyles = makeStyles((theme) => ({
     float: "left",
     margin: theme.spacing(0, 0, 0, 4),
     width: 300,
+    "@media print": {
+      display: "none"
+    }
   },
   precisionLabel: {
     display: "block",
@@ -169,6 +186,9 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "transparent",
     boxShadow: "none",
     zIndex: 9,
+    "@media print": {
+      display:"none"
+    },
 
     "& .MuiTouchRipple-root": {
       backgroundImage: `url(${PrintIcon})`,
@@ -183,10 +203,22 @@ const useStyles = makeStyles((theme) => ({
       },
     },
   },
+  printDialog: {
+    "& .MuiBackdrop-root": {
+      backgroundColor: "rgba(44, 63, 77, 0.9)"
+    },
+    "@media print": {
+      display: "none"
+    }
+
+  },
   downloadIcon: {
     backgroundColor: "transparent",
     boxShadow: "none",
     zIndex: 9,
+    "@media print": {
+      display:"none"
+    },
 
     "& .MuiTouchRipple-root": {
       backgroundImage: `url(${DownloadIcon})`,
@@ -250,6 +282,9 @@ const useStyles = makeStyles((theme) => ({
   simulatorBody: {
     position: "relative",
     padding: theme.spacing(4, 2, 2, 6),
+    "@media print": {
+      padding: 0
+    }
   },
   simulatorInnerBody: {
     position: "relative",
@@ -265,12 +300,19 @@ const useStyles = makeStyles((theme) => ({
     width: `calc(100% + ${theme.spacing(12)}px)`,
     marginLeft: -theme.spacing(6),
     position: "relative",
+    "@media print": {
+      marginLeft: 0,
+      width: `100%`,
+    }
   },
   tabs: {
     flexGrow: 1,
     backgroundColor: theme.palette.background.paper,
     padding: theme.spacing(0, 6),
     borderBottom: "1px solid #e0e0e0",
+    "@media print": {
+      display: "none"
+    }
   },
 
   chartContainer: {
@@ -281,6 +323,10 @@ const useStyles = makeStyles((theme) => ({
   chartTitle: {
     display: "block",
     margin: theme.spacing(0, 2, 0, 0),
+    "@media print": {
+      margin: theme.spacing(1, 0, 0, 0),
+      fontSize: 18,
+    }
   },
   precision: {
   },
@@ -422,6 +468,10 @@ const useStyles = makeStyles((theme) => ({
   scenarioGraph: {
     position: "relative",
   },
+  scenarioGraphPrint: {
+    width: '190mm',
+  },
+  
   mdaplaceholder: {
     height: 100,
     marginTop: 5,

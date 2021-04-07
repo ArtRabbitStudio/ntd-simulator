@@ -12,6 +12,7 @@ const useStyles = makeStyles(theme => ({
     minHeight: '100vh',
     overflow: "hidden",
 
+
     [theme.breakpoints.up('lg')]: {
     }
   },
@@ -30,7 +31,9 @@ const useStyles = makeStyles(theme => ({
       display: 'table',
       clear: 'both'
     },
-
+    "@media print": {
+      padding:0
+    },
 
     [theme.breakpoints.up('md')]: {
       '&.full-height': {

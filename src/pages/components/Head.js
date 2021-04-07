@@ -15,6 +15,12 @@ const useStyles = makeStyles(theme => ({
     float: 'left',
     //backgroundColor: '#fff',
   },
+  hideInPrint: {
+    "@media print": {
+      display: "none !important",
+      margin: 0,
+    }
+  },
   logo: {
     display: 'block',
     backgroundImage: `url(${Logo})`,
@@ -60,16 +66,15 @@ const Head = ({ classAdd, intro, alternativeHeadline }) => {
   const classes = useStyles();
   classAdd = classAdd ? classAdd : '';
 
-
   return (
     <Box className={`${classes.card}  ${classAdd} ${!intro && classes.bottomMargin}`}>
 
       <NavLink to='/' className={classes.pageHeader} >
 
         { /*Negelcted Tropical Diseases*/}
-        <Typography variant="h6" component="span" className={`${classes.headline}`} >{t(alternativeHeadline ? 'NegelctedTropicalDiseases' : 'NTDModellingConsortium')}</Typography>
+        <Typography variant="h6" component="span" className={`${classes.headline} ${classes.hideInPrint}`} >{t(alternativeHeadline ? 'NegelctedTropicalDiseases' : 'NTDModellingConsortium')}</Typography>
         <Typography variant="h1" component="h2">{t('appTitle')}</Typography>
-        <Typography variant="h6" component="span" className={`${classes.headline}`} >{t('Africa')} <span className={classes.beta}>{t('beta')} {process.env.REACT_APP_VERSION}</span></Typography>
+        <Typography variant="h6" component="span" className={`${classes.headline} ${classes.hideInPrint}`} >{t('Africa')} <span className={classes.beta}>{t('beta')} {process.env.REACT_APP_VERSION}</span></Typography>
         {intro &&
           <Grid item md={6} xs={12} className={classes.head}>
             <Typography paragraph variant="body1" component="p">{intro}</Typography>

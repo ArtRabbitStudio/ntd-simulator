@@ -87,6 +87,11 @@ const theme = createMuiTheme({
       main: "#FF4C73",
     },
   },
+  hideInPrint: {
+    "@media print": {
+      display: "none"
+    }
+  },
   typography: {
     fontSize: 18,
     fontWeight: 400,
@@ -101,6 +106,9 @@ const theme = createMuiTheme({
       fontFamily: "DINNextLTPro, sans-serif",
       fontWeight: "normal",
       fontSize: "2.75rem",
+      "@media print": {
+        fontSize: "1.75rem",
+      }
     },
     h2: {
       fontFamily: "DINNextLTPro, sans-serif",
@@ -168,16 +176,37 @@ const theme = createMuiTheme({
       root: {
         //backgroundColor: "#fff",
       },
+      notchedOutline: {
+        "@media print": {
+            padding:0,
+            border: "none",
+        }
+      }
+      
+
     },
     MuiSelect: {
       outlined: {
         backgroundColor: "#fff",
         "&.MuiSelect-outlined": {
           paddingRight: 42,
+          "@media print": {
+            padding:0,
+            border: "none",
+  
+          }
         },
+        "@media print": {
+          padding:0,
+          border: "none",
+
+        }
       },
       icon: {
         top: "calc(50% - 16px)",
+        "@media print": {
+          display: "none"
+        }
       },
     },
 
