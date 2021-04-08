@@ -24,7 +24,7 @@ import MdaRounds from 'pages/components/simulator/MdaRounds'
 import DiseaseModels from 'pages/components/simulator/models/DiseaseModels';
 import ConfirmationDialog from "pages/components/ConfirmationDialog";
 import { useTranslation } from 'react-i18next';
-
+import { calculateTime,downloadFile } from 'utils'
 import AppConstants from 'AppConstants';
 
 // settings
@@ -111,17 +111,13 @@ const ScenarioDisplay = (props) => {
   );
 
 
-
   window.onbeforeprint = function () {
     //do before-printing stuff
-    console.log('before print setting is Printing to true');
     setIsPrinting(true)
   }
   
-
   window.onafterprint = function () {
   //do before-printing stuff
-    console.log('after print');
     setIsPrinting(false)
   }
 
@@ -152,7 +148,42 @@ const ScenarioDisplay = (props) => {
               aria-label="DOWNLOAD SCENARIO"
               disabled={props.simInProgress || props.scenarioKeys.length === 0}
               className={classes.downloadIcon}
-              onClick={() => alert('todo')}
+              onClick={() => {
+                // which scenario is active?
+                const formatCSV = (run,runValue,index)=>{
+                  let returnValue = null
+                    if ( index === 0 ) {
+                      // make top column
+                      const time = run.ts.map((value,index)=>{
+                        return calculateTime(value,t,true)
+                      })
+                      returnValue = `Run,${time.join(',')}`
+                      returnValue = `${returnValue}\n${index},${runValue.join(',')}`
+                    } else {
+                      returnValue = `${index},${runValue.join(',')}`
+                    }
+
+                    return returnValue
+                }
+                let csvContent = ''
+                if ( disease === AppConstants.DISEASE_LIMF ) {
+                  csvContent = scenarioState.scenarioData[scenarioData.id].results.map((run,index)=>{
+                    return formatCSV(run,run[graphMetric],index)
+                  })
+                } else if ( disease === AppConstants.DISEASE_TRACHOMA ) {
+                  //TODO: check this, the results seem strange I get years from 30 to 80???
+                  csvContent = scenarioState.scenarioData[scenarioData.id].results.map((run,index)=>{
+                    return formatCSV(run,run.p,index)
+                  })
+                } else {
+                  // ok different scenario for LF
+                  csvContent = scenarioState.scenarioData[scenarioData.id].results[graphMetric].map((run,index)=>{
+                    return formatCSV(run,run.p,index)
+                  })
+                }
+                downloadFile(csvContent.join('\n'),`${scenarioState.scenarioData[scenarioData.id].label}.csv`,'text/csv;encoding:utf-8')
+                // convert this to a csv and then do file download
+              }}
             >
               &nbsp;
               </Fab>
@@ -168,7 +199,6 @@ const ScenarioDisplay = (props) => {
                   setPreparePrinting(true)
                 },200)
                 
-                console.log('print clicked');
               }}
             >
               &nbsp;

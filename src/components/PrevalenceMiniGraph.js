@@ -1,8 +1,10 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { map, max, filter } from 'lodash'
 import { scaleLinear, line } from 'd3'
 import AutoSizer from 'react-virtualized-auto-sizer'
 import { DISEASE_CONFIG } from 'AppConstants';
+import ScenarioGraphInfoBubble from 'pages/components/simulator/ScenarioGraphInfoBubble'
+import { useTranslation } from "react-i18next";
 
 function Path({ data, x, y, color, start }) {
   const coords = data.map((d,index) => [x(start+index), y(d)])
@@ -16,7 +18,17 @@ function PrevalenceMiniGraph({
   height = 150,
   disease = 'lf'
 }) {
+  const { t } = useTranslation();
+
+  const [uncertaintyInfo, setUncertaintyInfo] = useState(false)
+  const handleUncertaintyHover = () => {
+    setUncertaintyInfo(true)
+  }
+  const handleUncertaintyLeave = () => {
+    setUncertaintyInfo(false)
+  }
   if ( data === undefined ) return null
+
   const lPad = 30
   const rPad = 10
   const tPad = 0
@@ -30,7 +42,26 @@ function PrevalenceMiniGraph({
     x = x === null ? 0 : x
     return x
   })
-  const domain = max(map(cleanedPrevalence))*1.2
+  let domainRange = cleanedPrevalence
+  let cleanedLower = null
+  let cleanedUpper = null
+  let upperPoints = null
+  let lowerPoints = null
+  if ( data.lower ) {
+    cleanedUpper = map(data.upper,(x)=>{
+      x = x === null ? 0 : x*100
+      return x
+    })
+    cleanedLower = map(data.lower,(x)=>{
+      x = x === null ? 0 : x*100
+      return x
+    })
+    domainRange = domainRange.concat(cleanedUpper).concat(cleanedLower)
+  }
+
+
+
+  const domain = max(map(domainRange))*1.05
   const xScale = scaleLinear()
   .domain([start, end])
   .range([0, width - (rPad + lPad)])
@@ -46,7 +77,25 @@ function PrevalenceMiniGraph({
       return ( (2000 + index) >= start && (2000+index) <= end )
   })
 
-  
+  if ( data.lower && cleanedUpper && cleanedLower ) {
+    const seriesObjUpper = filter(cleanedUpper,(value,index)=>{
+      return ( (2000 + index) >= start && (2000+index) <= end )
+    })
+    upperPoints = seriesObjUpper.map((value,index)=>{
+      return `${xScale(start+index)},${yScale(value)} `
+    })
+    const seriesObjLower = filter(cleanedLower,(value,index)=>{
+      return ( (2000 + index) >= start && (2000+index) <= end )
+    })
+
+
+    lowerPoints = seriesObjLower.map((value,index)=>{
+      return `${xScale(start+index)},${yScale(value)} `
+    })
+    lowerPoints.reverse()
+  }
+  const bgColor = '#959FA6'
+
   return (
     <svg
       width={svgWidth}
@@ -136,9 +185,17 @@ function PrevalenceMiniGraph({
             </g>
           )
         })}
-
+        {data.lower && <polygon points={upperPoints + ' ' + lowerPoints} fill={bgColor} opacity={.15} onMouseEnter={handleUncertaintyHover} onMouseLeave={handleUncertaintyLeave} />}
         <Path key={`main`} data={seriesObj} x={xScale} y={yScale} color={'#D86422'} start={start} />
-
+        {(uncertaintyInfo) &&
+            <ScenarioGraphInfoBubble
+              coord={[ ((width-lPad-rPad) / 2), 20 ]}
+              color={'#E1E4E6'}
+              textColor={'#252525'}
+              smallText={true}
+              legendColor={'#E1E4E6'}
+              bubbleText={t('ModelUncertainty')}
+            />}
       </g>
     </svg>
   )

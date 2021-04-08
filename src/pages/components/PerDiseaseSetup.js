@@ -12,8 +12,18 @@ import useStyles from 'theme/Setup';
 import { SettingSpecificScenario } from 'pages/components/simulator/settings';
 import { loadAllIUhistoricData } from 'pages/components/simulator/helpers/iuLoader';
 import SessionStorage from 'pages/components/simulator/helpers/sessionStorage';
-import { DISEASE_LIMF } from 'AppConstants';
 import { useTranslation } from 'react-i18next';
+import MdaRoundBar from 'pages/components/simulator/MdaRoundBar'
+import { calculateTime } from 'utils'
+import {
+  DISEASE_CONFIG,
+  DISEASE_LIMF,
+  DISEASE_TRACHOMA,
+  DISEASE_STH_ROUNDWORM,
+  DISEASE_STH_WHIPWORM,
+  DISEASE_STH_HOOKWORM,
+  DISEASE_SCH_MANSONI
+} from 'AppConstants';
 
 const PerDiseaseSetup = (props) => {
   const [isLoading, setIsLoading] = useState(false)
@@ -27,7 +37,6 @@ const PerDiseaseSetup = (props) => {
 
   const doWeHaveData = simState.IUData.id === implementationUnit
   const loadData = async () => {
-    console.log('loadiing historical data in PerDisease setup')
     await loadAllIUhistoricData(
       simState,
       dispatchSimState,
@@ -49,7 +58,7 @@ const PerDiseaseSetup = (props) => {
 
   useEffect(
     () => {
-      console.log( `PerDiseaseSetup rendered for ${country}, ${implementationUnit}, ${disease}` );
+      //console.log( `PerDiseaseSetup rendered for ${country}, ${implementationUnit}, ${disease}` );
     },
     [ country, implementationUnit, disease]
   );
@@ -112,7 +121,24 @@ const PerDiseaseSetup = (props) => {
       }
     })
   }
+  const outputTitle = (time, coverage, adherence, bednets, regimen, active, coverageInfants, coveragePreSAC, coverageSAC, coverageAdults) => {
+    if (!active || (coverage === 0 && coverageInfants === 0 && coveragePreSAC === 0 && coverageSAC === 0 && coverageAdults === 0)) {
+      return `${calculateTime(time,t)}: ${t('noIntervention')}`
+    } else {
+      switch (disease) {
+        case DISEASE_STH_ROUNDWORM:
+        case DISEASE_STH_WHIPWORM:
+        case DISEASE_STH_HOOKWORM:
+        case DISEASE_SCH_MANSONI:
+          return `${calculateTime(time,t)}: ${t('coverage')} ${coverageInfants}% - ${coveragePreSAC}% - ${coverageSAC}% - ${coverageAdults}%`
+        default:
+          return `${calculateTime(time,t)}: ${t('coverage')} ${coverage}%`
+      }
 
+    }
+
+  }
+  
   const submitSetup = (event) => {
     dispatchSimState({
       type: 'specificPrediction',
@@ -146,8 +172,7 @@ const PerDiseaseSetup = (props) => {
               component="h6"
               className={`${classes.headline} ${classes.withHelp}`}
             >
-              {t('estimatedPrevalence')} (
-              {selectedIUData[0] && selectedIUData[0].endemicity})
+              {t('estimatedPrevalence')}
             </Typography>
           </Tooltip>
             <PrevalenceMiniGraph data={selectedIUData[0]} disease={props.disease} />
@@ -171,24 +196,11 @@ const PerDiseaseSetup = (props) => {
                   <div
                     key={`bar-setup-${i}`}
                     className={`bar setup c${mdaObjTimeFiltered.coverage[i]}`}
-                    title={
-                      mdaObjTimeFiltered.time[i] +
-                      ', ' +
-                      mdaObjTimeFiltered.coverage[i] +
-                      ', ' +
-                      mdaObjTimeFiltered.adherence[i] +
-                      ', ' +
-                      mdaObjTimeFiltered.bednets[i] +
-                      ', ' +
-                      mdaObjTimeFiltered.regimen[i] +
-                      ' '
-                    }
+
+                    title={mdaObjTimeFiltered.coverage[i] ? outputTitle(mdaObjTimeFiltered.time[i], mdaObjTimeFiltered.coverage[i], mdaObjTimeFiltered.adherence[i], mdaObjTimeFiltered.bednets[i], mdaObjTimeFiltered.regimen[i], true, 0, 0, 0, 0) : outputTitle(mdaObjTimeFiltered.time[i])}
+
                   >
-                    <span
-                      style={{
-                        height: mdaObjTimeFiltered.coverage[i],
-                      }}
-                    ></span>
+                    <MdaRoundBar ident={'h' + i} history={false} setup={true} height={mdaObjTimeFiltered.coverage[i]} />
                   </div>
                 ))}
             </div>

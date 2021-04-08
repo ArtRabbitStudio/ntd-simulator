@@ -165,7 +165,7 @@ export const loadMdaHistoryFromCloudStorage = async ( implementationUnit, countr
   // construct path
   const preFix = disease === DISEASE_SCH_MANSONI ? 'SCH' :  'STH'
   const mdaHistoryPath = `${CLOUD_INFO.cloud_storage_path_root}/diseases/${disease}/source-data/${country}/${IUid}/${preFix}_MDA_${IUid}.csv`
-  console.log('loading mda history from',mdaHistoryPath)
+  //console.log('loading mda history from',mdaHistoryPath)
   let mdaLoaded = true
   const mdaResponse = await fetch(mdaHistoryPath).then((response)=>{
     if ( response.status >= 400 && response.status < 600 ) {

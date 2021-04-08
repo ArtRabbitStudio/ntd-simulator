@@ -11,7 +11,6 @@ const convertDateIndex = ( key ) => {
 };
 
 const combineData = ( historicalData, futureData ) => {
-
   const combined = historicalData.map( ( item, i ) => {
     if( item[ 'Random Generator' ] === futureData[ i ][ 'Random Generator' ]) {
       // merging two objects

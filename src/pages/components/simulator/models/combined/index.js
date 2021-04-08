@@ -11,7 +11,7 @@ const convertMMYYYY = ( k ) => {
   const m = parseInt( MM );
   const y = parseInt( YYYY ) - 2000;
   // TODO should this be fixed 2 decimals?
-  return parseFloat( y + ( m / 12 ).toFixed( 2 ) );
+  return parseFloat( y + ( m / 12 ) ).toFixed( 2 );
 };
 
 // convert "prevKKSAC year 18.17" to 18.17
@@ -26,7 +26,6 @@ const convertDateIndex = ( key ) => {
 const randomGeneratorKey = "Random Generator";
 
 const combineData = ( historicalData, futureData ) => {
-
   const combined = futureData.map(
     ( item, i ) => {
 
@@ -399,7 +398,6 @@ export default {
      * Trachoma only has historical and future data
      */
     const trachomaPromiseHandler = ( [ historicalData, historicalSummary, futureData, futureSummary ] ) => {
-
       const combinedData = combineData( historicalData, futureData );
       const combinedSummary = combineSummaries( historicalSummary, futureSummary );
 

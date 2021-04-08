@@ -103,8 +103,6 @@ const defaultScales = {
 // calculates min/max values for prevalence and performance
 function generateStats(data,disease) {
 
-  console.log('data',data)
-
   let prevExtent = []
   switch ( disease ) {
     case DISEASE_LIMF:

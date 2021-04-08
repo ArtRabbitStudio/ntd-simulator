@@ -93,67 +93,43 @@ tspan {
     stop-color: #008dc9;
   }
   .stop-color-100 {
-    stop-color: #fff;
+    stop-color: #90CDE7;
   }
 
+
   .bar {
-    //background: #b09aff;
     position: absolute;
     z-index: 9;
     height: 110px;
     min-width: 1px;
     border: 1px solid white;
     cursor: pointer;
-
+    &.setup {
+      position: relative;
+      border: none;
+      margin-right: 15px;
+      cursor: help;
+    }
     &.history {
       .stop-color-0 {
-        stop-color: #dce1e3;
+        stop-color: #CFD9DD;
+      }
+      .stop-color-100 {
+        stop-color: #EFF0F1;
       }
     }
 
-    /*
-    background-image: linear-gradient(
-      to bottom,
-      rgba(204, 232, 244, 1) 1%,
-      transparent
-    );
-    &:before {
-      content: '';
-      display: block;
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: url(./images/mask.png) no-repeat 0px 0px;
-      background-repeat: no-repeat;
-    }
-    &.setup {
-      border: 1px solid #cce8f4;
-      cursor: auto;
-      position: relative;
-      margin-right: 15px;
-      background-image: linear-gradient(
-        to bottom,
-        rgba(146, 205, 230, 0.4) 1%,
-        #cce8f4
-      );
-    }
-    &.setup.c0 {
-      background-image: linear-gradient(to bottom, #ffffff, transparent);
-    }
-    &.setup:before {
-      background: url(./images/mask-blue.png) no-repeat 0px 0px;
-      background-repeat: no-repeat;
-    }
-    */
+  
     &.current {
       z-index: 10;
     }
     &.removed {
       > span {
         .stop-color-0 {
-          stop-color: rgba(204, 232, 244, 1);
+          stop-color: #EFF0F1;
+        }
+        .stop-color-100 {
+          stop-color: #EFF0F1;
         }
       }
     }

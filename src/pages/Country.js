@@ -1,11 +1,12 @@
 import React, { useState } from 'react'
 import { observer } from 'mobx-react'
-import Typography from '@material-ui/core/Typography';
+import { Typography, Tooltip } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles'
 import SimpleDialog from 'pages/components/SimpleDialog'
 import { useDataAPI, useUIState } from 'hooks/stateHooks'
 import Map from 'components/Map'
 import { useTranslation } from "react-i18next";
+import InfoIcon from "images/info-24-px.svg";
 
 import { DISEASE_CONFIG } from 'AppConstants';
 
@@ -38,7 +39,19 @@ const useStyles = makeStyles(theme => ({
     legend: {
         marginTop: theme.spacing(2),
         color: theme.palette.text.secondary,
-    }
+    },
+    withHelp: {
+        cursor: "help",
+        backgroundImage: `url(${InfoIcon})`,
+        backgroundPosition: "right center",
+        backgroundSize: "auto",
+        backgroundRepeat: "no-repeat",
+        width: "fit-content",
+        paddingRight: 30,
+        padding: theme.spacing(1, 0),
+        paddingBottom:0,
+        marginBottom:0
+      },
 }))
 
 
@@ -109,7 +122,12 @@ const Country = props => {
                         }}
                     />
                 </div>
-                <Typography component="h6" variant="h6" className={classes.legend}>{legend}</Typography>
+                <Tooltip
+                    title={t('inferredPrevalence')}
+                    aria-label="info"
+                    >
+                    <Typography component="h6" variant="h6" className={`${classes.legend} ${classes.withHelp}`}>{legend}</Typography>
+                </Tooltip>
             </section>
             
             {notAvailableAlert &&

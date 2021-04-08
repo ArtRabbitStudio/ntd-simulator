@@ -24,7 +24,7 @@ window.ntd = {
 const { dataAPI, uiState } = new RootStore()
 
 ReactDOM.render(
-    <React.StrictMode>
+    
         <Suspense fallback={<div>Loading ……</div>}>
             <Provider dataAPI={dataAPI} uiState={uiState}>
                 <Router>
@@ -32,9 +32,11 @@ ReactDOM.render(
                 </Router>
             </Provider>
         </Suspense>
-    </React.StrictMode>,
+    ,
     document.getElementById('root')
 )
+
+// <React.StrictMode> readd if testing strict mode
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

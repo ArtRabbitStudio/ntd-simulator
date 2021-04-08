@@ -7,6 +7,7 @@ import CloseButton from 'pages/components/CloseButton'
 import AutoSizer from 'react-virtualized-auto-sizer'
 import MdaRoundsSlider from 'pages/components/simulator/MdaRoundsSlider'
 import MdaRoundBar from 'pages/components/simulator/MdaRoundBar'
+import { calculateTime } from 'utils'
 
 import { useTranslation } from 'react-i18next';
 //setting
@@ -86,27 +87,18 @@ const MdaRounds = (props) => {
 
   const outputTitle = (time, coverage, adherence, bednets, regimen, active, coverageInfants, coveragePreSAC, coverageSAC, coverageAdults) => {
     if (!active || (coverage === 0 && coverageInfants === 0 && coveragePreSAC === 0 && coverageSAC === 0 && coverageAdults === 0)) {
-      return `${calculateTime(time)}: ${t('noIntervention')}`
+      return `${calculateTime(time,t)}: ${t('noIntervention')}`
     } else {
       switch (disease) {
         case DISEASE_STH_ROUNDWORM:
         case DISEASE_STH_WHIPWORM:
         case DISEASE_STH_HOOKWORM:
         case DISEASE_SCH_MANSONI:
-          return `${calculateTime(time)}: ${t('coverage')} ${coverageInfants}% - ${coveragePreSAC}% - ${coverageSAC}% - ${coverageAdults}%`
+          return `${calculateTime(time,t)}: ${t('coverage')} ${coverageInfants}% - ${coveragePreSAC}% - ${coverageSAC}% - ${coverageAdults}%`
         default:
-          return `${calculateTime(time)}: ${t('coverage')} ${coverage}%`
+          return `${calculateTime(time,t)}: ${t('coverage')} ${coverage}%`
       }
 
-    }
-
-  }
-  const calculateTime = (months) => {
-    const year = (2000 + (months) / 12)
-    if (year % 1 === 0) {
-      return year
-    } else {
-      return Math.floor(year) + ' - ' + t('round2');
     }
 
   }

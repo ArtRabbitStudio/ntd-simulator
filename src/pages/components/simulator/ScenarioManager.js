@@ -502,7 +502,7 @@ const ScenarioManager = (props) => {
             open={confirmationOpen}
           />
 
-          {(simInProgress) && STH && (
+          {(simInProgress) && ( STH || disease === AppConstants.DISEASE_TRACHOMA ) && (
 
             <div className={classes.progress}>
               <CircularProgress
@@ -517,7 +517,7 @@ const ScenarioManager = (props) => {
 
             </div>
           )}
-          {(simulationProgress !== 0 && simulationProgress !== 100) && (disease === AppConstants.DISEASE_LIMF || disease === AppConstants.DISEASE_TRACHOMA) && (
+          {(simulationProgress !== 0 && simulationProgress !== 100) && (disease === AppConstants.DISEASE_LIMF ) && (
 
             <div className={classes.progress}>
               <CircularProgress

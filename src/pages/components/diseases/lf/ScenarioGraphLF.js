@@ -276,6 +276,7 @@ function ScenarioGraphLF({
       >
         <g transform={`translate(${lPad},${yPad})`}>
           <ScenarioGraphGrid ticksX={ticksX} ticksY={ticksY} x={x} y={y} zeroYear={2000} startYear={startYear} futureYear={futureYear} svgHeight={svgHeight} height={height} tPad={tPad} yPad={yPad} lPad={lPad} rPad={rPad} width={width} />
+          
           {graphTypeSimple && data.results &&
             <g key={`results1-stats`}>{renderRange(data.stats[metrics + 'Min'], data.stats[metrics + 'Max'], data.stats['ts'], false, x, y)}</g>
           }

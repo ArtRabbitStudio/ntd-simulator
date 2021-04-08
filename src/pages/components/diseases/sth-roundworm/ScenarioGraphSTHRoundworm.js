@@ -43,15 +43,14 @@ function ScenarioGraphSTHRoundworm({
   const yPad = 32 + 20
   const svgHeight = height + yPad * 2
   const svgWidth = width
-
-
   const dataSelection = data.results
-
 
   const isStartYear = (element) => element >= startYear;
   const isPrediction = (element) => element >= futureYear;
   const IndexToStartForOutput = (flatten(map(dataSelection[metrics], 'ts')).findIndex(isStartYear))
   const IndexForPrediction = (flatten(map(dataSelection[metrics], 'ts')).findIndex(isPrediction))
+
+  
   const domainX = [startYear, max(flatten(map(dataSelection[metrics], 'ts')))]
 
   let dataToOutput = [];
@@ -63,7 +62,7 @@ function ScenarioGraphSTHRoundworm({
   })
 
 
-  const domainY = [0, max(flatten(map(dataSelection[metrics], 'p')))]
+  const domainY = !graphTypeSimple ? [0, max(flatten(map(dataSelection[metrics], 'p')))] : [0, max(flatten(map(data.summary[metrics])))]
 
 
   const handleEnter = (id) => {
@@ -292,7 +291,13 @@ function ScenarioGraphSTHRoundworm({
             data.results[metrics].map((result, i) => (
               <g key={`results1-${i}`}>{renderResult(result, false, x, y)}</g>
             ))}
-          {(disease === AppConstants.DISEASE_SCH_MANSONI && domainY[1] > 10) &&
+          
+          {data.summary &&
+            [data.summary[metrics]].map((result, i) => (
+              <g key={`results-${i}`}>{renderResult(result, true, x, y)}</g>
+            ))}
+
+            {(disease === AppConstants.DISEASE_SCH_MANSONI && domainY[1] > 10) &&
             <ScenarioGraphInfoLine
               legend={t('Moderate')}
               line={[0, width - lPad - rPad, y(10), y(10)]}
@@ -328,12 +333,6 @@ function ScenarioGraphSTHRoundworm({
             legendColor={'#252525'}
             otherActive={activeInfo}
           />
-          {data.summary &&
-            [data.summary[metrics]].map((result, i) => (
-              <g key={`results-${i}`}>{renderResult(result, true, x, y)}</g>
-            ))}
-
-
           {(uncertaintyInfo && activeInfo === null) &&
             <ScenarioGraphInfoBubble
               coord={[(width - lPad - rPad) / 2, y(domainY[1])]}

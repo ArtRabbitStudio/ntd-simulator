@@ -62,3 +62,44 @@ export const abbrNum = (number, decPlaces) => {
 
   return number
 }
+
+export const calculateTime = (months,t, showMonths = false) => {
+  
+  if ( showMonths ) {
+    // calculate based on years
+    const timeValue = (2000+months)
+    const monthValue = timeValue - Math.floor(timeValue)
+    return `${Math.floor(timeValue)}/${t(`month-${Math.round(12*monthValue+1)}`)}`
+  }
+  const year = (2000 + (months) / 12)
+  //console.log(year % 1)
+  if (year % 1 === 0) {
+    return year
+  } else {
+    return Math.floor(year) + ' - ' + t('round2');
+  }
+
+} 
+
+//download(csvContent, 'dowload.csv', 'text/csv;encoding:utf-8');
+
+export const downloadFile = ( content, fileName, mimeType ) => {
+  let a = document.createElement('a');
+  mimeType = mimeType || 'application/octet-stream';
+
+  if (navigator.msSaveBlob) { // IE10
+    navigator.msSaveBlob(new Blob([content], {
+      type: mimeType
+    }), fileName);
+  } else if (URL && 'download' in a) { //html5 A[download]
+    a.href = URL.createObjectURL(new Blob([content], {
+      type: mimeType
+    }));
+    a.setAttribute('download', fileName);
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  } else {
+    document.location.href = 'data:application/octet-stream,' + encodeURIComponent(content); // only this mime type is supported
+  }
+}
