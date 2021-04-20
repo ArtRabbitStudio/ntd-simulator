@@ -163,7 +163,7 @@ function Map({
               filter={['has', colorProp]}
               type="fill"
               paint={{
-                'fill-color': iuFeatures ? '#CCE8F4' : '#FAEAE1',
+                'fill-color': iuFeatures ? '#F9F9F9' : '#FAEAE1',
               }}
             />
             <Layer

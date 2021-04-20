@@ -4,6 +4,7 @@ import { Provider } from 'mobx-react'
 // TODO work out what the hell's going on with this
 import 'mobx-react-lite/batchingForReactDom'
 import { BrowserRouter as Router } from 'react-router-dom'
+import LoadingElement from './components/LoadingElement'
 import RootStore from './store/rootStore'
 import App from './App'
 import './index.css'
@@ -25,7 +26,7 @@ const { dataAPI, uiState } = new RootStore()
 
 ReactDOM.render(
     
-        <Suspense fallback={<div>Loading ……</div>}>
+        <Suspense fallback={<LoadingElement />}>
             <Provider dataAPI={dataAPI} uiState={uiState}>
                 <Router>
                     <App />

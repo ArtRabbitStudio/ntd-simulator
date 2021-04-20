@@ -35,7 +35,7 @@ function ScenarioGraphTrachoma({
 
   metrics = ['p']
 
-  const startYear = 17
+  const startYear = 15
   const futureYear = 20
   const lPad = 50
   const rPad = 32

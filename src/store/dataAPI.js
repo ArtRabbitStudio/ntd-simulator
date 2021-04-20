@@ -112,7 +112,6 @@ function generateStats(data,disease) {
           const pValues = values(prevalence);
           //return [min(pValues), max(pValues)];
           // just the last year, no range
-          console.log(pValues[19])
           return [pValues[19], pValues[19]];
         })
       )(data);

@@ -34,13 +34,12 @@ const DISEASE_CONFIG = {
     historicStartYear: 2017,
     historicEndYear: 2019,
     interventionStartYear: 2020,
-    startYear: 2017,
+    startYear: 2015,
     endYear: 2031,
     defaultMetric: 'Ms',
     numberOfYears: 11 * 2,
     startMonth: 240,
     offsetBarWidthDivider: 1,
-
   },
 
   [DISEASE_STH_ROUNDWORM]: {

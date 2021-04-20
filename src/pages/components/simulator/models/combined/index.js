@@ -1,13 +1,19 @@
 import { v4 as uuidv4 } from 'uuid';
 import { generateMdaFutureFromScenarioSettings } from 'pages/components/simulator/helpers/iuLoader';
 import { csv } from 'd3';
-import { DISEASE_STH_ROUNDWORM, DISEASE_STH_WHIPWORM, DISEASE_STH_HOOKWORM, DISEASE_SCH_MANSONI, DISEASE_TRACHOMA, CLOUD_INFO } from 'AppConstants';
+import { DISEASE_STH_ROUNDWORM, DISEASE_STH_WHIPWORM, DISEASE_STH_HOOKWORM, DISEASE_SCH_MANSONI, DISEASE_TRACHOMA, CLOUD_INFO,DISEASE_CONFIG } from 'AppConstants';
 import sha256 from 'fast-sha256';
 import nacl from 'tweetnacl-util'
 
 // convert '02-2020' to 20.16666666666666666
-const convertMMYYYY = ( k ) => {
+const convertMMYYYY = ( k, isTrachoma ) => {
   const [ MM, YYYY ] = k.split( '-' );
+  if ( YYYY < 2001 ) {
+    return false
+  }
+  if ( isTrachoma === DISEASE_TRACHOMA && YYYY < DISEASE_CONFIG[DISEASE_TRACHOMA].startYear ) {
+    return false
+  }
   const m = parseInt( MM );
   const y = parseInt( YYYY ) - 2000;
   // TODO should this be fixed 2 decimals?
@@ -19,13 +25,13 @@ const convertSAC = ( k ) => {
   return parseFloat( k.substring( 15 ) );
 };
 
-const convertDateIndex = ( key ) => {
-  return key.length === 7 ? convertMMYYYY( key ) : convertSAC( key );
+const convertDateIndex = ( key, isTrachoma ) => {
+  return key.length === 7 ? convertMMYYYY( key,isTrachoma ) : convertSAC( key );
 };
 
 const randomGeneratorKey = "Random Generator";
 
-const combineData = ( historicalData, futureData ) => {
+const combineData = ( historicalData, futureData, isTrachoma ) => {
   const combined = futureData.map(
     ( item, i ) => {
 
@@ -61,7 +67,8 @@ const combineData = ( historicalData, futureData ) => {
         ( acc, key ) => {
 
           // append it to the array of timestamps
-          const ts = convertDateIndex( key );
+          const ts = convertDateIndex( key, isTrachoma );
+          if ( ts === false ) return acc;
           acc.ts.push( ts );
 
           // append the prevalence value to the array of prevalences
@@ -82,9 +89,9 @@ const combineData = ( historicalData, futureData ) => {
   );
 };
 
-const combineSummaries = ( historicalSummary, futureSummary ) => {
-  const history = convertSummary( historicalSummary );
-  const future = convertSummary( futureSummary );
+const combineSummaries = ( historicalSummary, futureSummary, isTrachoma ) => {
+  const history = convertSummary( historicalSummary, isTrachoma );
+  const future = convertSummary( futureSummary,isTrachoma );
 
   return {
     ts: history.ts.concat( future.ts ),
@@ -113,15 +120,15 @@ const combineSummaries = ( historicalSummary, futureSummary ) => {
  *
  */
 
-const convertSummary = ( s ) => {
+const convertSummary = ( s, isTrachoma ) => {
   return Object.keys( s.median ).reduce(
 
     ( acc, k ) => {
       // don't include the k column
       if ( k === 'k' ) return acc;
 
-      const ts = convertDateIndex( k );
-
+      const ts = convertDateIndex( k, isTrachoma );
+      if ( ts === false ) return acc;
       acc.ts.push( ts );
       // convert decimal to actual percentage * 100
       acc.median.push( s.median[ k ]*100 );
@@ -169,9 +176,16 @@ export default {
   },
 
   initScenario: function( newScenarioData, mdaObj ) {
-    const startYear = 15 *12
-    const endYear = 17 * 12
-    let mda2015 = {time:[180,192,204]}
+    const startYear = (DISEASE_CONFIG[this.modelDiseaseType].startYear - 2000) *12
+    const endYear = (DISEASE_CONFIG[this.modelDiseaseType].historicEndYear-1 - 2000) * 12
+    const timeStamps = [180,192,204,216,228,240]
+    const mdaSetupTime = timeStamps.filter((ts,index)=>{
+      if ( ts <  DISEASE_CONFIG[this.modelDiseaseType].startMonth ) {
+        return true
+      }
+      return false
+    })
+    let mda2015 = {time:mdaSetupTime}
 
     if ( mdaObj ) {
       mda2015 = {
@@ -398,8 +412,8 @@ export default {
      * Trachoma only has historical and future data
      */
     const trachomaPromiseHandler = ( [ historicalData, historicalSummary, futureData, futureSummary ] ) => {
-      const combinedData = combineData( historicalData, futureData );
-      const combinedSummary = combineSummaries( historicalSummary, futureSummary );
+      const combinedData = combineData( historicalData, futureData, DISEASE_TRACHOMA );
+      const combinedSummary = combineSummaries( historicalSummary, futureSummary, DISEASE_TRACHOMA );
 
       const result = {
         ...scenarioData,
@@ -424,10 +438,10 @@ export default {
       ]
     ) => {
 
-      const combinedDataKK = combineData( historicalKKSACData, futureKKSACData );
-      const combinedSummaryKK = combineSummaries( historicalKKSACSummary, futureKKSACSummary );
-      const combinedDataMHI = combineData( historicalMHISACData, futureMHISACData );
-      const combinedSummaryMHI = combineSummaries( historicalMHISACSummary, futureMHISACSummary );
+      const combinedDataKK = combineData( historicalKKSACData, futureKKSACData, null );
+      const combinedSummaryKK = combineSummaries( historicalKKSACSummary, futureKKSACSummary,null );
+      const combinedDataMHI = combineData( historicalMHISACData, futureMHISACData, null );
+      const combinedSummaryMHI = combineSummaries( historicalMHISACSummary, futureMHISACSummary, null );
 
       const result = {
         ...scenarioData,

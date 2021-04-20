@@ -5,7 +5,7 @@ import { DISEASE_TRACHOMA, CLOUD_INFO } from 'AppConstants';
 
 // convert '02-2020' to 20.16666666666666666
 const convertDateIndex = ( key ) => {
-  const [ month, year ] = key.split('-' );
+  const [ month, year ] = key.split('-' );  
   const ts = ( parseInt( year ) - 2000 ) + ( parseInt( month ) / 12 );
   return ts;
 };
