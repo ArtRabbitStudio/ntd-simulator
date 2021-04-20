@@ -31,7 +31,7 @@ const DISEASE_CONFIG = {
   },
 
   [DISEASE_TRACHOMA]: {
-    historicStartYear: 2017,
+    historicStartYear: 2010,
     historicEndYear: 2019,
     interventionStartYear: 2020,
     startYear: 2015,
