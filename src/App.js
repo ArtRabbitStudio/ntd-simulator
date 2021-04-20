@@ -1,18 +1,10 @@
-import React from "react";
+import React, {Suspense,lazy} from "react";
 import { Switch, Route } from "react-router-dom";
 import useSyncRouteState from "./hooks/useSyncRouteState";
+import LoadingElement from './components/LoadingElement'
 
 import ScrollToTop from "./pages/components/ScrollToTop";
-import Home from "./pages/Home";
-import Page from "./pages/Page";
-import Simulator from "./pages/Simulator";
-import Disease from "./pages/Disease";
 
-
-import About from "./pages/content/About";
-import AboutNTDConsortium from "./pages/content/AboutNTDConsortium";
-import PrivacyCookies from "./pages/content/PrivacyCookies";
-import HelpUsImprove from "./pages/content/HelpUsImprove";
 
 
 // index.js
@@ -27,6 +19,16 @@ import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 
 // root element styles
 import "./App.scss";
+
+const Home = lazy(() => import("./pages/Home"));
+const Page = lazy(() => import("./pages/Page"));
+const Simulator = lazy(() => import("./pages/Simulator"));
+const Disease = lazy(() => import("./pages/Disease"));
+const About = lazy(() => import("./pages/content/About"));
+const AboutNTDConsortium = lazy(() => import("./pages/content/AboutNTDConsortium"));
+const PrivacyCookies = lazy(() => import("./pages/content/PrivacyCookies"));
+const HelpUsImprove = lazy(() => import("./pages/content/HelpUsImprove"));
+
 
 
 const theme = createMuiTheme({
@@ -288,22 +290,24 @@ function App() {
           <ScenarioStoreProvider>
             <SimulatorStoreProvider>
               <ScrollToTop>
-                <Switch>
-                  <Route exact path="/about" component={About} />
-                  <Route exact path="/about-ntd-modelling-consortium" component={AboutNTDConsortium} />
-                  <Route exact path="/privacy-cookies" component={PrivacyCookies} />
-                  <Route exact path="/help-us-improve" component={HelpUsImprove} />
-       
-                  <Route exact path="/" component={Home} />
+                <Suspense fallback={<LoadingElement />}>
+                  <Switch>
+                    <Route exact path="/about" component={About} />
+                    <Route exact path="/about-ntd-modelling-consortium" component={AboutNTDConsortium} />
+                    <Route exact path="/privacy-cookies" component={PrivacyCookies} />
+                    <Route exact path="/help-us-improve" component={HelpUsImprove} />
+        
+                    <Route exact path="/" component={Home} />
 
-                  <Route exact path="/disease/:disease" component={Disease} />
-                  <Route exact path="/:disease" component={Simulator} />
-                  <Route exact path="/:disease/:country" component={Simulator} />
-                  <Route exact path="/:disease/:country/:iu" component={Simulator} />
-                  <Route exact path="/:disease/:country/:iu/run" component={Simulator} />
+                    <Route exact path="/disease/:disease" component={Disease} />
+                    <Route exact path="/:disease" component={Simulator} />
+                    <Route exact path="/:disease/:country" component={Simulator} />
+                    <Route exact path="/:disease/:country/:iu" component={Simulator} />
+                    <Route exact path="/:disease/:country/:iu/run" component={Simulator} />
 
-                  <Route exact path="**" component={Page} />
-                </Switch>
+                    <Route exact path="**" component={Page} />
+                  </Switch>
+                </Suspense>
               </ScrollToTop>
             </SimulatorStoreProvider>
           </ScenarioStoreProvider>
