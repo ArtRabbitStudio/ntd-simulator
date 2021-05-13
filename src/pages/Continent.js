@@ -97,7 +97,7 @@ const Continent = props => {
     }*/
 
     const legend = t('thisMapShows')  
-    const legendSubtitle = t('mapCountries',{in:DISEASE_CONFIG[ disease ].historicEndYear,for:DISEASE_LABELS[ disease ]})
+    const legendSubtitle = t('mapCountries',{in:DISEASE_CONFIG[ disease ].historicEndYear,for:t(DISEASE_LABELS[ disease ])})
 
     return (
       <React.Fragment>

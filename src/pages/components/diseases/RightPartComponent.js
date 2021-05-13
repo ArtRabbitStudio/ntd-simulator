@@ -31,8 +31,8 @@ export default function RightPartComponent({ headline, text, buttons }) {
         </Typography>
       }
       { (buttons && buttons.length) &&
-        buttons.map(btn => (
-          <div className={classes.btn}>
+        buttons.map((btn,index) => (
+          <div key={index} className={classes.btn}>
             <ArrowButton text={btn.text} url={btn.url} />
           </div>
         ))

@@ -1,0 +1,74 @@
+  summaryHeadline: À propos des projections relatives au trachome
+  summarySubtitle: Contexte de modélisation et données utilisées
+  summaryTab1Title: Données histo-géographiques de l'AMM
+  summaryTab1Content: |
+    Les données histo-géographiques de l'AMM consistent en une micro-simulation stochastique d'individus porteurs d'une charge vermineuse, une microfilarémie (MF), ainsi que d'autres paramètres démographiques relatifs à l'âge et au risque d'exposition. Les humains sont modélisés individuellement, avec leur propre charge vermineuse mâle et femelle. La concentration de MF dans le sang périphérique est modélisée pour chaque individu de façon déterministe, et elle s'accroît en fonction du nombre de vers femelles fertiles, tout en diminuant à taux constant. La densité totale de MF dans la population contribue à la densité actuelle de larves L3 chez la population de moustiques piqueurs, où la distribution de L3, parmi la population de moustiques piqueurs, est totalement homogène. Une relation empirique est appliquée à l'absorption de MF par un moustique dans laquelle les courbes d'absorption de Culex et d'Anopheles sont mises en œuvre d'après le contexte. La dynamique du modèle se divise donc en une dynamique humaine individuelle incluant l'âge et le renouvellement ; une dynamique du ver situé à l'intérieur de l'hôte ; une dynamique des microfilaires à l'intérieur de l'hôte ; et enfin, une dynamique des larves à l'intérieur du moustique.
+  summaryTab2Title: À propos du modèle
+  summaryTab2Content: |
+    Il s'agit d'une micro-simulation stochastique d'individus porteurs d'une charge vermineuse, d'une microfilarémie (MF), ainsi que d'autres paramètres démographiques relatifs à l'âge et au risque d'exposition. Les humains sont modélisés individuellement, avec leur propre charge vermineuse mâle et femelle. La concentration de MF dans le sang périphérique est modélisée pour chaque individu de façon déterministe, et elle s'accroît en fonction du nombre de vers femelles fertiles, tout en diminuant à taux constant. La densité totale de MF dans la population contribue à la densité actuelle de larves L3 chez la population de moustiques piqueurs, où la distribution de L3, parmi la population de moustiques piqueurs, est totalement homogène. Une relation empirique est appliquée à l'absorption de MF par un moustique dans laquelle les courbes d'absorption de Culex et d'Anopheles sont mises en œuvre d'après le contexte. La dynamique du modèle se divise donc en une dynamique humaine individuelle incluant l'âge et le renouvellement ; une dynamique du ver situé à l'intérieur de l'hôte ; une dynamique des microfilaires à l'intérieur de l'hôte ; et enfin, une dynamique des larves à l'intérieur du moustique.
+  detailRightActionHeadline: Prédictions pour le trachome
+  detailRightActionIntro: Se reporter aux prédictions fondées sur la modélisation quantitative. Sélectionner un pays pour commencer.
+  detailRightActionButton: Sélectionner un pays
+  detailRightInfoHeadline: À propos du modèle
+  detailRightInfoButton1: Document de modélisation
+  detailRightInfoButton1Target: https://parasitesandvectors.biomedcentral.com/articles/10.1186/s13071-015-1152-3
+  detailContent: | 
+    ## À propos du trachome
+
+    Le trachome est la première cause de cécité d'origine infectieuse dans le monde. Il est causé par une bactérie intracellulaire obligatoire appelée Chlamydia trachomatis. L'infection est transmise par transfert direct ou indirect des écoulements oculaires et nasaux des personnes infectées, en particulier des jeunes enfants qui constituent le principal réservoir de l'infection. Des espèces particulières de mouches peuvent propager ces écoulements.
+
+    Pour plus d'informations sur le trachome, rendez-vous sur le [site Web de l'OMS](https://www.who.int/health-topics/trachoma#tab=tab_1).
+
+
+    ### Charge de morbidité
+
+    Le trachome est hyperendémique dans un grand nombre de régions parmi les plus pauvres et les plus rurales d'Afrique, d'Amérique centrale et du Sud, d'Asie, d'Australie et du Moyen-Orient. Il est responsable de cécités ou de déficiences visuelles chez environ 1,9 million de personnes et est à l'origine d'environ 1,4 % des cas de cécité dans le monde.
+
+    Globalement, l'Afrique reste le continent le plus touché et celui dans lequel les efforts de lutte sont les plus intensifs. La charge du trachome sur les personnes et communautés touchées est énorme. Le coût économique en termes de perte de productivité due à la cécité et aux déficiences visuelles est estimé entre 2,9 et 5,3 milliards de dollars US par an, et atteint les 8 milliards de dollars US si l'on inclut les cas de trichiases.
+
+    La déficience visuelle ou la cécité entraîne une détérioration de la qualité de vie pour les personnes touchées et leurs familles, qui font normalement déjà partie des plus pauvres parmi les pauvres. Les femmes deviennent aveugles jusqu'à quatre fois plus souvent que les hommes, probablement du fait de leur contact étroit avec les enfants infectés et en raison d'une fréquence plus élevée des épisodes infectieux résultants.
+
+
+
+    ### Dynamique de transmission
+
+    L'infection se propage par contact personnel (via les mains, les vêtements ou la literie) et par les mouches ayant été en contact avec des écoulements provenant des yeux ou du nez d'une personne infectée. En cas d'épisodes infectieux répétés pendant de nombreuses années, les cils peuvent se rétracter et frotter sur la surface de l'œil, ce qui entraîne une douleur et une gêne, ainsi que des lésions permanentes de la cornée.
+
+    Dans les régions touchées par le trachome de façon endémique, le trachome actif (inflammatoire) est fréquent chez les enfants d'âge préscolaire, avec des taux de prévalence pouvant atteindre 60 à 90 %. L'infection devient moins fréquente et de plus courte durée avec l'âge. L'infection est généralement contractée en vivant à proximité d'autres personnes atteintes d'une maladie active, et la famille est le principal lieu de transmission. Le système immunitaire d'un individu est capable d'éliminer un épisode d'infection isolé, mais dans les communautés endémiques, la réacquisition par l'organisme est fréquente.
+
+
+
+    ### Interventions
+
+    Les programmes d'élimination dans les pays endémiques sont mis en œuvre en appliquant la stratégie **SAFE** (Surgery, Antibiotics, Facial cleanliness, Environmental improvement) préconisée par l'OMS, et dont les axes sont les suivants :
+
+    - ****Chirurgie visant à traiter le stade aveugle (trichiasis trachomateux) ;
+
+    - ****Antibiotiques visant à éliminer l'infection, notamment par administration massive d'azithromycine, livrée en don par le fabricant aux programmes d'élimination dans le cadre de l'Initiative internationale contre le trachome ;
+
+    - ****Propreté du visage ; et
+
+    - ****Amélioration de l'environnement, notamment de l'accès à l'eau et à l'assainissement.
+
+    La plupart des pays endémiques ont accepté d'accélérer la mise en œuvre de cette stratégie dans le but d'atteindre les objectifs d'élimination. Les données communiquées à l'OMS par les États participants en 2019 montrent que 92 622 personnes atteintes de trichiasis trachomateux ont bénéficié d'une chirurgie correctrice cette année-là, et que 95,2 millions de personnes vivant dans les communautés endémiques ont été traitées aux antibiotiques pour éliminer le trachome.
+
+
+
+    ### Modèle de simulation
+
+  
+
+
+    ### Code du modèle
+
+
+
+
+    ### Données
+
+
+    ### Lectures complémentaires
+
+  
+
+    ### Publications relatives à la modélisation

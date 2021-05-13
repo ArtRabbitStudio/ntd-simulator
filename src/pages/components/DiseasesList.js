@@ -3,6 +3,7 @@ import { Grid, Container, Typography } from '@material-ui/core';
 import CapsHeadline from './CapsHeadline'
 import FullWidthBackground from './FullWidthBackground'
 import { withStyles } from '@material-ui/core/styles';
+import { useTranslation } from "react-i18next";
 
 import { DISEASE_LABELS } from 'AppConstants'
 
@@ -61,7 +62,7 @@ const styles = theme => ({
 });
 
 const DiseasesList = (props) => {
-
+  const { t } = useTranslation();
   const { classes, theme } = props
 
   //const classes = useStyles();
@@ -78,7 +79,7 @@ const DiseasesList = (props) => {
             Object.keys(DISEASE_LABELS).map(function (ident) {
               return (
                 <Grid key={ident} component="a" href={`/${ident}`} item md={4} sm={4} xs={12} className={`${classes.column} icon-${ident}`}>
-                  <Typography variant="body1" component="p" className={classes.headline} >{DISEASE_LABELS[ident]}</Typography>
+                  <Typography variant="body1" component="p" className={classes.headline} >{t(DISEASE_LABELS[ident])}</Typography>
                 </Grid>
               )
             })

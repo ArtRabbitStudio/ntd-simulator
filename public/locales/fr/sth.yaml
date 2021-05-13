@@ -1,0 +1,66 @@
+  summaryHeadline: À propos des projections relatives aux helmétoses transmises par le sol
+  summarySubtitle: Contexte de modélisation et données utilisées
+  summaryTab1Title: Données histo-géographiques de l'AMM
+  summaryTab1Content: |
+    Les données histo-géographiques de l'AMM consistent en une micro-simulation stochastique d'individus porteurs d'une charge vermineuse, une microfilarémie (MF), ainsi que d'autres paramètres démographiques relatifs à l'âge et au risque d'exposition. Les humains sont modélisés individuellement, avec leur propre charge vermineuse mâle et femelle. La concentration de MF dans le sang périphérique est modélisée pour chaque individu de façon déterministe, et elle s'accroît en fonction du nombre de vers femelles fertiles, tout en diminuant à taux constant. La densité totale de MF dans la population contribue à la densité actuelle de larves L3 chez la population de moustiques piqueurs, où la distribution de L3, parmi la population de moustiques piqueurs, est totalement homogène. Une relation empirique est appliquée à l'absorption de MF par un moustique dans laquelle les courbes d'absorption de Culex et d'Anopheles sont mises en œuvre d'après le contexte. La dynamique du modèle se divise donc en une dynamique humaine individuelle incluant l'âge et le renouvellement ; une dynamique du ver situé à l'intérieur de l'hôte ; une dynamique des microfilaires à l'intérieur de l'hôte ; et enfin, une dynamique des larves à l'intérieur du moustique.
+  summaryTab2Title: À propos du modèle
+  summaryTab2Content: |
+    Il s'agit d'une micro-simulation stochastique d'individus porteurs d'une charge vermineuse, d'une microfilarémie (MF), ainsi que d'autres paramètres démographiques relatifs à l'âge et au risque d'exposition. Les humains sont modélisés individuellement, avec leur propre charge vermineuse mâle et femelle. La concentration de MF dans le sang périphérique est modélisée pour chaque individu de façon déterministe, et elle s'accroît en fonction du nombre de vers femelles fertiles, tout en diminuant à taux constant. La densité totale de MF dans la population contribue à la densité actuelle de larves L3 chez la population de moustiques piqueurs, où la distribution de L3, parmi la population de moustiques piqueurs, est totalement homogène. Une relation empirique est appliquée à l'absorption de MF par un moustique dans laquelle les courbes d'absorption de Culex et d'Anopheles sont mises en œuvre d'après le contexte. La dynamique du modèle se divise donc en une dynamique humaine individuelle incluant l'âge et le renouvellement ; une dynamique du ver situé à l'intérieur de l'hôte ; une dynamique des microfilaires à l'intérieur de l'hôte ; et enfin, une dynamique des larves à l'intérieur du moustique.
+  detailRightActionHeadline: Projections relatives aux helmétoses transmises par le sol
+  detailRightActionIntro: Se reporter aux prédictions fondées sur la modélisation quantitative.
+  detailRightActionButton: Sélectionner un pays
+  detailRightInfoHeadline: À propos du modèle
+  detailRightInfoButton1: Document de modélisation
+  detailRightInfoButton1Target: https://parasitesandvectors.biomedcentral.com/articles/10.1186/s13071-015-1152-3
+  detailContent: | 
+    ## À propos des helmétoses transmises par le sol
+
+    Les helmétoses transmissibles par le sol (HTS) font partie des infections les plus courantes dans le monde et elles touchent les communautés les plus pauvres et les plus démunies. Elles sont transmises par les œufs présents dans les matières fécales humaines, qui contaminent à leur tour le sol dans les zones où l'assainissement est insuffisant.
+
+    Les principales espèces qui infectent l'homme sont l'ascaris (Ascaris lumbricoides), le trichuris (Trichuris trichiura) et l'ankylostome (Necator americanus et Ancylostoma duodenale).
+
+    Les vers intestinaux sont à l'origine d'un large éventail de symptômes, dont des manifestations intestinales (diarrhées, douleurs abdominales), un mal-être général et une faiblesse. Les ankylostomes provoquent des hémorragies intestinales chroniques qui entraînent une anémie.
+
+    Pour plus d'informations sur les helmétoses transmises par le sol (HTS), voir le [site Web de l'OMS](https://www.who.int/health-topics/soil-transmitted-helminthiases#tab=tab_1).
+
+    ### Charge de morbidité
+
+    La morbidité est liée au nombre de vers hébergés. Les personnes atteintes d'infections d'intensité légère (vers peu nombreux) ne souffrent généralement pas de l'infection. Les infections plus lourdes peuvent provoquer un large éventail de symptômes, parmi lesquels des manifestations intestinales (diarrhées et douleurs abdominales), la malnutrition, un mal-être et une faiblesse générale, ainsi qu'une altération de la croissance et du développement physique.
+
+    Les infections de très forte intensité peuvent provoquer une occlusion intestinale rendant impérative l'intervention chirurgicale.
+
+    S. stercoralis peut provoquer une morbidité dermatologique et gastro-intestinale, et est également réputé comme étant associé à la malnutrition chronique chez l'enfant. En cas d'immunité réduite de l'hôte, le parasite peut provoquer un syndrome d'hyperinfection ou de dissémination, invariablement létal selon qu'il est rapidement et correctement soigné, mais qui est fréquemment létal en dépit du traitement.
+
+    ### Dynamique de transmission
+
+    Les helminthes transmissibles par le sol sont véhiculées par des œufs contenus dans les matières fécales d'humains infectés. Les vers adultes se développent dans l'intestin, où ils pondent plusieurs milliers d'œufs par jour. Dans les zones où l'assainissement est insuffisant, ces œufs contaminent le sol par plusieurs biais :
+
+    - Les œufs accrochés aux légumes sont ingérés lorsque ceux-ci ne sont pas soigneusement cuits, lavés ou épluchés ;
+
+    - Les œufs sont ingérés à partir de sources d'eau contaminées ;
+
+    - Les œufs sont ingérés par les enfants qui jouent sur le sol contaminé et portent ensuite leurs mains à leur bouche sans les laver.
+
+    ### Interventions
+
+    Les médicaments préconisés par l'OMS, à savoir l'albendazole (400 mg) et le mébendazole (500 mg), sont efficaces, peu coûteux et faciles à administrer par un personnel non médical (enseignants, par exemple). Ils ont fait l'objet d'essais de sécurité approfondis et ont été employés chez plusieurs millions de personnes, avec des effets secondaires rares et mineurs.
+
+    L'albendazole et le mébendazole sont distribués sous forme de dons aux ministères de la santé nationaux par l'intermédiaire de l'OMS dans tous les pays endémiques afin de traiter tous les enfants en âge d'être scolarisés. L'ivermectine pour le contrôle de S. stercoralis devrait être disponible à un prix abordable à partir de 2021.
+
+    ### Modèle de simulation
+
+    Le modèle sous-jacent est stochastique est fondé sur l'individu. Il simule la charge vermineuse et la production d'œufs de chaque individu, ainsi que le réservoir de matériel infectieux présent dans l'environnement. Ce modèle permet de simuler l'administration massive de médicaments (AMM) avec des niveaux de couverture et des fréquences de traitement variés. Une description complète du modèle a été produite par [Truscott et coll. 2016](https://pubmed.ncbi.nlm.nih.gov/27756454/) et par [Coffeng et coll. 2017](https://www.sciencedirect.com/science/article/pii/S1755436516300780).
+
+    ### Code du modèle
+
+    Le code du modèle de base est accessible dans ce [référentiel GitHub](https://github.com/caro-veg/STH-basic-model).
+
+    Le code du modèle est identique pour les trois espèces de HST (ascaris, ankylostomes, trichocéphales) ; seuls les paramètres d'entrée sont spécifiques à chaque espèce.
+
+    ### Données
+
+    ### Lectures complémentaires
+
+    ### Liens utiles
+    
+    ### Publications relatives à la modélisation

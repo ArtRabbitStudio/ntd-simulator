@@ -426,7 +426,7 @@ const ScenarioManager = (props) => {
   //Scenario state last updated: {scenarioState.updated.toISOString()}
 
   if (!diseaseModel) {
-    return (<div>No model for {AppConstants.DISEASE_LABELS[disease]}</div>);
+    return (<div>No model for {t(AppConstants.DISEASE_LABELS[disease])}</div>);
   }
 
   const SettingsDialogComponent = (disease !== null) ? settingsDialogComponents[disease] : null;

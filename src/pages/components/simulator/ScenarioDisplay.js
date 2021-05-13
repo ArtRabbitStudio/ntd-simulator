@@ -209,7 +209,7 @@ const ScenarioDisplay = (props) => {
 
 
             <Typography className={`${classes.caps} closer`} variant="h6" component="h6">
-              Settings
+              {t('Settings')}
             </Typography>
 
             <ChartSettings
@@ -531,7 +531,7 @@ const ScenarioDisplay = (props) => {
 
 
             <Tooltip
-              title={`mdaTooltip.${disease}`}
+              title={t(`mdaTooltip.${disease}`)}
               aria-label="info"
             >
 

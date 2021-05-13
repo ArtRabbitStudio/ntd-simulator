@@ -1,0 +1,86 @@
+  summaryHeadline: Sobre as projeções para a esquistossomose
+  summarySubtitle: Contexto do modelo e dados utilizados
+  summaryTab1Title: Dados de MDA geográficos e históricos
+  summaryTab1Content: |
+    Os dados de MDA geográficos e históricos constituem uma microssimulação estocástica de indivíduos com ónus de parasitas, microfilária e outros parâmetros demográficos relacionados com a idade e o risco de exposição. Os seres humanos são modelados individualmente, com os seus próprios ónus de parasitas machos e fêmeas. A concentração de mf no sangue periférico é modelada para cada indivíduo deterministicamente, aumentando de acordo com o número de parasitas fêmeas férteis e reduzindo a uma velocidade constante. O total da densidade de mf na população contribui para a densidade atual de larvas L3 na população de mosquitos que picam os seres humanos, em que a distribuição de L3 que picam os seres humanos é totalmente homogénea. É utilizada uma relação derivada empiricamente para o consumo de mf por um mosquito, na qual as curvas de consumo de Culex e Anofeles são implementadas, dependendo do ambiente. Por conseguinte, as dinâmicas do modelo são divididas em dinâmica de humanos individuais, incluindo idade e rendimento; dinâmica dos parasitas no interior do hospedeiro; dinâmica da microfilária no interior do hospedeiro e dinâmica das larvas no interior do mosquito.
+  summaryTab2Title: Sobre o modelo
+  summaryTab2Content: |
+    Trata-se de uma microssimulação estocástica de indivíduos com ónus de parasitas, microfilária e outros parâmetros demográficos relacionados com a idade e o risco de exposição. Os seres humanos são modelados individualmente, com os seus próprios ónus de parasitas machos e fêmeas. A concentração de mf no sangue periférico é modelada para cada indivíduo deterministicamente, aumentando de acordo com o número de parasitas fêmeas férteis e reduzindo a uma velocidade constante. O total da densidade de mf na população contribui para a densidade atual de larvas L3 na população de mosquitos que picam os seres humanos, em que a distribuição de L3 que picam os seres humanos é totalmente homogénea. É utilizada uma relação derivada empiricamente para o consumo de mf por um mosquito, na qual as curvas de consumo de Culex e Anofeles são implementadas, dependendo do ambiente. Por conseguinte, as dinâmicas do modelo são divididas em dinâmica de humanos individuais, incluindo idade e rendimento; dinâmica dos parasitas no interior do hospedeiro; dinâmica da microfilária no interior do hospedeiro e dinâmica das larvas no interior do mosquito.
+  detailRightActionHeadline: Previsões para esquistossomose
+  detailRightActionIntro: Consulte as previsões com base no modelo quantitativo. Selecione um país para começar.
+  detailRightActionButton: Selecionar um país
+  detailRightInfoHeadline: Sobre o modelo
+  detailRightInfoButton1: Documento do modelo
+  detailRightInfoButton1Target: https://parasitesandvectors.biomedcentral.com/articles/10.1186/s13071-015-1152-3
+  detailContent: | 
+    ## Sobre a esquistossomose
+
+    A esquistossomose é uma doença relacionada com a pobreza que resulta em doenças crónicas. A infeção é adquirida quando as pessoas entram em contacto com água doce infestada com formas larvais (cercariae) de caudas sanguíneas parasitárias, conhecidas com esquistossomas. Os parasitas adultos microscópicos vivem nas veias ligadas ao trato urinário e aos intestinos. A maior parte dos ovos que põem ficam presos nos tecidos e a reação provocada no corpo pode provocar danos massivos.
+
+    Para obter mais informações sobre a esquistossomose, visite o [sítio Web da OMS.](https://www.who.int/health-topics/lymphatic-filariasis#tab=tab_1)
+
+
+    ### Ónus da doença
+
+    A esquistossomose afeta quase 240 milhões de pessoas em todo o mundo, e mais de 700 milhões de pessoas habitam zonas endémicas. Vários milhões de pessoas em todo o mundo sofrem de morbilidade severa como consequência da esquistossomose. Os efeitos económicos e de saúde da esquistossomose são consideráveis e a doença incapacita mais do que mata. Nas crianças, a esquistossomose pode provocar anemia, atraso no crescimento e uma capacidade de aprendizagem reduzida, embora, regra geral, os efeitos sejam reversíveis com tratamento.
+
+
+    ### Dinâmica da transmissão
+
+    Os parasitas adultos microscópicos vivem nas veias ligadas ao trato urinário e aos intestinos. A maior parte dos ovos que põem ficam presos nos tecidos e a reação provocada no corpo pode provocar danos massivos. A infeção apresenta uma prevalência em zonas tropicais e subtropicais, em comunidades pobres sem água potável e saneamento adequado. A esquistossomose urogenital é provocada pelo Schistosoma haematobium e a esquistossomose intestinal por qualquer um dos organismos S. guineensis, S. intercalatum, S. mansoni, S. japonicum e S. mekongi.
+
+
+    ### Intervenções
+
+    O Praziquantel é o tratamento recomendado contra todas as formas de esquistossomose. É eficaz, seguro e económico. Muito embora possa ocorrer a reinfeção após o tratamento, o risco de desenvolver uma doença grave diminui e pode até ser invertido se o tratamento for iniciado e repetido na infância.
+
+    O controlo da esquistossomose tem sido implementado com êxito nos últimos 40 anos em vários países, incluindo o Brasil, Camboja, China, Egito, Maurícia, República Islâmica do Irão, Omã, Jordânia, Arábia Saudita, Marrocos, Tunísia.
+
+    No Burundi, Burquina Faso, Gana, Níger, Ruanda, Serra Leoa, República Unida da Tanzânia e Iémen, tem sido possível intensificar o tratamento da esquistossomose a nível nacional e produzir um impacto na doença em poucos anos. É necessária a avaliação do estado da transmissão em vários países. Nos últimos 10 anos, tem-se registado um aumento das campanhas de tratamento em vários países subsarianos, onde se regista o maior risco de vida.
+
+
+    ### Modelo de simulação
+    O modelo subjacente é estocástico e de base individual. O modelo monitoriza o número de parasitas machos e fêmeas que um indivíduo tem ao longo do tempo e os processos estocásticos de aquisição e perda de parasitas. A principal intervenção consiste na administração de fármacos em massa (MDA), através da qual podemos aplicar diferentes níveis de cobertura e frequência do tratamento. Pode encontrar uma descrição completa do modelo no capítulo [Advances in Parasitology](https://www.sciencedirect.com/science/article/abs/pii/S0065308X16300720?via%3Dihub) (Avanços na parasitologia) que se encontra na secção de literatura relacionada. Note que o comportamento médio previsto do modelo estocástico de base individual é idêntico às [previsões de uma versão determinística do modelo](https://www.sciencedirect.com/science/article/pii/S1755436516300809?via%3Dihub).
+
+    ### Código do modelo
+
+    Estamos empenhados em disponibilizar o código do nosso modelo a outros criadores de modelos. Incluímos abaixo as hiperligações para o código utilizado numa publicação recente (versão determinística do modelo):
+
+    - [Truscott, Gurarie et al. A comparison of two mathematical models of the impact of mass drug administration on the transmission and control of schistosomiasis. Epidemics 2017.](https://pubmed.ncbi.nlm.nih.gov/28279453/)
+
+    - [O código para o modelo da Imperial College está disponível aqui.](https://www.ntdmodelling.org/sites/www.ntdmodelling.org/files/content/ICLSchistoCode.zip) Este documento centra-se no Schistosoma haematobium, mas o código do modelo inclui um conjunto de parâmetros para o Schistosoma mansoni.
+
+
+    ### Dados
+
+
+    ### Leitura relacionada
+
+    Este [documento do modelo](https://www.sciencedirect.com/science/article/abs/pii/S0065308X16300720?via%3Dihubntd%20modell) apresenta uma perspetiva geral do modelo incluso, bem como os parâmetros subjacentes.
+    
+    ### Hiperligações úteis
+
+    - [Atlas Global de Infeções por Helmintos](http://www.thiswormyworld.org/)
+    
+    - [Banco de dados do PCT](https://www.who.int/neglected_diseases/preventive_chemotherapy/sch/en/)
+    
+    - [Projeto Especial Alargado para a Erradicação de Doenças Tropicais Negligenciadas (Expanded Special Project for Elimination of Neglected Tropical Diseases, ESPEN)](https://espen.afro.who.int/diseases/schistosomiasis)
+
+    ### Publicações de modelos
+
+    Anderson RM, Turner HC, Farrell SH, Yang J, Truscott JE. [What is required in terms of mass drug administration to interrupt the transmission of schistosome parasites in regions of endemic infection?.](https://parasitesandvectors.biomedcentral.com/articles/10.1186/s13071-015-1157-y) Parasites & vectors. 2015 Dec;8(1):1-1.
+ 
+    Truscott JE, Gurarie D, Alsallaq R, Toor J, Yoon N, Farrell SH, Turner HC, Phillips AE, Aurelio HO, Ferro J, King CH. [A comparison of two mathematical models of the impact of mass drug administration on the transmission and control of schistosomiasis. Epidemics.](https://www.sciencedirect.com/science/article/pii/S1755436516300809) 2017 Mar 1;18:29-37.
+ 
+    Kura K, Truscott JE, Toor J, Anderson RM. [Modelling the impact of a Schistosoma mansoni vaccine and mass drug administration to achieve morbidity control and transmission elimination.](https://journals.plos.org/plosntds/article?id=10.1371/journal.pntd.0007349) PLoS neglected tropical diseases. 2019 Jun 5;13(6):e0007349.
+ 
+    Kura K, Hardwick RJ, Truscott JE, Toor J, Hollingsworth TD, Anderson RM. [The impact of mass drug administration on Schistosoma haematobium infection: what is required to achieve morbidity control and elimination?.](https://parasitesandvectors.biomedcentral.com/articles/10.1186/s13071-020-04409-3) Parasites & Vectors. 2020 Dec;13(1):1-0.
+ 
+    Kura K, Ayabina D, Toor J, Hollingsworth TD, Anderson RM. [Disruptions to schistosomiasis programmes due to COVID-19: an analysis of potential impact and mitigation strategies.](https://academic.oup.com/trstmh/article/115/3/236/6123945) Transactions of the Royal Society of Tropical Medicine and Hygiene 2021
+ 
+ 
+    Toor J, Turner HC, Truscott JE, Werkman M, Phillips AE, Alsallaq R, Medley GF, King CH, Anderson RM. [The design of schistosomiasis monitoring and evaluation programmes: The importance of collecting adult data to inform treatment strategies for Schistosoma mansoni.](https://journals.plos.org/plosntds/article?id=10.1371/journal.pntd.0006717) PLoS neglected tropical diseases. 2018 Oct 8;12(10):e0006717.
+ 
+    Toor J, Rollinson D, Turner HC, Gouvras A, King CH, Medley GF, Hollingsworth TD, Anderson RM. [Achieving elimination as a public health problem for Schistosoma mansoni and S. haematobium: when is community-wide treatment required?.](https://academic.oup.com/jid/article/221/Supplement_5/S525/5673803?login=true) The Journal of infectious diseases. 2020 Jun 11;221(Supplement_5):S525-30.
+ 
+    Toor J, Truscott JE, Werkman M, Turner HC, Phillips AE, King CH, Medley GF, Anderson RM. [Determining post-treatment surveillance criteria for predicting the elimination of Schistosoma mansoni transmission.](https://parasitesandvectors.biomedcentral.com/articles/10.1186/s13071-019-3611-8) Parasites & vectors. 2019 Dec;12(1):1-7.

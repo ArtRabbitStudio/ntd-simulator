@@ -1,0 +1,82 @@
+  summaryHeadline: Sobre as projeções para a filaríase linfática
+  summarySubtitle: Informações sobre o modelo e os dados utilizados
+  summaryTab1Title: Dados de MDA geográficos e históricos
+  summaryTab1Content: |
+    Os dados de MDA geográficos e históricos constituem uma microssimulação estocástica de indivíduos com ónus de parasitas, microfilária e outros parâmetros demográficos relacionados com a idade e o risco de exposição. Os seres humanos são modelados individualmente, com os seus próprios ónus de parasitas machos e fêmeas. A concentração de mf no sangue periférico é modelada para cada indivíduo deterministicamente, aumentando de acordo com o número de parasitas fêmeas férteis e reduzindo a uma velocidade constante. O total da densidade de mf na população contribui para a densidade atual de larvas L3 na população de mosquitos que picam os seres humanos, em que a distribuição de L3 que picam os seres humanos é totalmente homogénea. É utilizada uma relação derivada empiricamente para o consumo de mf por um mosquito, na qual as curvas de consumo de Culex e Anofeles são implementadas, dependendo do ambiente. Por conseguinte, as dinâmicas do modelo são divididas em dinâmica de humanos individuais, incluindo idade e rendimento; dinâmica dos parasitas no interior do hospedeiro; dinâmica da microfilária no interior do hospedeiro e dinâmica das larvas no interior do mosquito.
+  summaryTab2Title: Sobre o modelo
+  summaryTab2Content: |
+    Trata-se de uma microssimulação estocástica de indivíduos com ónus de parasitas, microfilária e outros parâmetros demográficos relacionados com a idade e o risco de exposição. Os seres humanos são modelados individualmente, com os seus próprios ónus de parasitas machos e fêmeas. A concentração de mf no sangue periférico é modelada para cada indivíduo deterministicamente, aumentando de acordo com o número de parasitas fêmeas férteis e reduzindo a uma velocidade constante. O total da densidade de mf na população contribui para a densidade atual de larvas L3 na população de mosquitos que picam os seres humanos, em que a distribuição de L3 que picam os seres humanos é totalmente homogénea. É utilizada uma relação derivada empiricamente para o consumo de mf por um mosquito, na qual as curvas de consumo de Culex e Anofeles são implementadas, dependendo do ambiente. Por conseguinte, as dinâmicas do modelo são divididas em dinâmica de humanos individuais, incluindo idade e rendimento; dinâmica dos parasitas no interior do hospedeiro; dinâmica da microfilária no interior do hospedeiro e dinâmica das larvas no interior do mosquito.
+  detailRightActionHeadline: Previsões da filaríase linfática
+  detailRightActionIntro: Consulte as previsões com base no modelo quantitativo. Selecione um país para começar.
+  detailRightActionButton: Selecionar um país
+  detailRightInfoHeadline: Sobre o modelo
+  detailRightInfoButton1: Documento do modelo
+  detailRightInfoButton1Target: https://parasitesandvectors.biomedcentral.com/articles/10.1186/s13071-015-1152-3
+  detailContent: | 
+    ## Sobre a filaríase linfática
+
+    A filaríase linfática deve-se a parasitas filariais, que são transmitidos aos seres humanos através dos mosquitos. Quando um mosquito com larvas em fase infecciosa pica uma pessoa, os parasitas são depositados na pele da pessoa e a partir daqui entram no organismo humano. As larvas migram então para os vasos linfáticos, onde se tornam parasitas adultos no sistema linfático humano. Normalmente, a infeção é adquirida na infância, mas as manifestações dolorosas e profundamente desfigurantes da doença ocorrem em etapas mais tardias da vida. Embora os episódios agudos da doença provoquem a incapacidade temporária, a filaríase linfática (FL) resulta na incapacidade permanente.
+
+    Para obter mais informações sobre a filaríase linfática, visite o [sítio Web da OMS.](https://www.who.int/health-topics/lymphatic-filariasis#tab=tab_1)
+
+
+    ### Ónus da doença
+
+    A FL é endémica em 83 países e estima-se que existam 120 milhões de casos, incluindo 25 milhões de homens com hidroceles e 15 milhões de pessoas, principalmente mulheres, com linfedema. A doença ocorre nas zonas tropicais de África, Ásia, Américas e Pacífico, com cerca de 66% da infeção aglomerada no Sudeste Asiático e a maioria da infeção restante (~33%) centrada em África.
+
+
+    ### Dinâmica da transmissão
+
+    A FL é provocada por uma espécie de nemátodos filariais, sendo até 90% de todas as infeções provocadas pelo Wuchereria bancrofti. Nalgumas partes da Ásia, a FL é provocada por Brugia malayi e Brugia timori. Várias espécies de mosquitos transmitem estes parasitas: os mosquitos Culex transmitem o W. bancrofti em zonas urbanas e semi-urbanas, os mosquitos Anófeles transmitem parasitas em ambientes rurais, especialmente em África, e os mosquitos Aedes são responsáveis pela transmissão em todo o Pacífico.
+
+    Para saber mais sobre a dinâmica de transmissão da filaríase linfática, visite o [Atlas Global de Infeções por Helmintos (GAHI)](http://www.thiswormyworld.org/about-worms/worms/what-are-worms).
+
+
+    ### Intervenções
+
+    Vários países implementaram programas de controlos da FL, com resultados significativos nas Américas, no Pacífico e na Ásia. Alguns países em África estão prestes a alcançar as suas metas de erradicação. Para saber mais sobre a erradicação da FL, visite o [Atlas Global das Infeções por Helmintos](http://www.thiswormyworld.org/about-worms/elimination-of-lymphatic-filariasis).
+
+
+    ### Modelo de simulação
+
+    O modelo subjacente é estocástico e de base individual. A sua descrição inclui o ónus de parasitas do indivíduo, o ónus de mf, bem como os aspetos do ciclo de transmissão nas populações de mosquitos. Várias intervenções também foram modeladas quanto à população. A principal intervenção é a administração de fármacos em massa (MDA), na qual podem ser selecionados diferentes regimes. As intervenções também incluem o controlo de vetores, incluindo redes mosquiteiras para camas e tratamento com inseticida. Está disponível uma descrição do modelo completa no [documento P&V](https://parasitesandvectors.biomedcentral.com/articles/10.1186/s13071-015-1152-3), que pode ser encontrado na secção de leitura adicional. Note que o modelo só foi validado contra um número determinado de definições cujos detalhes podem ser encontrados no [documento](https://parasitesandvectors.biomedcentral.com/articles/10.1186/s13071-015-1152-3).
+
+
+    ### Código do modelo
+
+    Estamos empenhados em disponibilizar o código do nosso modelo a outros criadores de modelos. Incluímos abaixo as hiperligações para o código utilizado em publicações recentes:
+
+    Smith et al. [Predicting lymphatic filariasis transmission and elimination dynamics using a multi-model ensemble framework](https://doi.org/10.1016/j.epidem.2017.02.006) Epidemics 2017. O [código para o EPIFIL está disponível aqui](https://www.ntdmodelling.org/sites/www.ntdmodelling.org/files/content/EPIFIL_Code%202.zip). O [código para o TRANSFIL está disponível aqui](https://github.com/sempwn/LF-model). O código para o LYMFASIM foi publicado com:
+
+    Jambulingam et al. [Mathematical modelling of lymphatic filariasis elimination programmes in India: required duration of mass drug administration and post-treatment level of infection indicators](https://parasitesandvectors.biomedcentral.com/articles/10.1186/s13071-016-1768-y). Parasites and Vectors 2016. O código encontra-se nos ficheiros adicionais no fim do documento.
+
+
+    ### Dados
+
+
+    ### Leitura relacionada
+
+    Este [documento do modelo](https://parasitesandvectors.biomedcentral.com/articles/10.1186/s13071-015-1152-3) apresenta uma perspetiva geral do modelo incluso, bem como os parâmetros subjacentes.
+
+    O presente [documento incluso](http://dx.doi.org/10.1371/journal.pntd.0005206) fornece uma descrição e a motivação por trás desta ferramenta.
+
+    ### Hiperligações úteis
+
+    [Atlas Global de Infeções por Helmintos](http://www.thiswormyworld.org/)
+
+    ### Publicações de modelos
+
+    [The Population Biology and Transmission Dynamics of Loa loa](http://www.cell.com/trends/parasitology/fulltext/S1471-4922(17)30305-7)
+    Whittaker C, Walker M, Pion SDS, Chesnais CB, Boussinesq M, Basáñez MG Trends in Parasitology, 2018; : Epub
+
+    [Identifying co-endemic areas for major filarial infections in sub-Saharan Africa: seeking synergies and preventing severe adverse events during mass drug administration campaigns](https://parasitesandvectors.biomedcentral.com/articles/10.1186/s13071-018-2655-5)
+    Cano J, Basáñez MG, O'Hanlon SJ, Tekle AH, Wanji S, Zouré HG, Rebollo MP, Pullan RL Parasites and Vectors, 2018; 1: 70
+
+    [Understanding the relationship between prevalence of microfilariae and antigenaemia using a model of lymphatic filariasis infection](http://trstmh.oxfordjournals.org/content/110/2/118.short?rss=1)
+    Michael A. Irvine, Sammy M. Njenga, Shamini Gunawardena, Claire Njeri Wamae, Jorge Cano, Simon J. Brooker and T. Deirdre Hollingsworth Transactions of the Royal Society of Tropical Medicine and Hygiene, 2016; : 118-124
+
+    [Heterogeneous dynamics, robustness/fragility trade-offs, and the eradication of the macroparasitic disease, lymphatic filariasis](http://bmcmedicine.biomedcentral.com/articles/10.1186/s12916-016-0557-y)
+    Edwin Michael and Brajendra K. Singh BioMed Central, 2016; : 14:14
+
+    [Bayesian calibration of simulation models for supporting management of the elimination of the macroparasitic disease, Lymphatic Filariasis](http://www.parasitesandvectors.com/content/8/1/522)
+    Singh BK, Michael E. Parasites & Vectors, 2015; 8: 522

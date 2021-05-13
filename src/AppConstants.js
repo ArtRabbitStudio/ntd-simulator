@@ -7,12 +7,12 @@ const DISEASE_SCH_MANSONI = 'sch-mansoni';
 
 const DISEASE_LABELS = {
 
-  [DISEASE_LIMF]:               'Lymphatic filariasis',
+  [DISEASE_LIMF]:               'LymphaticFilariasis',
   [DISEASE_TRACHOMA]:           'Trachoma',
-  [DISEASE_STH_ROUNDWORM]:      'Soil-transmitted helminth (roundworm)',
-  [DISEASE_STH_WHIPWORM]:       'Soil-transmitted helminth (whipworm)',
-  [DISEASE_STH_HOOKWORM]:       'Soil-transmitted helminth (hookworm)',
-  [DISEASE_SCH_MANSONI]:       'Schistosomiasis Mansoni',
+  [DISEASE_STH_ROUNDWORM]:      'SoilTransmittedHelmithiasisRoundworm',
+  [DISEASE_STH_WHIPWORM]:       'SoilTransmittedHelmithiasisWhipworm',
+  [DISEASE_STH_HOOKWORM]:       'SoilTransmittedHelmithiasisHookworm',
+  [DISEASE_SCH_MANSONI]:       'SchistosomiasisMansoni',
 
 };
 

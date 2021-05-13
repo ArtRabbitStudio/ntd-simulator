@@ -1,0 +1,82 @@
+  summaryHeadline: À propos des projections relatives à la filariose lymphatique
+  summarySubtitle: Informations sur la modélisation et les données utilisées
+  summaryTab1Title: Données histo-géographiques de l'AMM
+  summaryTab1Content: |
+    Les données histo-géographiques de l'AMM consistent en une micro-simulation stochastique d'individus porteurs d'une charge vermineuse, une microfilarémie (MF), ainsi que d'autres paramètres démographiques relatifs à l'âge et au risque d'exposition. Les humains sont modélisés individuellement, avec leur propre charge vermineuse mâle et femelle. La concentration de MF dans le sang périphérique est modélisée pour chaque individu de façon déterministe, et elle s'accroît en fonction du nombre de vers femelles fertiles, tout en diminuant à taux constant. La densité totale de MF dans la population contribue à la densité actuelle de larves L3 chez la population de moustiques piqueurs, où la distribution de L3, parmi la population de moustiques piqueurs, est totalement homogène. Une relation empirique est appliquée à l'absorption de MF par un moustique dans laquelle les courbes d'absorption de Culex et d'Anopheles sont mises en œuvre d'après le contexte. La dynamique du modèle se divise donc en une dynamique humaine individuelle incluant l'âge et le renouvellement ; une dynamique du ver situé à l'intérieur de l'hôte ; une dynamique des microfilaires à l'intérieur de l'hôte ; et enfin, une dynamique des larves à l'intérieur du moustique.
+  summaryTab2Title: À propos du modèle
+  summaryTab2Content: |
+    Il s'agit d'une micro-simulation stochastique d'individus porteurs d'une charge vermineuse, d'une microfilarémie (MF), ainsi que d'autres paramètres démographiques relatifs à l'âge et au risque d'exposition. Les humains sont modélisés individuellement, avec leur propre charge vermineuse mâle et femelle. La concentration de MF dans le sang périphérique est modélisée pour chaque individu de façon déterministe, et elle s'accroît en fonction du nombre de vers femelles fertiles, tout en diminuant à taux constant. La densité totale de MF dans la population contribue à la densité actuelle de larves L3 chez la population de moustiques piqueurs, où la distribution de L3, parmi la population de moustiques piqueurs, est totalement homogène. Une relation empirique est appliquée à l'absorption de MF par un moustique dans laquelle les courbes d'absorption de Culex et d'Anopheles sont mises en œuvre d'après le contexte. La dynamique du modèle se divise donc en une dynamique humaine individuelle incluant l'âge et le renouvellement ; une dynamique du ver situé à l'intérieur de l'hôte ; une dynamique des microfilaires à l'intérieur de l'hôte ; et enfin, une dynamique des larves à l'intérieur du moustique.
+  detailRightActionHeadline: Projections relatives à la filariose lymphatique
+  detailRightActionIntro: Se reporter aux prédictions fondées sur la modélisation quantitative.
+  detailRightActionButton: Sélectionner un pays
+  detailRightInfoHeadline: À propos du modèle
+  detailRightInfoButton1: Document de modélisation
+  detailRightInfoButton1Target: https://parasitesandvectors.biomedcentral.com/articles/10.1186/s13071-015-1152-3
+  detailContent: | 
+    ## À propos de la filariose lymphatique
+
+    La filariose lymphatique est causée par des parasites filariens transmis à l'humain par des moustiques. Lorsqu'un moustique porteur de larves au stade infectieux pique un individu, les parasites se déposent sur la peau de celui-ci, d'où ils pénètrent ensuite dans l'organisme. Puis, les larves migrent vers les vaisseaux lymphatiques, où elles se développent sous forme de vers adultes dans le système lymphatique humain. L'infection est généralement acquise durant l'enfance, mais les manifestations visibles, douloureuses et profondément défigurantes de la maladie surviennent plus tard dans la vie. Alors que les épisodes aigus de la maladie provoquent une invalidité temporaire, la filariose lymphatique (FL) entraîne une invalidité permanente.
+
+    Pour plus d'informations sur la filariose lymphatique, rendez-vous sur le [site Web de l'OMS](https://www.who.int/health-topics/lymphatic-filariasis#tab=tab_1).
+
+
+    ### Charge de morbidité
+
+    La FL est endémique dans 83 pays et le nombre de cas avérés est estimé à 120 millions, dont 25 millions d'hommes présentant des hydrocèles et 15 millions de personnes, principalement des femmes, atteintes d'un lymphœdème. La maladie est présente dans toutes les régions tropicales d'Afrique, d'Asie, des Amériques et du Pacifique, 66 % de l'infection étant concentrée en Asie du Sud-Est, le reste étant pour la plupart (~33 %) centré en Afrique.
+
+
+    ### Dynamique de transmission
+
+    La FL est causée par une espèce de vers ronds filariens, ou nématodes, tandis que jusqu'à 90 % des infections sont causées par Wuchereria bancrofti. Dans certaines régions d'Asie, la FL est causée par Brugia malayi et Brugia timori. Diverses espèces de moustiques transmettent ces vers : les Culex transmettent W. bancrofti dans les zones urbaines et semi-urbaines, les Anopheles transmettent les vers dans les environnements ruraux, notamment en Afrique, tandis que les moustiques Aedes sont responsables de la transmission dans tout le Pacifique.
+
+    Pour en savoir plus sur la dynamique de transmission de la filariose lymphatique, veuillez consulter l'[Atlas mondial des infections à helminthes (AMIH)](http://www.thiswormyworld.org/about-worms/worms/what-are-worms).
+
+
+    ### Interventions
+
+    De nombreux pays ont mis en œuvre des programmes de lutte contre la FL, avec des résultats significatifs dans les Amériques, le Pacifique et l'Asie. Quelques pays d'Afrique sont en passe d'atteindre leurs objectifs d'élimination. Pour en savoir plus sur l'élimination de la FL, veuillez consulter l'[Atlas mondial des infections à helminthes](http://www.thiswormyworld.org/about-worms/elimination-of-lymphatic-filariasis).
+
+
+    ### Modèle de simulation
+
+    Le modèle sous-jacent est stochastique est fondé sur l'individu. Sa description inclut la charge vermineuse d'un individu, la charge en FM, ainsi que les aspects du cycle de transmission parmi les populations de moustiques. Diverses interventions sont également modélisées sur la population. La principale intervention est l'administration massive de médicaments (AMM), pour laquelle différents régimes peuvent être sélectionnés. Les interventions comprennent également le contrôle des vecteurs, notamment par le biais de moustiquaires et de traitements insecticides. Une description complète du modèle figure dans le [document P&V](https://parasitesandvectors.biomedcentral.com/articles/10.1186/s13071-015-1152-3), disponible dans la section des lectures complémentaires. Veuillez noter que le modèle n'a été validé que par rapport à un certain nombre de paramètres, dont les détails sont décrits dans le [document](https://parasitesandvectors.biomedcentral.com/articles/10.1186/s13071-015-1152-3).
+
+
+    ### Code du modèle
+
+    Nous nous engageons à mettre le code de notre modèle à la disposition des autres modélisateurs. Des liens d'accès au code utilisé dans des publications récentes sont indiqués ci-après :
+
+    Smith et coll. [Predicting lymphatic filariasis transmission and elimination dynamics using a multi-model ensemble framework](https://doi.org/10.1016/j.epidem.2017.02.006) Epidemics 2017. Le [code EPIFIL est accessible ici](https://www.ntdmodelling.org/sites/www.ntdmodelling.org/files/content/EPIFIL_Code%202.zip). Le [code TRANSFIL est accessible ici](https://github.com/sempwn/LF-model). Le code LYMFASIM a été publié conjointement à :
+
+    Jambulingam et coll. [Mathematical modelling of lymphatic filariasis elimination programmes in India: required duration of mass drug administration and post-treatment level of infection indicators](https://parasitesandvectors.biomedcentral.com/articles/10.1186/s13071-016-1768-y). Parasites and Vectors 2016. Le code figure dans les fichiers complémentaires disponibles en fin de document.
+
+
+    ### Données
+
+
+    ### Lectures complémentaires
+
+    Ce [document de modélisation](https://parasitesandvectors.biomedcentral.com/articles/10.1186/s13071-015-1152-3) fournit une vue d'ensemble du modèle d'accompagnement, ainsi que des paramètres sous-jacents.
+
+    Ce [document d'accompagnement](http://dx.doi.org/10.1371/journal.pntd.0005206) fournit une description et les raisons ayant motivé la création de cet outil.
+
+    ### Liens utiles
+
+    [Atlas mondial des infections à helminthes](http://www.thiswormyworld.org/)
+
+    ### Publications relatives à la modélisation
+
+    [The Population Biology and Transmission Dynamics of Loa loa](http://www.cell.com/trends/parasitology/fulltext/S1471-4922(17)30305-7)
+    Whittaker C, Walker M, Pion SDS, Chesnais CB, Boussinesq M, Basáñez MG. Trends in Parasitology, 2018 ; publication en ligne
+
+    [Identifying co-endemic areas for major filarial infections in sub-Saharan Africa: seeking synergies and preventing severe adverse events during mass drug administration campaigns](https://parasitesandvectors.biomedcentral.com/articles/10.1186/s13071-018-2655-5)
+    Cano J, Basáñez MG, O'Hanlon SJ, Tekle AH, Wanji S, Zouré HG, Rebollo MP, Pullan RL. Parasites and Vectors, 2018 ; 1:70
+
+    [Understanding the relationship between prevalence of microfilariae and antigenaemia using a model of lymphatic filariasis infection](http://trstmh.oxfordjournals.org/content/110/2/118.short?rss=1)
+    Michael A. Irvine, Sammy M. Njenga, Shamini Gunawardena, Claire Njeri Wamae, Jorge Cano, Simon J. Brooker et T. Déirdre Hollingsworth. Transactions of the Royal Society of Tropical Medicine and Hygiene, 2016 ; 118-124
+
+    [Heterogeneous dynamics, robustness/fragility trade-offs, and the eradication of the macroparasitic disease, lymphatic filariasis](http://bmcmedicine.biomedcentral.com/articles/10.1186/s12916-016-0557-y)
+    Edwin Michael et Brajendra K. Singh. BioMed Central, 2016 ; 14:14
+
+    [Bayesian calibration of simulation models for supporting management of the elimination of the macroparasitic disease, Lymphatic Filariasis](http://www.parasitesandvectors.com/content/8/1/522)
+    Singh BK, Michael E. Parasites & Vectors, 2015 ; 8:522

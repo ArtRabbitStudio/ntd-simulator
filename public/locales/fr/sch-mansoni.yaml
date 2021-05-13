@@ -1,0 +1,86 @@
+  summaryHeadline: À propos des projections relatives à la schistosomiase
+  summarySubtitle: Contexte de modélisation et données utilisées
+  summaryTab1Title: Données histo-géographiques de l'AMM
+  summaryTab1Content: |
+    Les données histo-géographiques de l'AMM consistent en une micro-simulation stochastique d'individus porteurs d'une charge vermineuse, une microfilarémie (MF), ainsi que d'autres paramètres démographiques relatifs à l'âge et au risque d'exposition. Les humains sont modélisés individuellement, avec leur propre charge vermineuse mâle et femelle. La concentration de MF dans le sang périphérique est modélisée pour chaque individu de façon déterministe, et elle s'accroît en fonction du nombre de vers femelles fertiles, tout en diminuant à taux constant. La densité totale de MF dans la population contribue à la densité actuelle de larves L3 chez la population de moustiques piqueurs, où la distribution de L3, parmi la population de moustiques piqueurs, est totalement homogène. Une relation empirique est appliquée à l'absorption de MF par un moustique dans laquelle les courbes d'absorption de Culex et d'Anopheles sont mises en œuvre d'après le contexte. La dynamique du modèle se divise donc en une dynamique humaine individuelle incluant l'âge et le renouvellement ; une dynamique du ver situé à l'intérieur de l'hôte ; une dynamique des microfilaires à l'intérieur de l'hôte ; et enfin, une dynamique des larves à l'intérieur du moustique.
+  summaryTab2Title: À propos du modèle
+  summaryTab2Content: |
+    Il s'agit d'une micro-simulation stochastique d'individus porteurs d'une charge vermineuse, d'une microfilarémie (MF), ainsi que d'autres paramètres démographiques relatifs à l'âge et au risque d'exposition. Les humains sont modélisés individuellement, avec leur propre charge vermineuse mâle et femelle. La concentration de MF dans le sang périphérique est modélisée pour chaque individu de façon déterministe, et elle s'accroît en fonction du nombre de vers femelles fertiles, tout en diminuant à taux constant. La densité totale de MF dans la population contribue à la densité actuelle de larves L3 chez la population de moustiques piqueurs, où la distribution de L3, parmi la population de moustiques piqueurs, est totalement homogène. Une relation empirique est appliquée à l'absorption de MF par un moustique dans laquelle les courbes d'absorption de Culex et d'Anopheles sont mises en œuvre d'après le contexte. La dynamique du modèle se divise donc en une dynamique humaine individuelle incluant l'âge et le renouvellement ; une dynamique du ver situé à l'intérieur de l'hôte ; une dynamique des microfilaires à l'intérieur de l'hôte ; et enfin, une dynamique des larves à l'intérieur du moustique.
+  detailRightActionHeadline: Prédictions pour la schistosomiase
+  detailRightActionIntro: Se reporter aux prédictions fondées sur la modélisation quantitative. Sélectionner un pays pour commencer.
+  detailRightActionButton: Sélectionner un pays
+  detailRightInfoHeadline: À propos du modèle
+  detailRightInfoButton1: Document de modélisation
+  detailRightInfoButton1Target: https://parasitesandvectors.biomedcentral.com/articles/10.1186/s13071-015-1152-3
+  detailContent: | 
+    ## À propos de la schistosomiase
+
+    La schistosomiase est une pathologie liée à la pauvreté, qui engendre des troubles chroniques de la santé. L'infection se contracte lorsque des individus entrent en contact avec de l'eau douce infestée par des formes larvaires (cercaires) de douves sanguines parasitaires, nommées schistosomes. Les vers adultes microscopiques se logent dans les veines drainant les voies urinaires et intestinales. La plupart des œufs pondus sont piégés dans les tissus, la réaction de l'organisme en leur présence pouvant provoquer des dommages considérables.
+
+    Pour plus d'informations sur la schistosomiase, voir le [site Web de l'OMS](https://www.who.int/health-topics/lymphatic-filariasis#tab=tab_1).
+
+
+    ### Charge de morbidité
+
+    La schistosomiase touche près de 240 millions d'individus à travers le monde. Par ailleurs, plus de 700 millions de personnes vivent dans des zones endémiques. Plusieurs millions de personnes dans le monde souffrent d'une morbidité sévère causée par la schistosomiase. Les conséquences économico-sanitaires de la schistosomiase sont considérables, et la maladie handicape davantage qu'elle ne tue. Chez les enfants, la schistosomiase peut provoquer une anémie, un retard de croissance et une diminution de la capacité d'apprentissage, bien que ces effets soient généralement réversibles avec un traitement.
+
+
+    ### Dynamique de transmission
+
+    Les vers adultes microscopiques se logent dans les veines drainant les voies urinaires et intestinales. La plupart des œufs pondus sont piégés dans les tissus, la réaction de l'organisme en leur présence pouvant provoquer des dommages considérables. L'infection est répandue dans les régions tropicales et subtropicales, parmi les communautés pauvres dépourvues d'accès à l'eau potable et d'installations sanitaires adéquates. La schistosomiase urogénitale est causée par Schistosoma haematobium, et la schistosomiase intestinale par l'un des organismes S. guineensis, S. intercalatum, S. mansoni, S. japonicum ou S. mekongi.
+
+
+    ### Interventions
+
+    Le Praziquantel est un traitement efficace, sûr et peu coûteux recommandé contre toutes les formes de schistosomiase. Bien qu'une réinfection post-traitement soit possible, le risque de développer une forme grave de la maladie est réduit, voire inversé lorsque le traitement est initié et renouvelé durant l'enfance.
+
+    La lutte contre la schistosomiase a été mise en œuvre avec succès au cours des 40 dernières années dans plusieurs pays, dont le Brésil, le Cambodge, la Chine, l'Égypte, l'Île Maurice, l'Iran, Oman, la Jordanie, l'Arabie saoudite, le Maroc et la Tunisie.
+
+    Au Burundi, au Burkina Faso, au Ghana, au Niger, au Rwanda, en Sierra Leone, en Tanzanie et au Yémen, il a été possible d'administrer le traitement contre la schistosomiase à l'échelle nationale et de combattre la maladie en quelques années. Une évaluation du statut de la transmission est nécessaire dans plusieurs pays. Au cours des dix dernières années, les campagnes de traitement ont été intensifiées dans plusieurs pays d'Afrique subsaharienne, dans lesquels résident la plupart des personnes à risque.
+
+
+    ### Modèle de simulation
+    Le modèle sous-jacent est stochastique et fondé sur l'individu. Il consiste à dénombrer les vers mâles et femelles dont un individu est infesté au fil du temps et à évaluer le temps et les processus stochastiques d'acquisition et de perte de vers. La principale intervention consiste en une administration massive de médicaments (AMM), pour laquelle nous pouvons appliquer différents niveaux de couverture et fréquences de traitement. Une description complète du modèle figure au chapitre [Progrès de la parasitologie](https://www.sciencedirect.com/science/article/abs/pii/S0065308X16300720?via%3Dihub), dans la section des lectures complémentaires. Veuillez noter que le comportement moyen attendu du modèle stochastique fondé sur les individus est identique aux [prédictions fondées sur une version déterministe du modèle](https://www.sciencedirect.com/science/article/pii/S1755436516300809?via%3Dihub).
+
+    ### Code du modèle
+
+    Nous nous engageons à mettre le code de notre modèle à la disposition des autres modélisateurs. Des liens d'accès au code utilisé dans une publication récente (version déterministe du modèle) sont indiqués ci-après :
+
+    - [Truscott, Gurarie et coll., « A comparison of two mathematical models of the impact of mass drug administration on the transmission and control of schistosomiasis », Epidemics 2017.](https://pubmed.ncbi.nlm.nih.gov/28279453/)
+
+    - [Le code du modèle de l'Imperial College est disponible ici.](https://www.ntdmodelling.org/sites/www.ntdmodelling.org/files/content/ICLSchistoCode.zip) Cet article se concentre sur Schistosoma haematobium, mais le code du modèle comprend un ensemble de paramètres pour Schistosoma mansoni.
+
+
+    ### Données
+
+
+    ### Lectures complémentaires
+
+    Ce [document de modélisation](https://www.sciencedirect.com/science/article/abs/pii/S0065308X16300720?via%3Dihubntd%20modell) fournit une vue d'ensemble du modèle d'accompagnement, ainsi que des paramètres sous-jacents.
+    
+    ### Liens utiles
+
+    - [Atlas mondial des infections à helminthes](http://www.thiswormyworld.org/)
+    
+    - [Banque de données PCT](https://www.who.int/neglected_diseases/preventive_chemotherapy/sch/en/)
+    
+    - [Projet spécial étendu pour l'élimination des maladies tropicales négligées (ESPEN)](https://espen.afro.who.int/diseases/schistosomiasis)
+
+    ### Publications relatives à la modélisation
+
+    Anderson RM, Turner HC, Farrell SH, Yang J, Truscott JE. [What is required in terms of mass drug administration to interrupt the transmission of schistosome parasites in regions of endemic infection?](https://parasitesandvectors.biomedcentral.com/articles/10.1186/s13071-015-1157-y) Parasites & vectors, Déc. 2015 ; 8(1):1-1.
+ 
+    Truscott JE, Gurarie D, Alsallaq R, Toor J, Yoon N, Farrell SH, Turner HC, Phillips AE, Aurelio HO, Ferro J, King CH. [A comparison of two mathematical models of the impact of mass drug administration on the transmission and control of schistosomiasis. Epidemics.](https://www.sciencedirect.com/science/article/pii/S1755436516300809) 1er mars 2017 ; 18:29-37.
+ 
+    Kura K, Truscott JE, Toor J, Anderson RM. [Modelling the impact of a Schistosoma mansoni vaccine and mass drug administration to achieve morbidity control and transmission elimination.](https://journals.plos.org/plosntds/article?id=10.1371/journal.pntd.0007349) PLoS neglected tropical diseases. 5 juin 2019 ; 13(6):e0007349.
+ 
+    Kura K, Hardwick RJ, Truscott JE, Toor J, Hollingsworth TD, Anderson RM. [The impact of mass drug administration on Schistosoma haematobium infection: what is required to achieve morbidity control and elimination?](https://parasitesandvectors.biomedcentral.com/articles/10.1186/s13071-020-04409-3) Parasites & Vectors. Déc. 2020 ; 13(1):1-0.
+ 
+    Kura K, Ayabina D, Toor J, Hollingsworth TD, Anderson RM. [Disruptions to schistosomiasis programmes due to COVID-19: an analysis of potential impact and mitigation strategies.](https://academic.oup.com/trstmh/article/115/3/236/6123945) Transactions of the Royal Society of Tropical Medicine and Hygiene 2021
+ 
+ 
+    Toor J, Turner HC, Truscott JE, Werkman M, Phillips AE, Alsallaq R, Medley GF, King CH, Anderson RM. [The design of schistosomiasis monitoring and evaluation programmes: The importance of collecting adult data to inform treatment strategies for Schistosoma mansoni.](https://journals.plos.org/plosntds/article?id=10.1371/journal.pntd.0006717) PLoS neglected tropical diseases. 8 oct. 2018 ; 12(10):e0006717.
+ 
+    Toor J, Rollinson D, Turner HC, Gouvras A, King CH, Medley GF, Hollingsworth TD, Anderson RM. [Achieving elimination as a public health problem for Schistosoma mansoni and S. haematobium: when is community-wide treatment required?.](https://academic.oup.com/jid/article/221/Supplement_5/S525/5673803?login=true) The Journal of infectious diseases. 11 juin 2020 ; 221(Supplement_5):S525-30.
+ 
+    Toor J, Truscott JE, Werkman M, Turner HC, Phillips AE, King CH, Medley GF, Anderson RM. [Determining post-treatment surveillance criteria for predicting the elimination of Schistosoma mansoni transmission.](https://parasitesandvectors.biomedcentral.com/articles/10.1186/s13071-019-3611-8) Parasites & Vectors. Déc. 2019 ; 12(1):1-7.

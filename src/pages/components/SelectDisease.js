@@ -53,7 +53,7 @@ const SelectDisease = ({ selectIU, showBack }) => {
   const diseasesSelect = diseases.map((d) => {
     return {
       id: d,
-      name: DISEASE_LABELS[d]
+      name: t(DISEASE_LABELS[d])
     }
   })
 

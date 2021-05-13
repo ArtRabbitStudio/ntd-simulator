@@ -17,6 +17,7 @@ import {
 } from 'AppConstants'
 
 const SelectCountry = ({ selectIU, showCountryConfirmation, showIUConfirmation, showBackToCountry,showBackToContinent, countyAndIUSet }) => {
+
   const classes = useStyles()
   const { t } = useTranslation();
   const history = useHistory()
@@ -24,7 +25,6 @@ const SelectCountry = ({ selectIU, showCountryConfirmation, showIUConfirmation, 
 
   const { countrySuggestions, iusByCountrySuggestions, } = useDataAPI()
   const { disease, country, implementationUnit } = useUIState()
-
   const [goTo, setGoTo] = useState(false);
 
   const navigate = (url) => {
@@ -93,7 +93,7 @@ const SelectCountry = ({ selectIU, showCountryConfirmation, showIUConfirmation, 
     navigate()
   };
 
-  const defaultCountrySuggestionOption = { name: t('selectCountry') };
+  const defaultCountrySuggestionOption = { name: 'selectCountry' };
   const defaultIUSuggestionOption = { name: t('selectIU') };
 
   const countrySuggestionsWithDefault = [defaultCountrySuggestionOption].concat(countrySuggestions);
@@ -111,13 +111,13 @@ const SelectCountry = ({ selectIU, showCountryConfirmation, showIUConfirmation, 
 
 
         <span className={`${classes.hideInPrint}`}><CapsHeadline text={selectIU ? (countyAndIUSet ? t('setUpScenario') : t('selectIULong')) : t('selectCountry')} /></span>
-        {!selectIU && <Typography variant="h1" component="h2" className={classes.diseaseHeadline}>{DISEASE_LABELS[disease]} {t("in")}</Typography>}
+        {!selectIU && <Typography variant="h1" component="h2" className={classes.diseaseHeadline}>{t(DISEASE_LABELS[disease])} {t("in")}</Typography>}
         <FormControl className={`${classes.formControl} ${selectIU ? 'large' : 'smaller'}`}>
           <Autocomplete
             id="country"
             options={countrySuggestionsWithDefault}
-            getOptionLabel={option => option.name}
-            getOptionSelected={(a, b) => { return a.name === b.name }} // stop the Autocomplete warning barf
+            getOptionLabel={option => t(`countries.${option.name}`) }
+            getOptionSelected={(a, b) => { return a.id === b.id }} // stop the Autocomplete warning barf
             value={selected ?? defaultCountrySuggestionOption}
             renderInput={params => (
               <TextField {...params} /*InputProps={{ ...params.InputProps, disableUnderline: true }}*/ />

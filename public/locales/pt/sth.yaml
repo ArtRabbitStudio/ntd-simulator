@@ -1,0 +1,66 @@
+  summaryHeadline: Sobre as projeções de helmintos transmitidos pelo solo
+  summarySubtitle: Contexto do modelo e dados utilizados
+  summaryTab1Title: Dados de MDA geográficos e históricos
+  summaryTab1Content: |
+    Os dados de MDA geográficos e históricos constituem uma microssimulação estocástica de indivíduos com ónus de parasitas, microfilária e outros parâmetros demográficos relacionados com a idade e o risco de exposição. Os seres humanos são modelados individualmente, com os seus próprios ónus de parasitas machos e fêmeas. A concentração de mf no sangue periférico é modelada para cada indivíduo deterministicamente, aumentando de acordo com o número de parasitas fêmeas férteis e reduzindo a uma velocidade constante. O total da densidade de mf na população contribui para a densidade atual de larvas L3 na população de mosquitos que picam os seres humanos, em que a distribuição de L3 que picam os seres humanos é totalmente homogénea. É utilizada uma relação derivada empiricamente para o consumo de mf por um mosquito, na qual as curvas de consumo de Culex e Anofeles são implementadas, dependendo do ambiente. Por conseguinte, as dinâmicas do modelo são divididas em dinâmica de humanos individuais, incluindo idade e rendimento; dinâmica dos parasitas no interior do hospedeiro; dinâmica da microfilária no interior do hospedeiro e dinâmica das larvas no interior do mosquito.
+  summaryTab2Title: Sobre o modelo
+  summaryTab2Content: |
+    Trata-se de uma microssimulação estocástica de indivíduos com ónus de parasitas, microfilária e outros parâmetros demográficos relacionados com a idade e o risco de exposição. Os seres humanos são modelados individualmente, com os seus próprios ónus de parasitas machos e fêmeas. A concentração de mf no sangue periférico é modelada para cada indivíduo deterministicamente, aumentando de acordo com o número de parasitas fêmeas férteis e reduzindo a uma velocidade constante. O total da densidade de mf na população contribui para a densidade atual de larvas L3 na população de mosquitos que picam os seres humanos, em que a distribuição de L3 que picam os seres humanos é totalmente homogénea. É utilizada uma relação derivada empiricamente para o consumo de mf por um mosquito, na qual as curvas de consumo de Culex e Anofeles são implementadas, dependendo do ambiente. Por conseguinte, as dinâmicas do modelo são divididas em dinâmica de humanos individuais, incluindo idade e rendimento; dinâmica dos parasitas no interior do hospedeiro; dinâmica da microfilária no interior do hospedeiro e dinâmica das larvas no interior do mosquito.
+  detailRightActionHeadline: Previsões para helmintos transmitidos pelo solo
+  detailRightActionIntro: Consulte as previsões com base no modelo quantitativo. Selecione um país para começar.
+  detailRightActionButton: Selecionar um país
+  detailRightInfoHeadline: Sobre o modelo
+  detailRightInfoButton1: Documento do modelo
+  detailRightInfoButton1Target: https://parasitesandvectors.biomedcentral.com/articles/10.1186/s13071-015-1152-3
+  detailContent: | 
+    ## Sobre os helmintos transmitidos pelo solo
+
+    As infeções por helmintos transmitidos pelo solo (STH) estão entre as infeções mais comuns em todo o mundo e afetam as comunidades mais pobres e menos privilegiadas. São transmitidas pelos óvulos presentes nas fezes humanas que, por sua vez, contaminam os solos em zonas com fracos recursos de saneamento.
+
+    As principais espécies que infetam as pessoas são as lombrigas (Ascaris lumbricoides), os vermes nemátodos (Trichuris trichiura) e as ténias (Necator americanus e Ancylostoma duodenale).
+
+    Os parasitas intestinais produzem um vasto leque de sintomas, incluindo manifestações intestinais (diarreia, dor abdominal), mal estar geral e fraqueza. As ténias provocam perdas de sangue intestinal crónicas que resultam em anemia.
+
+    Pode obter mais informações sobre os helmintos transmitidos pelo solo (STH) no [sítio Web da OMS](https://www.who.int/health-topics/soil-transmitted-helminthiases#tab=tab_1).
+
+    ### Ónus da doença
+
+    A morbilidade está relacionada com o número de parasitas alojados. As pessoas com infeções de baixa intensidade (poucos parasitas), em geral, não sofrem com a infeção. As infeções mais intensas podem provocar uma grande variedade de sintomas, incluindo manifestações intestinais (diarreia e dor abdominal), subnutrição, mal estar geral e fraqueza, bem como perturbações no crescimento e no desenvolvimento físico.
+
+    As infeções muito intensas podem provocar obstrução intestinal, que deverá ser tratada cirurgicamente.
+
+    O S. stercoralis poderá provocar a morbilidade dermatológica e gastrointestinal e também é conhecido como estando associado à subnutrição crónica nas crianças. No caso de redução da imunidade do hospedeiro, o parasita pode provocar a síndrome de hiperinfeção/disseminação, que é invariavelmente fatal se não for imediatamente tratada e, em muitos casos, é fatal mesmo com tratamento.
+
+    ### Dinâmica da transmissão
+
+    Os helmintos transmitidos pelo solo são transmitidos pelos óvulos presentes nas fezes das pessoas infetadas. Os parasitas adultos vivem no intestino, onde produzem milhares de ovos todos os dias. Em zonas onde não exista saneamento adequado, estes ovos contaminam o solo. Isto pode acontecer de várias formas:
+
+    - os ovos que se agarram aos legumes são ingeridos quando os legumes não são corretamente cozinhados, lavados ou descascados;
+
+    - os ovos são ingeridos a partir de lençóis freáticos contaminados;
+
+    - os ovos são ingeridos pelas crianças que brincam em solos contaminados e, depois, põem as mãos na boca sem lavá-las.
+
+    ### Intervenções
+
+    Os fármacos recomendados pela OMS – albendazol (400 mg) e mebendazol (500 mg) – são eficazes, baratos e fáceis de administrar por pessoal não médico (por exemplo, professores). Estes fármacos foram sujeitos a ensaios de segurança completos e têm sido utilizados em milhões de pessoas com poucos e ligeiros efeitos secundários.
+
+    Tanto o albendazol quanto o mebendazol são doados aos ministérios da saúde nacionais pela OMS em todos os países endémicos para tratar todas as crianças em idade escolar. Espera-se que a ivermectina para o controlo do S. stercoralis seja disponibilizada a um preço acessível a partir de 2021.
+
+    ### Modelo de simulação
+
+    O modelo subjacente é estocástico e de base individual. O modelo simula o ónus dos parasitas, a produção de óvulos e o reservatório de material infecioso no ambiente. O modelo pode simular a administração de fármacos em massa (MDA) com diferentes níveis de cobertura e frequências de tratamento. Pode encontrar uma descrição do modelo completa em [Truscott et al. 2016](https://pubmed.ncbi.nlm.nih.gov/27756454/) and [Coffeng et al. 2017](https://www.sciencedirect.com/science/article/pii/S1755436516300780).
+
+    ### Código do modelo
+
+    Pode encontrar o código do modelo básico neste [repositório do GitHub](https://github.com/caro-veg/STH-basic-model).
+
+    O código do modelo é o mesmo para as três espécies de STH (lombrigas, nemátodos, ténias). Apenas os parâmetros de entrada são específicos da espécie.
+
+    ### Dados
+
+    ### Leitura relacionada
+
+    ### Hiperligações úteis
+    
+    ### Publicações de modelos

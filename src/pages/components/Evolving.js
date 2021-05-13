@@ -47,7 +47,6 @@ const Evolving = (props) => {
       <div className={classes.btns}>
         <ArrowButton text={t('helpUsImprove')} url="/help-us-improve" />
         <ArrowButton text={t('reportAProblem')} url="/help-us-improve" />
-        <ArrowButton text={t('modelCodeOnGithub')} url="/help-us-improve" />
       </div>
     </div>
   );

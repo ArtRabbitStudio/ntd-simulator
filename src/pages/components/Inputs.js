@@ -102,7 +102,7 @@ const Inputs = props => {
             </MenuItem>
           {diseases.map(r => (
             <MenuItem key={DISEASE_LABELS[r]} value={r}>
-              {DISEASE_LABELS[r]}
+              {t(DISEASE_LABELS[r])}
             </MenuItem>
           ))}
           <MenuItem key="other" value="other">

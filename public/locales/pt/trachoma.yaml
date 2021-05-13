@@ -1,0 +1,74 @@
+  summaryHeadline: Sobre as projeções para o tracoma
+  summarySubtitle: Contexto do modelo e dados utilizados
+  summaryTab1Title: Dados de MDA geográficos e históricos
+  summaryTab1Content: |
+    Os dados de MDA geográficos e históricos constituem uma microssimulação estocástica de indivíduos com ónus de parasitas, microfilária e outros parâmetros demográficos relacionados com a idade e o risco de exposição. Os seres humanos são modelados individualmente, com os seus próprios ónus de parasitas machos e fêmeas. A concentração de mf no sangue periférico é modelada para cada indivíduo deterministicamente, aumentando de acordo com o número de parasitas fêmeas férteis e reduzindo a uma velocidade constante. O total da densidade de mf na população contribui para a densidade atual de larvas L3 na população de mosquitos que picam os seres humanos, em que a distribuição de L3 que picam os seres humanos é totalmente homogénea. É utilizada uma relação derivada empiricamente para o consumo de mf por um mosquito, na qual as curvas de consumo de Culex e Anofeles são implementadas, dependendo do ambiente. Por conseguinte, as dinâmicas do modelo são divididas em dinâmica de humanos individuais, incluindo idade e rendimento; dinâmica dos parasitas no interior do hospedeiro; dinâmica da microfilária no interior do hospedeiro e dinâmica das larvas no interior do mosquito.
+  summaryTab2Title: Sobre o modelo
+  summaryTab2Content: |
+    Trata-se de uma microssimulação estocástica de indivíduos com ónus de parasitas, microfilária e outros parâmetros demográficos relacionados com a idade e o risco de exposição. Os seres humanos são modelados individualmente, com os seus próprios ónus de parasitas machos e fêmeas. A concentração de mf no sangue periférico é modelada para cada indivíduo deterministicamente, aumentando de acordo com o número de parasitas fêmeas férteis e reduzindo a uma velocidade constante. O total da densidade de mf na população contribui para a densidade atual de larvas L3 na população de mosquitos que picam os seres humanos, em que a distribuição de L3 que picam os seres humanos é totalmente homogénea. É utilizada uma relação derivada empiricamente para o consumo de mf por um mosquito, na qual as curvas de consumo de Culex e Anofeles são implementadas, dependendo do ambiente. Por conseguinte, as dinâmicas do modelo são divididas em dinâmica de humanos individuais, incluindo idade e rendimento; dinâmica dos parasitas no interior do hospedeiro; dinâmica da microfilária no interior do hospedeiro e dinâmica das larvas no interior do mosquito.
+  detailRightActionHeadline: Previsões para o tracoma
+  detailRightActionIntro: Consulte as previsões com base no modelo quantitativo. Selecione um país para começar.
+  detailRightActionButton: Selecionar um país
+  detailRightInfoHeadline: Sobre o modelo
+  detailRightInfoButton1: Documento do modelo
+  detailRightInfoButton1Target: https://parasitesandvectors.biomedcentral.com/articles/10.1186/s13071-015-1152-3
+  detailContent: | 
+    ## Sobre o tracoma
+
+    O tracoma é a principal causa infecciosa de cegueira em todo o mundo. É provocado por uma bactéria intracelular chamada Chlamydia trachomatis. A infeção é transmitida por transferência direta ou indireta das descargas dos olhos e do nariz de pessoas infetadas, em particular das crianças pequenas que acolhem o principal reservatório da infeção. Espécies particulares de moscas podem disseminar estas descargas.
+
+    Para obter mais informações sobre o tracoma, visite o [sítio Web da OMS.](https://www.who.int/health-topics/trachoma#tab=tab_1)
+
+
+    ### Ónus da doença
+
+    O tracoma é hiperendémico em muitas das mais pobres e mais rurais zonas de África, da América Central e do Sul, da Ásia, Austrália e Médio Oriente. É responsável pela cegueira ou deficiência visual de cerca de 1,9 milhões de pessoas. Provoca cerca de 1,4% de todos os casos de cegueira a nível mundial.
+
+    Em geral, África continua a ser o continente mais afetado e o que apresenta os esforços de controlo mais intensivos. O ónus do tracoma nos indivíduos e comunidades afetados é enorme. Estima-se que o custo económico em termos de perda de produtividade devido à cegueira ou deficiência visual ascenda aos 2,9-5,3 mil milhões anualmente, chegando aos 8 milhões de dólares norte-americanos se incluirmos a triquíase.
+
+    A deficiência visual ou a cegueira resulta num agravamento da experiência de vida dos indivíduos afetados e das suas famílias que, regra geral, já se encontram entre os mais pobres dos pobres. As mulheres cegam 4 vezes mais do que os homens, provavelmente devido ao seu contacto próximo com crianças infetadas, e apresentam um número mais elevado de episódios de infeção.
+
+
+
+    ### Dinâmica da transmissão
+
+    A infeção dissemina-se através do contacto pessoal (através das mãos, vestuário ou roupa de cama) e através de moscas que tenham estado em contacto com descargas dos olhos ou do nariz de uma pessoa infetada. Com a repetição de episódios ao longo de muitos anos, as pestanas podem recolher-se nas pálpebras, com fricção na superfície do olho, provocando dor e desconforto e danos permanentes na córnea.
+
+    Em zonas em que o tracoma seja endémico, o tracoma ativo (inflamatório) é comum entre as crianças em idade pré-escolar, com taxas de prevalência que podem chegar aos 60-90%. A infeção torna-se menos frequente e com uma duração mais reduzida à medida que a idade avança. Regra geral, a infeção é adquirida devido à proximidade com outras pessoas que tenham a doença ativa e a família é o principal ambiente de transmissão. Embora o sistema imunitário de um indivíduo consiga combater um único episódio de infeção, a reaquisição do organismo ocorre frequentemente nas comunidades endémicas.
+
+
+
+    ### Intervenções
+
+    Estão a ser implementados programas de eliminação em países endémicos que utilizam a estratégia **SAFE** recomendada pela OMS. Consistem em:
+
+    - **C**irurgia para tratar a fase da cegueira (trachomatous trichiasis);
+
+    - **A**ntibióticos para resolver a infeção, em particular a administração em massa do antibiótico azitromicina, que é doado pelo fabricante para os programas de erradicação, através da Iniciativa Internacional do Tracoma (International Trachoma Initiative);
+
+    - **L**impeza facial e
+
+    - **M**elhoria ambiental, melhorando particularmente o acesso a água e saneamento.
+
+    A maior parte dos países endémicos concordou em acelerar a implementação desta estratégia para alcançar as metas de erradicação. Os dados comunicados à OMS pelos Estados-Membros referentes a 2019 mostram que 92 622 pessoas com triquíase tracomatosa receberam cirurgia corretiva nesse ano e 95,2 milhões de pessoas em comunidades endémicas foram tratadas com antibióticos com vista à eliminação do tracoma.
+
+
+
+    ### Modelo de simulação
+
+  
+
+
+    ### Código do modelo
+
+
+
+
+    ### Dados
+
+
+    ### Leitura relacionada
+
+  
+
+    ### Publicações de modelos

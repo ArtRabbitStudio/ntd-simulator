@@ -5,7 +5,10 @@ import ArrowButton from '../ArrowButton'
 
 import { useTranslation } from "react-i18next";
 import {
-  DISEASE_LABELS
+  DISEASE_LABELS,
+  DISEASE_STH_ROUNDWORM,
+  DISEASE_STH_WHIPWORM,
+  DISEASE_STH_HOOKWORM
 } from 'AppConstants'
 
 import ico1 from 'images/lf-icon.svg';
@@ -82,7 +85,13 @@ const useStyles = makeStyles(theme => ({
 
 export default function IntroWrap(props) {
   //const { t } = useTranslation();
-  const { t } = useTranslation(['translation',props.ident]);
+  let translationID = props.ident
+  if ( translationID === DISEASE_STH_ROUNDWORM ||
+       translationID === DISEASE_STH_WHIPWORM ||
+       translationID === DISEASE_STH_HOOKWORM ) {
+    translationID = 'sth';
+  }
+  const { t } = useTranslation(['translation',translationID]);
   const classes = useStyles();
 
   return (
@@ -92,10 +101,10 @@ export default function IntroWrap(props) {
       <div className={classes.headlinesWrap}>
         <div className={`${classes.headlines} icon-${props.ident}`}>
           <Typography variant="h3" component="h5" className={`${classes.headline}`}>
-            {`${t(`${props.ident}:summaryHeadline`)}`}
+            {`${t(`${translationID}:summaryHeadline`)}`}
           </Typography>
           <Typography variant="h5" component="h6" className={classes.subHeadline}>
-            {`${t(`${props.ident}:summarySubtitle`)}`}
+            {`${t(`${translationID}:summarySubtitle`)}`}
           </Typography>
         </div>
         <div className={classes.btn}>

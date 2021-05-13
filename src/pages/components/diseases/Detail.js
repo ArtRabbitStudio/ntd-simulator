@@ -91,7 +91,7 @@ export default function DetailWrap(props) {
   
         {props.disease && <CapsHeadline text={t("DiseaseOverview")} />}
         {props.disease && <div>
-          <Typography gutterBottom variant="h1" className={`${classes.withIcon} icon-${disease}`}>{DISEASE_LABELS[disease]}</Typography>
+          <Typography gutterBottom variant="h1" className={`${classes.withIcon} icon-${disease}`}>{t(DISEASE_LABELS[disease])}</Typography>
         </div>}
   
         <div className={classes.wrap}>

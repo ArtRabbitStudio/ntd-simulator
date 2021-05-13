@@ -1,12 +1,14 @@
 import React from 'react'
 import { Tooltip as MuiTooltip } from '@material-ui/core'
 import { NO_DATA } from 'AppConstants'
+import { useTranslation } from 'react-i18next';
 
 export default function Tooltip({ feature, year, position, hideTrend }) {
+  const { t } = useTranslation();
   const { endemicity, name, performance, [`prev-${year}`]: prevalence } = feature.properties
   const [x, y] = position
 
-  let trend = performance <= 0 ? ' | Trend: ⬇' + -1 * performance + '% ' : ' | Trend: ⬆' + performance + '%'
+  let trend = performance <= 0 ? ` | ${t('Trend')}: ⬇ ${ -1 * performance } '% ` : ` | ${t('Trend')}: ⬆ ${performance}%`
   if (performance === 0) {
     trend = '';
   }
