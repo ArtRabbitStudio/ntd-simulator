@@ -10,8 +10,7 @@ export default function IntroSth(props) {
   return (
 
     <IntroWrap ident={DISEASE_STH_ROUNDWORM}>
-      <AccordionElement title={t('sth:summaryHeadline')}>
-        {t('sth:summaryTab1Title')}
+      <AccordionElement title={t('sth:summaryTab1Title')}>
         {t('sth:summaryTab1Content')}
       </AccordionElement>
       <AccordionElement title={t('sth:summaryTab2Title')}>

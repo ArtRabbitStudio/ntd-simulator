@@ -9,8 +9,7 @@ export default function IntroHW(props) {
   return (
 
     <IntroWrap ident={DISEASE_SCH_MANSONI}>
-      <AccordionElement title={t('sch-mansoni:summaryHeadline')}>
-        {t('sch-mansoni:summaryTab1Title')}
+      <AccordionElement title={t('sch-mansoni:summaryTab1Title')}>
         {t('sch-mansoni:summaryTab1Content')}
       </AccordionElement>
       <AccordionElement title={t('sch-mansoni:summaryTab2Title')}>

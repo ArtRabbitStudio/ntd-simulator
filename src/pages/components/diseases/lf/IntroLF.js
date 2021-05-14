@@ -12,8 +12,7 @@ export default function IntroLF(props) {
   return (
 
     <IntroWrap ident={DISEASE_LIMF} >
-      <AccordionElement title={t('lf:summaryHeadline')}>
-        {t('lf:summaryTab1Title')}
+      <AccordionElement title={t('lf:summaryTab1Title')}>
         {t('lf:summaryTab1Content')}
       </AccordionElement>
       <AccordionElement title={t('lf:summaryTab2Title')}>

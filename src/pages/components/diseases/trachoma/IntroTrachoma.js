@@ -9,8 +9,7 @@ export default function IntroTrachoma(props) {
   return (
 
     <IntroWrap ident={DISEASE_TRACHOMA}>
-      <AccordionElement title={t('trachoma:summaryHeadline')}>
-        {t('trachoma:summaryTab1Title')}
+      <AccordionElement title={t('trachoma:summaryTab1Title')}>
         {t('trachoma:summaryTab1Content')}
       </AccordionElement>
       <AccordionElement title={t('trachoma:summaryTab2Title')}>
