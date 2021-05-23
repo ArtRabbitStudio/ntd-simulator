@@ -227,6 +227,7 @@ function createEntries({ data, relations, key, disease }) {
   const entr = flow(
     map((row) => {
       const { [key]: id, Population } = row;
+
       const meta = groupRelByKey[id][0];
 
       // retrieve entity names from relations
