@@ -319,7 +319,7 @@ export default {
       [ DISEASE_STH_ROUNDWORM ]: 'Asc',
       [ DISEASE_STH_WHIPWORM ]: 'Tri',
       [ DISEASE_STH_HOOKWORM ]: 'Hook',
-      [ DISEASE_SCH_MANSONI ]: ' Man',
+      [ DISEASE_SCH_MANSONI ]: 'Man',
       [ DISEASE_TRACHOMA ]: 'Trac',
     }[ this.modelDiseaseType ];
     const infoJsonUrl = `${storagePath}/diseases/${this.modelDiseaseType}/output-data/${country}/${simState.IUData.id}/${digest}/${diseasePrefix}-${iu}-${digest}-info.json?ignoreCache=${Date.now()}`;
@@ -397,7 +397,7 @@ export default {
     };
 
     const trachomaPromiseNames = [ 'historical', 'future' ];
-    const otherPromiseNames = [ 'historicalKKSAC', 'historicalMHISAC', 'futureKKSAC', 'futureMHISAC' ];
+    const otherPromiseNames = [ 'historicalKKSAC', 'historicalIntensity', 'futureKKSAC', 'futureIntensity' ];
 
     const promises = ( this.modelDiseaseType === DISEASE_TRACHOMA ? trachomaPromiseNames : otherPromiseNames ).reduce(
       ( acc, label ) => {
@@ -429,19 +429,19 @@ export default {
     };
 
     /*
-     * STH and SCH models have KKSAC and MHISAC for both historical and future
+     * STH and SCH models have KKSAC and Intensity for both historical and future
      */
     const otherPromiseHandler = (
       [
-        historicalKKSACData, historicalKKSACSummary, historicalMHISACData, historicalMHISACSummary,
-        futureKKSACData, futureKKSACSummary, futureMHISACData, futureMHISACSummary
+        historicalKKSACData, historicalKKSACSummary, historicalIntensityData, historicalIntensitySummary,
+        futureKKSACData, futureKKSACSummary, futureIntensityData, futureIntensitySummary
       ]
     ) => {
 
       const combinedDataKK = combineData( historicalKKSACData, futureKKSACData, null );
       const combinedSummaryKK = combineSummaries( historicalKKSACSummary, futureKKSACSummary,null );
-      const combinedDataMHI = combineData( historicalMHISACData, futureMHISACData, null );
-      const combinedSummaryMHI = combineSummaries( historicalMHISACSummary, futureMHISACSummary, null );
+      const combinedDataMHI = combineData( historicalIntensityData, futureIntensityData, null );
+      const combinedSummaryMHI = combineSummaries( historicalIntensitySummary, futureIntensitySummary, null );
 
       const result = {
         ...scenarioData,
@@ -449,7 +449,7 @@ export default {
         summary: { KK: combinedSummaryKK, MHI: combinedSummaryMHI}
       };
 
-      console.warn( `TODO implement combining MHISAC data/summary for ${this.modelDiseaseLabel}` );
+      console.warn( `TODO implement combining (M)HISAC intensity data/summary for ${this.modelDiseaseLabel}` );
 
       console.log( `${this.modelDiseaseLabel} result:`, result );
       console.log( `${this.modelDiseaseLabel}.runScenario combined all data, calling resultCallback` );
