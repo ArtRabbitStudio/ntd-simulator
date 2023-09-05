@@ -109,18 +109,6 @@ const Footer = (props) => {
                   <Link component={RouterLink} to="/disease/lf" color="inherit">{t('LymphaticFilariasis')}</Link>
                 </Typography>
                 <Typography component="li" variant="body2">
-                  <Link component={RouterLink} to="/disease/sch-mansoni" color="inherit">{t('SchistosomiasisMansoni')}</Link>
-                </Typography>
-                <Typography component="li" variant="body2">
-                  <Link component={RouterLink} to="/disease/sth-roundworm" color="inherit">{t('SoilTransmittedHelmithiasisRoundworm')}</Link>
-                </Typography>
-                <Typography component="li" variant="body2">
-                  <Link component={RouterLink} to="/disease/sth-hookworm" color="inherit">{t('SoilTransmittedHelmithiasisHookworm')}</Link>
-                </Typography>
-                <Typography component="li" variant="body2">
-                  <Link component={RouterLink} to="/disease/sth-whipworm" color="inherit">{t('SoilTransmittedHelmithiasisWhipworm')}</Link>
-                </Typography>
-                <Typography component="li" variant="body2">
                   <Link component={RouterLink} to="/disease/trachoma" color="inherit">{t('Trachoma')}</Link>
                 </Typography>
               </ul>
