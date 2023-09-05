@@ -753,10 +753,12 @@ class DataAPI {
     return [
       DISEASE_LIMF,
       DISEASE_TRACHOMA,
-      DISEASE_STH_ROUNDWORM,
+      /*DISEASE_STH_ROUNDWORM,
       DISEASE_STH_WHIPWORM,
       DISEASE_STH_HOOKWORM,
       DISEASE_SCH_MANSONI
+      TE removed, models need updating
+      */
     ];
   }
 
