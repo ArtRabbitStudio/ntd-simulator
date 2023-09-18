@@ -93,6 +93,8 @@
   "MDATargetCoverage": "Cobertura da meta da MDA",
   "inseticideCoverage": "Cobertura de inseticida",
   "MDADrugRegimen": "Regime de fármacos da MDA",
+  "microfilaricide": "Microfilaricide",
+  "macrofilaricide": "Macrofilaricide",
   "MoreAbout": "Mais sobre o modelo de STH",
 
   "InfantsTitle": "A percentagem de bebés que será tratada.",

@@ -15,6 +15,8 @@ import {
   SettingBedNetCoverage,
   SettingInsecticideCoverage,
   SettingSystematicAdherence,
+  SettingMicrofilaricide,
+  SettingMacrofilaricide
 } from 'pages/components/simulator/settings';
 
 
@@ -89,6 +91,18 @@ const SetupLF = (props) => {
             label={t('MDADrugRegimen')}
             value={simState.settings.mdaRegimen}
           />
+          {simState.settings.mdaRegimen === 'custom' &&<div className={classes.mT}>
+            <SettingMicrofilaricide
+              inModal={false}
+              label={t('microfilaricide')}
+              value={simState.settings.microfilaricide}
+            />
+            <SettingMacrofilaricide
+              inModal={false}
+              label={t('macrofilaricide')}
+              value={simState.settings.macrofilaricide}
+            />
+          </div>}
         </div>
       </div>
 

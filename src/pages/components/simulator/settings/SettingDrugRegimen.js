@@ -22,6 +22,9 @@ const SettingDrugRegimen = ({ inModal, label, value, onChange, classAdd, scenari
   /* TODO FIXME */
   const handleChange = (event) => {
 
+    // if event.target.value === 'custom'
+    // show additional sliders
+
     if ( isPerIUSetting ) {
       dispatchSimState({
         type: 'mdaRegimen',
@@ -77,9 +80,8 @@ const SettingDrugRegimen = ({ inModal, label, value, onChange, classAdd, scenari
         <MenuItem value={'xIA'}>albendazole + ivermectin</MenuItem>
         <MenuItem value={'xDA'}>albendazole + diethylcarbamazine</MenuItem>
         <MenuItem value={'xxA'}>albendazole</MenuItem>
-        <MenuItem value={'IDA'}>
-          ivermectin + albendazole + diethylcarbamazine
-        </MenuItem>
+        <MenuItem value={'IDA'}>ivermectin + albendazole + diethylcarbamazine</MenuItem>
+        <MenuItem value={'custom'}>custom</MenuItem>
       </Select>
     </FormControl>
   )

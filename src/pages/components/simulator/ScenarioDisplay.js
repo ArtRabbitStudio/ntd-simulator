@@ -39,6 +39,8 @@ import {
   SettingSpecificScenario,
   SettingSystematicAdherence,
   SettingTargetCoverage,
+  SettingMicrofilaricide,
+  SettingMacrofilaricide
 } from 'pages/components/simulator/settings'
 import useStyles from 'pages/components/simulator/styles'
 import TextContents from 'pages/components/TextContents'
@@ -209,7 +211,7 @@ const ScenarioDisplay = (props) => {
 
 
             <Typography className={`${classes.caps} closer`} variant="h6" component="h6">
-              {t('Settings')}
+              {t('settings')}
             </Typography>
 
             <ChartSettings
@@ -243,8 +245,21 @@ const ScenarioDisplay = (props) => {
               <SettingFrequency inModal={true} label={t('treatmentFrequency')} disease={disease} />
 
               {disease === AppConstants.DISEASE_LIMF &&
+              <Box>
                 <SettingDrugRegimen inModal={true} label={t('drugRegimen')} />
+               </Box>
               }
+
+              {scenarioData.settings.mdaRegimen === 'custom' && <Box>
+                        <SettingMicrofilaricide
+                          inModal={true}
+                          label={t('microfilaricide')}
+                        />
+                        <SettingMacrofilaricide
+                          inModal={true}
+                          label={t('macrofilaricide')}
+                        />
+                    </Box>}
 
               {disease === AppConstants.DISEASE_LIMF &&
                 <SettingTargetCoverage

@@ -10,8 +10,10 @@ import SettingInsecticideCoverage from "./SettingInsecticideCoverage";
 import SettingPrecision from "./SettingPrecision";
 import SettingSystematicAdherence from "./SettingSystematicAdherence";
 import SettingSpecificScenario from "./SettingSpecificScenario";
+import SettingMicrofilaricide from "./SettingMicrofilaricide";
+import SettingMacrofilaricide from "./SettingMacrofilaricide";
 
 export {
   SettingName, SettingFrequency, SettingTargetCoverage, SettingDrugRegimen, SettingBasePrevalence, SettingNumberOfRuns, SettingMosquitoType,
-  SettingBedNetCoverage, SettingInsecticideCoverage, SettingPrecision, SettingSystematicAdherence, SettingSpecificScenario
+  SettingBedNetCoverage, SettingInsecticideCoverage, SettingPrecision, SettingSystematicAdherence, SettingSpecificScenario, SettingMicrofilaricide, SettingMacrofilaricide
 }

@@ -745,11 +745,31 @@ export var statFunctions = {
     var ps = simControler.params
     //TODO: regimen is NaN seems odd
     //console.log('setPropMDA',regimen,ps)
+    var regimenToProcess = 5; //hardcoded value 5 from original transfil custom check box value
+    
+    if (regimen === 'xIA') {
+      params.wPropMDA = 0.65
+      params.mfPropMDA = 0.01
+      params.fecRed = 9.0
+    } else if (regimen === 'xxA') {
+      params.wPropMDA = 0.65
+      params.mfPropMDA = 1
+      params.fecRed = 0
+    } else if (regimen === 'xDA') {
+      params.wPropMDA = 0.45
+      params.mfPropMDA = 0.05
+      params.fecRed = 6.0
+    } else if (regimen === 'IDA') {
+      params.wPropMDA = 0
+      params.mfPropMDA = 0
+      params.fecRed = 0
+    } else {
+      var chis = [0.99, 0.95, 0.99, 1.0, Number(ps.microfilaricide) / 100, 0.99]
+      var taus = [0.35, 0.55, 0.1, 1.0, Number(ps.macrofilaricide) / 100, 0.1]
+      params.mfPropMDA = 1 - chis[Number( regimenToProcess ) - 1] 
+      params.wPropMDA = 1 - taus[Number( regimenToProcess ) - 1] 
+    }
 
-    var chis = [0.99, 0.95, 0.99, 1.0, Number(ps.microfilaricide) / 100, 0.99]
-    var taus = [0.35, 0.55, 0.1, 1.0, Number(ps.macrofilaricide) / 100, 0.1]
-    params.mfPropMDA = 1 - chis[Number(regimen) - 1]
-    params.wPropMDA = 1 - taus[Number(regimen) - 1]
   },
 
   closest: function (num, arr) {
@@ -923,7 +943,7 @@ export var statFunctions = {
     params.vecCap = Number(ps.vecCap)
     params.vecComp = Number(ps.vecComp)
     params.vecD = Number(ps.vecD)
-    statFunctions.setPropMDA(Number(ps.mdaRegimen))
+    statFunctions.setPropMDA(ps.mdaRegimen)
     params.rho = Number(ps.rho)
     params.rhoBComp = Number(ps.rhoBComp)
     params.rhoCN = Number(ps.rhoCN)

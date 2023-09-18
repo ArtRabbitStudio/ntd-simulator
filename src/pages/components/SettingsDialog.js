@@ -1,5 +1,6 @@
 import React, { /* useState */ } from 'react';
 import {
+  Box,
   Grid,
   Typography,
 } from '@material-ui/core';
@@ -19,6 +20,8 @@ import {
   SettingSpecificScenario,
   SettingSystematicAdherence,
   SettingTargetCoverage,
+  SettingMicrofilaricide,
+  SettingMacrofilaricide
 } from 'pages/components/simulator/settings';
 import { useScenarioStore } from 'store/scenarioStore';
 
@@ -73,6 +76,19 @@ const SettingsDialog = ( props ) => {
           inModal={true}
           label={t('drugRegimen')}
         />
+
+        <Box>
+          <SettingMicrofilaricide
+            scenarioId={ scenarioData.id }
+            inModal={true}
+            label={t('microfilaricide')}
+          />
+          <SettingMacrofilaricide
+            scenarioId={ scenarioData.id }
+            inModal={true}
+            label={t('macrofilaricide')}
+          />
+        </Box>
 
         <SettingTargetCoverage
           scenarioId={ scenarioData.id }

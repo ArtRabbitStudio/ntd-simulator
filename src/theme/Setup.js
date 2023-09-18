@@ -46,6 +46,9 @@ const useStyles = makeStyles((theme) => ({
     fontSize: 18,
     fontWeight: 500,
   },
+  mT: {
+    marginTop: theme.spacing(2)
+  },
   chart: {
     paddingBottom: theme.spacing(4),
     paddingTop: theme.spacing(4),

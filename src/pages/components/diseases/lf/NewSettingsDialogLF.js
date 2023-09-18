@@ -1,5 +1,7 @@
 import React, { /* useState */ } from 'react';
-
+import {
+  Box,
+} from '@material-ui/core';
 import NewScenarioSettingsDialog from 'pages/components/simulator/NewScenarioSettingsDialog';
 import { useTranslation } from "react-i18next";
 
@@ -11,6 +13,8 @@ import {
   SettingMosquitoType,
   SettingSystematicAdherence,
   SettingTargetCoverage,
+  SettingMicrofilaricide,
+  SettingMacrofilaricide
 } from 'pages/components/simulator/settings';
 
 const NewSettingsDialogLF = ( { scenarioData, action, cancel, newScenarioSettingsOpen } ) => {
@@ -43,6 +47,19 @@ const NewSettingsDialogLF = ( { scenarioData, action, cancel, newScenarioSetting
         inModal={true}
         label={t('drugRegimen')}
       />
+
+      {scenarioData.settings.mdaRegimen === 'custom' && <Box>
+          <SettingMicrofilaricide
+            scenarioId={ scenarioData.id }
+            inModal={true}
+            label={t('microfilaricide')}
+          />
+          <SettingMacrofilaricide
+            scenarioId={ scenarioData.id }
+            inModal={true}
+            label={t('macrofilaricide')}
+          />
+      </Box>}
 
       <SettingTargetCoverage
         scenarioId={ scenarioData.id }
