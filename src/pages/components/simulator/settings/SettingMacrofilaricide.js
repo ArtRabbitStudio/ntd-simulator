@@ -42,7 +42,7 @@ const SettingMacrofilaricide = ({
   return (
     <FormControl fullWidth className={`${classes.formControl} ${classAdd}`}>
       <Tooltip
-        title={t('controls')}
+        title={t('macrofilaricideHelp')}
         aria-label="info"
       >
         <FormLabel
@@ -50,8 +50,8 @@ const SettingMacrofilaricide = ({
           htmlFor="macrofilaricide"
           className={
             inModal
-              ? ``
-              : `${classes.withSlider} ${classes.centered}`
+              ? classes.withHelp
+              : `${classes.withSlider} ${classes.centered} ${classes.withHelp}`
           }
         >
           {label}

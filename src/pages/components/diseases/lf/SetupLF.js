@@ -16,7 +16,8 @@ import {
   SettingInsecticideCoverage,
   SettingSystematicAdherence,
   SettingMicrofilaricide,
-  SettingMacrofilaricide
+  SettingMacrofilaricide,
+  SettingfecRed
 } from 'pages/components/simulator/settings';
 
 
@@ -26,6 +27,7 @@ const SetupLF = (props) => {
   const classes = useStyles();
   const { simState, dispatchSimState } = useSimulatorStore();
 
+  console.log('simState',simState)
   return (
 
     <PerDiseaseSetup disease={props.disease}>
@@ -101,6 +103,11 @@ const SetupLF = (props) => {
               inModal={false}
               label={t('macrofilaricide')}
               value={simState.settings.macrofilaricide}
+            />
+            <SettingfecRed
+              inModal={false}
+              label={t('fecRed')}
+              value={simState.settings.fecRed}
             />
           </div>}
         </div>

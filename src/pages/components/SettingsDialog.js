@@ -21,7 +21,8 @@ import {
   SettingSystematicAdherence,
   SettingTargetCoverage,
   SettingMicrofilaricide,
-  SettingMacrofilaricide
+  SettingMacrofilaricide,
+  SettingfecRed
 } from 'pages/components/simulator/settings';
 import { useScenarioStore } from 'store/scenarioStore';
 
@@ -87,6 +88,11 @@ const SettingsDialog = ( props ) => {
             scenarioId={ scenarioData.id }
             inModal={true}
             label={t('macrofilaricide')}
+          />
+          <SettingfecRed
+            scenarioId={ scenarioData.id }
+            inModal={true}
+            label={t('fecRed')}
           />
         </Box>
 

@@ -14,7 +14,8 @@ import {
   SettingSystematicAdherence,
   SettingTargetCoverage,
   SettingMicrofilaricide,
-  SettingMacrofilaricide
+  SettingMacrofilaricide,
+  SettingfecRed
 } from 'pages/components/simulator/settings';
 
 const NewSettingsDialogLF = ( { scenarioData, action, cancel, newScenarioSettingsOpen } ) => {
@@ -58,6 +59,11 @@ const NewSettingsDialogLF = ( { scenarioData, action, cancel, newScenarioSetting
             scenarioId={ scenarioData.id }
             inModal={true}
             label={t('macrofilaricide')}
+          />
+          <SettingfecRed
+            scenarioId={ scenarioData.id }
+            inModal={true}
+            label={t('fecRed')}
           />
       </Box>}
 

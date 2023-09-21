@@ -45,7 +45,6 @@ export const loadAllIUhistoricData = async (
   SessionStorage.simulatorState = null;
   SessionStorage.removeAllScenarios();
 
-
   // set default values
   const defaultSimParams = {
     settings: {
@@ -68,7 +67,7 @@ export const loadAllIUhistoricData = async (
     vecCap: 0, // $("#vectorialCapacity").val(),
     vecComp: 0, //$("#vectorialCompetence").val(),
     vecD: 0, //$("#vectorialDeathRate").val(),
-
+    fecRed: 0,
 
     // additions for sth roundworm
     // "cov_infants","cov_preSAC","cov_SAC","cov_adults"

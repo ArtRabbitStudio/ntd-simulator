@@ -64,6 +64,7 @@ const initialState = ( () => {
         coveragePreSAC: 0,
         coverageSAC: 75, // who guidelines
         coverageAdults: 0, 
+        fecRed: 0,
       },
 
       IUData: {
@@ -209,6 +210,11 @@ const reducer = ( incomingSimState, action ) => {
       return {
         ...simState,
         settings: { ...simState.settings, microfilaricide: action.payload }
+      }
+    case 'fecRed':
+      return {
+        ...simState,
+        settings: { ...simState.settings, fecRed: action.payload }
       }
     case 'runs':
       return {

@@ -760,14 +760,15 @@ export var statFunctions = {
       params.mfPropMDA = 0.05
       params.fecRed = 6.0
     } else if (regimen === 'IDA') {
-      params.wPropMDA = 0
+      params.wPropMDA = 0.45
       params.mfPropMDA = 0
       params.fecRed = 0
     } else {
       var chis = [0.99, 0.95, 0.99, 1.0, Number(ps.microfilaricide) / 100, 0.99]
       var taus = [0.35, 0.55, 0.1, 1.0, Number(ps.macrofilaricide) / 100, 0.1]
-      params.mfPropMDA = 1 - chis[Number( regimenToProcess ) - 1] 
-      params.wPropMDA = 1 - taus[Number( regimenToProcess ) - 1] 
+      params.mfPropMDA = 1 - Number(ps.microfilaricide) / 100//1 - chis[Number( regimenToProcess ) - 1] 
+      params.wPropMDA = 1 - Number(ps.macrofilaricide) / 100//1 - taus[Number( regimenToProcess ) - 1] 
+      params.fecRed = ps.fecRed;
     }
 
   },
@@ -905,7 +906,7 @@ export var statFunctions = {
       params.mfPropMDA = 0.05
       params.fecRed = 6.0
     } else if (regimen === 'IDA') {
-      params.wPropMDA = 0
+      params.wPropMDA = 0.45
       params.mfPropMDA = 0
       params.fecRed = 0
     }
@@ -943,6 +944,7 @@ export var statFunctions = {
     params.vecCap = Number(ps.vecCap)
     params.vecComp = Number(ps.vecComp)
     params.vecD = Number(ps.vecD)
+    params.fecRed = Number(ps.fecRed)
     statFunctions.setPropMDA(ps.mdaRegimen)
     params.rho = Number(ps.rho)
     params.rhoBComp = Number(ps.rhoBComp)
@@ -1165,7 +1167,8 @@ export var simControler = {
             specificPrediction: this.params.specificPrediction,
             specificPredictionIndex: this.params.specificPredictionIndex,
             macrofilaricide: this.params.macrofilaricide,
-            microfilaricide: this.params.microfilaricide
+            microfilaricide: this.params.microfilaricide,
+            fecRed: this.params.fecRed
 
           };
 

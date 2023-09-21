@@ -7,7 +7,7 @@ import { useScenarioStore, ScenarioStoreConstants } from "store/scenarioStore";
 import { FormControl, Slider, FormLabel, Tooltip } from '@material-ui/core'
 import { useTranslation } from 'react-i18next';
 
-const SettingMicrofilaricide = ({
+const SettingfecRed = ({
   inModal,
   label,
   classAdd,
@@ -28,27 +28,28 @@ const SettingMicrofilaricide = ({
   const handleChange = (event, newValue) => {
     if ( isPerIUSetting ) {
       // this used to be a special occastion. If nothing changes we can use the handleSlerChanges handler instead.
-      dispatchSimState({ type: 'microfilaricide', payload: newValue })
+      dispatchSimState({ type: 'fecRed', payload: newValue })
     }
     else {
       dispatchScenarioStateUpdate( {
         type: ScenarioStoreConstants.ACTION_TYPES.UPDATE_SCENARIO_SETTING_BY_ID,
         id: scenarioId,
-        key: 'microfilaricide',
+        key: 'fecRed',
         value: newValue
       } );
     }
   }
 
+
   return (
     <FormControl fullWidth className={`${classes.formControl} ${classAdd}`}>
-       <Tooltip
-        title={t('microfilaricideHelp')}
+      <Tooltip
+        title={t('fecRedHelp')}
         aria-label="info"
       >
         <FormLabel
           component="legend"
-          htmlFor="microfilaricide"
+          htmlFor="fecRed"
           className={
             inModal
               ? classes.withHelp
@@ -57,12 +58,12 @@ const SettingMicrofilaricide = ({
         >
           {label}
         </FormLabel>
-        </Tooltip>
+      </Tooltip>
       <Slider
-        value={ isPerIUSetting ? value : scenarioState.scenarioData[ scenarioId ].settings.microfilaricide}
+        value={ isPerIUSetting ? value : scenarioState.scenarioData[ scenarioId ].settings.fecRed}
         min={0}
-        step={1}
-        max={100}
+        step={0.1}
+        max={10}
         onChange={onChange ? onChange : handleChange}
         aria-labelledby="slider"
         valueLabelDisplay={inModal ? 'auto' : 'on'}
@@ -71,4 +72,4 @@ const SettingMicrofilaricide = ({
     </FormControl>
   )
 }
-export default SettingMicrofilaricide
+export default SettingfecRed

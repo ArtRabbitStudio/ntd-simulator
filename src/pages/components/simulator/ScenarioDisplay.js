@@ -40,7 +40,8 @@ import {
   SettingSystematicAdherence,
   SettingTargetCoverage,
   SettingMicrofilaricide,
-  SettingMacrofilaricide
+  SettingMacrofilaricide,
+  SettingfecRed
 } from 'pages/components/simulator/settings'
 import useStyles from 'pages/components/simulator/styles'
 import TextContents from 'pages/components/TextContents'
@@ -258,6 +259,10 @@ const ScenarioDisplay = (props) => {
                         <SettingMacrofilaricide
                           inModal={true}
                           label={t('macrofilaricide')}
+                        />
+                        <SettingfecRed
+                          inModal={true}
+                          label={t('fecRed')}
                         />
                     </Box>}
 

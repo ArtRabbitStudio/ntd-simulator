@@ -95,6 +95,7 @@
   "MDADrugRegimen": "Régime médicamenteux par AMM",
   "microfilaricide": "Microfilaricide",
   "macrofilaricide": "Macrofilaricide",
+  "fecRed": "Embryostatic Effect",
   "MoreAbout": "À propos du modèle STH",
 
   "InfantsTitle": "Pourcentage d'enfants en bas âge recevant un traitement.",
@@ -143,6 +144,10 @@
   "activate": "Activer",
   "DEACTIVATE": "DÉSACTIVER",
   "CONFIRM": "CONFIRMER",
+  "fecRedHelp": "Duration of sterilisation of those adult worms not killed by a single treatment, in months – duration of embryostatic effect",
+  "macrofilaricideHelp": "Proportion of adult worms killed by a single treatment - macrofilaricidal effect",
+  "microfilaricideHelp": "Proportion of microfilariae killed by a single treatment - microfilaricidal effect",
+
 
   "newScenario": "Nouveau scénario",
   "createNewScenario": "Créer un scénario",
