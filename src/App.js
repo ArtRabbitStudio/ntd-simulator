@@ -29,8 +29,11 @@ const AboutNTDConsortium = lazy(() => import("./pages/content/AboutNTDConsortium
 const PrivacyCookies = lazy(() => import("./pages/content/PrivacyCookies"));
 const HelpUsImprove = lazy(() => import("./pages/content/HelpUsImprove"));
 
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> master
 const theme = createTheme({
   palette: {
     tooltip: {
